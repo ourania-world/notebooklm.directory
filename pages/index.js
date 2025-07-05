@@ -15,7 +15,12 @@ export default function Notebooks() {
 
   useEffect(() => {
     // Get current user
-    getCurrentUser().then(setUser);
+    getCurrentUser()
+      .then(setUser)
+      .catch(error => {
+        console.warn('Failed to get user:', error)
+        setUser(null)
+      });
     
     async function fetchFeaturedNotebooks() {
       try {

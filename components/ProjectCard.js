@@ -9,7 +9,12 @@ export default function ProjectCard({ notebook }) {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    getCurrentUser().then(setUser);
+    getCurrentUser()
+      .then(setUser)
+      .catch(error => {
+        console.warn('Failed to get user:', error)
+        setUser(null)
+      });
   }, []);
 
   const handleSaveToggle = async (e) => {

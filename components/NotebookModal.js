@@ -19,9 +19,14 @@ export default function NotebookModal({ isOpen, onClose, onNotebookCreated }) {
     e.preventDefault();
     
     // Check if user is authenticated
-    const user = await getCurrentUser();
-    if (!user) {
-      setError('You must be signed in to submit a notebook');
+    try {
+      const user = await getCurrentUser();
+      if (!user) {
+        setError('You must be signed in to submit a notebook');
+        return;
+      }
+    } catch (error) {
+      setError('Authentication error. Please try signing in again.');
       return;
     }
     

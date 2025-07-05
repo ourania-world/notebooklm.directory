@@ -15,7 +15,10 @@ export default function MyNotebooks() {
       try {
         const currentUser = await getCurrentUser();
         if (!currentUser) {
-          window.location.href = '/';
+          // Redirect to home if no user, but don't throw error
+          if (typeof window !== 'undefined') {
+            window.location.href = '/';
+          }
           return;
         }
 

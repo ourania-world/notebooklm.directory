@@ -21,9 +21,14 @@ export default function Submit() {
     e.preventDefault();
     
     // Check if user is authenticated
-    const user = await getCurrentUser();
-    if (!user) {
-      setSubmitStatus('auth_required');
+    try {
+      const user = await getCurrentUser();
+      if (!user) {
+        setSubmitStatus('auth_required');
+        return;
+      }
+    } catch (error) {
+      setSubmitStatus('error');
       return;
     }
     

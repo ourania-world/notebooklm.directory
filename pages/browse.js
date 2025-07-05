@@ -26,7 +26,12 @@ export default function Browse() {
 
   useEffect(() => {
     // Get current user
-    getCurrentUser().then(setUser);
+    getCurrentUser()
+      .then(setUser)
+      .catch(error => {
+        console.warn('Failed to get user:', error)
+        setUser(null)
+      });
     
     async function fetchData() {
       try {

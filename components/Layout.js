@@ -13,15 +13,26 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
 
   useEffect(() => {
     // Get initial user
-    getCurrentUser().then(setUser).finally(() => setLoading(false));
+    getCurrentUser()
+      .then(setUser)
+      .catch(error => {
+        console.warn('Failed to get user:', error)
+        setUser(null)
+      })
+      .finally(() => setLoading(false));
 
     // Listen for auth changes
-    const { data: { subscription } } = onAuthStateChange((event, session) => {
-      setUser(session?.user || null);
-      setLoading(false);
-    });
+    try {
+      const { data: { subscription } } = onAuthStateChange((event, session) => {
+        setUser(session?.user || null);
+        setLoading(false);
+      });
 
-    return () => subscription.unsubscribe();
+      return () => subscription?.unsubscribe();
+    } catch (error) {
+      console.warn('Failed to set up auth listener:', error)
+      setLoading(false)
+    }
   }, []);
 
   const openAuthModal = (mode = 'signin') => {
