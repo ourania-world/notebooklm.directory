@@ -115,7 +115,7 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
               fontSize: '0.9rem',
               color: '#00ff88'
             }}>
-              ⭐ Trusted by 10,000+ AI Researchers • Excellent Reviews
+              ⭐ Est. July 2025 • Growing Community • Excellent Reviews
             </div>
           </div>
           
@@ -142,7 +142,7 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
             color: '#e2e8f0',
             lineHeight: '1.6'
           }}>
-            Discover, explore, and contribute to the fastest-growing collection of NotebookLM projects. <strong style={{ color: '#00ff88' }}>Launched July 4th, 2025 🇺🇸</strong> - Help us build the definitive NotebookLM community!
+            Discover, explore, and contribute to the fastest-growing collection of NotebookLM projects. <strong style={{ color: '#00ff88' }}>Est. July 2025</strong> - Help us build the definitive NotebookLM community!
           </p>
           
           <div style={{ 
@@ -155,7 +155,7 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
               textDecoration: 'underline',
               textUnderlineOffset: '4px'
             }}>
-              SUPPORT OUR GROWTH 🇺🇸
+              SUPPORT OUR GROWTH
             </a>
           </div>
           
@@ -222,14 +222,14 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
             <div style={{
               textAlign: 'center'
             }}>
-              <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🇺🇸</div>
+              <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🌍</div>
               <h3 style={{ 
                 color: '#ffffff', 
                 fontSize: '1.5rem', 
                 margin: '0 0 1rem 0',
                 fontWeight: '600'
               }}>
-                Launched Independence Day 2025
+                Est. July 2025 - Global Launch
               </h3>
               <p style={{ 
                 color: '#e2e8f0', 
@@ -237,8 +237,8 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
                 margin: '0 0 2rem 0',
                 lineHeight: '1.6'
               }}>
-                We're building the world's most comprehensive NotebookLM directory. 
-                Help us grow this community-driven platform and democratize AI-assisted research!
+                We're building the world's most comprehensive, environmentally-conscious NotebookLM directory. 
+                Help us democratize AI research while minimizing computational waste through smart curation!
               </p>
               <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
                 <button
@@ -266,7 +266,7 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
                     e.target.style.boxShadow = '0 8px 32px rgba(0, 255, 136, 0.3)';
                   }}
                 >
-                  💳 Support Our Mission
+                  💳 Support Our Growth
                 </button>
                 <button
                   onClick={() => setIsModalOpen(true)}
@@ -342,8 +342,8 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
               <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>🚀</div>
               <h3 style={{ color: '#00ff88', marginBottom: '1rem' }}>Our Mission</h3>
               <p style={{ color: '#e2e8f0' }}>
-                Democratize access to AI-assisted research by building the world's largest, 
-                most comprehensive directory of NotebookLM projects and methodologies.
+                Democratize AI research while protecting our planet. Smart curation reduces 
+                computational waste by connecting researchers to existing solutions.
               </p>
             </div>
             
@@ -354,11 +354,11 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
               border: '1px solid rgba(0, 255, 136, 0.2)',
               textAlign: 'center'
             }}>
-              <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>🇺🇸</div>
-              <h3 style={{ color: '#00ff88', marginBottom: '1rem' }}>Independence Day Launch</h3>
+              <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>🌱</div>
+              <h3 style={{ color: '#00ff88', marginBottom: '1rem' }}>Environmental Impact</h3>
               <p style={{ color: '#e2e8f0' }}>
-                Launched July 4th, 2025 to celebrate the independence of knowledge and 
-                the democratization of advanced research tools for everyone.
+                Every shared notebook prevents duplicate research, reducing AI training costs 
+                and computational carbon footprint. Knowledge sharing = planet saving.
               </p>
             </div>
             
@@ -372,8 +372,8 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
               <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>💡</div>
               <h3 style={{ color: '#00ff88', marginBottom: '1rem' }}>Community Driven</h3>
               <p style={{ color: '#e2e8f0' }}>
-                Built by researchers, for researchers. Every contribution helps grow 
-                our collective knowledge and advances the field of AI-assisted research.
+                Built by researchers, for researchers. Every shared project accelerates 
+                discovery while reducing redundant computational work worldwide.
               </p>
             </div>
           </div>
@@ -404,8 +404,8 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
               margin: '0 0 2rem 0',
               lineHeight: '1.6'
             }}>
-              Your support helps us build advanced crawling systems, maintain high-quality curation, 
-              and provide this platform free to researchers worldwide. Every contribution matters!
+              Your support helps us build the world's most comprehensive, environmentally-conscious 
+              research directory. Together, we're reducing AI waste while accelerating discovery!
             </p>
             <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
               <button
@@ -518,8 +518,8 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
               color: '#ffffff',
               fontWeight: '700'
             }}>
-              Join the <span style={{ color: '#00ff88' }}>Independence</span> of Knowledge<br />
-              Movement 🇺🇸
+              Join the <span style={{ color: '#00ff88' }}>Sustainable</span> AI Research<br />
+              Movement 🌍
             </h2>
             <p style={{ 
               color: '#e2e8f0', 
@@ -527,7 +527,7 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
               textAlign: 'center',
               margin: '0 0 3rem 0'
             }}>
-              Launched July 4th, 2025 - Democratizing AI research for everyone
+              Est. July 2025 - Democratizing AI research while protecting our planet
             </p>
           </div>
           
@@ -548,9 +548,9 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
                   marginBottom: '1rem'
                 }}>
                   🔍 Discover innovative NotebookLM projects<br />
-                  📚 Learn from diverse methodologies<br />
-                  🤝 Connect with fellow researchers<br />
-                  🚀 Accelerate your research impact
+                  🌱 Reduce computational waste through sharing<br />
+                  🤝 Connect with eco-conscious researchers<br />
+                  🚀 Accelerate discovery while protecting Earth
                 </div>
               </div>
               <div style={{
@@ -569,9 +569,9 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
                   fontSize: '3rem',
                   textAlign: 'center'
                 }}>
-                  🇺🇸<br />
+                  🌍<br />
                   <div style={{ fontSize: '0.8rem', marginTop: '0.5rem' }}>
-                    Freedom
+                    Sustainable
                   </div>
                 </div>
               </div>
@@ -600,11 +600,11 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
             margin: '0 0 2rem 0',
             fontSize: '1.1rem'
           }}>
-            Hear our AI-generated overview of how we're building the future of AI-assisted research
+            Hear our AI-generated overview of how we're building sustainable, efficient AI research
           </p>
           <AudioPlayer 
             audioUrl="/overview.mp3"
-            title="Our Independence Day Vision"
+            title="Our Sustainable AI Vision"
           />
         </div>
       </section>
