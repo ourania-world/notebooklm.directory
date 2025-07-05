@@ -129,9 +129,19 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text'
           }}>
-            Efficient by Design.<br />
-            <span style={{ color: '#00ff88' }}>Sustainable by Default.</span>
+            The World's Premier Directory<br />
+            for <span style={{ color: '#00ff88' }}>Shared Intelligence</span>
           </h1>
+          
+          <div style={{ 
+            fontSize: '1.5rem',
+            fontWeight: '600',
+            color: '#ffffff',
+            margin: '0 0 1.5rem 0',
+            textAlign: 'center'
+          }}>
+            Discover. Build. Accelerate.
+          </div>
           
           <p style={{ 
             fontSize: '1.3rem', 
@@ -140,9 +150,10 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
             maxWidth: '700px',
             margin: '0 auto 1rem auto',
             color: '#e2e8f0',
-            lineHeight: '1.6'
+            lineHeight: '1.6',
+            marginTop: '1rem'
           }}>
-            The intelligent notebook platform for professionals shaping a sustainable future. We deliver superior performance and collaboration through <strong style={{ color: '#00ff88' }}>resource-efficient design</strong>, empowering our community to innovate responsibly.
+            The definitive resource for NotebookLM projects across all domains. We deliver superior discovery and collaboration through <strong style={{ color: '#00ff88' }}>intelligent curation</strong>, empowering our community to innovate faster and more efficiently.
           </p>
           
           <div style={{ 
