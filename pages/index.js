@@ -126,12 +126,7 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
             lineHeight: '1.1',
             color: '#ffffff'
           }}>
-            The Premier <span style={{ 
-              fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-              fontWeight: '700'
-            }}>
-              notebooklm.
-            </span><br />
+            The Premier NotebookLM<br />
             <span style={{ 
               background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 50%, #00d96b 100%)',
               WebkitBackgroundClip: 'text',
