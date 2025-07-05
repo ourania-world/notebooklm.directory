@@ -83,7 +83,6 @@ export default function Home({ initialFeaturedNotebooks }) {
             radial-gradient(circle at 80% 20%, rgba(0, 255, 136, 0.05) 0%, transparent 50%),
             radial-gradient(circle at 40% 80%, rgba(0, 255, 136, 0.08) 0%, transparent 50%)
           `,
-          animation: 'pulse 4s ease-in-out infinite',
           zIndex: 1
         }} />
         
@@ -552,13 +551,6 @@ export default function Home({ initialFeaturedNotebooks }) {
         onClose={() => setIsModalOpen(false)}
         onNotebookCreated={handleNotebookCreated}
       />
-      
-      <style jsx>{`
-        @keyframes pulse {
-          0%, 100% { opacity: 0.5; }
-          50% { opacity: 0.8; }
-        }
-      `}</style>
     </Layout>
   );
 }

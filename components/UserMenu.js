@@ -5,7 +5,61 @@ export default function UserMenu() {
   const { user, signOut } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
 
-  if (!user) return null;
+  if (!user) {
+    return (
+      <div style={{ display: 'flex', gap: '1rem' }}>
+        <button
+          onClick={() => window.location.href = '/login'}
+          style={{
+            background: 'transparent',
+            color: '#e2e8f0',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
+            padding: '0.5rem 1rem',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            fontSize: '0.9rem',
+            fontWeight: '500',
+            transition: 'all 0.2s ease'
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.borderColor = '#00ff88';
+            e.target.style.color = '#00ff88';
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+            e.target.style.color = '#e2e8f0';
+          }}
+        >
+          Log in
+        </button>
+        <button
+          onClick={() => window.location.href = '/signup'}
+          style={{
+            background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
+            color: '#0a0a0a',
+            border: 'none',
+            padding: '0.5rem 1rem',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            fontSize: '0.9rem',
+            fontWeight: '600',
+            transition: 'all 0.2s ease',
+            boxShadow: '0 4px 16px rgba(0, 255, 136, 0.3)'
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.transform = 'translateY(-1px)';
+            e.target.style.boxShadow = '0 6px 20px rgba(0, 255, 136, 0.4)';
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.transform = 'translateY(0)';
+            e.target.style.boxShadow = '0 4px 16px rgba(0, 255, 136, 0.3)';
+          }}
+        >
+          Get Started
+        </button>
+      </div>
+    );
+  }
 
   const handleSignOut = async () => {
     try {
@@ -54,10 +108,10 @@ export default function UserMenu() {
           fontSize: '0.9rem',
           fontWeight: '700'
         }}>
-          {user.user_metadata?.full_name?.[0] || user.email[0].toUpperCase()}
+          {user.user_metadata?.full_name?.[0] || user.email?.[0]?.toUpperCase() || 'U'}
         </div>
         <span style={{ fontSize: '0.9rem' }}>
-          {user.user_metadata?.full_name || user.email}
+          {user.user_metadata?.full_name || user.email?.split('@')[0] || 'User'}
         </span>
         <span style={{ fontSize: '0.7rem', opacity: 0.7 }}>▼</span>
       </button>
