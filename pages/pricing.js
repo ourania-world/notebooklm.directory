@@ -34,7 +34,7 @@ export default function Pricing() {
     {
       id: 'professional',
       name: 'Professional',
-      price: 29,
+     price: 9.99,
       period: 'month',
       description: 'Accelerate Your Impact, Measure Your Footprint',
       features: [
@@ -58,10 +58,10 @@ export default function Pricing() {
     },
     {
       id: 'enterprise',
-      name: 'Enterprise',
+     name: 'Enterprise',
       price: 99,
-      period: 'month',
-      description: 'Scale Your Innovation, Achieve Your ESG Goals',
+     period: 'user/month',
+     description: 'Scale Your Innovation, Achieve Your ESG Goals - COMING SOON',
       features: [
         'Everything in Professional',
         'Unlimited notebook submissions',
@@ -239,7 +239,7 @@ export default function Pricing() {
                     top: '-12px',
                     left: '50%',
                     transform: 'translateX(-50%)',
-                    background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
+                   background: plan.id === 'enterprise' ? 'rgba(255, 255, 255, 0.2)' : 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
                     color: '#0a0a0a',
                     padding: '0.5rem 1.5rem',
                     borderRadius: '20px',
@@ -248,7 +248,7 @@ export default function Pricing() {
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px'
                   }}>
-                    Most Popular
+                   {plan.id === 'enterprise' ? 'COMING SOON' : 'Most Popular'}
                   </div>
                 )}
 
@@ -326,22 +326,22 @@ export default function Pricing() {
                   disabled={loading}
                   style={{
                     width: '100%',
-                    background: plan.popular ? 
+                   background: plan.id === 'enterprise' ? 'rgba(255, 255, 255, 0.1)' : (plan.popular ? 
                       'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)' :
-                      'transparent',
-                    color: plan.popular ? '#0a0a0a' : '#00ff88',
-                    border: plan.popular ? 'none' : '1px solid rgba(0, 255, 136, 0.3)',
+                     'transparent'),
+                   color: plan.id === 'enterprise' ? '#ffffff' : (plan.popular ? '#0a0a0a' : '#00ff88'),
+                   border: plan.id === 'enterprise' || plan.popular ? 'none' : '1px solid rgba(0, 255, 136, 0.3)',
                     padding: '1rem',
                     borderRadius: '12px',
                     fontSize: '1rem',
                     fontWeight: '700',
-                    cursor: loading ? 'not-allowed' : 'pointer',
+                   cursor: plan.id === 'enterprise' || loading ? 'not-allowed' : 'pointer',
                     transition: 'all 0.2s ease',
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px'
                   }}
                   onMouseEnter={(e) => {
-                    if (!loading) {
+                   if (!loading && plan.id !== 'enterprise') {
                       if (plan.popular) {
                         e.target.style.transform = 'translateY(-2px)';
                         e.target.style.boxShadow = '0 12px 32px rgba(0, 255, 136, 0.4)';
@@ -352,7 +352,7 @@ export default function Pricing() {
                     }
                   }}
                   onMouseLeave={(e) => {
-                    if (!loading) {
+                   if (!loading && plan.id !== 'enterprise') {
                       if (plan.popular) {
                         e.target.style.transform = 'translateY(0)';
                         e.target.style.boxShadow = 'none';
@@ -363,7 +363,7 @@ export default function Pricing() {
                     }
                   }}
                 >
-                  {loading ? 'Processing...' : plan.cta}
+                 {loading ? 'Processing...' : (plan.id === 'enterprise' ? 'Coming Soon' : plan.cta)}
                 </button>
               </div>
             ))}
