@@ -12,7 +12,7 @@ export default function Submit() {
     author: '',
     institution: '',
     notebook_url: '',
-    source_files: ''
+    audio_overview_url: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
@@ -21,8 +21,9 @@ export default function Submit() {
     e.preventDefault();
     
     // Check if user is authenticated
+    let user;
     try {
-      const user = await getCurrentUser();
+      user = await getCurrentUser();
       if (!user) {
         setSubmitStatus('auth_required');
         return;
@@ -49,6 +50,7 @@ export default function Submit() {
         author: formData.author,
         institution: formData.institution || null,
         notebook_url: formData.notebook_url,
+        audio_overview_url: formData.audio_overview_url || null,
         featured: false, // New submissions are not featured by default
         user_id: user.id
       };
@@ -64,7 +66,7 @@ export default function Submit() {
         author: '',
         institution: '',
         notebook_url: '',
-        source_files: ''
+        audio_overview_url: ''
       });
     } catch (error) {
       console.error('Error submitting notebook:', error);
@@ -87,13 +89,13 @@ export default function Submit() {
         <h1 style={{ 
           fontSize: '2.5rem', 
           margin: '0 0 1rem 0',
-          color: '#212529'
+          color: '#ffffff'
         }}>
           Submit Your Project
         </h1>
         
         <p style={{ 
-          color: '#6c757d', 
+          color: '#e2e8f0', 
           margin: '0 0 3rem 0',
           fontSize: '1.1rem',
           lineHeight: '1.6'
@@ -103,12 +105,12 @@ export default function Submit() {
         
         {submitStatus === 'success' && (
           <div style={{
-            background: '#d4edda',
-            color: '#155724',
+            background: 'rgba(0, 255, 136, 0.1)',
+            color: '#00ff88',
             padding: '1rem',
-            borderRadius: '8px',
+            borderRadius: '12px',
             marginBottom: '2rem',
-            border: '1px solid #c3e6cb'
+            border: '1px solid rgba(0, 255, 136, 0.3)'
           }}>
             Thank you for your submission! Your project has been added to the directory.
           </div>
@@ -116,12 +118,12 @@ export default function Submit() {
         
         {submitStatus === 'auth_required' && (
           <div style={{
-            background: '#fff3cd',
-            color: '#856404',
+            background: 'rgba(255, 193, 7, 0.1)',
+            color: '#ffc107',
             padding: '1rem',
-            borderRadius: '8px',
+            borderRadius: '12px',
             marginBottom: '2rem',
-            border: '1px solid #ffeaa7'
+            border: '1px solid rgba(255, 193, 7, 0.3)'
           }}>
             Please sign in to submit a notebook. You can sign in using the button in the top right corner.
           </div>
@@ -129,12 +131,12 @@ export default function Submit() {
         
         {submitStatus === 'error' && (
           <div style={{
-            background: '#f8d7da',
-            color: '#721c24',
+            background: 'rgba(220, 53, 69, 0.1)',
+            color: '#dc3545',
             padding: '1rem',
-            borderRadius: '8px',
+            borderRadius: '12px',
             marginBottom: '2rem',
-            border: '1px solid #f5c6cb'
+            border: '1px solid rgba(220, 53, 69, 0.3)'
           }}>
             There was an error submitting your project. Please try again.
           </div>
@@ -146,7 +148,7 @@ export default function Submit() {
               display: 'block', 
               marginBottom: '0.5rem',
               fontWeight: '600',
-              color: '#212529'
+              color: '#ffffff'
             }}>
               Project Title *
             </label>
@@ -159,11 +161,15 @@ export default function Submit() {
               style={{
                 width: '100%',
                 padding: '0.75rem',
-                border: '1px solid #dee2e6',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
                 borderRadius: '8px',
-                fontSize: '1rem'
+                fontSize: '1rem',
+                background: 'rgba(255, 255, 255, 0.05)',
+                color: '#ffffff'
               }}
               placeholder="Enter a descriptive title for your project"
+              onFocus={(e) => e.target.style.borderColor = '#00ff88'}
+              onBlur={(e) => e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)'}
             />
           </div>
           
@@ -172,7 +178,7 @@ export default function Submit() {
               display: 'block', 
               marginBottom: '0.5rem',
               fontWeight: '600',
-              color: '#212529'
+              color: '#ffffff'
             }}>
               Description *
             </label>
@@ -185,12 +191,16 @@ export default function Submit() {
               style={{
                 width: '100%',
                 padding: '0.75rem',
-                border: '1px solid #dee2e6',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
                 borderRadius: '8px',
                 fontSize: '1rem',
-                resize: 'vertical'
+                resize: 'vertical',
+                background: 'rgba(255, 255, 255, 0.05)',
+                color: '#ffffff'
               }}
               placeholder="Describe what your project does, what sources you used, and what insights you gained"
+              onFocus={(e) => e.target.style.borderColor = '#00ff88'}
+              onBlur={(e) => e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)'}
             />
           </div>
           
@@ -200,7 +210,7 @@ export default function Submit() {
                 display: 'block', 
                 marginBottom: '0.5rem',
                 fontWeight: '600',
-                color: '#212529'
+                color: '#ffffff'
               }}>
                 Category *
               </label>
@@ -212,19 +222,22 @@ export default function Submit() {
                 style={{
                   width: '100%',
                   padding: '0.75rem',
-                  border: '1px solid #dee2e6',
+                  border: '1px solid rgba(255, 255, 255, 0.2)',
                   borderRadius: '8px',
                   fontSize: '1rem',
-                  background: 'white'
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  color: '#ffffff'
                 }}
+                onFocus={(e) => e.target.style.borderColor = '#00ff88'}
+                onBlur={(e) => e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)'}
               >
-                <option value="">Select a category</option>
-                <option value="Academic">Academic</option>
-                <option value="Business">Business</option>
-                <option value="Creative">Creative</option>
-                <option value="Research">Research</option>
-                <option value="Education">Education</option>
-                <option value="Personal">Personal</option>
+                <option value="" style={{ background: '#1a1a2e', color: '#ffffff' }}>Select a category</option>
+                <option value="Academic" style={{ background: '#1a1a2e', color: '#ffffff' }}>Academic</option>
+                <option value="Business" style={{ background: '#1a1a2e', color: '#ffffff' }}>Business</option>
+                <option value="Creative" style={{ background: '#1a1a2e', color: '#ffffff' }}>Creative</option>
+                <option value="Research" style={{ background: '#1a1a2e', color: '#ffffff' }}>Research</option>
+                <option value="Education" style={{ background: '#1a1a2e', color: '#ffffff' }}>Education</option>
+                <option value="Personal" style={{ background: '#1a1a2e', color: '#ffffff' }}>Personal</option>
               </select>
             </div>
             
@@ -233,7 +246,7 @@ export default function Submit() {
                 display: 'block', 
                 marginBottom: '0.5rem',
                 fontWeight: '600',
-                color: '#212529'
+                color: '#ffffff'
               }}>
                 Tags
               </label>
@@ -245,11 +258,15 @@ export default function Submit() {
                 style={{
                   width: '100%',
                   padding: '0.75rem',
-                  border: '1px solid #dee2e6',
+                  border: '1px solid rgba(255, 255, 255, 0.2)',
                   borderRadius: '8px',
-                  fontSize: '1rem'
+                  fontSize: '1rem',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  color: '#ffffff'
                 }}
                 placeholder="e.g., Machine Learning, Climate Science"
+                onFocus={(e) => e.target.style.borderColor = '#00ff88'}
+                onBlur={(e) => e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)'}
               />
             </div>
           </div>
@@ -260,7 +277,7 @@ export default function Submit() {
                 display: 'block', 
                 marginBottom: '0.5rem',
                 fontWeight: '600',
-                color: '#212529'
+                color: '#ffffff'
               }}>
                 Author Name *
               </label>
@@ -273,11 +290,15 @@ export default function Submit() {
                 style={{
                   width: '100%',
                   padding: '0.75rem',
-                  border: '1px solid #dee2e6',
+                  border: '1px solid rgba(255, 255, 255, 0.2)',
                   borderRadius: '8px',
-                  fontSize: '1rem'
+                  fontSize: '1rem',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  color: '#ffffff'
                 }}
                 placeholder="Your name"
+                onFocus={(e) => e.target.style.borderColor = '#00ff88'}
+                onBlur={(e) => e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)'}
               />
             </div>
             
@@ -286,7 +307,7 @@ export default function Submit() {
                 display: 'block', 
                 marginBottom: '0.5rem',
                 fontWeight: '600',
-                color: '#212529'
+                color: '#ffffff'
               }}>
                 Institution/Organization
               </label>
@@ -298,11 +319,15 @@ export default function Submit() {
                 style={{
                   width: '100%',
                   padding: '0.75rem',
-                  border: '1px solid #dee2e6',
+                  border: '1px solid rgba(255, 255, 255, 0.2)',
                   borderRadius: '8px',
-                  fontSize: '1rem'
+                  fontSize: '1rem',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  color: '#ffffff'
                 }}
                 placeholder="University, Company, or 'Independent'"
+                onFocus={(e) => e.target.style.borderColor = '#00ff88'}
+                onBlur={(e) => e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)'}
               />
             </div>
           </div>
@@ -312,7 +337,7 @@ export default function Submit() {
               display: 'block', 
               marginBottom: '0.5rem',
               fontWeight: '600',
-              color: '#212529'
+              color: '#ffffff'
             }}>
               NotebookLM Share URL *
             </label>
@@ -325,11 +350,15 @@ export default function Submit() {
               style={{
                 width: '100%',
                 padding: '0.75rem',
-                border: '1px solid #dee2e6',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
                 borderRadius: '8px',
-                fontSize: '1rem'
+                fontSize: '1rem',
+                background: 'rgba(255, 255, 255, 0.05)',
+                color: '#ffffff'
               }}
               placeholder="https://notebooklm.google.com/notebook/..."
+              onFocus={(e) => e.target.style.borderColor = '#00ff88'}
+              onBlur={(e) => e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)'}
             />
           </div>
           
@@ -338,40 +367,71 @@ export default function Submit() {
               display: 'block', 
               marginBottom: '0.5rem',
               fontWeight: '600',
-              color: '#212529'
+              color: '#ffffff'
             }}>
-              Source Files Description
+              Audio Overview URL (Optional)
             </label>
-            <textarea
-              name="source_files"
-              value={formData.source_files}
+            <input
+              type="url"
+              name="audio_overview_url"
+              value={formData.audio_overview_url}
               onChange={handleChange}
-              rows={3}
               style={{
                 width: '100%',
                 padding: '0.75rem',
-                border: '1px solid #dee2e6',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
                 borderRadius: '8px',
                 fontSize: '1rem',
-                resize: 'vertical'
+                background: 'rgba(255, 255, 255, 0.05)',
+                color: '#ffffff'
               }}
-              placeholder="Describe the types and sources of documents you uploaded (e.g., '25 research papers from PubMed, 3 industry reports, personal notes')"
+              placeholder="https://example.com/audio.mp3 or /audio/filename.mp3"
+              onFocus={(e) => e.target.style.borderColor = '#00ff88'}
+              onBlur={(e) => e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)'}
             />
+            <p style={{
+              fontSize: '0.8rem',
+              color: 'rgba(255, 255, 255, 0.6)',
+              marginTop: '0.5rem',
+              fontStyle: 'italic'
+            }}>
+              Link to an audio overview of your notebook (MP3, WAV, OGG supported)
+            </p>
           </div>
           
           <button
             type="submit"
             disabled={isSubmitting}
             style={{
-              background: isSubmitting ? '#6c757d' : '#667eea',
-              color: 'white',
+              background: isSubmitting ? 
+                'rgba(255, 255, 255, 0.1)' : 
+                'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
+              color: isSubmitting ? '#ffffff' : '#0a0a0a',
               border: 'none',
               padding: '1rem 2rem',
-              borderRadius: '8px',
+              borderRadius: '12px',
               fontSize: '1rem',
-              fontWeight: '600',
+              fontWeight: '700',
               cursor: isSubmitting ? 'not-allowed' : 'pointer',
-              marginTop: '1rem'
+              marginTop: '1rem',
+              transition: 'all 0.2s ease',
+              boxShadow: isSubmitting ? 
+                'none' : 
+                '0 8px 24px rgba(0, 255, 136, 0.3)',
+              textTransform: 'uppercase',
+              letterSpacing: '0.5px'
+            }}
+            onMouseEnter={(e) => {
+              if (!isSubmitting) {
+                e.target.style.transform = 'translateY(-2px)';
+                e.target.style.boxShadow = '0 12px 32px rgba(0, 255, 136, 0.4)';
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (!isSubmitting) {
+                e.target.style.transform = 'translateY(0)';
+                e.target.style.boxShadow = '0 8px 24px rgba(0, 255, 136, 0.3)';
+              }
             }}
           >
             {isSubmitting ? 'Submitting...' : 'Submit Project'}
