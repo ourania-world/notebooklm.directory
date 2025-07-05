@@ -132,11 +132,11 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
-              textShadow: '0 0 40px rgba(0, 255, 136, 0.6), 0 0 80px rgba(0, 255, 136, 0.3)',
-              filter: 'drop-shadow(0 0 20px rgba(0, 255, 136, 0.8))',
+              textShadow: '0 0 20px rgba(0, 255, 136, 0.3)',
+              filter: 'drop-shadow(0 0 8px rgba(0, 255, 136, 0.4))',
               position: 'relative',
               display: 'inline-block',
-              animation: 'directoryGlow 3s ease-in-out infinite alternate'
+              animation: 'directoryShimmer 4s ease-in-out infinite alternate'
             }}>
               Directory
             </span>
@@ -734,12 +734,26 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
         }
         @keyframes directoryGlow {
           0% { 
-            filter: drop-shadow(0 0 20px rgba(0, 255, 136, 0.8)) drop-shadow(0 0 40px rgba(0, 255, 136, 0.4));
+            filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.4));
+            textShadow: 0 0 20px rgba(0, 255, 136, 0.3);
             transform: scale(1);
           }
           100% { 
-            filter: drop-shadow(0 0 30px rgba(0, 255, 136, 1)) drop-shadow(0 0 60px rgba(0, 255, 136, 0.6)) drop-shadow(0 0 100px rgba(0, 255, 136, 0.3));
-            transform: scale(1.02);
+            filter: drop-shadow(0 0 12px rgba(0, 255, 136, 0.6));
+            textShadow: 0 0 30px rgba(0, 255, 136, 0.5);
+            transform: scale(1.01);
+          }
+        }
+        @keyframes directoryShimmer {
+          0% { 
+            filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.4));
+            textShadow: 0 0 20px rgba(0, 255, 136, 0.3);
+            transform: scale(1);
+          }
+          100% { 
+            filter: drop-shadow(0 0 12px rgba(0, 255, 136, 0.6));
+            textShadow: 0 0 30px rgba(0, 255, 136, 0.5);
+            transform: scale(1.01);
           }
         }
       `}</style>
