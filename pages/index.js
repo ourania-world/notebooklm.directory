@@ -115,7 +115,7 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
               fontSize: '0.9rem',
               color: '#00ff88'
             }}>
-              ⭐ Est. July 2025 • Growing Community • Excellent Reviews
+              ⭐ Est. July 2025 • Global Launch • Growing Community
             </div>
           </div>
           
@@ -161,7 +161,7 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
             color: '#e2e8f0',
             lineHeight: '1.6'
           }}>
-            The definitive resource for shared intelligence across all domains. We deliver superior discovery and collaboration through <strong style={{ color: '#00ff88' }}>intelligent curation</strong>, empowering our community to innovate faster.
+            Help us build a smarter AI ecosystem. By curating and sharing notebooks, we can prevent redundant work and reduce the massive computational footprint of AI research. <strong style={{ color: '#00ff88' }}>Contribute your work and discover what's possible.</strong>
           </p>
           
           <div style={{ 
@@ -174,7 +174,7 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
               textDecoration: 'underline',
               textUnderlineOffset: '4px'
             }}>
-              SUPPORT OUR GROWTH
+              JOIN THE MOVEMENT
             </a>
           </div>
           
@@ -256,8 +256,7 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
                 margin: '0 0 2rem 0',
                 lineHeight: '1.6'
               }}>
-                We're building the world's most comprehensive, environmentally-conscious NotebookLM directory. 
-                Help us democratize AI research while minimizing computational waste through smart curation!
+                Help us build a smarter AI ecosystem. By curating and sharing notebooks, we can prevent redundant work and reduce the massive computational footprint of AI research. Contribute your work and discover what's possible.
               </p>
               <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
                 <button
@@ -361,9 +360,7 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
               <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>🚀</div>
               <h3 style={{ color: '#00ff88', marginBottom: '1rem' }}>Our Mission</h3>
               <p style={{ color: '#e2e8f0' }}>
-                Transform AI research through sustainable discovery. Our resource-efficient platform 
-                prevents computational waste while accelerating innovation - proving that environmental 
-                responsibility drives technical excellence.
+                Build a smarter AI ecosystem where shared knowledge prevents redundant work. Every notebook shared saves computational resources and accelerates discovery for the entire community.
               </p>
             </div>
             
@@ -377,9 +374,7 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
               <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>🌱</div>
               <h3 style={{ color: '#00ff88', marginBottom: '1rem' }}>Environmental Impact</h3>
               <p style={{ color: '#e2e8f0' }}>
-                Every shared notebook prevents ~10 duplicate experiments, saving massive computational 
-                resources. We're not asking researchers to sacrifice performance for sustainability - 
-                our efficient-by-design architecture delivers superior results while protecting Earth.
+                Every shared notebook prevents duplicate experiments, reducing the computational footprint of AI research. Smart sharing means less waste and faster progress for everyone.
               </p>
             </div>
             
@@ -393,9 +388,7 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
               <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>💡</div>
               <h3 style={{ color: '#00ff88', marginBottom: '1rem' }}>Community Driven</h3>
               <p style={{ color: '#e2e8f0' }}>
-                Join the movement where sustainability equals performance. Our obsessive focus on 
-                resource efficiency is why we deliver faster results, lower costs, and better 
-                collaboration - making responsible research the easiest choice.
+                Join researchers worldwide who are building the future of AI through collaboration. Together, we're creating a comprehensive directory that makes innovation faster and more accessible.
               </p>
             </div>
           </div>
@@ -426,9 +419,7 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
               margin: '0 0 2rem 0',
               lineHeight: '1.6'
             }}>
-              Support the platform where environmental consciousness meets engineering excellence. 
-              Every subscription helps us build more efficient infrastructure, proving that 
-              sustainable technology delivers superior performance.
+              Help us build the definitive NotebookLM directory. Your support enables us to create better discovery tools, prevent redundant research, and accelerate innovation for the entire AI community.
             </p>
             <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
               <button
@@ -503,9 +494,9 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
               color: '#ffffff',
               fontWeight: '700'
             }}>
-              NotebookLM Directory is the <span style={{ color: '#00ff88' }}>HIGHEST level</span><br />
-              of AI Research Discovery & AI<br />
-              optimization for <span style={{ color: '#00ff88' }}>HIGH LEVEL</span> researchers
+              The <span style={{ color: '#00ff88' }}>Premier Platform</span> for<br />
+              AI Research Discovery & Collaboration<br />
+              Built by <span style={{ color: '#00ff88' }}>Researchers, for Researchers</span>
             </h2>
             
             <div style={{
@@ -521,7 +512,7 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
             }}>
               $3,650,500,150
               <div style={{ fontSize: '0.9rem', marginTop: '0.5rem', color: '#ffffff' }}>
-                in Research Value Tracked
+                in Research Value Discovered
               </div>
             </div>
           </div>
@@ -541,8 +532,8 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
               color: '#ffffff',
               fontWeight: '700'
             }}>
-              Join the <span style={{ color: '#00ff88' }}>Sustainable</span> AI Research<br />
-              Movement 🌍
+              Help Build the Future of <span style={{ color: '#00ff88' }}>AI Research</span><br />
+              Discovery 🚀
             </h2>
             <p style={{ 
               color: '#e2e8f0', 
@@ -550,7 +541,7 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
               textAlign: 'center',
               margin: '0 0 3rem 0'
             }}>
-              Est. July 2025 - Democratizing AI research while protecting our planet
+              Est. July 2025 - Building smarter research through community collaboration
             </p>
           </div>
           
@@ -570,10 +561,10 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
                   lineHeight: '1.6',
                   marginBottom: '1rem'
                 }}>
-                  🔍 Discover innovative NotebookLM projects<br />
-                  🌱 Reduce computational waste through sharing<br />
-                  🤝 Connect with eco-conscious researchers<br />
-                  🚀 Accelerate discovery while protecting Earth
+                  🔍 Discover cutting-edge NotebookLM projects<br />
+                  🤝 Connect with researchers worldwide<br />
+                  🚀 Share your work and accelerate discovery<br />
+                  💡 Build on existing knowledge, don't reinvent
                 </div>
               </div>
               <div style={{
@@ -592,9 +583,9 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
                   fontSize: '3rem',
                   textAlign: 'center'
                 }}>
-                  🌍<br />
+                  🚀<br />
                   <div style={{ fontSize: '0.8rem', marginTop: '0.5rem' }}>
-                    Sustainable
+                    Innovation
                   </div>
                 </div>
               </div>
@@ -616,18 +607,18 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
             color: '#ffffff',
             fontWeight: '700'
           }}>
-            🎧 Listen to Our <span style={{ color: '#00ff88' }}>Vision</span>
+            🎧 Listen to the <span style={{ color: '#00ff88' }}>Vision</span>
           </h2>
           <p style={{ 
             color: '#e2e8f0', 
             margin: '0 0 2rem 0',
             fontSize: '1.1rem'
           }}>
-            Hear our AI-generated overview of how we're building sustainable, efficient AI research
+            Hear our AI-generated overview of how NotebookLM is transforming research and creativity
           </p>
           <AudioPlayer 
             audioUrl="/overview.mp3"
-            title="Our Sustainable AI Vision"
+            title="Listen to the Vision"
           />
         </div>
       </section>
