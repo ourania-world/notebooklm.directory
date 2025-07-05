@@ -20,7 +20,7 @@ A curated directory of innovative NotebookLM projects across various domains. Di
 - **Frontend**: Next.js 13, React 18
 - **Database**: Supabase (PostgreSQL)
 - **Authentication**: Supabase Auth
-- **Styling**: CSS-in-JS (inline styles)
+- **Styling**: CSS-in-JS (inline-styles)
 - **Deployment**: Vercel
 
 ## Getting Started
