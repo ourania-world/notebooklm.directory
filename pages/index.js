@@ -84,7 +84,7 @@ export default function Notebooks() {
             Hear our AI-generated overview of how NotebookLM is transforming research and creativity
           </p>
           <audio controls style={{ width: '100%', maxWidth: '500px' }}>
-            <source src="/overview.wav" type="audio/wav" />
+            <source src="/NLM_D Overview.mp3" type="audio/mpeg" />
             Your browser does not support the audio element.
           </audio>
         </div>
