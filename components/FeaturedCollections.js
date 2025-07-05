@@ -41,14 +41,17 @@ export default function FeaturedCollections() {
   useEffect(() => {
     async function loadCollections() {
       try {
+        // Use the sample data from notebooks.js
+        const { getNotebooks } = await import('../lib/notebooks')
+        const allNotebooks = await getNotebooks()
+        
         const collectionsData = await Promise.all(
           collectionDefinitions.map(async (collection) => {
-            let notebooks = []
+            let notebooks = [...allNotebooks]
             
             switch (collection.id) {
               case 'trending':
                 // Get notebooks with highest view counts
-                notebooks = await getNotebooks()
                 notebooks = notebooks
                   .sort((a, b) => (b.view_count || 0) - (a.view_count || 0))
                   .slice(0, 6)
@@ -56,7 +59,6 @@ export default function FeaturedCollections() {
                 
               case 'ai-research':
                 // Get notebooks with AI-related tags
-                notebooks = await getNotebooks()
                 notebooks = notebooks
                   .filter(n => 
                     n.tags?.some(tag => 
@@ -73,13 +75,13 @@ export default function FeaturedCollections() {
                 
               case 'academic':
                 // Get academic category notebooks
-                notebooks = await getNotebooks({ category: 'Academic' })
+                notebooks = notebooks.filter(n => n.category === 'Academic')
                 notebooks = notebooks.slice(0, 6)
                 break
                 
               case 'creative':
                 // Get creative category notebooks
-                notebooks = await getNotebooks({ category: 'Creative' })
+                notebooks = notebooks.filter(n => n.category === 'Creative')
                 notebooks = notebooks.slice(0, 6)
                 break
             }

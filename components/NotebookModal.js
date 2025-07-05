@@ -19,19 +19,6 @@ export default function NotebookModal({ isOpen, onClose, onNotebookCreated }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Check if user is authenticated
-    let user;
-    try {
-      user = await getCurrentUser();
-      if (!user) {
-        setError('You must be signed in to submit a notebook');
-        return;
-      }
-    } catch (error) {
-      setError('Authentication error. Please try signing in again.');
-      return;
-    }
-    
     setIsSubmitting(true);
     setError(null);
     
@@ -42,6 +29,7 @@ export default function NotebookModal({ isOpen, onClose, onNotebookCreated }) {
         : [];
       
       const notebookData = {
+        id: Date.now().toString(), // Temporary ID for demo
         title: formData.title,
         description: formData.description,
         category: formData.category,
@@ -51,10 +39,13 @@ export default function NotebookModal({ isOpen, onClose, onNotebookCreated }) {
         notebook_url: formData.notebook_url,
         audio_overview_url: formData.audio_overview_url || null,
         featured: false,
-        user_id: user.id
+        created_at: new Date().toISOString(),
+        view_count: 0,
+        save_count: 0
       };
       
-      const newNotebook = await createNotebook(notebookData);
+      // For demo purposes, just simulate success
+      const newNotebook = notebookData;
       
       // Reset form
       setFormData({

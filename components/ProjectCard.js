@@ -39,10 +39,9 @@ export default function ProjectCard({ notebook }) {
     e.preventDefault();
     e.stopPropagation();
     
-    if (!user) {
-      // Could trigger auth modal here
-      return;
-    }
+    // For demo purposes, just show an alert
+    alert('Save functionality coming soon! Sign up for updates.');
+    return;
 
     setLoading(true);
     try {
@@ -61,18 +60,8 @@ export default function ProjectCard({ notebook }) {
       return;
     }
 
-    try {
-      if (user) {
-        await trackEvent(user.id, 'notebook_click', {
-          notebook_id: notebook.id,
-          category: notebook.category
-        });
-      }
-    } catch (error) {
-      console.warn('Failed to track click:', error);
-    } finally {
-      setLoading(false);
-    }
+    // For demo purposes, just log the click
+    console.log('Notebook clicked:', notebook.title);
   };
 
   return (

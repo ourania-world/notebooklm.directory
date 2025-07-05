@@ -168,7 +168,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
               ) : (
                 <div style={{ display: 'flex', gap: '1rem' }}>
                   <button
-                    onClick={() => openAuthModal('signin')}
+                    onClick={() => alert('Authentication coming soon! For now, enjoy browsing our growing directory.')}
                     style={{
                       background: 'transparent',
                       color: '#e2e8f0',
@@ -192,7 +192,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                     Log in
                   </button>
                   <button
-                    onClick={() => openAuthModal('signup')}
+                    onClick={() => window.location.href = '/pricing'}
                     style={{
                       background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
                       color: '#0a0a0a',
@@ -214,7 +214,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                       e.target.style.boxShadow = '0 4px 16px rgba(0, 255, 136, 0.3)';
                     }}
                   >
-                    Get Started
+                    Support Growth
                   </button>
                 </div>
               )}

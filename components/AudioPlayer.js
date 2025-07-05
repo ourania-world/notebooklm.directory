@@ -14,7 +14,7 @@ export default function AudioPlayer({ audioUrl, title = "Audio Overview" }) {
   const audioRef = useRef(null);
 
   // Use direct path for public audio files
-  const audioSrc = audioUrl?.startsWith('/') ? audioUrl : `/audio/${audioUrl}`;
+  const audioSrc = audioUrl?.startsWith('/') ? audioUrl : `/overview.mp3`;
 
   useEffect(() => {
     getCurrentUser()

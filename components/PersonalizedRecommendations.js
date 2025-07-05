@@ -18,32 +18,10 @@ export default function PersonalizedRecommendations({ limit = 6 }) {
         // This avoids the Edge Function dependency until it's deployed
         const { getNotebooks } = await import('../lib/notebooks')
         
-        if (currentUser?.id) {
-          // Get user's saved notebooks to understand preferences
-          const { getSavedNotebooks } = await import('../lib/profiles')
-          const savedNotebooks = await getSavedNotebooks(currentUser.id)
-          
-          if (savedNotebooks.length > 0) {
-            // Get notebooks from similar categories
-            const categories = [...new Set(savedNotebooks.map(n => n.category))]
-            const categoryNotebooks = await getNotebooks({ 
-              category: categories[0] // Use first preferred category
-            })
-            
-            setRecommendations(categoryNotebooks.slice(0, limit))
-            setRecommendationType('personalized')
-          } else {
-            // New user - show popular notebooks
-            const popularNotebooks = await getNotebooks()
-            setRecommendations(popularNotebooks.slice(0, limit))
-            setRecommendationType('popular')
-          }
-        } else {
-          // Anonymous user - show popular notebooks
-          const popularNotebooks = await getNotebooks()
-          setRecommendations(popularNotebooks.slice(0, limit))
-          setRecommendationType('popular')
-        }
+        // For demo, just show popular notebooks
+        const popularNotebooks = await getNotebooks()
+        setRecommendations(popularNotebooks.slice(0, limit))
+        setRecommendationType('popular')
       } catch (error) {
         console.error('Error loading recommendations:', error)
         // Fallback to basic notebooks
