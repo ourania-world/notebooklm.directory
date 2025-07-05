@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import ProjectCard from '../components/ProjectCard';
 import NotebookModal from '../components/NotebookModal';
+import AudioPlayer from '../components/AudioPlayer';
 import { getCurrentUser } from '../lib/auth';
 import { getNotebooks } from '../lib/notebooks';
 
@@ -121,10 +122,10 @@ export default function Notebooks() {
           }}>
             Hear our AI-generated overview of how NotebookLM is transforming research and creativity
           </p>
-          <audio controls style={{ width: '100%', maxWidth: '500px' }}>
-            <source src="/overview.mp3" type="audio/mpeg" />
-            Your browser does not support the audio element.
-          </audio>
+          <AudioPlayer 
+            audioUrl="overview.mp3"
+            title="Listen to the Vision"
+          />
         </div>
       </section>
       

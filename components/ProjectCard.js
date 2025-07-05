@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import AudioPlayer from './AudioPlayer';
 import { getCurrentUser } from '../lib/auth';
 import { toggleSavedNotebook } from '../lib/profiles';
 
@@ -92,6 +93,15 @@ export default function ProjectCard({ notebook }) {
       }}>
         {notebook.description}
       </p>
+      
+      {notebook.audio_overview_url && (
+        <div style={{ margin: '1rem 0' }}>
+          <AudioPlayer 
+            audioUrl={notebook.audio_overview_url}
+            title="Audio Overview"
+          />
+        </div>
+      )}
       
       <div style={{ 
         display: 'flex', 
