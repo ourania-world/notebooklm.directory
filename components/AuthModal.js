@@ -59,7 +59,8 @@ export default function AuthModal({ isOpen, onClose, onSuccess, mode: initialMod
       left: 0,
       right: 0,
       bottom: 0,
-      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      backgroundColor: 'rgba(0, 0, 0, 0.8)',
+      backdropFilter: 'blur(8px)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -67,23 +68,24 @@ export default function AuthModal({ isOpen, onClose, onSuccess, mode: initialMod
       padding: '1rem'
     }}>
       <div style={{
-        backgroundColor: 'white',
-        borderRadius: '12px',
-        padding: '2rem',
-        maxWidth: '400px',
+        background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
+        borderRadius: '20px',
+        padding: '2.5rem',
+        maxWidth: '450px',
         width: '100%',
-        boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)'
+        border: '1px solid rgba(0, 255, 136, 0.2)',
+        boxShadow: '0 20px 40px rgba(0, 0, 0, 0.5)'
       }}>
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          marginBottom: '1.5rem'
+          marginBottom: '2rem'
         }}>
           <h2 style={{
-            fontSize: '1.5rem',
-            fontWeight: '600',
-            color: '#212529',
+            fontSize: '1.8rem',
+            fontWeight: '700',
+            color: '#ffffff',
             margin: 0
           }}>
             {mode === 'signin' ? 'Sign In' : 
@@ -97,7 +99,18 @@ export default function AuthModal({ isOpen, onClose, onSuccess, mode: initialMod
               border: 'none',
               fontSize: '1.5rem',
               cursor: 'pointer',
-              color: '#6c757d'
+              color: '#e2e8f0',
+              padding: '0.5rem',
+              borderRadius: '8px',
+              transition: 'all 0.2s ease'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.background = 'rgba(255, 255, 255, 0.1)';
+              e.target.style.color = '#00ff88';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.background = 'none';
+              e.target.style.color = '#e2e8f0';
             }}
           >
             ×
@@ -106,12 +119,13 @@ export default function AuthModal({ isOpen, onClose, onSuccess, mode: initialMod
 
         {error && (
           <div style={{
-            background: '#f8d7da',
-            color: '#721c24',
-            padding: '0.75rem',
-            borderRadius: '6px',
-            marginBottom: '1rem',
-            border: '1px solid #f5c6cb'
+            background: 'rgba(220, 53, 69, 0.1)',
+            color: '#dc3545',
+            padding: '1rem',
+            borderRadius: '12px',
+            marginBottom: '1.5rem',
+            border: '1px solid rgba(220, 53, 69, 0.3)',
+            fontSize: '0.9rem'
           }}>
             {error}
           </div>
@@ -119,25 +133,29 @@ export default function AuthModal({ isOpen, onClose, onSuccess, mode: initialMod
 
         {message && (
           <div style={{
-            background: '#d4edda',
-            color: '#155724',
-            padding: '0.75rem',
-            borderRadius: '6px',
-            marginBottom: '1rem',
-            border: '1px solid #c3e6cb'
+            background: 'rgba(0, 255, 136, 0.1)',
+            color: '#00ff88',
+            padding: '1rem',
+            borderRadius: '12px',
+            marginBottom: '1.5rem',
+            border: '1px solid rgba(0, 255, 136, 0.3)',
+            fontSize: '0.9rem'
           }}>
             {message}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           {mode === 'signup' && (
             <div>
               <label style={{
                 display: 'block',
-                marginBottom: '0.5rem',
-                fontWeight: '500',
-                color: '#212529'
+                marginBottom: '0.75rem',
+                fontWeight: '600',
+                color: '#ffffff',
+                fontSize: '0.9rem',
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px'
               }}>
                 Full Name
               </label>
@@ -149,11 +167,16 @@ export default function AuthModal({ isOpen, onClose, onSuccess, mode: initialMod
                 required
                 style={{
                   width: '100%',
-                  padding: '0.75rem',
-                  border: '1px solid #dee2e6',
-                  borderRadius: '6px',
-                  fontSize: '1rem'
+                  padding: '1rem',
+                  border: '1px solid rgba(255, 255, 255, 0.2)',
+                  borderRadius: '12px',
+                  fontSize: '1rem',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  color: '#ffffff',
+                  transition: 'all 0.2s ease'
                 }}
+                onFocus={(e) => e.target.style.borderColor = '#00ff88'}
+                onBlur={(e) => e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)'}
               />
             </div>
           )}
@@ -161,9 +184,12 @@ export default function AuthModal({ isOpen, onClose, onSuccess, mode: initialMod
           <div>
             <label style={{
               display: 'block',
-              marginBottom: '0.5rem',
-              fontWeight: '500',
-              color: '#212529'
+              marginBottom: '0.75rem',
+              fontWeight: '600',
+              color: '#ffffff',
+              fontSize: '0.9rem',
+              textTransform: 'uppercase',
+              letterSpacing: '0.5px'
             }}>
               Email
             </label>
@@ -175,11 +201,16 @@ export default function AuthModal({ isOpen, onClose, onSuccess, mode: initialMod
               required
               style={{
                 width: '100%',
-                padding: '0.75rem',
-                border: '1px solid #dee2e6',
-                borderRadius: '6px',
-                fontSize: '1rem'
+                padding: '1rem',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                borderRadius: '12px',
+                fontSize: '1rem',
+                background: 'rgba(255, 255, 255, 0.05)',
+                color: '#ffffff',
+                transition: 'all 0.2s ease'
               }}
+              onFocus={(e) => e.target.style.borderColor = '#00ff88'}
+              onBlur={(e) => e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)'}
             />
           </div>
 
@@ -187,9 +218,12 @@ export default function AuthModal({ isOpen, onClose, onSuccess, mode: initialMod
             <div>
               <label style={{
                 display: 'block',
-                marginBottom: '0.5rem',
-                fontWeight: '500',
-                color: '#212529'
+                marginBottom: '0.75rem',
+                fontWeight: '600',
+                color: '#ffffff',
+                fontSize: '0.9rem',
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px'
               }}>
                 Password
               </label>
@@ -201,11 +235,16 @@ export default function AuthModal({ isOpen, onClose, onSuccess, mode: initialMod
                 required
                 style={{
                   width: '100%',
-                  padding: '0.75rem',
-                  border: '1px solid #dee2e6',
-                  borderRadius: '6px',
-                  fontSize: '1rem'
+                  padding: '1rem',
+                  border: '1px solid rgba(255, 255, 255, 0.2)',
+                  borderRadius: '12px',
+                  fontSize: '1rem',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  color: '#ffffff',
+                  transition: 'all 0.2s ease'
                 }}
+                onFocus={(e) => e.target.style.borderColor = '#00ff88'}
+                onBlur={(e) => e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)'}
               />
             </div>
           )}
@@ -214,9 +253,12 @@ export default function AuthModal({ isOpen, onClose, onSuccess, mode: initialMod
             <div>
               <label style={{
                 display: 'block',
-                marginBottom: '0.5rem',
-                fontWeight: '500',
-                color: '#212529'
+                marginBottom: '0.75rem',
+                fontWeight: '600',
+                color: '#ffffff',
+                fontSize: '0.9rem',
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px'
               }}>
                 Confirm Password
               </label>
@@ -228,11 +270,16 @@ export default function AuthModal({ isOpen, onClose, onSuccess, mode: initialMod
                 required
                 style={{
                   width: '100%',
-                  padding: '0.75rem',
-                  border: '1px solid #dee2e6',
-                  borderRadius: '6px',
-                  fontSize: '1rem'
+                  padding: '1rem',
+                  border: '1px solid rgba(255, 255, 255, 0.2)',
+                  borderRadius: '12px',
+                  fontSize: '1rem',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  color: '#ffffff',
+                  transition: 'all 0.2s ease'
                 }}
+                onFocus={(e) => e.target.style.borderColor = '#00ff88'}
+                onBlur={(e) => e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)'}
               />
             </div>
           )}
@@ -241,15 +288,35 @@ export default function AuthModal({ isOpen, onClose, onSuccess, mode: initialMod
             type="submit"
             disabled={loading}
             style={{
-              background: loading ? '#6c757d' : '#667eea',
-              color: 'white',
+              background: loading ? 
+                'rgba(255, 255, 255, 0.1)' : 
+                'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
+              color: loading ? '#ffffff' : '#0a0a0a',
               border: 'none',
-              padding: '0.75rem 1.5rem',
-              borderRadius: '6px',
+              padding: '1rem 2rem',
+              borderRadius: '12px',
               fontSize: '1rem',
-              fontWeight: '500',
+              fontWeight: '700',
               cursor: loading ? 'not-allowed' : 'pointer',
-              marginTop: '0.5rem'
+              marginTop: '0.5rem',
+              transition: 'all 0.2s ease',
+              boxShadow: loading ? 
+                'none' : 
+                '0 8px 24px rgba(0, 255, 136, 0.3)',
+              textTransform: 'uppercase',
+              letterSpacing: '0.5px'
+            }}
+            onMouseEnter={(e) => {
+              if (!loading) {
+                e.target.style.transform = 'translateY(-2px)';
+                e.target.style.boxShadow = '0 12px 32px rgba(0, 255, 136, 0.4)';
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (!loading) {
+                e.target.style.transform = 'translateY(0)';
+                e.target.style.boxShadow = '0 8px 24px rgba(0, 255, 136, 0.3)';
+              }
             }}
           >
             {loading ? 'Loading...' : 
@@ -259,7 +326,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess, mode: initialMod
           </button>
         </form>
 
-        <div style={{ marginTop: '1.5rem', textAlign: 'center' }}>
+        <div style={{ marginTop: '2rem', textAlign: 'center' }}>
           {mode === 'signin' && (
             <>
               <button
@@ -267,24 +334,28 @@ export default function AuthModal({ isOpen, onClose, onSuccess, mode: initialMod
                 style={{
                   background: 'none',
                   border: 'none',
-                  color: '#667eea',
+                  color: '#00ff88',
                   cursor: 'pointer',
                   textDecoration: 'underline',
-                  marginBottom: '0.5rem'
+                  marginBottom: '1rem',
+                  fontSize: '0.9rem',
+                  display: 'block',
+                  margin: '0 auto 1rem auto'
                 }}
               >
                 Forgot password?
               </button>
-              <div>
-                <span style={{ color: '#6c757d' }}>Don't have an account? </span>
+              <div style={{ fontSize: '0.9rem' }}>
+                <span style={{ color: '#e2e8f0' }}>Don't have an account? </span>
                 <button
                   onClick={() => setMode('signup')}
                   style={{
                     background: 'none',
                     border: 'none',
-                    color: '#667eea',
+                    color: '#00ff88',
                     cursor: 'pointer',
-                    textDecoration: 'underline'
+                    textDecoration: 'underline',
+                    fontSize: '0.9rem'
                   }}
                 >
                   Sign up
@@ -294,16 +365,17 @@ export default function AuthModal({ isOpen, onClose, onSuccess, mode: initialMod
           )}
 
           {mode === 'signup' && (
-            <div>
-              <span style={{ color: '#6c757d' }}>Already have an account? </span>
+            <div style={{ fontSize: '0.9rem' }}>
+              <span style={{ color: '#e2e8f0' }}>Already have an account? </span>
               <button
                 onClick={() => setMode('signin')}
                 style={{
                   background: 'none',
                   border: 'none',
-                  color: '#667eea',
+                  color: '#00ff88',
                   cursor: 'pointer',
-                  textDecoration: 'underline'
+                  textDecoration: 'underline',
+                  fontSize: '0.9rem'
                 }}
               >
                 Sign in
@@ -317,9 +389,10 @@ export default function AuthModal({ isOpen, onClose, onSuccess, mode: initialMod
               style={{
                 background: 'none',
                 border: 'none',
-                color: '#667eea',
+                color: '#00ff88',
                 cursor: 'pointer',
-                textDecoration: 'underline'
+                textDecoration: 'underline',
+                fontSize: '0.9rem'
               }}
             >
               Back to sign in

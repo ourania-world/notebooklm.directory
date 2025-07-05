@@ -46,20 +46,26 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
         <title>{title}</title>
         <meta name="description" content="Discover and share innovative NotebookLM projects across domains" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
       </Head>
       
       <div style={{ 
         minHeight: '100vh', 
-        fontFamily: 'system-ui, -apple-system, sans-serif',
-        background: '#0a0e1a',
-        color: '#ffffff'
+        fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+        background: '#0a0a0a',
+        color: '#ffffff',
+        antialiased: true
       }}>
         <header style={{ 
-          background: 'linear-gradient(135deg, #1a2332 0%, #0a0e1a 100%)',
-          color: 'white',
-          padding: '1rem 0',
-          boxShadow: '0 2px 10px rgba(0,0,0,0.3)',
-          borderBottom: '1px solid #2a3441'
+          position: 'sticky',
+          top: 0,
+          zIndex: 50,
+          background: 'rgba(10, 10, 10, 0.8)',
+          backdropFilter: 'blur(20px)',
+          borderBottom: '1px solid rgba(0, 255, 136, 0.1)',
+          padding: '1rem 0'
         }}>
           <nav style={{ 
             maxWidth: '1200px', 
@@ -71,54 +77,65 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
           }}>
             <Link href="/" style={{ 
               fontSize: '1.5rem', 
-              fontWeight: 'bold', 
+              fontWeight: '700', 
               textDecoration: 'none', 
-              color: '#00ff88',
+              color: '#ffffff',
               display: 'flex',
               alignItems: 'center',
-              gap: '0.5rem'
+              gap: '0.75rem',
+              transition: 'all 0.3s ease'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.transform = 'scale(1.02)';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.transform = 'scale(1)';
             }}>
               <span style={{ 
-                background: '#00ff88',
-                color: '#0a0e1a',
-                padding: '0.25rem 0.5rem',
-                borderRadius: '4px',
-                fontSize: '1rem'
+                background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
+                color: '#0a0a0a',
+                padding: '0.5rem',
+                borderRadius: '8px',
+                fontSize: '1rem',
+                fontWeight: '700'
               }}>NLM</span>
               NotebookLM Directory
             </Link>
             
-            <div style={{ display: 'flex', gap: '2rem' }}>
+            <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
               <Link href="/browse" style={{ 
-                color: '#a0aec0', 
+                color: '#e2e8f0', 
                 textDecoration: 'none',
-                transition: 'color 0.2s ease'
+                transition: 'color 0.2s ease',
+                fontWeight: '500'
               }}
               onMouseEnter={(e) => e.target.style.color = '#00ff88'}
-              onMouseLeave={(e) => e.target.style.color = '#a0aec0'}>
+              onMouseLeave={(e) => e.target.style.color = '#e2e8f0'}>
                 Browse Projects
               </Link>
               <Link href="/submit" style={{ 
-                color: '#a0aec0', 
+                color: '#e2e8f0', 
                 textDecoration: 'none',
-                transition: 'color 0.2s ease'
+                transition: 'color 0.2s ease',
+                fontWeight: '500'
               }}
               onMouseEnter={(e) => e.target.style.color = '#00ff88'}
-              onMouseLeave={(e) => e.target.style.color = '#a0aec0'}>
+              onMouseLeave={(e) => e.target.style.color = '#e2e8f0'}>
                 Submit Project
               </Link>
               <Link href="/about" style={{ 
-                color: '#a0aec0', 
+                color: '#e2e8f0', 
                 textDecoration: 'none',
-                transition: 'color 0.2s ease'
+                transition: 'color 0.2s ease',
+                fontWeight: '500'
               }}
               onMouseEnter={(e) => e.target.style.color = '#00ff88'}
-              onMouseLeave={(e) => e.target.style.color = '#a0aec0'}>
+              onMouseLeave={(e) => e.target.style.color = '#e2e8f0'}>
                 About
               </Link>
               
               {loading ? (
-                <div style={{ color: '#a0aec0' }}>Loading...</div>
+                <div style={{ color: '#e2e8f0' }}>Loading...</div>
               ) : user ? (
                 <UserMenu user={user} onSignOut={() => setUser(null)} />
               ) : (
@@ -127,12 +144,13 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                     onClick={() => openAuthModal('signin')}
                     style={{
                       background: 'transparent',
-                      color: '#a0aec0',
-                      border: '1px solid #2a3441',
+                      color: '#e2e8f0',
+                      border: '1px solid rgba(255, 255, 255, 0.2)',
                       padding: '0.5rem 1rem',
-                      borderRadius: '6px',
+                      borderRadius: '8px',
                       cursor: 'pointer',
                       fontSize: '0.9rem',
+                      fontWeight: '500',
                       transition: 'all 0.2s ease'
                     }}
                     onMouseEnter={(e) => {
@@ -140,29 +158,36 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                       e.target.style.color = '#00ff88';
                     }}
                     onMouseLeave={(e) => {
-                      e.target.style.borderColor = '#2a3441';
-                      e.target.style.color = '#a0aec0';
+                      e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                      e.target.style.color = '#e2e8f0';
                     }}
                   >
-                    Sign In
+                    Log in
                   </button>
                   <button
                     onClick={() => openAuthModal('signup')}
                     style={{
-                      background: '#00ff88',
-                      color: '#0a0e1a',
+                      background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
+                      color: '#0a0a0a',
                       border: 'none',
                       padding: '0.5rem 1rem',
-                      borderRadius: '6px',
+                      borderRadius: '8px',
                       cursor: 'pointer',
                       fontSize: '0.9rem',
-                      fontWeight: '500',
-                      transition: 'all 0.2s ease'
+                      fontWeight: '600',
+                      transition: 'all 0.2s ease',
+                      boxShadow: '0 4px 16px rgba(0, 255, 136, 0.3)'
                     }}
-                    onMouseEnter={(e) => e.target.style.background = '#00e67a'}
-                    onMouseLeave={(e) => e.target.style.background = '#00ff88'}
+                    onMouseEnter={(e) => {
+                      e.target.style.transform = 'translateY(-1px)';
+                      e.target.style.boxShadow = '0 6px 20px rgba(0, 255, 136, 0.4)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.transform = 'translateY(0)';
+                      e.target.style.boxShadow = '0 4px 16px rgba(0, 255, 136, 0.3)';
+                    }}
                   >
-                    Sign Up
+                    Apply
                   </button>
                 </div>
               )}
@@ -175,19 +200,21 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
         </main>
         
         <footer style={{ 
-          background: '#1a2332', 
-          padding: '2rem 0', 
+          background: 'linear-gradient(135deg, #1a1a2e 0%, #0a0a0a 100%)', 
+          padding: '3rem 0', 
           marginTop: '4rem',
-          borderTop: '1px solid #2a3441'
+          borderTop: '1px solid rgba(0, 255, 136, 0.1)'
         }}>
           <div style={{ 
             maxWidth: '1200px', 
             margin: '0 auto', 
             padding: '0 2rem',
             textAlign: 'center',
-            color: '#a0aec0'
+            color: '#e2e8f0'
           }}>
-            <p>© 2024 NotebookLM Directory. Empowering AI-assisted research and creativity.</p>
+            <p style={{ margin: 0, fontSize: '0.9rem' }}>
+              © 2024 NotebookLM Directory. Empowering AI-assisted research and creativity.
+            </p>
           </div>
         </footer>
       </div>

@@ -106,13 +106,35 @@ export default function AudioPlayer({ audioUrl, title = "Audio Overview" }) {
 
   return (
     <div style={{
-      background: '#1a2332',
-      borderRadius: '12px',
+      background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
+      borderRadius: '16px',
       padding: '1.5rem',
-      border: '1px solid #2a3441',
+      border: '1px solid rgba(0, 255, 136, 0.2)',
       maxWidth: '500px',
-      margin: '0 auto'
+      margin: '0 auto',
+      position: 'relative',
+      overflow: 'hidden'
     }}>
+      {/* Waveform visual effect */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: `
+          linear-gradient(90deg, 
+            transparent 0%, 
+            rgba(0, 255, 136, 0.05) 25%, 
+            rgba(0, 255, 136, 0.1) 50%, 
+            rgba(0, 255, 136, 0.05) 75%, 
+            transparent 100%
+          )
+        `,
+        animation: isPlaying ? 'waveform 2s ease-in-out infinite' : 'none',
+        pointerEvents: 'none'
+      }} />
+      
       <audio
         ref={audioRef}
         src={audioSrc}
@@ -120,11 +142,12 @@ export default function AudioPlayer({ audioUrl, title = "Audio Overview" }) {
         style={{ display: 'none' }}
       />
       
-      <div style={{ marginBottom: '1rem' }}>
+      <div style={{ marginBottom: '1rem', position: 'relative', zIndex: 1 }}>
         <h3 style={{ 
           margin: '0 0 0.5rem 0', 
           fontSize: '1.1rem',
-          color: '#ffffff'
+          color: '#ffffff',
+          fontWeight: '600'
         }}>
           🎧 {title}
         </h3>
@@ -139,32 +162,46 @@ export default function AudioPlayer({ audioUrl, title = "Audio Overview" }) {
         )}
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+      <div style={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        gap: '1rem',
+        position: 'relative',
+        zIndex: 1
+      }}>
         <button
           onClick={togglePlayPause}
           disabled={loading || error || !isLoaded}
           style={{
-            background: loading || error || !isLoaded ? '#6c757d' : '#00ff88',
-            color: 'white',
+            background: loading || error || !isLoaded ? 
+              'rgba(255, 255, 255, 0.1)' : 
+              'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
+            color: loading || error || !isLoaded ? '#ffffff' : '#0a0a0a',
             border: 'none',
             borderRadius: '50%',
-            width: '48px',
-            height: '48px',
+            width: '56px',
+            height: '56px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             cursor: loading || error || !isLoaded ? 'not-allowed' : 'pointer',
-            fontSize: '1.2rem',
-            transition: 'all 0.2s ease'
+            fontSize: '1.5rem',
+            transition: 'all 0.3s ease',
+            boxShadow: loading || error || !isLoaded ? 
+              'none' : 
+              '0 8px 24px rgba(0, 255, 136, 0.3)',
+            fontWeight: '700'
           }}
           onMouseEnter={(e) => {
             if (!loading && !error && isLoaded) {
-              e.target.style.background = '#00e67a';
+              e.target.style.transform = 'scale(1.05)';
+              e.target.style.boxShadow = '0 12px 32px rgba(0, 255, 136, 0.4)';
             }
           }}
           onMouseLeave={(e) => {
             if (!loading && !error && isLoaded) {
-              e.target.style.background = '#00ff88';
+              e.target.style.transform = 'scale(1)';
+              e.target.style.boxShadow = '0 8px 24px rgba(0, 255, 136, 0.3)';
             }
           }}
         >
@@ -176,21 +213,23 @@ export default function AudioPlayer({ audioUrl, title = "Audio Overview" }) {
             onClick={handleSeek}
             disabled={!isLoaded || loading || error}
             style={{
-              background: '#2a3441',
-              height: '6px',
-              borderRadius: '3px',
+              background: 'rgba(255, 255, 255, 0.1)',
+              height: '8px',
+              borderRadius: '4px',
               cursor: !isLoaded || loading || error ? 'not-allowed' : 'pointer',
               position: 'relative',
-              marginBottom: '0.5rem'
+              marginBottom: '0.75rem',
+              overflow: 'hidden'
             }}
           >
             <div
               style={{
-                background: '#00ff88',
+                background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
                 height: '100%',
-                borderRadius: '3px',
+                borderRadius: '4px',
                 width: duration ? `${(currentTime / duration) * 100}%` : '0%',
-                transition: 'width 0.1s ease'
+                transition: 'width 0.1s ease',
+                boxShadow: '0 0 8px rgba(0, 255, 136, 0.5)'
               }}
             />
           </div>
@@ -199,13 +238,22 @@ export default function AudioPlayer({ audioUrl, title = "Audio Overview" }) {
             display: 'flex', 
             justifyContent: 'space-between',
             fontSize: '0.8rem',
-            color: '#a0aec0'
+            color: '#e2e8f0',
+            fontFamily: 'monospace',
+            fontWeight: '500'
           }}>
             <span>{formatTime(currentTime)}</span>
             <span>{formatTime(duration)}</span>
           </div>
         </div>
       </div>
+      
+      <style jsx>{`
+        @keyframes waveform {
+          0%, 100% { opacity: 0.3; }
+          50% { opacity: 0.7; }
+        }
+      `}</style>
     </div>
   );
 }

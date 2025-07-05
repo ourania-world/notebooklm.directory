@@ -49,14 +49,14 @@ export default function Notebooks() {
     <Layout>
       {/* Hero Section */}
       <section style={{ 
-        background: 'linear-gradient(135deg, #1a2332 0%, #0a0e1a 100%)',
+        background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%)',
         color: 'white',
-        padding: '6rem 0',
+        padding: '8rem 0',
         textAlign: 'center',
         position: 'relative',
         overflow: 'hidden'
       }}>
-        {/* Background Pattern */}
+        {/* Animated Background Pattern */}
         <div style={{
           position: 'absolute',
           top: 0,
@@ -68,206 +68,323 @@ export default function Notebooks() {
             radial-gradient(circle at 80% 20%, rgba(0, 255, 136, 0.05) 0%, transparent 50%),
             radial-gradient(circle at 40% 80%, rgba(0, 255, 136, 0.08) 0%, transparent 50%)
           `,
+          animation: 'pulse 4s ease-in-out infinite',
           zIndex: 1
         }} />
         
-        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
+        <div style={{ 
+          maxWidth: '1200px', 
+          margin: '0 auto', 
+          padding: '0 2rem',
+          position: 'relative',
+          zIndex: 2
+        }}>
+          <div style={{ marginBottom: '2rem' }}>
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              background: 'rgba(0, 255, 136, 0.1)',
+              border: '1px solid rgba(0, 255, 136, 0.3)',
+              borderRadius: '50px',
+              padding: '0.5rem 1.5rem',
+              marginBottom: '2rem',
+              fontSize: '0.9rem',
+              color: '#00ff88'
+            }}>
+              ⭐ Trusted by 10,000+ AI Researchers • Excellent Reviews
+            </div>
+          </div>
+          
           <h1 style={{ 
-            fontSize: '3.5rem', 
-            fontWeight: 'bold', 
-            margin: '0 0 1rem 0',
-            textShadow: '0 2px 4px rgba(0,0,0,0.3)',
-            position: 'relative',
-            zIndex: 2
+            fontSize: 'clamp(2.5rem, 8vw, 4.5rem)', 
+            fontWeight: '700', 
+            margin: '0 0 1.5rem 0',
+            lineHeight: '1.1',
+            background: 'linear-gradient(135deg, #ffffff 0%, #00ff88 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text'
           }}>
-            <span style={{ color: '#00ff88' }}>NotebookLM</span> Directory
+            Discover more insights.<br />
+            <span style={{ color: '#00ff88' }}>Feed to AI.</span> Scale further.
           </h1>
+          
           <p style={{ 
             fontSize: '1.3rem', 
-            margin: '0 0 2rem 0',
-            opacity: 0.8,
-            maxWidth: '600px',
-            margin: '0 auto 2rem auto',
-            position: 'relative',
-            zIndex: 2,
-            color: '#a0aec0'
+            margin: '0 0 1rem 0',
+            opacity: 0.9,
+            maxWidth: '700px',
+            margin: '0 auto 1rem auto',
+            color: '#e2e8f0',
+            lineHeight: '1.6'
           }}>
-            Discover <span style={{ color: '#00ff88' }}>innovative NotebookLM projects</span> across domains. Get inspired, learn techniques, and share your own AI-powered research.
+            NotebookLM Directory is a curated platform that on <strong style={{ color: '#00ff88' }}>average increases research scale by 20%</strong> across over <strong style={{ color: '#00ff88' }}>3000+ projects</strong>
           </p>
+          
+          <div style={{ 
+            marginBottom: '3rem',
+            fontSize: '1rem',
+            color: '#00ff88'
+          }}>
+            <a href="#proof" style={{ 
+              color: '#00ff88', 
+              textDecoration: 'underline',
+              textUnderlineOffset: '4px'
+            }}>
+              CLICK HERE FOR PROOF
+            </a>
+          </div>
           
           <div style={{ 
             display: 'flex', 
             gap: '1rem', 
             justifyContent: 'center', 
             flexWrap: 'wrap',
-            position: 'relative',
-            zIndex: 2
+            marginBottom: '3rem'
           }}>
-            <button 
-              onClick={() => window.location.href = '/browse'}
-              style={{
-              background: '#00ff88',
-              color: '#0a0e1a',
-              border: 'none',
-              padding: '1rem 2rem',
-              borderRadius: '8px',
-              fontWeight: '600',
-              cursor: 'pointer',
-              fontSize: '1rem',
-              transition: 'all 0.2s ease'
-            }}>
-              Browse Projects
-            </button>
             <button 
               onClick={() => setIsModalOpen(true)}
               style={{
-              background: 'transparent',
-              color: 'white',
-              border: '2px solid #2a3441',
-              padding: '1rem 2rem',
-              borderRadius: '8px',
-              fontWeight: '600',
-              cursor: 'pointer',
-              fontSize: '1rem',
-              transition: 'all 0.2s ease'
-            }}>
-              Connect a New Notebook
+                background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
+                color: '#0a0a0a',
+                border: 'none',
+                padding: '1rem 2.5rem',
+                borderRadius: '12px',
+                fontWeight: '700',
+                cursor: 'pointer',
+                fontSize: '1.1rem',
+                transition: 'all 0.3s ease',
+                boxShadow: '0 8px 32px rgba(0, 255, 136, 0.3)',
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.transform = 'translateY(-2px)';
+                e.target.style.boxShadow = '0 12px 40px rgba(0, 255, 136, 0.4)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.transform = 'translateY(0)';
+                e.target.style.boxShadow = '0 8px 32px rgba(0, 255, 136, 0.3)';
+              }}
+            >
+              GET STARTED
             </button>
+          </div>
+          
+          {/* Stats Dashboard Preview */}
+          <div style={{
+            background: 'rgba(0, 0, 0, 0.4)',
+            backdropFilter: 'blur(20px)',
+            border: '1px solid rgba(0, 255, 136, 0.2)',
+            borderRadius: '20px',
+            padding: '2rem',
+            maxWidth: '800px',
+            margin: '0 auto',
+            position: 'relative'
+          }}>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+              gap: '2rem',
+              textAlign: 'center'
+            }}>
+              <div>
+                <div style={{ 
+                  fontSize: '2.5rem', 
+                  fontWeight: '700', 
+                  color: '#00ff88',
+                  fontFamily: 'monospace'
+                }}>
+                  $3,650,500,150
+                </div>
+                <div style={{ color: '#00ff88', fontSize: '0.9rem', marginTop: '0.5rem' }}>
+                  in Research Value Tracked
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
       
       {/* Testimonials Section */}
-      <section style={{ 
-        background: '#0f1419',
-        padding: '4rem 0',
-        borderTop: '1px solid #2a3441',
-        borderBottom: '1px solid #2a3441'
+      <section id="proof" style={{ 
+        background: '#0a0a0a',
+        padding: '6rem 0',
+        borderTop: '1px solid rgba(0, 255, 136, 0.1)'
       }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
-          <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+          <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
             <h2 style={{ 
-              fontSize: '2rem', 
+              fontSize: '2.5rem', 
               margin: '0 0 1rem 0',
-              color: '#ffffff'
+              color: '#ffffff',
+              fontWeight: '700'
             }}>
-              Trusted by <span style={{ color: '#00ff88' }}>AI Researchers</span> & <span style={{ color: '#00ff88' }}>Innovators</span>
+              Trusted by <span style={{ color: '#00ff88' }}>Leading Institutions</span>
             </h2>
-            <p style={{ 
-              color: '#a0aec0', 
-              fontSize: '1.1rem',
-              maxWidth: '600px',
-              margin: '0 auto'
-            }}>
-              Join the community of forward-thinking researchers using NotebookLM to accelerate discovery
-            </p>
-          </div>
-          
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', 
-            gap: '2rem',
-            marginBottom: '3rem'
-          }}>
-            <div style={{
-              background: '#1a2332',
-              padding: '2rem',
-              borderRadius: '12px',
-              border: '1px solid #2a3441'
-            }}>
-              <p style={{ 
-                color: '#ffffff', 
-                fontSize: '1.1rem',
-                lineHeight: '1.6',
-                margin: '0 0 1.5rem 0',
-                fontStyle: 'italic'
-              }}>
-                "NotebookLM Directory has become our go-to resource for discovering innovative research methodologies. The quality of projects here is exceptional."
-              </p>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                <div style={{
-                  width: '50px',
-                  height: '50px',
-                  borderRadius: '50%',
-                  background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#0a0e1a',
-                  fontWeight: 'bold',
-                  fontSize: '1.2rem'
-                }}>
-                  SC
-                </div>
-                <div>
-                  <div style={{ color: '#ffffff', fontWeight: '600' }}>Dr. Sarah Chen</div>
-                  <div style={{ color: '#00ff88', fontSize: '0.9rem' }}>Stanford AI Research</div>
-                </div>
-              </div>
-            </div>
-            
-            <div style={{
-              background: '#1a2332',
-              padding: '2rem',
-              borderRadius: '12px',
-              border: '1px solid #2a3441'
-            }}>
-              <p style={{ 
-                color: '#ffffff', 
-                fontSize: '1.1rem',
-                lineHeight: '1.6',
-                margin: '0 0 1.5rem 0',
-                fontStyle: 'italic'
-              }}>
-                "This platform has revolutionized how we approach literature reviews. The AI-powered insights from shared notebooks are game-changing."
-              </p>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                <div style={{
-                  width: '50px',
-                  height: '50px',
-                  borderRadius: '50%',
-                  background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#0a0e1a',
-                  fontWeight: 'bold',
-                  fontSize: '1.2rem'
-                }}>
-                  MR
-                </div>
-                <div>
-                  <div style={{ color: '#ffffff', fontWeight: '600' }}>Prof. Michael Rodriguez</div>
-                  <div style={{ color: '#00ff88', fontSize: '0.9rem' }}>MIT Research Lab</div>
-                </div>
-              </div>
-            </div>
           </div>
           
           {/* Sponsor Logos */}
-          <div style={{ textAlign: 'center' }}>
-            <p style={{ 
-              color: '#a0aec0', 
-              fontSize: '0.9rem',
-              marginBottom: '2rem',
-              textTransform: 'uppercase',
-              letterSpacing: '1px'
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center',
+            gap: '4rem',
+            flexWrap: 'wrap',
+            marginBottom: '4rem',
+            opacity: 0.8
+          }}>
+            <div style={{ color: '#ffffff', fontWeight: '600', fontSize: '1.2rem' }}>STANFORD</div>
+            <div style={{ color: '#ffffff', fontWeight: '600', fontSize: '1.2rem' }}>MIT</div>
+            <div style={{ color: '#ffffff', fontWeight: '600', fontSize: '1.2rem' }}>HARVARD</div>
+            <div style={{ color: '#ffffff', fontWeight: '600', fontSize: '1.2rem' }}>OPENAI</div>
+            <div style={{ color: '#ffffff', fontWeight: '600', fontSize: '1.2rem' }}>GOOGLE</div>
+          </div>
+          
+          {/* Main Testimonial */}
+          <div style={{
+            background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
+            padding: '3rem',
+            borderRadius: '20px',
+            border: '1px solid rgba(0, 255, 136, 0.2)',
+            maxWidth: '900px',
+            margin: '0 auto',
+            position: 'relative'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '2rem' }}>
+              <div style={{
+                width: '80px',
+                height: '80px',
+                borderRadius: '50%',
+                background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
+                flexShrink: 0
+              }} />
+              <div style={{ flex: 1 }}>
+                <p style={{ 
+                  color: '#ffffff', 
+                  fontSize: '1.3rem',
+                  lineHeight: '1.6',
+                  margin: '0 0 1.5rem 0',
+                  fontStyle: 'italic'
+                }}>
+                  "In just 6 months, NotebookLM Directory allowed us to scale our research output by 43% and discover over 100% more relevant studies for our meta-analysis projects."
+                </p>
+                <div>
+                  <div style={{ color: '#ffffff', fontWeight: '700', fontSize: '1.1rem' }}>
+                    DR. SARAH CHEN
+                  </div>
+                  <div style={{ color: '#00ff88', fontSize: '0.9rem', marginTop: '0.25rem' }}>
+                    Research Team Lead
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      {/* Value Proposition */}
+      <section style={{ 
+        background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)',
+        padding: '6rem 0',
+        position: 'relative'
+      }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
+          <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+            <h2 style={{ 
+              fontSize: '2.5rem', 
+              margin: '0 0 2rem 0',
+              color: '#ffffff',
+              fontWeight: '700'
             }}>
-              Supported by leading institutions
-            </p>
-            <div style={{ 
-              display: 'flex', 
-              justifyContent: 'center', 
-              alignItems: 'center',
-              gap: '3rem',
-              flexWrap: 'wrap',
-              opacity: 0.6
+              NotebookLM Directory is the <span style={{ color: '#00ff88' }}>HIGHEST level</span><br />
+              of AI Research Discovery & AI<br />
+              optimization for <span style={{ color: '#00ff88' }}>HIGH LEVEL</span> researchers
+            </h2>
+            
+            <div style={{
+              display: 'inline-block',
+              background: 'rgba(0, 255, 136, 0.1)',
+              border: '1px solid rgba(0, 255, 136, 0.3)',
+              borderRadius: '12px',
+              padding: '1.5rem 2rem',
+              fontSize: '1.2rem',
+              color: '#00ff88',
+              fontFamily: 'monospace',
+              fontWeight: '700'
             }}>
-              <div style={{ color: '#a0aec0', fontWeight: '600', fontSize: '1.1rem' }}>Stanford</div>
-              <div style={{ color: '#a0aec0', fontWeight: '600', fontSize: '1.1rem' }}>MIT</div>
-              <div style={{ color: '#a0aec0', fontWeight: '600', fontSize: '1.1rem' }}>Harvard</div>
-              <div style={{ color: '#a0aec0', fontWeight: '600', fontSize: '1.1rem' }}>OpenAI</div>
-              <div style={{ color: '#a0aec0', fontWeight: '600', fontSize: '1.1rem' }}>Google Research</div>
+              $3,650,500,150
+              <div style={{ fontSize: '0.9rem', marginTop: '0.5rem', color: '#ffffff' }}>
+                in Research Value Tracked
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      {/* Process Section */}
+      <section style={{ 
+        background: '#0a0a0a',
+        padding: '6rem 0'
+      }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
+          <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+            <h2 style={{ 
+              fontSize: '2.5rem', 
+              margin: '0 0 1rem 0',
+              color: '#ffffff',
+              fontWeight: '700'
+            }}>
+              NotebookLM Directory requires <span style={{ color: '#00ff88' }}>zero change</span><br />
+              to your research workflow
+            </h2>
+          </div>
+          
+          <div style={{
+            background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
+            borderRadius: '20px',
+            padding: '3rem',
+            border: '1px solid rgba(0, 255, 136, 0.2)',
+            maxWidth: '800px',
+            margin: '0 auto'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '3rem' }}>
+              <div style={{ flex: 1 }}>
+                <div style={{ 
+                  fontSize: '1.5rem', 
+                  color: '#ffffff',
+                  lineHeight: '1.6',
+                  marginBottom: '1rem'
+                }}>
+                  You browse our directory.<br />
+                  Your research accuracy skyrockets.<br />
+                  Your methodology improves.<br />
+                  Your insights scale.
+                </div>
+              </div>
+              <div style={{
+                width: '200px',
+                height: '150px',
+                background: 'rgba(0, 255, 136, 0.1)',
+                borderRadius: '12px',
+                border: '1px solid rgba(0, 255, 136, 0.3)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0
+              }}>
+                <div style={{ 
+                  color: '#00ff88', 
+                  fontSize: '3rem',
+                  textAlign: 'center'
+                }}>
+                  📊<br />
+                  <div style={{ fontSize: '0.8rem', marginTop: '0.5rem' }}>
+                    Analytics
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -275,20 +392,21 @@ export default function Notebooks() {
       
       {/* Vision Audio Section */}
       <section style={{ 
-        background: '#0a0e1a',
-        padding: '3rem 0',
+        background: 'linear-gradient(135deg, #1a1a2e 0%, #0a0a0a 100%)',
+        padding: '4rem 0',
         textAlign: 'center'
       }}>
         <div style={{ maxWidth: '800px', margin: '0 auto', padding: '0 2rem' }}>
           <h2 style={{ 
             fontSize: '2rem', 
             margin: '0 0 1rem 0',
-            color: '#ffffff'
+            color: '#ffffff',
+            fontWeight: '700'
           }}>
             🎧 Listen to the <span style={{ color: '#00ff88' }}>Vision</span>
           </h2>
           <p style={{ 
-            color: '#a0aec0', 
+            color: '#e2e8f0', 
             margin: '0 0 2rem 0',
             fontSize: '1.1rem'
           }}>
@@ -303,22 +421,23 @@ export default function Notebooks() {
       
       {/* Featured Projects */}
       <section style={{ 
-        padding: '4rem 0',
-        background: '#0f1419'
+        padding: '6rem 0',
+        background: '#0a0a0a'
       }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
           <h2 style={{ 
             fontSize: '2.5rem', 
             textAlign: 'center', 
             margin: '0 0 3rem 0',
-            color: '#ffffff'
+            color: '#ffffff',
+            fontWeight: '700'
           }}>
             Featured <span style={{ color: '#00ff88' }}>Projects</span>
           </h2>
           
           {loading ? (
             <div style={{ textAlign: 'center', padding: '2rem' }}>
-              <p style={{ color: '#a0aec0' }}>Loading featured projects...</p>
+              <p style={{ color: '#e2e8f0' }}>Loading featured projects...</p>
             </div>
           ) : error ? (
             <div style={{ textAlign: 'center', padding: '2rem', color: '#dc3545' }}>
@@ -341,76 +460,29 @@ export default function Notebooks() {
             <button 
               onClick={() => window.location.href = '/browse'}
               style={{
-              background: '#00ff88',
-              color: '#0a0e1a',
-              border: 'none',
-              padding: '1rem 2rem',
-              borderRadius: '8px',
-              fontWeight: '600',
-              cursor: 'pointer',
-              fontSize: '1rem',
-              transition: 'all 0.2s ease'
-            }}>
-              View All Projects
-            </button>
-          </div>
-        </div>
-      </section>
-      
-      {/* Categories Preview */}
-      <section style={{ 
-        background: '#0a0e1a',
-        padding: '4rem 0'
-      }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
-          <h2 style={{ 
-            fontSize: '2.5rem', 
-            textAlign: 'center', 
-            margin: '0 0 3rem 0',
-            color: '#ffffff'
-          }}>
-            Explore by <span style={{ color: '#00ff88' }}>Category</span>
-          </h2>
-          
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
-            gap: '1.5rem'
-          }}>
-            {['Academic', 'Business', 'Creative', 'Research', 'Education', 'Personal'].map(category => (
-              <div key={category} style={{
-                background: '#1a2332',
-                padding: '2rem',
+                background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
+                color: '#0a0a0a',
+                border: 'none',
+                padding: '1rem 2rem',
                 borderRadius: '12px',
-                textAlign: 'center',
-                border: '1px solid #2a3441',
+                fontWeight: '700',
                 cursor: 'pointer',
-                transition: 'all 0.3s ease'
+                fontSize: '1rem',
+                transition: 'all 0.3s ease',
+                boxShadow: '0 8px 32px rgba(0, 255, 136, 0.3)',
+                textTransform: 'uppercase'
               }}
               onMouseEnter={(e) => {
-                e.target.style.transform = 'translateY(-4px)';
-                e.target.style.borderColor = '#00ff88';
+                e.target.style.transform = 'translateY(-2px)';
+                e.target.style.boxShadow = '0 12px 40px rgba(0, 255, 136, 0.4)';
               }}
               onMouseLeave={(e) => {
                 e.target.style.transform = 'translateY(0)';
-                e.target.style.borderColor = '#2a3441';
-              }}>
-                <h3 style={{ 
-                  margin: '0 0 0.5rem 0',
-                  color: '#ffffff',
-                  fontSize: '1.25rem'
-                }}>
-                  {category}
-                </h3>
-                <p style={{ 
-                  color: '#a0aec0',
-                  margin: 0,
-                  fontSize: '0.9rem'
-                }}>
-                  Explore {category.toLowerCase()} projects
-                </p>
-              </div>
-            ))}
+                e.target.style.boxShadow = '0 8px 32px rgba(0, 255, 136, 0.3)';
+              }}
+            >
+              View All Projects
+            </button>
           </div>
         </div>
       </section>
@@ -420,6 +492,13 @@ export default function Notebooks() {
         onClose={() => setIsModalOpen(false)}
         onNotebookCreated={handleNotebookCreated}
       />
+      
+      <style jsx>{`
+        @keyframes pulse {
+          0%, 100% { opacity: 0.5; }
+          50% { opacity: 0.8; }
+        }
+      `}</style>
     </Layout>
   );
 }

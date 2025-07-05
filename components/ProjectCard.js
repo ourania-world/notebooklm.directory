@@ -37,71 +37,85 @@ export default function ProjectCard({ notebook }) {
     }
   };
 
-  const categoryColors = {
-    'Academic': '#e3f2fd',
-    'Business': '#f3e5f5',
-    'Creative': '#fff3e0',
-    'Research': '#e8f5e8',
-    'Education': '#fce4ec',
-    'Personal': '#f1f8e9'
-  };
-
   return (
     <div style={{
-      background: '#1a2332',
-      borderRadius: '12px',
-      padding: '1.5rem',
-      border: '1px solid #2a3441',
+      background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
+      borderRadius: '16px',
+      padding: '2rem',
+      border: '1px solid rgba(0, 255, 136, 0.2)',
       transition: 'all 0.3s ease',
       cursor: 'pointer',
       height: '100%',
       display: 'flex',
-      flexDirection: 'column'
+      flexDirection: 'column',
+      position: 'relative',
+      overflow: 'hidden'
     }}
     onMouseEnter={(e) => {
-      e.target.style.transform = 'translateY(-4px)';
+      e.target.style.transform = 'translateY(-8px) scale(1.01)';
       e.target.style.borderColor = '#00ff88';
-      e.target.style.boxShadow = '0 8px 25px rgba(0, 255, 136, 0.1)';
+      e.target.style.boxShadow = '0 20px 40px rgba(0, 255, 136, 0.2)';
     }}
     onMouseLeave={(e) => {
-      e.target.style.transform = 'translateY(0)';
-      e.target.style.borderColor = '#2a3441';
+      e.target.style.transform = 'translateY(0) scale(1)';
+      e.target.style.borderColor = 'rgba(0, 255, 136, 0.2)';
       e.target.style.boxShadow = 'none';
     }}>
       
-      <div style={{ marginBottom: '1rem' }}>
+      {/* Glow effect */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: 'radial-gradient(circle at 50% 0%, rgba(0, 255, 136, 0.1) 0%, transparent 50%)',
+        opacity: 0,
+        transition: 'opacity 0.3s ease',
+        pointerEvents: 'none'
+      }} />
+      
+      <div style={{ marginBottom: '1.5rem', position: 'relative', zIndex: 1 }}>
         <span style={{
-          background: '#00ff88',
-          color: '#0a0e1a',
-          padding: '0.25rem 0.75rem',
+          background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
+          color: '#0a0a0a',
+          padding: '0.5rem 1rem',
           borderRadius: '20px',
           fontSize: '0.875rem',
-          fontWeight: '500'
+          fontWeight: '600',
+          textTransform: 'uppercase',
+          letterSpacing: '0.5px'
         }}>
           {notebook.category}
         </span>
       </div>
       
       <h3 style={{ 
-        margin: '0 0 0.75rem 0', 
-        fontSize: '1.25rem',
-        fontWeight: '600',
-        color: '#ffffff'
+        margin: '0 0 1rem 0', 
+        fontSize: '1.5rem',
+        fontWeight: '700',
+        color: '#ffffff',
+        lineHeight: '1.3',
+        position: 'relative',
+        zIndex: 1
       }}>
         {notebook.title}
       </h3>
       
       <p style={{ 
-        color: '#a0aec0', 
-        lineHeight: '1.5',
-        margin: '0 0 1rem 0',
-        flex: 1
+        color: '#e2e8f0', 
+        lineHeight: '1.6',
+        margin: '0 0 1.5rem 0',
+        flex: 1,
+        fontSize: '1rem',
+        position: 'relative',
+        zIndex: 1
       }}>
         {notebook.description}
       </p>
       
       {notebook.audio_overview_url && (
-        <div style={{ margin: '1rem 0' }}>
+        <div style={{ margin: '1.5rem 0', position: 'relative', zIndex: 1 }}>
           <AudioPlayer 
             audioUrl={notebook.audio_overview_url}
             title="Audio Overview"
@@ -113,23 +127,27 @@ export default function ProjectCard({ notebook }) {
         display: 'flex', 
         justifyContent: 'space-between', 
         alignItems: 'center',
-        marginTop: 'auto'
+        marginTop: 'auto',
+        position: 'relative',
+        zIndex: 1
       }}>
-        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
           {notebook.tags?.slice(0, 3).map((tag, index) => (
             <span key={index} style={{
-              background: '#2a3441',
-              color: '#a0aec0',
-              padding: '0.25rem 0.5rem',
-              borderRadius: '4px',
-              fontSize: '0.75rem'
+              background: 'rgba(0, 255, 136, 0.1)',
+              color: '#00ff88',
+              padding: '0.25rem 0.75rem',
+              borderRadius: '12px',
+              fontSize: '0.75rem',
+              fontWeight: '500',
+              border: '1px solid rgba(0, 255, 136, 0.3)'
             }}>
               {tag}
             </span>
           ))}
         </div>
         
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           {user && (
             <button
               onClick={handleSaveToggle}
@@ -138,29 +156,52 @@ export default function ProjectCard({ notebook }) {
                 background: 'none',
                 border: 'none',
                 cursor: loading ? 'not-allowed' : 'pointer',
-                fontSize: '1.2rem',
-                padding: '0.25rem',
-                opacity: loading ? 0.5 : 1
+                fontSize: '1.5rem',
+                padding: '0.5rem',
+                opacity: loading ? 0.5 : 1,
+                transition: 'all 0.2s ease',
+                borderRadius: '8px'
               }}
               title={isSaved ? 'Unsave notebook' : 'Save notebook'}
+              onMouseEnter={(e) => {
+                if (!loading) {
+                  e.target.style.background = 'rgba(0, 255, 136, 0.1)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.background = 'none';
+              }}
             >
               {isSaved ? '💾' : '🤍'}
             </button>
           )}
-          <div style={{ 
-            color: '#00ff88', 
-            fontWeight: '500',
-            fontSize: '0.875rem'
-          }}>
-            <a 
-              href={notebook.notebook_url} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              style={{ color: 'inherit', textDecoration: 'none' }}
-            >
-              View Notebook →
-            </a>
-          </div>
+          <a 
+            href={notebook.notebook_url} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            style={{ 
+              color: '#00ff88', 
+              textDecoration: 'none',
+              fontWeight: '600',
+              fontSize: '0.9rem',
+              padding: '0.5rem 1rem',
+              border: '1px solid rgba(0, 255, 136, 0.3)',
+              borderRadius: '8px',
+              transition: 'all 0.2s ease',
+              textTransform: 'uppercase',
+              letterSpacing: '0.5px'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.background = 'rgba(0, 255, 136, 0.1)';
+              e.target.style.borderColor = '#00ff88';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.background = 'transparent';
+              e.target.style.borderColor = 'rgba(0, 255, 136, 0.3)';
+            }}
+          >
+            View →
+          </a>
         </div>
       </div>
     </div>

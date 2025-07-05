@@ -21,33 +21,45 @@ export default function UserMenu({ user, onSignOut }) {
       <button
         onClick={() => setIsOpen(!isOpen)}
         style={{
-          background: 'rgba(255, 255, 255, 0.2)',
-          border: '1px solid rgba(255, 255, 255, 0.3)',
-          color: 'white',
-          padding: '0.5rem 1rem',
-          borderRadius: '6px',
+          background: 'rgba(0, 255, 136, 0.1)',
+          border: '1px solid rgba(0, 255, 136, 0.3)',
+          color: '#ffffff',
+          padding: '0.75rem 1rem',
+          borderRadius: '12px',
           cursor: 'pointer',
           display: 'flex',
           alignItems: 'center',
-          gap: '0.5rem'
+          gap: '0.75rem',
+          transition: 'all 0.2s ease',
+          fontWeight: '500'
+        }}
+        onMouseEnter={(e) => {
+          e.target.style.background = 'rgba(0, 255, 136, 0.2)';
+          e.target.style.borderColor = '#00ff88';
+        }}
+        onMouseLeave={(e) => {
+          e.target.style.background = 'rgba(0, 255, 136, 0.1)';
+          e.target.style.borderColor = 'rgba(0, 255, 136, 0.3)';
         }}
       >
         <div style={{
-          width: '24px',
-          height: '24px',
+          width: '32px',
+          height: '32px',
           borderRadius: '50%',
-          background: 'white',
-          color: '#667eea',
+          background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
+          color: '#0a0a0a',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontSize: '0.8rem',
-          fontWeight: 'bold'
+          fontSize: '0.9rem',
+          fontWeight: '700'
         }}>
           {user.user_metadata?.full_name?.[0] || user.email[0].toUpperCase()}
         </div>
-        <span>{user.user_metadata?.full_name || user.email}</span>
-        <span style={{ fontSize: '0.8rem' }}>▼</span>
+        <span style={{ fontSize: '0.9rem' }}>
+          {user.user_metadata?.full_name || user.email}
+        </span>
+        <span style={{ fontSize: '0.7rem', opacity: 0.7 }}>▼</span>
       </button>
 
       {isOpen && (
@@ -68,12 +80,13 @@ export default function UserMenu({ user, onSignOut }) {
             top: '100%',
             right: 0,
             marginTop: '0.5rem',
-            background: 'white',
-            borderRadius: '8px',
-            boxShadow: '0 10px 25px rgba(0, 0, 0, 0.15)',
-            border: '1px solid #e9ecef',
-            minWidth: '200px',
-            zIndex: 1000
+            background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
+            borderRadius: '12px',
+            boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)',
+            border: '1px solid rgba(0, 255, 136, 0.2)',
+            minWidth: '220px',
+            zIndex: 1000,
+            overflow: 'hidden'
           }}>
             <div style={{ padding: '0.5rem 0' }}>
               <button
@@ -85,13 +98,25 @@ export default function UserMenu({ user, onSignOut }) {
                   width: '100%',
                   background: 'none',
                   border: 'none',
-                  padding: '0.75rem 1rem',
+                  padding: '1rem 1.5rem',
                   textAlign: 'left',
                   cursor: 'pointer',
-                  color: '#212529'
+                  color: '#ffffff',
+                  fontSize: '0.9rem',
+                  fontWeight: '500',
+                  transition: 'all 0.2s ease',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.75rem'
                 }}
-                onMouseEnter={(e) => e.target.style.background = '#f8f9fa'}
-                onMouseLeave={(e) => e.target.style.background = 'none'}
+                onMouseEnter={(e) => {
+                  e.target.style.background = 'rgba(0, 255, 136, 0.1)';
+                  e.target.style.color = '#00ff88';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.background = 'none';
+                  e.target.style.color = '#ffffff';
+                }}
               >
                 👤 Profile
               </button>
@@ -104,13 +129,25 @@ export default function UserMenu({ user, onSignOut }) {
                   width: '100%',
                   background: 'none',
                   border: 'none',
-                  padding: '0.75rem 1rem',
+                  padding: '1rem 1.5rem',
                   textAlign: 'left',
                   cursor: 'pointer',
-                  color: '#212529'
+                  color: '#ffffff',
+                  fontSize: '0.9rem',
+                  fontWeight: '500',
+                  transition: 'all 0.2s ease',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.75rem'
                 }}
-                onMouseEnter={(e) => e.target.style.background = '#f8f9fa'}
-                onMouseLeave={(e) => e.target.style.background = 'none'}
+                onMouseEnter={(e) => {
+                  e.target.style.background = 'rgba(0, 255, 136, 0.1)';
+                  e.target.style.color = '#00ff88';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.background = 'none';
+                  e.target.style.color = '#ffffff';
+                }}
               >
                 📚 My Notebooks
               </button>
@@ -123,30 +160,56 @@ export default function UserMenu({ user, onSignOut }) {
                   width: '100%',
                   background: 'none',
                   border: 'none',
-                  padding: '0.75rem 1rem',
+                  padding: '1rem 1.5rem',
                   textAlign: 'left',
                   cursor: 'pointer',
-                  color: '#212529'
+                  color: '#ffffff',
+                  fontSize: '0.9rem',
+                  fontWeight: '500',
+                  transition: 'all 0.2s ease',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.75rem'
                 }}
-                onMouseEnter={(e) => e.target.style.background = '#f8f9fa'}
-                onMouseLeave={(e) => e.target.style.background = 'none'}
+                onMouseEnter={(e) => {
+                  e.target.style.background = 'rgba(0, 255, 136, 0.1)';
+                  e.target.style.color = '#00ff88';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.background = 'none';
+                  e.target.style.color = '#ffffff';
+                }}
               >
                 💾 Saved
               </button>
-              <hr style={{ margin: '0.5rem 0', border: 'none', borderTop: '1px solid #e9ecef' }} />
+              <hr style={{ 
+                margin: '0.5rem 0', 
+                border: 'none', 
+                borderTop: '1px solid rgba(0, 255, 136, 0.2)' 
+              }} />
               <button
                 onClick={handleSignOut}
                 style={{
                   width: '100%',
                   background: 'none',
                   border: 'none',
-                  padding: '0.75rem 1rem',
+                  padding: '1rem 1.5rem',
                   textAlign: 'left',
                   cursor: 'pointer',
-                  color: '#dc3545'
+                  color: '#dc3545',
+                  fontSize: '0.9rem',
+                  fontWeight: '500',
+                  transition: 'all 0.2s ease',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.75rem'
                 }}
-                onMouseEnter={(e) => e.target.style.background = '#f8f9fa'}
-                onMouseLeave={(e) => e.target.style.background = 'none'}
+                onMouseEnter={(e) => {
+                  e.target.style.background = 'rgba(220, 53, 69, 0.1)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.background = 'none';
+                }}
               >
                 🚪 Sign Out
               </button>
