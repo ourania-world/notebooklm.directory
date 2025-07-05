@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import ProjectCard from '../components/ProjectCard';
+import NotebookModal from '../components/NotebookModal';
 import { getNotebooks } from '../lib/notebooks';
 
 export default function Notebooks() {
   const [featuredNotebooks, setFeaturedNotebooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     async function fetchFeaturedNotebooks() {
@@ -24,6 +26,13 @@ export default function Notebooks() {
 
     fetchFeaturedNotebooks();
   }, []);
+
+  const handleNotebookCreated = (newNotebook) => {
+    // If the new notebook is featured, add it to the featured list
+    if (newNotebook.featured) {
+      setFeaturedNotebooks(prev => [newNotebook, ...prev]);
+    }
+  };
   
   return (
     <Layout>
@@ -54,7 +63,9 @@ export default function Notebooks() {
           </p>
           
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <button style={{
+            <button 
+              onClick={() => window.location.href = '/browse'}
+              style={{
               background: 'white',
               color: '#667eea',
               border: 'none',
@@ -66,7 +77,9 @@ export default function Notebooks() {
             }}>
               Browse Projects
             </button>
-            <button style={{
+            <button 
+              onClick={() => setIsModalOpen(true)}
+              style={{
               background: 'transparent',
               color: 'white',
               border: '2px solid white',
@@ -76,7 +89,7 @@ export default function Notebooks() {
               cursor: 'pointer',
               fontSize: '1rem'
             }}>
-              Submit Your Project
+              Connect a New Notebook
             </button>
           </div>
         </div>
@@ -144,7 +157,9 @@ export default function Notebooks() {
           )}
           
           <div style={{ textAlign: 'center' }}>
-            <button style={{
+            <button 
+              onClick={() => window.location.href = '/browse'}
+              style={{
               background: '#667eea',
               color: 'white',
               border: 'none',
@@ -211,6 +226,12 @@ export default function Notebooks() {
           </div>
         </div>
       </section>
+
+      <NotebookModal 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onNotebookCreated={handleNotebookCreated}
+      />
     </Layout>
   );
 }

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import ProjectCard from '../components/ProjectCard';
+import NotebookModal from '../components/NotebookModal';
 import { getNotebooks, getCategoryCounts } from '../lib/notebooks';
 
 export default function Browse() {
@@ -10,6 +11,7 @@ export default function Browse() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [categoryCounts, setCategoryCounts] = useState({});
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const categories = [
     { name: "Academic", description: "Research papers, thesis work, academic analysis" },
@@ -41,6 +43,13 @@ export default function Browse() {
     fetchData();
   }, [selectedCategory, searchTerm]);
 
+  const handleNotebookCreated = (newNotebook) => {
+    // Add the new notebook to the list and refresh data
+    setNotebooks(prev => [newNotebook, ...prev]);
+    // Optionally refresh category counts
+    getCategoryCounts().then(setCategoryCounts);
+  };
+
   return (
     <Layout title="Browse Projects - NotebookLM Directory">
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem' }}>
@@ -51,6 +60,33 @@ export default function Browse() {
         }}>
           Browse Projects
         </h1>
+        
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          alignItems: 'center',
+          marginBottom: '2rem'
+        }}>
+          <div></div>
+          <button
+            onClick={() => setIsModalOpen(true)}
+            style={{
+              background: '#667eea',
+              color: 'white',
+              border: 'none',
+              padding: '0.75rem 1.5rem',
+              borderRadius: '8px',
+              fontSize: '1rem',
+              fontWeight: '500',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem'
+            }}
+          >
+            + Connect New Notebook
+          </button>
+        </div>
         
         {/* Search and Filter */}
         <div style={{ 
@@ -139,6 +175,12 @@ export default function Browse() {
           </div>
         )}
       </div>
+
+      <NotebookModal 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onNotebookCreated={handleNotebookCreated}
+      />
     </Layout>
   );
 }
