@@ -103,7 +103,11 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                 letterSpacing: '1px',
                 fontFamily: 'monospace'
               }}>NLM_D</span>
-              The Index
+              <span style={{ marginLeft: '0.5rem' }}>notebooklm.</span><span style={{ 
+                color: '#00ff88',
+                fontWeight: '700',
+                letterSpacing: '0.5px'
+              }}>directory</span>
             </Link>
             
             <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>

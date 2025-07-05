@@ -129,8 +129,7 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text'
           }}>
-            The World's Premier Directory<br />
-            for <span style={{ color: '#00ff88' }}>Shared Intelligence</span>
+            The Premier NotebookLM <span style={{ color: '#00ff88' }}>Directory</span>
           </h1>
           
           <div style={{ 
@@ -150,10 +149,9 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
             maxWidth: '700px',
             margin: '0 auto 1rem auto',
             color: '#e2e8f0',
-            lineHeight: '1.6',
-            marginTop: '1rem'
+            lineHeight: '1.6'
           }}>
-            The definitive resource for NotebookLM projects across all domains. We deliver superior discovery and collaboration through <strong style={{ color: '#00ff88' }}>intelligent curation</strong>, empowering our community to innovate faster and more efficiently.
+            The definitive resource for shared intelligence across all domains. We deliver superior discovery and collaboration through <strong style={{ color: '#00ff88' }}>intelligent curation</strong>, empowering our community to innovate faster.
           </p>
           
           <div style={{ 
