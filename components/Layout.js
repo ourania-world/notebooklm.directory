@@ -94,11 +94,13 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
               <span style={{ 
                 background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
                 color: '#0a0a0a',
-                padding: '0.5rem',
+                padding: '0.5rem 0.75rem',
                 borderRadius: '8px',
-                fontSize: '1rem',
-                fontWeight: '700'
-              }}>NLM</span>
+                fontSize: '0.9rem',
+                fontWeight: '700',
+                letterSpacing: '1px',
+                fontFamily: 'monospace'
+              }}>NLM_D</span>
               NotebookLM Directory
             </Link>
             
