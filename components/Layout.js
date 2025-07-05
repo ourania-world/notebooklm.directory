@@ -1,7 +1,34 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import { useState, useEffect } from 'react';
+import { getCurrentUser, onAuthStateChange } from '../lib/auth';
+import AuthModal from './AuthModal';
+import UserMenu from './UserMenu';
 
 export default function Layout({ children, title = "NotebookLM Directory" }) {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [authMode, setAuthMode] = useState('signin');
+
+  useEffect(() => {
+    // Get initial user
+    getCurrentUser().then(setUser).finally(() => setLoading(false));
+
+    // Listen for auth changes
+    const { data: { subscription } } = onAuthStateChange((event, session) => {
+      setUser(session?.user || null);
+      setLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const openAuthModal = (mode = 'signin') => {
+    setAuthMode(mode);
+    setAuthModalOpen(true);
+  };
+
   return (
     <>
       <Head>
@@ -44,6 +71,44 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
               <Link href="/about" style={{ color: 'white', textDecoration: 'none' }}>
                 About
               </Link>
+              
+              {loading ? (
+                <div style={{ color: 'white' }}>Loading...</div>
+              ) : user ? (
+                <UserMenu user={user} onSignOut={() => setUser(null)} />
+              ) : (
+                <div style={{ display: 'flex', gap: '1rem' }}>
+                  <button
+                    onClick={() => openAuthModal('signin')}
+                    style={{
+                      background: 'transparent',
+                      color: 'white',
+                      border: '1px solid rgba(255, 255, 255, 0.3)',
+                      padding: '0.5rem 1rem',
+                      borderRadius: '6px',
+                      cursor: 'pointer',
+                      fontSize: '0.9rem'
+                    }}
+                  >
+                    Sign In
+                  </button>
+                  <button
+                    onClick={() => openAuthModal('signup')}
+                    style={{
+                      background: 'white',
+                      color: '#667eea',
+                      border: 'none',
+                      padding: '0.5rem 1rem',
+                      borderRadius: '6px',
+                      cursor: 'pointer',
+                      fontSize: '0.9rem',
+                      fontWeight: '500'
+                    }}
+                  >
+                    Sign Up
+                  </button>
+                </div>
+              )}
             </div>
           </nav>
         </header>
@@ -69,6 +134,13 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
           </div>
         </footer>
       </div>
+
+      <AuthModal
+        isOpen={authModalOpen}
+        onClose={() => setAuthModalOpen(false)}
+        onSuccess={() => setAuthModalOpen(false)}
+        mode={authMode}
+      />
     </>
   );
 }

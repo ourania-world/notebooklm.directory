@@ -7,6 +7,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@supabase/auth-helpers-nextjs": "^0.10.0",
     "@supabase/supabase-js": "^2.50.3",
     "next": "13.4.12",
     "react": "18.2.0",
