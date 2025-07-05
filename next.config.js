@@ -2,9 +2,6 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  experimental: {
-    appDir: false
-  },
   images: {
     domains: ['images.unsplash.com', 'via.placeholder.com'],
   },
