@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Layout from '../components/Layout';
+import { createNotebook } from '../lib/notebooks';
 
 export default function Submit() {
   const [formData, setFormData] = useState({
@@ -9,15 +10,54 @@ export default function Submit() {
     tags: '',
     author: '',
     institution: '',
-    notebookUrl: '',
-    sourceFiles: ''
+    notebook_url: '',
+    source_files: ''
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission
-    console.log('Form submitted:', formData);
-    alert('Thank you for your submission! We\'ll review it and get back to you soon.');
+    
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+    
+    try {
+      // Convert tags string to array
+      const tagsArray = formData.tags 
+        ? formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0)
+        : [];
+      
+      const notebookData = {
+        title: formData.title,
+        description: formData.description,
+        category: formData.category,
+        tags: tagsArray,
+        author: formData.author,
+        institution: formData.institution || null,
+        notebook_url: formData.notebook_url,
+        featured: false // New submissions are not featured by default
+      };
+      
+      await createNotebook(notebookData);
+      
+      setSubmitStatus('success');
+      setFormData({
+        title: '',
+        description: '',
+        category: '',
+        tags: '',
+        author: '',
+        institution: '',
+        notebook_url: '',
+        source_files: ''
+      });
+    } catch (error) {
+      console.error('Error submitting notebook:', error);
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e) => {
@@ -46,6 +86,32 @@ export default function Submit() {
         }}>
           Share your innovative NotebookLM project with the community. Help others learn from your approach and discover new possibilities for AI-assisted research.
         </p>
+        
+        {submitStatus === 'success' && (
+          <div style={{
+            background: '#d4edda',
+            color: '#155724',
+            padding: '1rem',
+            borderRadius: '8px',
+            marginBottom: '2rem',
+            border: '1px solid #c3e6cb'
+          }}>
+            Thank you for your submission! Your project has been added to the directory.
+          </div>
+        )}
+        
+        {submitStatus === 'error' && (
+          <div style={{
+            background: '#f8d7da',
+            color: '#721c24',
+            padding: '1rem',
+            borderRadius: '8px',
+            marginBottom: '2rem',
+            border: '1px solid #f5c6cb'
+          }}>
+            There was an error submitting your project. Please try again.
+          </div>
+        )}
         
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           <div>
@@ -225,8 +291,8 @@ export default function Submit() {
             </label>
             <input
               type="url"
-              name="notebookUrl"
-              value={formData.notebookUrl}
+              name="notebook_url"
+              value={formData.notebook_url}
               onChange={handleChange}
               required
               style={{
@@ -250,8 +316,8 @@ export default function Submit() {
               Source Files Description
             </label>
             <textarea
-              name="sourceFiles"
-              value={formData.sourceFiles}
+              name="source_files"
+              value={formData.source_files}
               onChange={handleChange}
               rows={3}
               style={{
@@ -268,19 +334,20 @@ export default function Submit() {
           
           <button
             type="submit"
+            disabled={isSubmitting}
             style={{
-              background: '#667eea',
+              background: isSubmitting ? '#6c757d' : '#667eea',
               color: 'white',
               border: 'none',
               padding: '1rem 2rem',
               borderRadius: '8px',
               fontSize: '1rem',
               fontWeight: '600',
-              cursor: 'pointer',
+              cursor: isSubmitting ? 'not-allowed' : 'pointer',
               marginTop: '1rem'
             }}
           >
-            Submit Project
+            {isSubmitting ? 'Submitting...' : 'Submit Project'}
           </button>
         </form>
       </div>

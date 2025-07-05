@@ -1,19 +1,45 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import ProjectCard from '../components/ProjectCard';
-import { sampleProjects, categories } from '../data/sampleProjects';
+import { getNotebooks, getCategoryCounts } from '../lib/notebooks';
 
 export default function Browse() {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
+  const [notebooks, setNotebooks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [categoryCounts, setCategoryCounts] = useState({});
 
-  const filteredProjects = sampleProjects.filter(project => {
-    const matchesCategory = selectedCategory === 'All' || project.category === selectedCategory;
-    const matchesSearch = project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         project.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         project.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
-    return matchesCategory && matchesSearch;
-  });
+  const categories = [
+    { name: "Academic", description: "Research papers, thesis work, academic analysis" },
+    { name: "Business", description: "Market research, business strategy, competitive analysis" },
+    { name: "Creative", description: "Writing, art analysis, creative projects" },
+    { name: "Research", description: "Scientific studies, data analysis, research synthesis" },
+    { name: "Education", description: "Curriculum design, learning materials, educational research" },
+    { name: "Personal", description: "Personal projects, hobby research, self-improvement" }
+  ];
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        setLoading(true);
+        const [notebooksData, countsData] = await Promise.all([
+          getNotebooks({ category: selectedCategory, search: searchTerm }),
+          getCategoryCounts()
+        ]);
+        setNotebooks(notebooksData);
+        setCategoryCounts(countsData);
+      } catch (err) {
+        console.error('Error fetching data:', err);
+        setError('Failed to load notebooks');
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchData();
+  }, [selectedCategory, searchTerm]);
 
   return (
     <Layout title="Browse Projects - NotebookLM Directory">
@@ -61,9 +87,14 @@ export default function Browse() {
             }}
           >
             <option value="All">All Categories</option>
-            {categories.map(category => (
-              <option key={category.name} value={category.name}>
-                {category.name}
+            {categories.map(category => {
+              const count = categoryCounts[category.name] || 0;
+              return (
+                <option key={category.name} value={category.name}>
+                  {category.name} ({count})
+                </option>
+              );
+            })}
               </option>
             ))}
           </select>
@@ -75,21 +106,31 @@ export default function Browse() {
           margin: '0 0 2rem 0',
           fontSize: '1rem'
         }}>
-          Showing {filteredProjects.length} project{filteredProjects.length !== 1 ? 's' : ''}
+          Showing {notebooks.length} project{notebooks.length !== 1 ? 's' : ''}
         </p>
         
         {/* Projects Grid */}
-        <div style={{ 
-          display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', 
-          gap: '2rem'
-        }}>
-          {filteredProjects.map(project => (
-            <ProjectCard key={project.id} project={project} />
-          ))}
-        </div>
+        {loading ? (
+          <div style={{ textAlign: 'center', padding: '2rem' }}>
+            <p>Loading notebooks...</p>
+          </div>
+        ) : error ? (
+          <div style={{ textAlign: 'center', padding: '2rem', color: '#dc3545' }}>
+            <p>{error}</p>
+          </div>
+        ) : (
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', 
+            gap: '2rem'
+          }}>
+            {notebooks.map(notebook => (
+              <ProjectCard key={notebook.id} notebook={notebook} />
+            ))}
+          </div>
+        )}
         
-        {filteredProjects.length === 0 && (
+        {!loading && !error && notebooks.length === 0 && (
           <div style={{ 
             textAlign: 'center', 
             padding: '4rem 0',

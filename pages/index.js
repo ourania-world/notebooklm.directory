@@ -1,9 +1,29 @@
+import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import ProjectCard from '../components/ProjectCard';
-import { sampleProjects } from '../data/sampleProjects';
+import { getNotebooks } from '../lib/notebooks';
 
 export default function Notebooks() {
-  const featuredProjects = sampleProjects.filter(project => project.featured);
+  const [featuredNotebooks, setFeaturedNotebooks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function fetchFeaturedNotebooks() {
+      try {
+        setLoading(true);
+        const notebooks = await getNotebooks({ featured: true });
+        setFeaturedNotebooks(notebooks);
+      } catch (err) {
+        console.error('Error fetching featured notebooks:', err);
+        setError('Failed to load featured notebooks');
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchFeaturedNotebooks();
+  }, []);
   
   return (
     <Layout>
@@ -102,16 +122,26 @@ export default function Notebooks() {
             Featured Projects
           </h2>
           
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', 
-            gap: '2rem',
-            marginBottom: '3rem'
-          }}>
-            {featuredProjects.map(project => (
-              <ProjectCard key={project.id} project={project} />
-            ))}
-          </div>
+          {loading ? (
+            <div style={{ textAlign: 'center', padding: '2rem' }}>
+              <p>Loading featured projects...</p>
+            </div>
+          ) : error ? (
+            <div style={{ textAlign: 'center', padding: '2rem', color: '#dc3545' }}>
+              <p>{error}</p>
+            </div>
+          ) : (
+            <div style={{ 
+              display: 'grid', 
+              gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', 
+              gap: '2rem',
+              marginBottom: '3rem'
+            }}>
+              {featuredNotebooks.map(notebook => (
+                <ProjectCard key={notebook.id} notebook={notebook} />
+              ))}
+            </div>
+          )}
           
           <div style={{ textAlign: 'center' }}>
             <button style={{

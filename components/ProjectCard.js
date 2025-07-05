@@ -1,4 +1,4 @@
-export default function ProjectCard({ project }) {
+export default function ProjectCard({ notebook }) {
   const categoryColors = {
     'Academic': '#e3f2fd',
     'Business': '#f3e5f5',
@@ -32,14 +32,14 @@ export default function ProjectCard({ project }) {
       
       <div style={{ marginBottom: '1rem' }}>
         <span style={{
-          background: categoryColors[project.category] || '#f8f9fa',
+          background: categoryColors[notebook.category] || '#f8f9fa',
           color: '#495057',
           padding: '0.25rem 0.75rem',
           borderRadius: '20px',
           fontSize: '0.875rem',
           fontWeight: '500'
         }}>
-          {project.category}
+          {notebook.category}
         </span>
       </div>
       
@@ -49,7 +49,7 @@ export default function ProjectCard({ project }) {
         fontWeight: '600',
         color: '#212529'
       }}>
-        {project.title}
+        {notebook.title}
       </h3>
       
       <p style={{ 
@@ -58,7 +58,7 @@ export default function ProjectCard({ project }) {
         margin: '0 0 1rem 0',
         flex: 1
       }}>
-        {project.description}
+        {notebook.description}
       </p>
       
       <div style={{ 
@@ -68,7 +68,7 @@ export default function ProjectCard({ project }) {
         marginTop: 'auto'
       }}>
         <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-          {project.tags?.slice(0, 3).map((tag, index) => (
+          {notebook.tags?.slice(0, 3).map((tag, index) => (
             <span key={index} style={{
               background: '#f8f9fa',
               color: '#6c757d',
@@ -86,7 +86,14 @@ export default function ProjectCard({ project }) {
           fontWeight: '500',
           fontSize: '0.875rem'
         }}>
-          View Project →
+          <a 
+            href={notebook.notebook_url} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            style={{ color: 'inherit', textDecoration: 'none' }}
+          >
+            View Notebook →
+          </a>
         </div>
       </div>
     </div>
