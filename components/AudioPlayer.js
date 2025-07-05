@@ -1,4 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
+import { trackAudioPlay } from '../lib/analytics';
+import { getCurrentUser } from '../lib/auth';
 
 export default function AudioPlayer({ audioUrl, title = "Audio Overview" }) {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -7,11 +9,21 @@ export default function AudioPlayer({ audioUrl, title = "Audio Overview" }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [user, setUser] = useState(null);
+  const [hasTrackedPlay, setHasTrackedPlay] = useState(false);
   const audioRef = useRef(null);
 
   // Use direct path for public audio files
   const audioSrc = audioUrl?.startsWith('/') ? audioUrl : `/audio/${audioUrl}`;
 
+  useEffect(() => {
+    getCurrentUser()
+      .then(setUser)
+      .catch(error => {
+        console.warn('Failed to get user for audio tracking:', error);
+        setUser(null);
+      });
+  }, []);
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -30,7 +42,22 @@ export default function AudioPlayer({ audioUrl, title = "Audio Overview" }) {
       setError('Failed to load audio');
       console.error('Audio error:', e.target?.error || e);
     };
-    const handleEnded = () => setIsPlaying(false);
+    const handleEnded = () => {
+      setIsPlaying(false);
+      
+      // Track audio completion
+      if (user && audio.duration) {
+        trackAudioPlay(user.id, null, audio.duration, true);
+      }
+    };
+    
+    const handlePlay = () => {
+      // Track audio play (only once per session)
+      if (user && !hasTrackedPlay) {
+        trackAudioPlay(user.id, null, null, false);
+        setHasTrackedPlay(true);
+      }
+    };
 
     audio.addEventListener('timeupdate', updateTime);
     audio.addEventListener('loadedmetadata', updateDuration);
@@ -38,6 +65,7 @@ export default function AudioPlayer({ audioUrl, title = "Audio Overview" }) {
     audio.addEventListener('canplay', handleCanPlay);
     audio.addEventListener('error', handleError);
     audio.addEventListener('ended', handleEnded);
+    audio.addEventListener('play', handlePlay);
 
     return () => {
       audio.removeEventListener('timeupdate', updateTime);
@@ -46,8 +74,9 @@ export default function AudioPlayer({ audioUrl, title = "Audio Overview" }) {
       audio.removeEventListener('canplay', handleCanPlay);
       audio.removeEventListener('error', handleError);
       audio.removeEventListener('ended', handleEnded);
+      audio.removeEventListener('play', handlePlay);
     };
-  }, [audioSrc]);
+  }, [audioSrc, user, hasTrackedPlay]);
 
   const togglePlayPause = async () => {
     const audio = audioRef.current;

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import Layout from '../components/Layout'
 import { getCurrentUser } from '../lib/auth'
 import { getUserSubscription } from '../lib/subscriptions'
-import { getUserEngagementMetrics, getPopularNotebooks, getTrendingSearches } from '../lib/analytics'
+import { getUserEngagementMetrics, getPopularNotebooks, getTrendingSearches, getUserActivitySummary } from '../lib/analytics'
 import { getUserNotebooks, getSavedNotebooks } from '../lib/profiles'
 import UpgradePrompt from '../components/UpgradePrompt'
 
@@ -14,6 +14,7 @@ export default function Analytics() {
   const [trendingSearches, setTrendingSearches] = useState([])
   const [userNotebooks, setUserNotebooks] = useState([])
   const [savedNotebooks, setSavedNotebooks] = useState([])
+  const [activitySummary, setActivitySummary] = useState(null)
   const [loading, setLoading] = useState(true)
   const [showUpgrade, setShowUpgrade] = useState(false)
 
@@ -41,12 +42,14 @@ export default function Analytics() {
         // Load analytics data
         const [
           userMetrics,
+          activityData,
           popular,
           trending,
           notebooks,
           saved
         ] = await Promise.all([
           getUserEngagementMetrics(currentUser.id),
+          getUserActivitySummary(currentUser.id),
           getPopularNotebooks(10),
           getTrendingSearches(10),
           getUserNotebooks(currentUser.id),
@@ -54,6 +57,7 @@ export default function Analytics() {
         ])
 
         setMetrics(userMetrics)
+        setActivitySummary(activityData)
         setPopularNotebooks(popular)
         setTrendingSearches(trending)
         setUserNotebooks(notebooks)
@@ -162,7 +166,7 @@ export default function Analytics() {
               Your Notebooks
             </h3>
             <div style={{ color: '#ffffff', fontSize: '2.5rem', fontWeight: '700' }}>
-              {userNotebooks.length}
+              {activitySummary?.notebooksSubmitted || 0}
             </div>
             <p style={{ color: '#e2e8f0', fontSize: '0.9rem', margin: '0.5rem 0 0 0' }}>
               Total submissions
@@ -179,7 +183,7 @@ export default function Analytics() {
               Saved Notebooks
             </h3>
             <div style={{ color: '#ffffff', fontSize: '2.5rem', fontWeight: '700' }}>
-              {savedNotebooks.length}
+              {activitySummary?.notebooksSaved || 0}
             </div>
             <p style={{ color: '#e2e8f0', fontSize: '0.9rem', margin: '0.5rem 0 0 0' }}>
               In your collection
@@ -196,7 +200,7 @@ export default function Analytics() {
               Total Views
             </h3>
             <div style={{ color: '#ffffff', fontSize: '2.5rem', fontWeight: '700' }}>
-              {userNotebooks.reduce((sum, notebook) => sum + (notebook.view_count || 0), 0)}
+              {activitySummary?.totalViews || 0}
             </div>
             <p style={{ color: '#e2e8f0', fontSize: '0.9rem', margin: '0.5rem 0 0 0' }}>
               Across all notebooks
@@ -213,7 +217,63 @@ export default function Analytics() {
               Engagement Score
             </h3>
             <div style={{ color: '#ffffff', fontSize: '2.5rem', fontWeight: '700' }}>
-              {metrics ? Math.round((metrics.totalEvents / 30) * 10) : 0}
+              {activitySummary?.engagementScore || 0}
+            </div>
+            <p style={{ color: '#e2e8f0', fontSize: '0.9rem', margin: '0.5rem 0 0 0' }}>
+              Overall score
+            </p>
+        {/* Additional Analytics Cards */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+          gap: '1.5rem',
+          marginBottom: '3rem'
+        }}>
+          <div style={{
+            background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
+            borderRadius: '16px',
+            padding: '2rem',
+            border: '1px solid rgba(0, 255, 136, 0.2)'
+          }}>
+            <h3 style={{ color: '#00ff88', fontSize: '0.9rem', margin: '0 0 0.5rem 0', textTransform: 'uppercase' }}>
+              Total Saves Received
+            </h3>
+            <div style={{ color: '#ffffff', fontSize: '2.5rem', fontWeight: '700' }}>
+              {activitySummary?.totalSaves || 0}
+            </div>
+            <p style={{ color: '#e2e8f0', fontSize: '0.9rem', margin: '0.5rem 0 0 0' }}>
+              Across all notebooks
+            </p>
+          </div>
+          </div>
+          <div style={{
+            background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
+            borderRadius: '16px',
+            padding: '2rem',
+            border: '1px solid rgba(0, 255, 136, 0.2)'
+          }}>
+            <h3 style={{ color: '#00ff88', fontSize: '0.9rem', margin: '0 0 0.5rem 0', textTransform: 'uppercase' }}>
+              Audio Plays
+            </h3>
+            <div style={{ color: '#ffffff', fontSize: '2.5rem', fontWeight: '700' }}>
+              {metrics?.audioPlays || 0}
+            </div>
+            <p style={{ color: '#e2e8f0', fontSize: '0.9rem', margin: '0.5rem 0 0 0' }}>
+              Last 30 days
+            </p>
+          </div>
+        </div>
+          <div style={{
+            background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
+            borderRadius: '16px',
+            padding: '2rem',
+            border: '1px solid rgba(0, 255, 136, 0.2)'
+          }}>
+            <h3 style={{ color: '#00ff88', fontSize: '0.9rem', margin: '0 0 0.5rem 0', textTransform: 'uppercase' }}>
+              Search Queries
+            </h3>
+            <div style={{ color: '#ffffff', fontSize: '2.5rem', fontWeight: '700' }}>
+              {metrics?.searches || 0}
             </div>
             <p style={{ color: '#e2e8f0', fontSize: '0.9rem', margin: '0.5rem 0 0 0' }}>
               Last 30 days

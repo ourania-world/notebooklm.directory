@@ -2,12 +2,28 @@ import { useState, useEffect } from 'react';
 import AudioPlayer from './AudioPlayer';
 import { getCurrentUser } from '../lib/auth';
 import { toggleSavedNotebook } from '../lib/profiles';
+import { trackNotebookView, trackEvent } from '../lib/analytics';
 
 export default function ProjectCard({ notebook }) {
   const [user, setUser] = useState(null);
   const [isSaved, setIsSaved] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  // Track view when card is displayed
+  useEffect(() => {
+    const trackView = async () => {
+      try {
+        const currentUser = await getCurrentUser();
+        await trackNotebookView(currentUser?.id, notebook.id);
+      } catch (error) {
+        console.warn('Failed to track view:', error);
+      }
+    };
+
+    // Track view after a short delay to ensure it's actually viewed
+    const timer = setTimeout(trackView, 1000);
+    return () => clearTimeout(timer);
+  }, [notebook.id]);
   useEffect(() => {
     getCurrentUser()
       .then(setUser)
@@ -37,6 +53,26 @@ export default function ProjectCard({ notebook }) {
     }
   };
 
+  const handleNotebookClick = async (e) => {
+    // Don't track if clicking on interactive elements
+    if (e.target.closest('button') || e.target.closest('a')) {
+      return;
+    }
+
+    try {
+      if (user) {
+        await trackEvent(user.id, 'notebook_click', {
+          notebook_id: notebook.id,
+          category: notebook.category
+        });
+      }
+    } catch (error) {
+      console.warn('Failed to track click:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div style={{
       background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
@@ -51,6 +87,7 @@ export default function ProjectCard({ notebook }) {
       position: 'relative',
       overflow: 'hidden'
     }}
+    onClick={handleNotebookClick}
     onMouseEnter={(e) => {
       e.target.style.transform = 'translateY(-8px) scale(1.01)';
       e.target.style.borderColor = '#00ff88';
@@ -131,6 +168,26 @@ export default function ProjectCard({ notebook }) {
         position: 'relative',
         zIndex: 1
       }}>
+        {/* View and Save Counts */}
+        <div style={{
+          display: 'flex',
+          gap: '1rem',
+          marginBottom: '1rem',
+          fontSize: '0.8rem',
+          color: '#e2e8f0'
+        }}>
+          {notebook.view_count > 0 && (
+            <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+              👁️ {notebook.view_count} views
+            </span>
+          )}
+          {notebook.save_count > 0 && (
+            <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+              💾 {notebook.save_count} saves
+            </span>
+          )}
+        </div>
+        
         <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
           {notebook.tags?.slice(0, 3).map((tag, index) => (
             <span key={index} style={{

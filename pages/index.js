@@ -4,8 +4,11 @@ import ProjectCard from '../components/ProjectCard';
 import NotebookModal from '../components/NotebookModal';
 import AudioPlayer from '../components/AudioPlayer';
 import SearchBar from '../components/SearchBar';
+import PersonalizedRecommendations from '../components/PersonalizedRecommendations';
+import FeaturedCollections from '../components/FeaturedCollections';
 import { getCurrentUser } from '../lib/auth';
 import { getNotebooks } from '../lib/notebooks';
+import { trackEvent } from '../lib/analytics';
 
 export async function getServerSideProps() {
   try {
@@ -50,6 +53,14 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
   const handleNotebookCreated = (newNotebook) => {
     // Add new notebook to the list and refresh
     setFeaturedNotebooks(prev => [newNotebook, ...prev]);
+    
+    // Track notebook submission
+    if (user) {
+      trackEvent(user.id, 'notebook_submit', {
+        notebook_id: newNotebook.id,
+        category: newNotebook.category
+      });
+    }
     
     // Optionally refresh the page to get updated data
     if (typeof window !== 'undefined') {
@@ -450,38 +461,10 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
         background: '#0a0a0a'
       }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
-          <h2 style={{ 
-            fontSize: '2.5rem', 
-            textAlign: 'center', 
-            margin: '0 0 3rem 0',
-            color: '#ffffff',
-            fontWeight: '700'
-          }}>
-            Featured <span style={{ color: '#00ff88' }}>Projects</span>
-          </h2>
+          {/* Personalized Recommendations */}
+          <PersonalizedRecommendations limit={6} />
           
-          {loading ? (
-            <div style={{ textAlign: 'center', padding: '2rem' }}>
-              <p style={{ color: '#e2e8f0' }}>Loading featured projects...</p>
-            </div>
-          ) : error ? (
-            <div style={{ textAlign: 'center', padding: '2rem', color: '#dc3545' }}>
-              <p>{error}</p>
-            </div>
-          ) : (
-            <div style={{ 
-              display: 'grid', 
-              gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', 
-              gap: '2rem',
-              marginBottom: '3rem'
-            }}>
-              {featuredNotebooks.map(notebook => (
-                <ProjectCard key={notebook.id} notebook={notebook} />
-              ))}
-            </div>
-          )}
-          
-          <div style={{ textAlign: 'center' }}>
+          <div style={{ textAlign: 'center', margin: '3rem 0' }}>
             <button 
               onClick={() => window.location.href = '/browse'}
               style={{
@@ -509,6 +492,55 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
               View All Projects
             </button>
           </div>
+        </div>
+      </section>
+      
+      {/* Featured Collections */}
+      <section style={{ 
+        padding: '6rem 0',
+        background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)'
+      }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
+          <FeaturedCollections />
+        </div>
+      </section>
+      
+      {/* Traditional Featured Projects */}
+      <section style={{ 
+        padding: '6rem 0',
+        background: '#0a0a0a'
+      }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
+          <h2 style={{ 
+            fontSize: '2.5rem', 
+            textAlign: 'center', 
+            margin: '0 0 3rem 0',
+            color: '#ffffff',
+            fontWeight: '700'
+          }}>
+            Featured <span style={{ color: '#00ff88' }}>Projects</span>
+          </h2>
+          
+          {loading ? (
+            <div style={{ textAlign: 'center', padding: '2rem' }}>
+              <p style={{ color: '#e2e8f0' }}>Loading featured projects...</p>
+            </div>
+          ) : error ? (
+            <div style={{ textAlign: 'center', padding: '2rem', color: '#dc3545' }}>
+              <p>{error}</p>
+            </div>
+          ) : (
+            <div style={{ 
+              display: 'grid', 
+              gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', 
+              gap: '2rem',
+              marginBottom: '3rem'
+            }}>
+              {featuredNotebooks.slice(0, 3).map(notebook => (
+                <ProjectCard key={notebook.id} notebook={notebook} />
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
