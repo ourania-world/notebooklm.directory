@@ -6,6 +6,7 @@ export default function AudioPlayer({ audioUrl, title = "Audio Overview" }) {
   const [duration, setDuration] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [isLoaded, setIsLoaded] = useState(false);
   const audioRef = useRef(null);
 
   // Construct the proper audio URL
@@ -33,12 +34,14 @@ export default function AudioPlayer({ audioUrl, title = "Audio Overview" }) {
     const handleLoadStart = () => setLoading(true);
     const handleCanPlay = () => {
       setLoading(false);
+      setIsLoaded(true);
       setError(null);
     };
     const handleError = (e) => {
       setLoading(false);
+      setIsLoaded(false);
       setError('Failed to load audio');
-      console.error('Audio error:', e);
+      console.error('Audio error:', e.target?.error || e);
     };
     const handleEnded = () => setIsPlaying(false);
 
@@ -140,9 +143,9 @@ export default function AudioPlayer({ audioUrl, title = "Audio Overview" }) {
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
         <button
           onClick={togglePlayPause}
-          disabled={loading || error}
+          disabled={loading || error || !isLoaded}
           style={{
-            background: loading || error ? '#6c757d' : '#667eea',
+            background: loading || error || !isLoaded ? '#6c757d' : '#667eea',
             color: 'white',
             border: 'none',
             borderRadius: '50%',
@@ -151,21 +154,22 @@ export default function AudioPlayer({ audioUrl, title = "Audio Overview" }) {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            cursor: loading || error ? 'not-allowed' : 'pointer',
+            cursor: loading || error || !isLoaded ? 'not-allowed' : 'pointer',
             fontSize: '1.2rem'
           }}
         >
-          {loading ? '⏳' : error ? '❌' : isPlaying ? '⏸️' : '▶️'}
+          {loading ? '⏳' : error ? '❌' : !isLoaded ? '⏸️' : isPlaying ? '⏸️' : '▶️'}
         </button>
 
         <div style={{ flex: 1 }}>
           <div
             onClick={handleSeek}
+            disabled={!isLoaded || loading || error}
             style={{
               background: '#e9ecef',
               height: '6px',
               borderRadius: '3px',
-              cursor: 'pointer',
+              cursor: !isLoaded || loading || error ? 'not-allowed' : 'pointer',
               position: 'relative',
               marginBottom: '0.5rem'
             }}
