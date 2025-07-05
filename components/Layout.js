@@ -103,7 +103,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                 letterSpacing: '1px',
                 fontFamily: 'monospace'
               }}>NLM_D</span>
-              NotebookLM Directory
+              Efficient by Design
             </Link>
             
             <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>

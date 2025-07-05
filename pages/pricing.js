@@ -12,15 +12,15 @@ export default function Pricing() {
       name: 'Explorer',
       price: 0,
       period: 'Forever Free',
-      description: 'Perfect for getting started with NotebookLM discovery',
+      description: 'Sustainable Discovery for All - democratizing access to responsible tooling',
       features: [
-        'Browse 50,000+ public notebooks',
-        'Basic search and filtering',
-        'Save up to 10 notebooks',
-        'Community access',
-        'Mobile app access'
+        'Access to resource-efficient platform',
+        'Browse curated notebook collection',
+        'Basic sustainable search features',
+        'Community access to responsible research',
+        'Built on 100% renewable-powered infrastructure'
       ],
-      cta: 'Get Started Free',
+      cta: 'Start Building, Sustainably',
       popular: false
     },
     {
@@ -28,18 +28,18 @@ export default function Pricing() {
       name: 'Professional',
       price: 29,
       period: 'per month',
-      description: 'For researchers and professionals who need advanced features',
+      description: 'Accelerate Your Impact, Measure Your Footprint - for responsible professionals',
       features: [
         'Everything in Explorer',
-        'Unlimited saved notebooks',
-        'Advanced AI-powered search',
-        'Premium notebook collections',
-        'Priority customer support',
-        'API access (10k requests/month)',
-        'Export to multiple formats',
-        'Custom tags and organization'
+        'Computational Footprint Dashboard',
+        'Advanced resource-efficient search',
+        'Unlimited sustainable storage',
+        'Performance optimization metrics',
+        'Priority support from green-tech experts',
+        'API access with efficiency monitoring',
+        'ESG-ready impact reporting'
       ],
-      cta: 'Start Free Trial',
+      cta: 'Go Pro & Measure Your Impact',
       popular: true
     },
     {
@@ -47,18 +47,18 @@ export default function Pricing() {
       name: 'Enterprise',
       price: 99,
       period: 'per month',
-      description: 'For teams and organizations scaling AI research',
+      description: 'Scale Your Innovation, Achieve Your ESG Goals - for responsible organizations',
       features: [
         'Everything in Professional',
-        'Team collaboration tools',
-        'Unlimited API access',
-        'Custom integrations',
-        'Dedicated account manager',
-        'SSO and advanced security',
-        'Custom crawler configurations',
-        'White-label options'
+        'Enterprise-grade sustainability reporting',
+        'Team carbon footprint aggregation',
+        'Custom ESG dashboard integration',
+        'Dedicated sustainability consultant',
+        'Carbon offset contribution options',
+        'Advanced security with green compliance',
+        'White-label sustainable platform'
       ],
-      cta: 'Contact Sales',
+      cta: 'Equip Your Team, Report Your Impact',
       popular: false
     }
   ]
@@ -98,7 +98,9 @@ export default function Pricing() {
               maxWidth: '600px',
               margin: '0 auto'
             }}>
-              Support our mission to democratize AI research. Launched July 4th, 2025 🇺🇸 - Help us build something amazing!
+              Where environmental consciousness meets engineering excellence. Choose the plan that 
+              aligns your professional tools with your values - superior performance through 
+              sustainable design.
             </p>
           </div>
 
@@ -285,37 +287,41 @@ export default function Pricing() {
             }}>
               <div>
                 <h3 style={{ color: '#00ff88', marginBottom: '0.5rem' }}>
-                  How does the crawler work?
+                  How does resource efficiency improve performance?
                 </h3>
                 <p style={{ color: '#e2e8f0', fontSize: '0.9rem' }}>
-                  Our AI-powered crawlers continuously scan GitHub, academic repositories, and public NotebookLM shares to discover new projects. We add thousands of notebooks daily.
+                  Our obsessive focus on computational efficiency means faster query responses, 
+                  lower latency, and more reliable uptime. Sustainable architecture IS superior architecture.
                 </p>
               </div>
               
               <div>
                 <h3 style={{ color: '#00ff88', marginBottom: '0.5rem' }}>
-                  Can I cancel anytime?
+                  What's included in the Footprint Dashboard?
                 </h3>
                 <p style={{ color: '#e2e8f0', fontSize: '0.9rem' }}>
-                  Yes! Cancel your subscription at any time. You'll continue to have access until the end of your billing period.
+                  Real-time estimates of your computational carbon footprint, energy consumption metrics, 
+                  and ESG-ready reports for grant applications and corporate sustainability disclosures.
                 </p>
               </div>
               
               <div>
                 <h3 style={{ color: '#00ff88', marginBottom: '0.5rem' }}>
-                  What's included in API access?
+                  How do you verify sustainability claims?
                 </h3>
                 <p style={{ color: '#e2e8f0', fontSize: '0.9rem' }}>
-                  Full REST API access to search, filter, and retrieve notebook metadata. Perfect for building integrations or custom applications.
+                  Radical transparency through public sustainability dashboards, third-party certifications, 
+                  and verifiable metrics. We provide the data you need to trust our environmental claims.
                 </p>
               </div>
               
               <div>
                 <h3 style={{ color: '#00ff88', marginBottom: '0.5rem' }}>
-                  Do you offer team discounts?
+                  Why choose sustainable over conventional platforms?
                 </h3>
                 <p style={{ color: '#e2e8f0', fontSize: '0.9rem' }}>
-                  Yes! Contact our sales team for volume discounts on 5+ seats. Enterprise plans include team collaboration features.
+                  Because sustainable platforms perform better. Our resource-efficient design delivers 
+                  faster results, lower costs, and better reliability while aligning with your professional values.
                 </p>
               </div>
             </div>

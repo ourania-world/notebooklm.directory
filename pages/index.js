@@ -129,8 +129,8 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text'
           }}>
-            The Premier<br />
-            <span style={{ color: '#00ff88' }}>NotebookLM Directory</span>
+            Efficient by Design.<br />
+            <span style={{ color: '#00ff88' }}>Sustainable by Default.</span>
           </h1>
           
           <p style={{ 
@@ -142,7 +142,7 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
             color: '#e2e8f0',
             lineHeight: '1.6'
           }}>
-            Discover, explore, and contribute to the fastest-growing collection of NotebookLM projects. <strong style={{ color: '#00ff88' }}>Est. July 2025</strong> - Help us build the definitive NotebookLM community!
+            The intelligent notebook platform for professionals shaping a sustainable future. We deliver superior performance and collaboration through <strong style={{ color: '#00ff88' }}>resource-efficient design</strong>, empowering our community to innovate responsibly.
           </p>
           
           <div style={{ 
@@ -342,8 +342,9 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
               <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>🚀</div>
               <h3 style={{ color: '#00ff88', marginBottom: '1rem' }}>Our Mission</h3>
               <p style={{ color: '#e2e8f0' }}>
-                Democratize AI research while protecting our planet. Smart curation reduces 
-                computational waste by connecting researchers to existing solutions.
+                Transform AI research through sustainable discovery. Our resource-efficient platform 
+                prevents computational waste while accelerating innovation - proving that environmental 
+                responsibility drives technical excellence.
               </p>
             </div>
             
@@ -357,8 +358,9 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
               <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>🌱</div>
               <h3 style={{ color: '#00ff88', marginBottom: '1rem' }}>Environmental Impact</h3>
               <p style={{ color: '#e2e8f0' }}>
-                Every shared notebook prevents duplicate research, reducing AI training costs 
-                and computational carbon footprint. Knowledge sharing = planet saving.
+                Every shared notebook prevents ~10 duplicate experiments, saving massive computational 
+                resources. We're not asking researchers to sacrifice performance for sustainability - 
+                our efficient-by-design architecture delivers superior results while protecting Earth.
               </p>
             </div>
             
@@ -372,8 +374,9 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
               <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>💡</div>
               <h3 style={{ color: '#00ff88', marginBottom: '1rem' }}>Community Driven</h3>
               <p style={{ color: '#e2e8f0' }}>
-                Built by researchers, for researchers. Every shared project accelerates 
-                discovery while reducing redundant computational work worldwide.
+                Join the movement where sustainability equals performance. Our obsessive focus on 
+                resource efficiency is why we deliver faster results, lower costs, and better 
+                collaboration - making responsible research the easiest choice.
               </p>
             </div>
           </div>
@@ -404,8 +407,9 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
               margin: '0 0 2rem 0',
               lineHeight: '1.6'
             }}>
-              Your support helps us build the world's most comprehensive, environmentally-conscious 
-              research directory. Together, we're reducing AI waste while accelerating discovery!
+              Support the platform where environmental consciousness meets engineering excellence. 
+              Every subscription helps us build more efficient infrastructure, proving that 
+              sustainable technology delivers superior performance.
             </p>
             <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
               <button

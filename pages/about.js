@@ -25,9 +25,10 @@ export default function About() {
           color: '#e2e8f0'
         }}>
           <p>
-            NotebookLM Directory launched in July 2025 as the world's most comprehensive, environmentally-conscious 
-            collection of NotebookLM projects. Our mission is to democratize AI research while minimizing computational 
-            waste through intelligent curation and knowledge sharing.
+            NotebookLM Directory launched in July 2025 with a revolutionary approach: proving that environmental 
+            sustainability and technical excellence are not just compatible, but mutually reinforcing. We've built 
+            the world's most efficient notebook discovery platform, where resource-conscious design delivers 
+            superior performance.
           </p>
           
           <h2 style={{ 
@@ -51,12 +52,13 @@ export default function About() {
             color: '#ffffff',
             fontWeight: '600'
           }}>
-            Our Environmental Mission
+            Efficient by Design, Sustainable by Default
           </h2>
           
           <p>
-            Every shared NotebookLM project prevents duplicate research, reducing computational costs and carbon footprint. 
-            By building the world's most comprehensive directory, we're creating a more sustainable AI ecosystem:
+            Our core positioning bridges technical credibility with environmental responsibility. We don't ask 
+            researchers to sacrifice performance for sustainability - our resource-efficient architecture IS 
+            why we deliver superior results:
           </p>
           
           <ul style={{ 
@@ -64,10 +66,10 @@ export default function About() {
             paddingLeft: '2rem',
             color: '#e2e8f0'
           }}>
-            <li>Reduce redundant AI training through knowledge sharing</li>
-            <li>Minimize computational waste via smart curation</li>
-            <li>Accelerate discovery while protecting our planet</li>
-            <li>Build the world's most sustainable AI research community</li>
+            <li><strong>Performance through Efficiency:</strong> Our low energy consumption proves superior architecture</li>
+            <li><strong>Cost Reduction:</strong> Resource efficiency translates to direct financial savings</li>
+            <li><strong>Superior Engineering:</strong> Sustainable design principles create better MLOps</li>
+            <li><strong>Transparent Impact:</strong> Verifiable metrics build trust through radical honesty</li>
           </ul>
           
           <h2 style={{ 
@@ -76,13 +78,15 @@ export default function About() {
             color: '#ffffff',
             fontWeight: '600'
           }}>
-            Environmental Impact
+            The Psychology of Sustainable Professional Values
           </h2>
           
           <p>
-            AI research consumes enormous computational resources. By connecting researchers to existing solutions 
-            and methodologies, we're reducing the need for redundant experiments and training cycles. Every shared 
-            notebook represents saved energy, reduced carbon emissions, and accelerated scientific progress.
+            Modern tech professionals are seeking to align their work with their values. For our audience - 
+            highly skilled data scientists and researchers - sustainability isn't a "feel-good" add-on; 
+            it's a marker of forward-thinking, well-managed, and ethically sound practice. We appeal to 
+            three key drivers: altruism (doing good), self-interest (better performance), and identity 
+            (using responsible tools).
           </p>
           
           <div style={{
@@ -93,13 +97,13 @@ export default function About() {
             margin: '2rem 0'
           }}>
             <h4 style={{ color: '#00ff88', margin: '0 0 1rem 0' }}>
-              🌱 Sustainability Stats
+              🌱 Resource Efficiency = Superior Performance
             </h4>
             <ul style={{ margin: 0, paddingLeft: '1.5rem', color: '#e2e8f0' }}>
-              <li>Each shared project prevents ~10 duplicate research attempts</li>
-              <li>Estimated 40% reduction in redundant AI training cycles</li>
-              <li>Smart curation = smaller, more efficient knowledge databases</li>
-              <li>Community-driven quality control reduces computational waste</li>
+              <li><strong>Faster Results:</strong> Efficient architecture means your models train quicker</li>
+              <li><strong>Lower Costs:</strong> Resource optimization reduces monthly cloud computing bills</li>
+              <li><strong>Better Reliability:</strong> Sustainable systems are inherently more robust</li>
+              <li><strong>Professional Identity:</strong> Use tools that reflect your values and expertise</li>
             </ul>
           </div>
           

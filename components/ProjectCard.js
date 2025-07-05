@@ -114,7 +114,7 @@ export default function ProjectCard({ notebook }) {
           textTransform: 'uppercase',
           letterSpacing: '0.5px'
         }}>
-          {notebook.category}
+          {notebook.category} • Efficient
         </span>
       </div>
       
@@ -169,12 +169,12 @@ export default function ProjectCard({ notebook }) {
         }}>
           {notebook.view_count > 0 && (
             <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-              👁️ {notebook.view_count} views
+              ⚡ {notebook.view_count} efficient views
             </span>
           )}
           {notebook.save_count > 0 && (
             <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-              💾 {notebook.save_count} saves
+              🌱 {notebook.save_count} sustainable saves
             </span>
           )}
         </div>
