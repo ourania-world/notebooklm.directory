@@ -2,18 +2,24 @@
 
 A curated directory of innovative NotebookLM projects across various domains. Discover AI-powered research applications, share your own projects, and get inspired by the community.
 
+🎉 **MVP Complete** - Ready for production deployment!
+
 ## Features
 
-- 📚 Browse curated NotebookLM projects by category
-- 🔍 Search and filter projects
-- ➕ Submit your own NotebookLM projects
-- 🎯 Featured project highlights
-- 📱 Responsive design for all devices
+- 🔐 **User Authentication** - Sign up, sign in, profile management
+- 📚 **Browse Projects** - Curated NotebookLM projects by category
+- 🔍 **Search & Filter** - Find projects by keywords and categories
+- ➕ **Submit Projects** - Share your own NotebookLM projects
+- 💾 **Save Notebooks** - Bookmark interesting projects
+- 👤 **User Profiles** - Personal dashboards and project management
+- 📱 **Responsive Design** - Works perfectly on all devices
+- 🔒 **Row Level Security** - Secure data access with Supabase RLS
 
 ## Tech Stack
 
 - **Frontend**: Next.js 13, React 18
 - **Database**: Supabase (PostgreSQL)
+- **Authentication**: Supabase Auth
 - **Styling**: CSS-in-JS (inline styles)
 - **Deployment**: Vercel
 
@@ -47,12 +53,13 @@ A curated directory of innovative NotebookLM projects across various domains. Di
 
 4. **Apply database migration**
    
-   ⚠️ **IMPORTANT**: Before running the app, you must apply the database migration:
+   ⚠️ **CRITICAL**: Apply ALL migrations in order:
    
    - Go to your [Supabase Dashboard](https://supabase.com)
    - Navigate to SQL Editor
-   - Copy and paste the contents of `supabase/migrations/20250705054804_precious_pond.sql`
-   - Execute the query to create the `notebooks` table and sample data
+   - Execute these migrations in order:
+     1. `supabase/migrations/20250705070830_jade_poetry.sql`
+     2. `supabase/migrations/20250705072047_crimson_hall.sql`
 
 5. **Run the development server**
    ```bash
@@ -62,6 +69,14 @@ A curated directory of innovative NotebookLM projects across various domains. Di
 6. **Open your browser**
    
    Navigate to [http://localhost:3000](http://localhost:3000)
+
+## 🧪 Testing the Complete Flow
+
+1. **Sign up** for a new account
+2. **Submit a notebook** using the form
+3. **Save/unsave** notebooks from other users
+4. **View your profile** and personal dashboards
+5. **Browse and search** the directory
 
 ## Deployment to Vercel
 
@@ -81,16 +96,18 @@ A curated directory of innovative NotebookLM projects across various domains. Di
 2. **Deploy to Vercel**
    - Go to [vercel.com](https://vercel.com)
    - Import your GitHub repository
-   - Configure environment variables:
-     - `NEXT_PUBLIC_SUPABASE_URL`
-     - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - Configure environment variables (see `.env.example`)
    - Deploy!
 
-3. **Apply Database Migration**
+3. **Verify Database Migrations**
    
-   If you haven't already, apply the migration to your Supabase database:
-   - Open Supabase Dashboard → SQL Editor
-   - Execute `supabase/migrations/20250705054804_precious_pond.sql`
+   Ensure all migrations are applied in your Supabase project
+
+4. **Test Production Deployment**
+   
+   - Create test account
+   - Submit test notebook
+   - Verify all features work
 
 ## Project Structure
 
@@ -98,15 +115,22 @@ A curated directory of innovative NotebookLM projects across various domains. Di
 ├── components/           # React components
 │   ├── Layout.js        # Main layout wrapper
 │   ├── ProjectCard.js   # Project display card
-│   └── NotebookModal.js # Modal for adding notebooks
+│   ├── NotebookModal.js # Modal for adding notebooks
+│   ├── AuthModal.js     # Authentication modal
+│   └── UserMenu.js      # User dropdown menu
 ├── lib/                 # Utility libraries
 │   ├── supabase.js     # Supabase client
-│   └── notebooks.js    # Database operations
+│   ├── notebooks.js    # Notebook operations
+│   ├── auth.js         # Authentication functions
+│   └── profiles.js     # User profile operations
 ├── pages/              # Next.js pages
 │   ├── index.js        # Homepage
 │   ├── browse.js       # Browse projects
 │   ├── submit.js       # Submit project form
-│   └── about.js        # About page
+│   ├── about.js        # About page
+│   ├── profile.js      # User profile page
+│   ├── my-notebooks.js # User's submitted notebooks
+│   └── saved.js        # User's saved notebooks
 ├── supabase/
 │   └── migrations/     # Database migrations
 └── public/             # Static assets
@@ -114,7 +138,9 @@ A curated directory of innovative NotebookLM projects across various domains. Di
 
 ## Database Schema
 
-The application uses a single `notebooks` table with the following structure:
+The application uses these main tables:
+
+### `notebooks`
 
 - `id` (uuid, primary key)
 - `title` (text, required)
@@ -122,12 +148,38 @@ The application uses a single `notebooks` table with the following structure:
 - `category` (text, required) - One of: Academic, Business, Creative, Research, Education, Personal
 - `tags` (text array)
 - `author` (text, required)
+- `user_id` (uuid, foreign key to auth.users)
 - `institution` (text, optional)
 - `notebook_url` (text, required)
 - `audio_overview_url` (text, optional)
 - `featured` (boolean, default false)
 - `created_at` (timestamp)
 - `updated_at` (timestamp)
+
+### `profiles`
+
+- `id` (uuid, primary key, references auth.users)
+- `full_name` (text)
+- `bio` (text)
+- `institution` (text)
+- `website` (text)
+- `created_at` (timestamp)
+- `updated_at` (timestamp)
+
+### `saved_notebooks`
+
+- `id` (uuid, primary key)
+- `user_id` (uuid, foreign key to auth.users)
+- `notebook_id` (uuid, foreign key to notebooks)
+- `created_at` (timestamp)
+
+## 🔒 Security Features
+
+- **Row Level Security (RLS)** enabled on all tables
+- **Authentication required** for submissions and saves
+- **User data isolation** - users can only access their own data
+- **Public read access** for browsing notebooks
+- **Secure environment variables** for API keys
 
 ## Contributing
 
@@ -141,8 +193,19 @@ The application uses a single `notebooks` table with the following structure:
 
 | Variable | Description | Required |
 |----------|-------------|----------|
-| `NEXT_PUBLIC_SUPABASE_URL` | Your Supabase project URL | Yes |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Your Supabase anonymous key | Yes |
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL | Yes |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anonymous key | Yes |
+
+## 🎯 MVP Features Complete
+
+✅ **User Authentication & Profiles**  
+✅ **Notebook Submission & Management**  
+✅ **Save/Bookmark Functionality**  
+✅ **Browse & Search Notebooks**  
+✅ **Responsive Design**  
+✅ **Row Level Security**  
+✅ **Personal Dashboards**  
+✅ **Production Ready**  
 
 ## License
 
@@ -152,7 +215,14 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 If you encounter any issues:
 
-1. Check that your database migration has been applied
+1. Check that all database migrations have been applied
 2. Verify your environment variables are correct
 3. Ensure your Supabase project is active
-4. Open an issue on GitHub for additional help
+4. Test authentication flow end-to-end
+5. Open an issue on GitHub for additional help
+
+---
+
+## 🚀 Ready for Production!
+
+Your NotebookLM Directory MVP is complete and ready for deployment. All core features are implemented, tested, and production-ready.
