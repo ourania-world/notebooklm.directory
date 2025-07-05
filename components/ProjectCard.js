@@ -14,7 +14,9 @@ export default function ProjectCard({ notebook }) {
     const trackView = async () => {
       try {
         const currentUser = await getCurrentUser();
-        await trackNotebookView(currentUser?.id, notebook.id);
+        if (currentUser?.id) {
+          await trackNotebookView(currentUser.id, notebook.id);
+        }
       } catch (error) {
         console.warn('Failed to track view:', error);
       }

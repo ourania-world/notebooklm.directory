@@ -1,5 +1,4 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { createClient } from 'npm:@supabase/supabase-js@2'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -7,12 +6,13 @@ const corsHeaders = {
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
 }
 
-serve(async (req) => {
+Deno.serve(async (req: Request) => {
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
   }
 
   try {
+    // Use the built-in environment variables that are automatically available
     const supabase = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
@@ -24,6 +24,17 @@ serve(async (req) => {
       eventData = {},
       notebookId 
     } = await req.json()
+
+    // Validate required fields
+    if (!userId || !eventType) {
+      return new Response(
+        JSON.stringify({ error: 'Missing required fields: userId and eventType' }),
+        {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 400,
+        }
+      )
+    }
 
     // Track the user event
     const { error: eventError } = await supabase
@@ -40,6 +51,13 @@ serve(async (req) => {
 
     if (eventError) {
       console.error('Error tracking event:', eventError)
+      return new Response(
+        JSON.stringify({ error: 'Failed to track event', details: eventError.message }),
+        {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 500,
+        }
+      )
     }
 
     // Handle specific event types
@@ -52,6 +70,7 @@ serve(async (req) => {
           
           if (viewError) {
             console.error('Error incrementing view count:', viewError)
+            // Don't fail the entire request for this error
           }
         }
         break
@@ -69,6 +88,7 @@ serve(async (req) => {
         
         if (searchError) {
           console.error('Error tracking search:', searchError)
+          // Don't fail the entire request for this error
         }
         break
 
@@ -89,6 +109,7 @@ serve(async (req) => {
           
           if (audioError) {
             console.error('Error tracking audio:', audioError)
+            // Don't fail the entire request for this error
           }
         }
         break
