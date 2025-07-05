@@ -103,10 +103,20 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                 letterSpacing: '1px',
                 fontFamily: 'monospace'
               }}>NLM_D</span>
-              <span style={{ marginLeft: '0.5rem' }}>notebooklm.</span><span style={{ 
+              <span style={{ marginLeft: '0.5rem' }}>notebooklm.</span>
+              <span style={{ 
                 color: '#00ff88',
-                fontWeight: '700',
-                letterSpacing: '0.5px'
+                fontWeight: '800',
+                letterSpacing: '1px',
+                textShadow: '0 0 10px rgba(0, 255, 136, 0.7)',
+                background: 'linear-gradient(to right, #00ff88, #00e67a)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                fontSize: '1.1em',
+                textTransform: 'uppercase',
+                transform: 'translateY(-1px)',
+                display: 'inline-block'
               }}>directory</span>
             </Link>
             
