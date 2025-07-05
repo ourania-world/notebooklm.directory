@@ -25,9 +25,8 @@ export default function About() {
           color: '#e2e8f0'
         }}>
           <p>
-            NotebookLM Directory is a curated collection of innovative projects built with Google's NotebookLM platform. 
-            Our mission is to showcase the incredible potential of AI-assisted research and inspire new applications 
-            across diverse domains.
+            NotebookLM Directory launched on Independence Day 2025 🇺🇸 as a curated collection of innovative projects built with Google's NotebookLM platform. 
+            Our mission is to democratize access to AI-assisted research and inspire new applications across diverse domains.
           </p>
           
           <h2 style={{ 
@@ -51,12 +50,12 @@ export default function About() {
             color: '#ffffff',
             fontWeight: '600'
           }}>
-            Our Vision
+            Our Independence Day Vision
           </h2>
           
           <p>
-            We believe that AI-assisted research tools like NotebookLM can democratize access to deep analysis and 
-            insight generation. By sharing real-world examples and use cases, we aim to:
+            Launched on July 4th, 2025, we believe that AI-assisted research tools like NotebookLM should be free and accessible to all. 
+            By building the world's most comprehensive directory, we aim to:
           </p>
           
           <ul style={{ 
@@ -65,9 +64,9 @@ export default function About() {
             color: '#e2e8f0'
           }}>
             <li>Inspire researchers, students, and professionals to explore new applications</li>
-            <li>Provide templates and methodologies for effective AI-assisted research</li>
-            <li>Build a community of practice around innovative research techniques</li>
-            <li>Showcase the breadth of domains where NotebookLM can add value</li>
+            <li>Democratize access to advanced research methodologies</li>
+            <li>Build the world's largest community of AI-assisted researchers</li>
+            <li>Celebrate the independence of knowledge from traditional barriers</li>
           </ul>
           
           <h2 style={{ 

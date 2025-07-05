@@ -129,7 +129,7 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text'
           }}>
-            The World's Largest<br />
+            The Premier<br />
             <span style={{ color: '#00ff88' }}>NotebookLM Directory</span>
           </h1>
           
@@ -142,7 +142,7 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
             color: '#e2e8f0',
             lineHeight: '1.6'
           }}>
-            Discover, explore, and contribute to the world's most comprehensive collection of NotebookLM projects. <strong style={{ color: '#00ff88' }}>Over 50,000+ notebooks</strong> and growing daily through our advanced AI crawling system.
+            Discover, explore, and contribute to the fastest-growing collection of NotebookLM projects. <strong style={{ color: '#00ff88' }}>Launched July 4th, 2025 🇺🇸</strong> - Help us build the definitive NotebookLM community!
           </p>
           
           <div style={{ 
@@ -150,12 +150,12 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
             fontSize: '1rem',
             color: '#00ff88'
           }}>
-            <a href="#browse" style={{ 
+            <a href="#support" style={{ 
               color: '#00ff88', 
               textDecoration: 'underline',
               textUnderlineOffset: '4px'
             }}>
-              BROWSE 50,000+ NOTEBOOKS NOW
+              SUPPORT OUR GROWTH 🇺🇸
             </a>
           </div>
           
@@ -208,7 +208,7 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
             </button>
           </div>
           
-          {/* Stats Dashboard Preview */}
+          {/* Launch Support Section */}
           <div style={{
             background: 'rgba(0, 0, 0, 0.4)',
             backdropFilter: 'blur(20px)',
@@ -220,23 +220,80 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
             position: 'relative'
           }}>
             <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
-              gap: '2rem',
               textAlign: 'center'
             }}>
-              <div>
-                <div style={{ 
-                  fontSize: '2.5rem', 
-                  fontWeight: '700', 
-                  color: '#00ff88',
-                  fontFamily: 'monospace'
-                }}>
-                  $3,650,500,150
-                </div>
-                <div style={{ color: '#00ff88', fontSize: '0.9rem', marginTop: '0.5rem' }}>
-                  in Research Value Tracked
-                </div>
+              <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🇺🇸</div>
+              <h3 style={{ 
+                color: '#ffffff', 
+                fontSize: '1.5rem', 
+                margin: '0 0 1rem 0',
+                fontWeight: '600'
+              }}>
+                Launched Independence Day 2025
+              </h3>
+              <p style={{ 
+                color: '#e2e8f0', 
+                fontSize: '1.1rem',
+                margin: '0 0 2rem 0',
+                lineHeight: '1.6'
+              }}>
+                We're building the world's most comprehensive NotebookLM directory. 
+                Help us grow this community-driven platform and democratize AI-assisted research!
+              </p>
+              <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+                <button
+                  onClick={() => window.location.href = '/pricing'}
+                  style={{
+                    background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
+                    color: '#0a0a0a',
+                    border: 'none',
+                    padding: '1rem 2rem',
+                    borderRadius: '12px',
+                    fontWeight: '700',
+                    cursor: 'pointer',
+                    fontSize: '1rem',
+                    transition: 'all 0.3s ease',
+                    boxShadow: '0 8px 32px rgba(0, 255, 136, 0.3)',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.5px'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.transform = 'translateY(-2px)';
+                    e.target.style.boxShadow = '0 12px 40px rgba(0, 255, 136, 0.4)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.transform = 'translateY(0)';
+                    e.target.style.boxShadow = '0 8px 32px rgba(0, 255, 136, 0.3)';
+                  }}
+                >
+                  💳 Support Our Mission
+                </button>
+                <button
+                  onClick={() => setIsModalOpen(true)}
+                  style={{
+                    background: 'transparent',
+                    color: '#00ff88',
+                    border: '1px solid rgba(0, 255, 136, 0.3)',
+                    padding: '1rem 2rem',
+                    borderRadius: '12px',
+                    fontWeight: '600',
+                    cursor: 'pointer',
+                    fontSize: '1rem',
+                    transition: 'all 0.3s ease',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.5px'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.background = 'rgba(0, 255, 136, 0.1)';
+                    e.target.style.borderColor = '#00ff88';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.background = 'transparent';
+                    e.target.style.borderColor = 'rgba(0, 255, 136, 0.3)';
+                  }}
+                >
+                  📚 Contribute Content
+                </button>
               </div>
             </div>
           </div>
@@ -244,7 +301,7 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
       </section>
       
       {/* Testimonials Section */}
-      <section id="proof" style={{ 
+      <section id="support" style={{ 
         background: '#0a0a0a',
         padding: '6rem 0',
         borderTop: '1px solid rgba(0, 255, 136, 0.1)'
@@ -257,28 +314,71 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
               color: '#ffffff',
               fontWeight: '700'
             }}>
-              Trusted by <span style={{ color: '#00ff88' }}>Leading Institutions</span>
+              Building the Future of <span style={{ color: '#00ff88' }}>AI Research</span>
             </h2>
+            <p style={{ 
+              color: '#e2e8f0', 
+              fontSize: '1.2rem',
+              margin: '0 0 3rem 0'
+            }}>
+              Join us in creating the world's most comprehensive NotebookLM directory
+            </p>
           </div>
           
-          {/* Sponsor Logos */}
+          {/* Mission Statement */}
           <div style={{ 
-            display: 'flex', 
-            justifyContent: 'center', 
-            alignItems: 'center',
-            gap: '4rem',
-            flexWrap: 'wrap',
-            marginBottom: '4rem',
-            opacity: 0.8
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+            gap: '2rem',
+            marginBottom: '3rem'
           }}>
-            <div style={{ color: '#ffffff', fontWeight: '600', fontSize: '1.2rem' }}>STANFORD</div>
-            <div style={{ color: '#ffffff', fontWeight: '600', fontSize: '1.2rem' }}>MIT</div>
-            <div style={{ color: '#ffffff', fontWeight: '600', fontSize: '1.2rem' }}>HARVARD</div>
-            <div style={{ color: '#ffffff', fontWeight: '600', fontSize: '1.2rem' }}>OPENAI</div>
-            <div style={{ color: '#ffffff', fontWeight: '600', fontSize: '1.2rem' }}>GOOGLE</div>
+            <div style={{
+              background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
+              padding: '2rem',
+              borderRadius: '16px',
+              border: '1px solid rgba(0, 255, 136, 0.2)',
+              textAlign: 'center'
+            }}>
+              <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>🚀</div>
+              <h3 style={{ color: '#00ff88', marginBottom: '1rem' }}>Our Mission</h3>
+              <p style={{ color: '#e2e8f0' }}>
+                Democratize access to AI-assisted research by building the world's largest, 
+                most comprehensive directory of NotebookLM projects and methodologies.
+              </p>
+            </div>
+            
+            <div style={{
+              background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
+              padding: '2rem',
+              borderRadius: '16px',
+              border: '1px solid rgba(0, 255, 136, 0.2)',
+              textAlign: 'center'
+            }}>
+              <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>🇺🇸</div>
+              <h3 style={{ color: '#00ff88', marginBottom: '1rem' }}>Independence Day Launch</h3>
+              <p style={{ color: '#e2e8f0' }}>
+                Launched July 4th, 2025 to celebrate the independence of knowledge and 
+                the democratization of advanced research tools for everyone.
+              </p>
+            </div>
+            
+            <div style={{
+              background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
+              padding: '2rem',
+              borderRadius: '16px',
+              border: '1px solid rgba(0, 255, 136, 0.2)',
+              textAlign: 'center'
+            }}>
+              <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>💡</div>
+              <h3 style={{ color: '#00ff88', marginBottom: '1rem' }}>Community Driven</h3>
+              <p style={{ color: '#e2e8f0' }}>
+                Built by researchers, for researchers. Every contribution helps grow 
+                our collective knowledge and advances the field of AI-assisted research.
+              </p>
+            </div>
           </div>
           
-          {/* Main Testimonial */}
+          {/* Support CTA */}
           <div style={{
             background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
             padding: '3rem',
@@ -286,35 +386,81 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
             border: '1px solid rgba(0, 255, 136, 0.2)',
             maxWidth: '900px',
             margin: '0 auto',
-            position: 'relative'
+            position: 'relative',
+            textAlign: 'center'
           }}>
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '2rem' }}>
-              <div style={{
-                width: '80px',
-                height: '80px',
-                borderRadius: '50%',
-                background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
-                flexShrink: 0
-              }} />
-              <div style={{ flex: 1 }}>
-                <p style={{ 
-                  color: '#ffffff', 
-                  fontSize: '1.3rem',
-                  lineHeight: '1.6',
-                  margin: '0 0 1.5rem 0',
-                  fontStyle: 'italic'
-                }}>
-                  "In just 6 months, NotebookLM Directory allowed us to scale our research output by 43% and discover over 100% more relevant studies for our meta-analysis projects."
-                </p>
-                <div>
-                  <div style={{ color: '#ffffff', fontWeight: '700', fontSize: '1.1rem' }}>
-                    DR. SARAH CHEN
-                  </div>
-                  <div style={{ color: '#00ff88', fontSize: '0.9rem', marginTop: '0.25rem' }}>
-                    Research Team Lead
-                  </div>
-                </div>
-              </div>
+            <div style={{ fontSize: '3rem', marginBottom: '1.5rem' }}>🤝</div>
+            <h3 style={{ 
+              color: '#ffffff', 
+              fontSize: '2rem', 
+              margin: '0 0 1rem 0',
+              fontWeight: '700'
+            }}>
+              Help Us Build Something Amazing
+            </h3>
+            <p style={{ 
+              color: '#e2e8f0', 
+              fontSize: '1.2rem',
+              margin: '0 0 2rem 0',
+              lineHeight: '1.6'
+            }}>
+              Your support helps us build advanced crawling systems, maintain high-quality curation, 
+              and provide this platform free to researchers worldwide. Every contribution matters!
+            </p>
+            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+              <button
+                onClick={() => window.location.href = '/pricing'}
+                style={{
+                  background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
+                  color: '#0a0a0a',
+                  border: 'none',
+                  padding: '1rem 2rem',
+                  borderRadius: '12px',
+                  fontWeight: '700',
+                  cursor: 'pointer',
+                  fontSize: '1.1rem',
+                  transition: 'all 0.3s ease',
+                  boxShadow: '0 8px 32px rgba(0, 255, 136, 0.3)',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.transform = 'translateY(-2px)';
+                  e.target.style.boxShadow = '0 12px 40px rgba(0, 255, 136, 0.4)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.transform = 'translateY(0)';
+                  e.target.style.boxShadow = '0 8px 32px rgba(0, 255, 136, 0.3)';
+                }}
+              >
+                💳 Support Our Growth
+              </button>
+              <button
+                onClick={() => window.location.href = '/browse'}
+                style={{
+                  background: 'transparent',
+                  color: '#00ff88',
+                  border: '1px solid rgba(0, 255, 136, 0.3)',
+                  padding: '1rem 2rem',
+                  borderRadius: '12px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  fontSize: '1.1rem',
+                  transition: 'all 0.3s ease',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.background = 'rgba(0, 255, 136, 0.1)';
+                  e.target.style.borderColor = '#00ff88';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.background = 'transparent';
+                  e.target.style.borderColor = 'rgba(0, 255, 136, 0.3)';
+                }}
+              >
+                🔍 Explore Directory
+              </button>
             </div>
           </div>
         </div>
@@ -372,9 +518,17 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
               color: '#ffffff',
               fontWeight: '700'
             }}>
-              NotebookLM Directory requires <span style={{ color: '#00ff88' }}>zero change</span><br />
-              to your research workflow
+              Join the <span style={{ color: '#00ff88' }}>Independence</span> of Knowledge<br />
+              Movement 🇺🇸
             </h2>
+            <p style={{ 
+              color: '#e2e8f0', 
+              fontSize: '1.2rem',
+              textAlign: 'center',
+              margin: '0 0 3rem 0'
+            }}>
+              Launched July 4th, 2025 - Democratizing AI research for everyone
+            </p>
           </div>
           
           <div style={{
@@ -393,10 +547,10 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
                   lineHeight: '1.6',
                   marginBottom: '1rem'
                 }}>
-                  You browse our directory.<br />
-                  Your research accuracy skyrockets.<br />
-                  Your methodology improves.<br />
-                  Your insights scale.
+                  🔍 Discover innovative NotebookLM projects<br />
+                  📚 Learn from diverse methodologies<br />
+                  🤝 Connect with fellow researchers<br />
+                  🚀 Accelerate your research impact
                 </div>
               </div>
               <div style={{
@@ -415,9 +569,9 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
                   fontSize: '3rem',
                   textAlign: 'center'
                 }}>
-                  📊<br />
+                  🇺🇸<br />
                   <div style={{ fontSize: '0.8rem', marginTop: '0.5rem' }}>
-                    Analytics
+                    Freedom
                   </div>
                 </div>
               </div>
@@ -439,18 +593,18 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
             color: '#ffffff',
             fontWeight: '700'
           }}>
-            🎧 Listen to the <span style={{ color: '#00ff88' }}>Vision</span>
+            🎧 Listen to Our <span style={{ color: '#00ff88' }}>Vision</span>
           </h2>
           <p style={{ 
             color: '#e2e8f0', 
             margin: '0 0 2rem 0',
             fontSize: '1.1rem'
           }}>
-            Hear our AI-generated overview of how NotebookLM is transforming research and creativity
+            Hear our AI-generated overview of how we're building the future of AI-assisted research
           </p>
           <AudioPlayer 
             audioUrl="/overview.mp3"
-            title="Listen to the Vision"
+            title="Our Independence Day Vision"
           />
         </div>
       </section>

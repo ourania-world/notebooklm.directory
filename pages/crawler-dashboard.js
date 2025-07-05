@@ -98,10 +98,10 @@ export default function CrawlerDashboard() {
                 color: '#00ff88',
                 marginBottom: '0.5rem'
               }}>
-                {stats?.totalDiscovered?.toLocaleString() || '50,000+'}
+                {stats?.totalDiscovered?.toLocaleString() || 'Growing'}
               </div>
               <div style={{ color: '#e2e8f0', fontSize: '1.1rem' }}>
-                Total Notebooks Discovered
+                Notebooks in Directory
               </div>
             </div>
 
@@ -118,10 +118,10 @@ export default function CrawlerDashboard() {
                 color: '#00ff88',
                 marginBottom: '0.5rem'
               }}>
-                {stats?.dailyDiscoveries || '500+'}
+                {stats?.dailyDiscoveries || 'Daily'}
               </div>
               <div style={{ color: '#e2e8f0', fontSize: '1.1rem' }}>
-                New Discoveries Daily
+                New Discoveries
               </div>
             </div>
 

@@ -98,7 +98,7 @@ export default function Pricing() {
               maxWidth: '600px',
               margin: '0 auto'
             }}>
-              Join thousands of researchers, students, and professionals discovering the power of AI-assisted research
+              Support our mission to democratize AI research. Launched July 4th, 2025 🇺🇸 - Help us build something amazing!
             </p>
           </div>
 
