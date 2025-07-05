@@ -494,27 +494,20 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
               color: '#ffffff',
               fontWeight: '700'
             }}>
-              The <span style={{ color: '#00ff88' }}>Premier Platform</span> for<br />
-              AI Research Discovery & Collaboration<br />
-              Built by <span style={{ color: '#00ff88' }}>Researchers, for Researchers</span>
+              Building the Future of <span style={{ color: '#00ff88' }}>Sustainable</span><br />
+              AI Research Discovery<br />
+              <span style={{ color: '#00ff88' }}>One Notebook at a Time</span>
             </h2>
             
-            <div style={{
-              display: 'inline-block',
-              background: 'rgba(0, 255, 136, 0.1)',
-              border: '1px solid rgba(0, 255, 136, 0.3)',
-              borderRadius: '12px',
-              padding: '1.5rem 2rem',
+            <p style={{ 
+              color: '#e2e8f0', 
               fontSize: '1.2rem',
-              color: '#00ff88',
-              fontFamily: 'monospace',
-              fontWeight: '700'
+              margin: '0 0 2rem 0',
+              textAlign: 'center'
             }}>
-              $3,650,500,150
-              <div style={{ fontSize: '0.9rem', marginTop: '0.5rem', color: '#ffffff' }}>
-                in Research Value Discovered
-              </div>
-            </div>
+              Every shared notebook prevents redundant research, saves computational resources, 
+              and accelerates discovery for the entire AI community.
+            </p>
           </div>
         </div>
       </section>
