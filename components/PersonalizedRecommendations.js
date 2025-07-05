@@ -14,30 +14,48 @@ export default function PersonalizedRecommendations({ limit = 6 }) {
         const currentUser = await getCurrentUser()
         setUser(currentUser)
 
-        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-        const userId = currentUser?.id || null
+        // For now, use the regular notebooks API to get popular content
+        // This avoids the Edge Function dependency until it's deployed
+        const { getNotebooks } = await import('../lib/notebooks')
         
-        const response = await fetch(
-          `${supabaseUrl}/functions/v1/get-personalized-recommendations?userId=${userId}&limit=${limit}`,
-          {
-            headers: {
-              'Authorization': `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`,
-              'Content-Type': 'application/json'
-            }
+        if (currentUser?.id) {
+          // Get user's saved notebooks to understand preferences
+          const { getSavedNotebooks } = await import('../lib/profiles')
+          const savedNotebooks = await getSavedNotebooks(currentUser.id)
+          
+          if (savedNotebooks.length > 0) {
+            // Get notebooks from similar categories
+            const categories = [...new Set(savedNotebooks.map(n => n.category))]
+            const categoryNotebooks = await getNotebooks({ 
+              category: categories[0] // Use first preferred category
+            })
+            
+            setRecommendations(categoryNotebooks.slice(0, limit))
+            setRecommendationType('personalized')
+          } else {
+            // New user - show popular notebooks
+            const popularNotebooks = await getNotebooks()
+            setRecommendations(popularNotebooks.slice(0, limit))
+            setRecommendationType('popular')
           }
-        )
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch recommendations')
+        } else {
+          // Anonymous user - show popular notebooks
+          const popularNotebooks = await getNotebooks()
+          setRecommendations(popularNotebooks.slice(0, limit))
+          setRecommendationType('popular')
         }
-
-        const data = await response.json()
-        setRecommendations(data.recommendations || [])
-        setRecommendationType(data.type || 'popular')
       } catch (error) {
         console.error('Error loading recommendations:', error)
-        // Fallback to empty array
-        setRecommendations([])
+        // Fallback to basic notebooks
+        try {
+          const { getNotebooks } = await import('../lib/notebooks')
+          const fallbackNotebooks = await getNotebooks()
+          setRecommendations(fallbackNotebooks.slice(0, limit))
+          setRecommendationType('popular')
+        } catch (fallbackError) {
+          console.error('Fallback also failed:', fallbackError)
+          setRecommendations([])
+        }
       } finally {
         setLoading(false)
       }
