@@ -3,6 +3,7 @@ import Layout from '../components/Layout';
 import ProjectCard from '../components/ProjectCard';
 import NotebookModal from '../components/NotebookModal';
 import AudioPlayer from '../components/AudioPlayer';
+import SearchBar from '../components/SearchBar';
 import { getCurrentUser } from '../lib/auth';
 import { getNotebooks } from '../lib/notebooks';
 
@@ -145,6 +146,19 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
             }}>
               CLICK HERE FOR PROOF
             </a>
+          </div>
+          
+          <div style={{ 
+            display: 'flex', 
+            gap: '1rem', 
+            justifyContent: 'center', 
+            flexWrap: 'wrap',
+            marginBottom: '3rem'
+          }}>
+            <SearchBar 
+              onSearch={(query) => window.location.href = `/browse?search=${encodeURIComponent(query)}`}
+              placeholder="Search notebooks, topics, or authors..."
+            />
           </div>
           
           <div style={{ 

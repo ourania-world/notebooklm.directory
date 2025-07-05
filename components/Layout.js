@@ -4,12 +4,14 @@ import { useState, useEffect } from 'react';
 import { getCurrentUser, onAuthStateChange } from '../lib/auth';
 import AuthModal from './AuthModal';
 import UserMenu from './UserMenu';
+import SubscriptionModal from './SubscriptionModal';
 
 export default function Layout({ children, title = "NotebookLM Directory" }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState('signin');
+  const [subscriptionModalOpen, setSubscriptionModalOpen] = useState(false);
 
   useEffect(() => {
     // Get initial user
@@ -136,6 +138,19 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                 About
               </Link>
               
+              {user && (
+                <Link href="/analytics" style={{ 
+                  color: '#e2e8f0', 
+                  textDecoration: 'none',
+                  transition: 'color 0.2s ease',
+                  fontWeight: '500'
+                }}
+                onMouseEnter={(e) => e.target.style.color = '#00ff88'}
+                onMouseLeave={(e) => e.target.style.color = '#e2e8f0'}>
+                  Analytics
+                </Link>
+              )}
+              
               {loading ? (
                 <div style={{ color: '#e2e8f0' }}>Loading...</div>
               ) : user ? (
@@ -189,7 +204,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                       e.target.style.boxShadow = '0 4px 16px rgba(0, 255, 136, 0.3)';
                     }}
                   >
-                    Apply
+                    Get Started
                   </button>
                 </div>
               )}
@@ -226,6 +241,11 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
         onClose={() => setAuthModalOpen(false)}
         onSuccess={() => setAuthModalOpen(false)}
         mode={authMode}
+      />
+
+      <SubscriptionModal
+        isOpen={subscriptionModalOpen}
+        onClose={() => setSubscriptionModalOpen(false)}
       />
     </>
   );
