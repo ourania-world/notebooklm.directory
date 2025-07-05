@@ -6,9 +6,29 @@ import AudioPlayer from '../components/AudioPlayer';
 import { getCurrentUser } from '../lib/auth';
 import { getNotebooks } from '../lib/notebooks';
 
-export default function Notebooks() {
+export async function getServerSideProps() {
+  try {
+    // Fetch featured notebooks on server side
+    const featuredNotebooks = await getNotebooks({ featured: true });
+    
+    return {
+      props: {
+        initialFeaturedNotebooks: featuredNotebooks || []
+      }
+    };
+  } catch (error) {
+    console.error('Error fetching featured notebooks:', error);
+    return {
+      props: {
+        initialFeaturedNotebooks: []
+      }
+    };
+  }
+}
+
+export default function Notebooks({ initialFeaturedNotebooks }) {
   const [user, setUser] = useState(null);
-  const [featuredNotebooks, setFeaturedNotebooks] = useState([]);
+  const [featuredNotebooks, setFeaturedNotebooks] = useState(initialFeaturedNotebooks);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,26 +42,17 @@ export default function Notebooks() {
         setUser(null)
       });
     
-    async function fetchFeaturedNotebooks() {
-      try {
-        setLoading(true);
-        const notebooks = await getNotebooks({ featured: true });
-        setFeaturedNotebooks(notebooks);
-      } catch (err) {
-        console.error('Error fetching featured notebooks:', err);
-        setError('Failed to load featured notebooks');
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchFeaturedNotebooks();
+    // Set loading to false since we have initial data
+    setLoading(false);
   }, []);
 
   const handleNotebookCreated = (newNotebook) => {
-    // If the new notebook is featured, add it to the featured list
-    if (newNotebook.featured) {
-      setFeaturedNotebooks(prev => [newNotebook, ...prev]);
+    // Add new notebook to the list and refresh
+    setFeaturedNotebooks(prev => [newNotebook, ...prev]);
+    
+    // Optionally refresh the page to get updated data
+    if (typeof window !== 'undefined') {
+      window.location.reload();
     }
   };
   
@@ -413,7 +424,7 @@ export default function Notebooks() {
             Hear our AI-generated overview of how NotebookLM is transforming research and creativity
           </p>
           <AudioPlayer 
-            audioUrl="overview.mp3"
+            audioUrl="/overview.mp3"
             title="Listen to the Vision"
           />
         </div>

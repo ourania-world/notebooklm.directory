@@ -10,7 +10,8 @@ export default function NotebookModal({ isOpen, onClose, onNotebookCreated }) {
     tags: '',
     author: '',
     institution: '',
-    notebook_url: ''
+    notebook_url: '',
+    audio_overview_url: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
@@ -19,8 +20,9 @@ export default function NotebookModal({ isOpen, onClose, onNotebookCreated }) {
     e.preventDefault();
     
     // Check if user is authenticated
+    let user;
     try {
-      const user = await getCurrentUser();
+      user = await getCurrentUser();
       if (!user) {
         setError('You must be signed in to submit a notebook');
         return;
@@ -47,6 +49,7 @@ export default function NotebookModal({ isOpen, onClose, onNotebookCreated }) {
         author: formData.author,
         institution: formData.institution || null,
         notebook_url: formData.notebook_url,
+        audio_overview_url: formData.audio_overview_url || null,
         featured: false,
         user_id: user.id
       };
@@ -61,7 +64,8 @@ export default function NotebookModal({ isOpen, onClose, onNotebookCreated }) {
         tags: '',
         author: '',
         institution: '',
-        notebook_url: ''
+        notebook_url: '',
+        audio_overview_url: ''
       });
       
       // Notify parent component
@@ -409,6 +413,47 @@ export default function NotebookModal({ isOpen, onClose, onNotebookCreated }) {
               onFocus={(e) => e.target.style.borderColor = '#00ff88'}
               onBlur={(e) => e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)'}
             />
+          </div>
+
+          <div>
+            <label style={{
+              display: 'block',
+              marginBottom: '0.75rem',
+              fontWeight: '600',
+              color: '#ffffff',
+              fontSize: '0.9rem',
+              textTransform: 'uppercase',
+              letterSpacing: '0.5px'
+            }}>
+              Audio Overview URL (Optional)
+            </label>
+            <input
+              type="url"
+              name="audio_overview_url"
+              value={formData.audio_overview_url}
+              onChange={handleChange}
+              style={{
+                width: '100%',
+                padding: '1rem',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                borderRadius: '12px',
+                fontSize: '1rem',
+                background: 'rgba(255, 255, 255, 0.05)',
+                color: '#ffffff',
+                transition: 'all 0.2s ease'
+              }}
+              placeholder="https://example.com/audio.mp3 or /audio/filename.mp3"
+              onFocus={(e) => e.target.style.borderColor = '#00ff88'}
+              onBlur={(e) => e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)'}
+            />
+            <p style={{
+              fontSize: '0.8rem',
+              color: 'rgba(255, 255, 255, 0.6)',
+              marginTop: '0.5rem',
+              fontStyle: 'italic'
+            }}>
+              Link to an audio overview of your notebook (MP3, WAV, OGG supported)
+            </p>
           </div>
 
           <div style={{

@@ -9,21 +9,8 @@ export default function AudioPlayer({ audioUrl, title = "Audio Overview" }) {
   const [isLoaded, setIsLoaded] = useState(false);
   const audioRef = useRef(null);
 
-  // Construct the proper audio URL
-  const getAudioUrl = (url) => {
-    if (!url) return null;
-    
-    // If it's already a full URL, use it directly
-    if (url.startsWith('http')) {
-      return url;
-    }
-    
-    // If it's a path, use the Edge Function
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    return `${supabaseUrl}/functions/v1/serve-audio?path=${encodeURIComponent(url)}`;
-  };
-
-  const audioSrc = getAudioUrl(audioUrl);
+  // Use direct path for public audio files
+  const audioSrc = audioUrl?.startsWith('/') ? audioUrl : `/audio/${audioUrl}`;
 
   useEffect(() => {
     const audio = audioRef.current;

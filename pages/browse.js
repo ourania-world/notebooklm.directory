@@ -5,14 +5,53 @@ import NotebookModal from '../components/NotebookModal';
 import { getCurrentUser } from '../lib/auth';
 import { getNotebooks, getCategoryCounts } from '../lib/notebooks';
 
-export default function Browse() {
+export async function getServerSideProps(context) {
+  try {
+    const { category = 'All', search = '' } = context.query;
+    
+    // Fetch notebooks and category counts on server side
+    const [notebooksData, countsData] = await Promise.all([
+      getNotebooks({ 
+        category: category !== 'All' ? category : undefined, 
+        search: search || undefined 
+      }),
+      getCategoryCounts()
+    ]);
+    
+    return {
+      props: {
+        initialNotebooks: notebooksData || [],
+        initialCategoryCounts: countsData || {},
+        initialCategory: category,
+        initialSearch: search
+      }
+    };
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    return {
+      props: {
+        initialNotebooks: [],
+        initialCategoryCounts: {},
+        initialCategory: 'All',
+        initialSearch: ''
+      }
+    };
+  }
+}
+
+export default function Browse({ 
+  initialNotebooks, 
+  initialCategoryCounts, 
+  initialCategory, 
+  initialSearch 
+}) {
   const [user, setUser] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState('All');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [notebooks, setNotebooks] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState(initialCategory);
+  const [searchTerm, setSearchTerm] = useState(initialSearch);
+  const [notebooks, setNotebooks] = useState(initialNotebooks);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [categoryCounts, setCategoryCounts] = useState({});
+  const [categoryCounts, setCategoryCounts] = useState(initialCategoryCounts);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const categories = [
@@ -32,26 +71,34 @@ export default function Browse() {
         console.warn('Failed to get user:', error)
         setUser(null)
       });
-    
-    async function fetchData() {
-      try {
-        setLoading(true);
-        const [notebooksData, countsData] = await Promise.all([
-          getNotebooks({ category: selectedCategory, search: searchTerm }),
-          getCategoryCounts()
-        ]);
-        setNotebooks(notebooksData);
-        setCategoryCounts(countsData);
-      } catch (err) {
-        console.error('Error fetching data:', err);
-        setError('Failed to load notebooks');
-      } finally {
-        setLoading(false);
-      }
-    }
+  }, []);
 
-    fetchData();
-  }, [selectedCategory, searchTerm]);
+  // Handle filter changes with client-side updates
+  useEffect(() => {
+    if (selectedCategory !== initialCategory || searchTerm !== initialSearch) {
+      const fetchFilteredData = async () => {
+        try {
+          setLoading(true);
+          const [notebooksData, countsData] = await Promise.all([
+            getNotebooks({ 
+              category: selectedCategory !== 'All' ? selectedCategory : undefined, 
+              search: searchTerm || undefined 
+            }),
+            getCategoryCounts()
+          ]);
+          setNotebooks(notebooksData);
+          setCategoryCounts(countsData);
+        } catch (err) {
+          console.error('Error fetching filtered data:', err);
+          setError('Failed to load notebooks');
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchFilteredData();
+    }
+  }, [selectedCategory, searchTerm, initialCategory, initialSearch]);
 
   const handleNotebookCreated = (newNotebook) => {
     // Add the new notebook to the list and refresh data
