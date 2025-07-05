@@ -127,6 +127,16 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
               onMouseLeave={(e) => e.target.style.color = '#e2e8f0'}>
                 Submit Project
               </Link>
+              <Link href="/pricing" style={{ 
+                color: '#e2e8f0', 
+                textDecoration: 'none',
+                transition: 'color 0.2s ease',
+                fontWeight: '500'
+              }}
+              onMouseEnter={(e) => e.target.style.color = '#00ff88'}
+              onMouseLeave={(e) => e.target.style.color = '#e2e8f0'}>
+                Pricing
+              </Link>
               <Link href="/about" style={{ 
                 color: '#e2e8f0', 
                 textDecoration: 'none',

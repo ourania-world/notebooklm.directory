@@ -129,8 +129,8 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text'
           }}>
-            Discover more insights.<br />
-            <span style={{ color: '#00ff88' }}>Feed to AI.</span> Scale further.
+            The World's Largest<br />
+            <span style={{ color: '#00ff88' }}>NotebookLM Directory</span>
           </h1>
           
           <p style={{ 
@@ -142,7 +142,7 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
             color: '#e2e8f0',
             lineHeight: '1.6'
           }}>
-            NotebookLM Directory is a curated platform that on <strong style={{ color: '#00ff88' }}>average increases research scale by 20%</strong> across over <strong style={{ color: '#00ff88' }}>3000+ projects</strong>
+            Discover, explore, and contribute to the world's most comprehensive collection of NotebookLM projects. <strong style={{ color: '#00ff88' }}>Over 50,000+ notebooks</strong> and growing daily through our advanced AI crawling system.
           </p>
           
           <div style={{ 
@@ -150,12 +150,12 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
             fontSize: '1rem',
             color: '#00ff88'
           }}>
-            <a href="#proof" style={{ 
+            <a href="#browse" style={{ 
               color: '#00ff88', 
               textDecoration: 'underline',
               textUnderlineOffset: '4px'
             }}>
-              CLICK HERE FOR PROOF
+              BROWSE 50,000+ NOTEBOOKS NOW
             </a>
           </div>
           
