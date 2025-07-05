@@ -7,7 +7,7 @@ export default function Notebooks() {
       <section style={{ textAlign: 'center', marginTop: '2rem' }}>
         <h2>🎧 Listen to the Vision</h2>
         <audio controls>
-          <source src="/NotebookLM%20Directory%20Overview.wav" type="audio/wav" />
+          <source src="/overview.wav" type="audio/wav" />
           Your browser does not support the audio element.
         </audio>
       </section>
