@@ -128,6 +128,19 @@ export default function NotebookModal({ isOpen, onClose, onNotebookCreated }) {
           }}>
             Connect a New <span style={{ color: '#00ff88' }}>Notebook</span>
           </h2>
+          <p style={{
+            color: '#e2e8f0',
+            fontSize: '0.9rem',
+            textAlign: 'center',
+            margin: '0 0 1.5rem 0'
+          }}>
+            Share your notebooklm project with the <strong style={{ 
+              fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+              fontWeight: '700'
+            }}>
+              notebooklm.directory
+            </strong> community
+          </p>
           <button
             onClick={onClose}
             style={{

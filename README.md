@@ -1,15 +1,15 @@
-# NotebookLM Directory
+# notebooklm.directory
 
-A premium, curated directory of innovative NotebookLM projects across various domains. Discover AI-powered research applications, share your own projects, and get inspired by the community.
+A premium, curated directory of innovative notebooklm projects across various domains. Discover AI-powered research applications, share your own projects, and get inspired by the community.
 
 🎉 **Production Ready** - Complete MVP with luxe dark UI and full feature set!
 
 ## ✨ Features
 
 - 🔐 **User Authentication** - Sign up, sign in, profile management with Supabase Auth
-- 📚 **Browse Projects** - Curated NotebookLM projects by category with advanced filtering
+- 📚 **Browse Projects** - Curated notebooklm projects by category with advanced filtering
 - 🔍 **Search & Filter** - Find projects by keywords, categories, and tags
-- ➕ **Submit Projects** - Share your own NotebookLM projects with rich metadata
+- ➕ **Submit Projects** - Share your own notebooklm projects with rich metadata
 - 💾 **Save Notebooks** - Bookmark interesting projects to your personal collection
 - 👤 **User Profiles** - Personal dashboards and project management
 - 🎵 **Audio Integration** - Custom audio player for project overviews
@@ -48,8 +48,8 @@ Features a **luxe dark UI** with:
 
 1. **Clone the repository**
    ```bash
-   git clone <your-repo-url>
-   cd notebooklm-directory
+   git clone https://github.com/yourusername/notebooklm-directory
+   cd notebooklm.directory
    ```
 
 2. **Install dependencies**
@@ -111,14 +111,14 @@ Features a **luxe dark UI** with:
 
 ### Deploy to Vercel
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/yourusername/notebooklm-directory)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/yourusername/notebooklm.directory)
 
 ### Manual Deployment
 
 1. **Push to GitHub**
    ```bash
    git add .
-   git commit -m "🚀 Production ready - NotebookLM Directory MVP"
+   git commit -m "🚀 Production ready - notebooklm.directory MVP"
    git push origin main
    ```
 
@@ -258,7 +258,7 @@ The application uses these main tables:
 - Premium features
 
 ### Phase 3 (Scale)
-- Automated notebook discovery
+- Automated notebooklm discovery
 - AI-powered categorization
 - Community moderation tools
 - Enterprise features
@@ -327,7 +327,7 @@ The application uses these main tables:
 
 ## 🎉 Ready for Production!
 
-Your NotebookLM Directory MVP is **complete and ready for deployment**. All core features are implemented, tested, and production-ready with a premium user experience.
+Your **notebooklm.directory** MVP is **complete and ready for deployment**. All core features are implemented, tested, and production-ready with a premium user experience.
 
 **Time to launch and build your community! 🚀**
 

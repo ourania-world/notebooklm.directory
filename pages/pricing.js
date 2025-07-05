@@ -90,7 +90,15 @@ export default function Pricing() {
               color: '#ffffff',
               margin: '0 0 1rem 0'
             }}>
-              Choose Your <span style={{ color: '#00ff88' }}>Plan</span>
+              Choose Your <span style={{ color: '#00ff88' }}>Plan</span><br />
+              <span style={{ 
+                fontSize: '2rem',
+                fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                fontWeight: '700'
+              }}>
+                notebooklm.
+                <span style={{ color: '#00ff88' }}>directory</span>
+              </span>
             </h1>
             <p style={{ 
               fontSize: '1.2rem',

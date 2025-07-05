@@ -16,7 +16,13 @@ export default function About() {
           color: '#ffffff',
           fontWeight: '700'
         }}>
-          About <span style={{ color: '#00ff88' }}>NotebookLM Directory</span>
+          About <span style={{ 
+            fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+            fontWeight: '700'
+          }}>
+            notebooklm.
+            <span style={{ color: '#00ff88' }}>directory</span>
+          </span>
         </h1>
         
         <div style={{ 
@@ -25,7 +31,12 @@ export default function About() {
           color: '#e2e8f0'
         }}>
           <p>
-            NotebookLM Directory launched in July 2025 with a revolutionary approach: proving that environmental 
+            <strong style={{ 
+              fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+              fontWeight: '700'
+            }}>
+              notebooklm.directory
+            </strong> launched in July 2025 with a revolutionary approach: proving that environmental 
             sustainability and technical excellence are not just compatible, but mutually reinforcing. We've built 
             the world's most efficient notebook discovery platform, where resource-conscious design delivers 
             superior performance.
