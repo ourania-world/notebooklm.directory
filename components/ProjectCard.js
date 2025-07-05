@@ -43,11 +43,10 @@ export default function ProjectCard({ notebook }) {
 
   return (
     <div style={{
-      background: 'white',
+      background: '#1a2332',
       borderRadius: '12px',
       padding: '1.5rem',
-      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.07)',
-      border: '1px solid #e9ecef',
+      border: '1px solid #2a3441',
       transition: 'all 0.3s ease',
       cursor: 'pointer',
       height: '100%',
@@ -56,17 +55,19 @@ export default function ProjectCard({ notebook }) {
     }}
     onMouseEnter={(e) => {
       e.target.style.transform = 'translateY(-4px)';
-      e.target.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.15)';
+      e.target.style.borderColor = '#00ff88';
+      e.target.style.boxShadow = '0 8px 25px rgba(0, 255, 136, 0.1)';
     }}
     onMouseLeave={(e) => {
       e.target.style.transform = 'translateY(0)';
-      e.target.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.07)';
+      e.target.style.borderColor = '#2a3441';
+      e.target.style.boxShadow = 'none';
     }}>
       
       <div style={{ marginBottom: '1rem' }}>
         <span style={{
-          background: categoryColors[notebook.category] || '#f8f9fa',
-          color: '#495057',
+          background: '#00ff88',
+          color: '#0a0e1a',
           padding: '0.25rem 0.75rem',
           borderRadius: '20px',
           fontSize: '0.875rem',
@@ -80,13 +81,13 @@ export default function ProjectCard({ notebook }) {
         margin: '0 0 0.75rem 0', 
         fontSize: '1.25rem',
         fontWeight: '600',
-        color: '#212529'
+        color: '#ffffff'
       }}>
         {notebook.title}
       </h3>
       
       <p style={{ 
-        color: '#6c757d', 
+        color: '#a0aec0', 
         lineHeight: '1.5',
         margin: '0 0 1rem 0',
         flex: 1
@@ -112,8 +113,8 @@ export default function ProjectCard({ notebook }) {
         <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
           {notebook.tags?.slice(0, 3).map((tag, index) => (
             <span key={index} style={{
-              background: '#f8f9fa',
-              color: '#6c757d',
+              background: '#2a3441',
+              color: '#a0aec0',
               padding: '0.25rem 0.5rem',
               borderRadius: '4px',
               fontSize: '0.75rem'
@@ -142,7 +143,7 @@ export default function ProjectCard({ notebook }) {
             </button>
           )}
           <div style={{ 
-            color: '#28a745', 
+            color: '#00ff88', 
             fontWeight: '500',
             fontSize: '0.875rem'
           }}>

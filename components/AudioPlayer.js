@@ -106,11 +106,10 @@ export default function AudioPlayer({ audioUrl, title = "Audio Overview" }) {
 
   return (
     <div style={{
-      background: 'white',
+      background: '#1a2332',
       borderRadius: '12px',
       padding: '1.5rem',
-      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.07)',
-      border: '1px solid #e9ecef',
+      border: '1px solid #2a3441',
       maxWidth: '500px',
       margin: '0 auto'
     }}>
@@ -125,7 +124,7 @@ export default function AudioPlayer({ audioUrl, title = "Audio Overview" }) {
         <h3 style={{ 
           margin: '0 0 0.5rem 0', 
           fontSize: '1.1rem',
-          color: '#212529'
+          color: '#ffffff'
         }}>
           🎧 {title}
         </h3>
@@ -145,7 +144,7 @@ export default function AudioPlayer({ audioUrl, title = "Audio Overview" }) {
           onClick={togglePlayPause}
           disabled={loading || error || !isLoaded}
           style={{
-            background: loading || error || !isLoaded ? '#6c757d' : '#667eea',
+            background: loading || error || !isLoaded ? '#6c757d' : '#00ff88',
             color: 'white',
             border: 'none',
             borderRadius: '50%',
@@ -155,7 +154,18 @@ export default function AudioPlayer({ audioUrl, title = "Audio Overview" }) {
             alignItems: 'center',
             justifyContent: 'center',
             cursor: loading || error || !isLoaded ? 'not-allowed' : 'pointer',
-            fontSize: '1.2rem'
+            fontSize: '1.2rem',
+            transition: 'all 0.2s ease'
+          }}
+          onMouseEnter={(e) => {
+            if (!loading && !error && isLoaded) {
+              e.target.style.background = '#00e67a';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!loading && !error && isLoaded) {
+              e.target.style.background = '#00ff88';
+            }
           }}
         >
           {loading ? '⏳' : error ? '❌' : !isLoaded ? '⏸️' : isPlaying ? '⏸️' : '▶️'}
@@ -166,7 +176,7 @@ export default function AudioPlayer({ audioUrl, title = "Audio Overview" }) {
             onClick={handleSeek}
             disabled={!isLoaded || loading || error}
             style={{
-              background: '#e9ecef',
+              background: '#2a3441',
               height: '6px',
               borderRadius: '3px',
               cursor: !isLoaded || loading || error ? 'not-allowed' : 'pointer',
@@ -176,7 +186,7 @@ export default function AudioPlayer({ audioUrl, title = "Audio Overview" }) {
           >
             <div
               style={{
-                background: '#667eea',
+                background: '#00ff88',
                 height: '100%',
                 borderRadius: '3px',
                 width: duration ? `${(currentTime / duration) * 100}%` : '0%',
@@ -189,7 +199,7 @@ export default function AudioPlayer({ audioUrl, title = "Audio Overview" }) {
             display: 'flex', 
             justifyContent: 'space-between',
             fontSize: '0.8rem',
-            color: '#6c757d'
+            color: '#a0aec0'
           }}>
             <span>{formatTime(currentTime)}</span>
             <span>{formatTime(duration)}</span>
