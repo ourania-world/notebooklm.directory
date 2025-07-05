@@ -95,8 +95,6 @@ export default function Browse() {
                 </option>
               );
             })}
-              </option>
-            ))}
           </select>
         </div>
         
