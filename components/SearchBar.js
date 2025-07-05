@@ -5,7 +5,7 @@ import { getCurrentUser } from '../lib/auth'
 export default function SearchBar({ 
   onSearch, 
   placeholder = "Search notebooks, topics, or authors...",
-  showSuggestions = true 
+  enableSuggestions = true 
 }) {
   const [query, setQuery] = useState('')
   const [suggestions, setSuggestions] = useState([])
@@ -62,7 +62,7 @@ export default function SearchBar({
     const value = e.target.value
     setQuery(value)
 
-    if (value.length > 1 && showSuggestions) {
+    if (value.length > 1 && enableSuggestions) {
       // Filter suggestions based on input
       const filtered = popularSearches.filter(search =>
         search.toLowerCase().includes(value.toLowerCase())
@@ -160,7 +160,7 @@ export default function SearchBar({
       </div>
 
       {/* Search Suggestions */}
-      {showSuggestions && (query.length > 1 || suggestions.length === 0) && (
+      {enableSuggestions && (query.length > 1 || suggestions.length === 0) && (
         <div
           ref={suggestionsRef}
           style={{
