@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { getCurrentUser } from '../lib/auth';
 import { createNotebook } from '../lib/notebooks';
 
 export default function NotebookModal({ isOpen, onClose, onNotebookCreated }) {
@@ -17,6 +18,13 @@ export default function NotebookModal({ isOpen, onClose, onNotebookCreated }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    // Check if user is authenticated
+    const user = await getCurrentUser();
+    if (!user) {
+      setError('You must be signed in to submit a notebook');
+      return;
+    }
+    
     setIsSubmitting(true);
     setError(null);
     
@@ -34,7 +42,8 @@ export default function NotebookModal({ isOpen, onClose, onNotebookCreated }) {
         author: formData.author,
         institution: formData.institution || null,
         notebook_url: formData.notebook_url,
-        featured: false
+        featured: false,
+        user_id: user.id
       };
       
       const newNotebook = await createNotebook(notebookData);

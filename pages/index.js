@@ -2,15 +2,20 @@ import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import ProjectCard from '../components/ProjectCard';
 import NotebookModal from '../components/NotebookModal';
+import { getCurrentUser } from '../lib/auth';
 import { getNotebooks } from '../lib/notebooks';
 
 export default function Notebooks() {
+  const [user, setUser] = useState(null);
   const [featuredNotebooks, setFeaturedNotebooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
+    // Get current user
+    getCurrentUser().then(setUser);
+    
     async function fetchFeaturedNotebooks() {
       try {
         setLoading(true);

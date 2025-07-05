@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Layout from '../components/Layout';
+import { getCurrentUser } from '../lib/auth';
 import { createNotebook } from '../lib/notebooks';
 
 export default function Submit() {
@@ -19,6 +20,13 @@ export default function Submit() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    // Check if user is authenticated
+    const user = await getCurrentUser();
+    if (!user) {
+      setSubmitStatus('auth_required');
+      return;
+    }
+    
     setIsSubmitting(true);
     setSubmitStatus(null);
     
@@ -36,7 +44,8 @@ export default function Submit() {
         author: formData.author,
         institution: formData.institution || null,
         notebook_url: formData.notebook_url,
-        featured: false // New submissions are not featured by default
+        featured: false, // New submissions are not featured by default
+        user_id: user.id
       };
       
       await createNotebook(notebookData);
@@ -97,6 +106,19 @@ export default function Submit() {
             border: '1px solid #c3e6cb'
           }}>
             Thank you for your submission! Your project has been added to the directory.
+          </div>
+        )}
+        
+        {submitStatus === 'auth_required' && (
+          <div style={{
+            background: '#fff3cd',
+            color: '#856404',
+            padding: '1rem',
+            borderRadius: '8px',
+            marginBottom: '2rem',
+            border: '1px solid #ffeaa7'
+          }}>
+            Please sign in to submit a notebook. You can sign in using the button in the top right corner.
           </div>
         )}
         

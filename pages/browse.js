@@ -2,9 +2,11 @@ import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import ProjectCard from '../components/ProjectCard';
 import NotebookModal from '../components/NotebookModal';
+import { getCurrentUser } from '../lib/auth';
 import { getNotebooks, getCategoryCounts } from '../lib/notebooks';
 
 export default function Browse() {
+  const [user, setUser] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
   const [notebooks, setNotebooks] = useState([]);
@@ -23,6 +25,9 @@ export default function Browse() {
   ];
 
   useEffect(() => {
+    // Get current user
+    getCurrentUser().then(setUser);
+    
     async function fetchData() {
       try {
         setLoading(true);
