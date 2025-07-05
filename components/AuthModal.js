@@ -1,56 +1,56 @@
-import { useState } from 'react'
-import { signIn, signUp, resetPassword } from '../lib/auth'
+import { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
 
-export default function AuthModal({ isOpen, onClose, onSuccess, mode: initialMode = 'signin' }) {
-  const [mode, setMode] = useState(initialMode) // 'signin', 'signup', 'reset'
+export default function AuthModal({ isOpen, onClose, onAuthSuccess }) {
+  const { signIn, signUp, resetPassword } = useAuth();
+  const [mode, setMode] = useState('signin'); // 'signin', 'signup', 'reset'
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     confirmPassword: '',
     fullName: ''
-  })
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(null)
-  const [message, setMessage] = useState(null)
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [message, setMessage] = useState(null);
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setLoading(true)
-    setError(null)
-    setMessage(null)
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    setMessage(null);
 
     try {
       if (mode === 'signin') {
-        await signIn(formData.email, formData.password)
-        onSuccess?.()
-        onClose()
+        await signIn(formData.email, formData.password);
+        onAuthSuccess?.();
       } else if (mode === 'signup') {
         if (formData.password !== formData.confirmPassword) {
-          throw new Error('Passwords do not match')
+          throw new Error('Passwords do not match');
         }
         await signUp(formData.email, formData.password, {
           full_name: formData.fullName
-        })
-        setMessage('Check your email for the confirmation link!')
+        });
+        setMessage('Check your email for the confirmation link!');
       } else if (mode === 'reset') {
-        await resetPassword(formData.email)
-        setMessage('Password reset email sent!')
+        await resetPassword(formData.email);
+        setMessage('Password reset email sent!');
       }
     } catch (err) {
-      setError(err.message)
+      setError(err.message);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handleChange = (e) => {
     setFormData(prev => ({
       ...prev,
       [e.target.name]: e.target.value
-    }))
-  }
+    }));
+  };
 
-  if (!isOpen) return null
+  if (!isOpen) return null;
 
   return (
     <div style={{
@@ -401,5 +401,5 @@ export default function AuthModal({ isOpen, onClose, onSuccess, mode: initialMod
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -1,20 +1,20 @@
-import { useState, useEffect } from 'react'
-import { getCurrentUser, signOut } from '../lib/auth'
+import { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
 
-export default function UserMenu({ user, onSignOut }) {
-  const [isOpen, setIsOpen] = useState(false)
+export default function UserMenu() {
+  const { user, signOut } = useAuth();
+  const [isOpen, setIsOpen] = useState(false);
 
-  if (!user) return null
+  if (!user) return null;
 
   const handleSignOut = async () => {
     try {
-      await signOut()
-      onSignOut?.()
-      setIsOpen(false)
+      await signOut();
+      setIsOpen(false);
     } catch (error) {
-      console.error('Error signing out:', error)
+      console.error('Error signing out:', error);
     }
-  }
+  };
 
   return (
     <div style={{ position: 'relative' }}>
@@ -91,8 +91,8 @@ export default function UserMenu({ user, onSignOut }) {
             <div style={{ padding: '0.5rem 0' }}>
               <button
                 onClick={() => {
-                  window.location.href = '/profile'
-                  setIsOpen(false)
+                  window.location.href = '/profile';
+                  setIsOpen(false);
                 }}
                 style={{
                   width: '100%',
@@ -122,8 +122,8 @@ export default function UserMenu({ user, onSignOut }) {
               </button>
               <button
                 onClick={() => {
-                  window.location.href = '/my-notebooks'
-                  setIsOpen(false)
+                  window.location.href = '/my-notebooks';
+                  setIsOpen(false);
                 }}
                 style={{
                   width: '100%',
@@ -153,8 +153,8 @@ export default function UserMenu({ user, onSignOut }) {
               </button>
               <button
                 onClick={() => {
-                  window.location.href = '/saved'
-                  setIsOpen(false)
+                  window.location.href = '/saved';
+                  setIsOpen(false);
                 }}
                 style={{
                   width: '100%',
@@ -218,5 +218,5 @@ export default function UserMenu({ user, onSignOut }) {
         </>
       )}
     </div>
-  )
+  );
 }
