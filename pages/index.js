@@ -124,12 +124,22 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
             fontWeight: '700', 
             margin: '0 0 1.5rem 0',
             lineHeight: '1.1',
-            background: 'linear-gradient(135deg, #ffffff 0%, #00ff88 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text'
+            color: '#ffffff'
           }}>
-            The Premier NotebookLM <span style={{ color: '#00ff88' }}>Directory</span>
+            The Premier NotebookLM<br />
+            <span style={{ 
+              background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 50%, #00d96b 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              textShadow: '0 0 40px rgba(0, 255, 136, 0.6), 0 0 80px rgba(0, 255, 136, 0.3)',
+              filter: 'drop-shadow(0 0 20px rgba(0, 255, 136, 0.8))',
+              position: 'relative',
+              display: 'inline-block',
+              animation: 'directoryGlow 3s ease-in-out infinite alternate'
+            }}>
+              Directory
+            </span>
           </h1>
           
           <div style={{ 
@@ -721,6 +731,16 @@ export default function Notebooks({ initialFeaturedNotebooks }) {
         @keyframes pulse {
           0%, 100% { opacity: 0.5; }
           50% { opacity: 0.8; }
+        }
+        @keyframes directoryGlow {
+          0% { 
+            filter: drop-shadow(0 0 20px rgba(0, 255, 136, 0.8)) drop-shadow(0 0 40px rgba(0, 255, 136, 0.4));
+            transform: scale(1);
+          }
+          100% { 
+            filter: drop-shadow(0 0 30px rgba(0, 255, 136, 1)) drop-shadow(0 0 60px rgba(0, 255, 136, 0.6)) drop-shadow(0 0 100px rgba(0, 255, 136, 0.3));
+            transform: scale(1.02);
+          }
         }
       `}</style>
     </Layout>
