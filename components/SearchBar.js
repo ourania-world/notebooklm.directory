@@ -160,7 +160,7 @@ export default function SearchBar({
       </div>
 
       {/* Search Suggestions */}
-      {enableSuggestions && (query.length > 1 || suggestions.length === 0) && (
+      {enableSuggestions && showSuggestions && (query.length > 1 || suggestions.length === 0) && (
         <div
           ref={suggestionsRef}
           style={{
