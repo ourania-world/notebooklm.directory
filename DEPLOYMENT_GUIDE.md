@@ -19,17 +19,27 @@ This is the most critical step. You must apply the database migrations in the co
 5. Copy and paste the contents of each migration file in order:
    - `supabase/migrations/20250705070830_jade_poetry.sql`
    - `supabase/migrations/20250705072047_crimson_hall.sql`
-   - `supabase/migrations/20250705080908_wooden_beacon.sql`
+   - `supabase/migrations/20250707000000_create_audio_bucket.sql`
 6. Execute each migration and verify it completes successfully
 
-## Step 2: Deploy Edge Functions
+## Step 2: Set Up Audio Storage
+
+1. Go to your Supabase Dashboard → Storage
+2. Verify that the "audio" bucket exists (it should be created by the migration)
+3. If it doesn't exist, create it manually:
+   - Click "New Bucket"
+   - Name: "audio"
+   - Public bucket: Yes
+   - Click "Create bucket"
+
+## Step 3: Deploy Edge Functions
 
 1. Go to your Supabase Dashboard → Edge Functions
 2. Create a new function named `serve-audio`
 3. Copy the code from `supabase/functions/serve-audio/index.ts`
 4. Deploy the function
 
-## Step 3: Set Up Environment Variables
+## Step 4: Set Up Environment Variables
 
 Create a `.env.local` file with these variables for local development:
 
@@ -38,7 +48,37 @@ NEXT_PUBLIC_SUPABASE_URL=https://ciwlmdnmnsymiwmschej.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNpd2xtZG5tbnN5bWl3bXNjaGVqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE2OTQzNjMsImV4cCI6MjA2NzI3MDM2M30.Ri_L-EBOOIvTY3WnMd91oegjauObj76pS4JmVIr4yjw
 ```
 
-## Step 4: Deploy to Vercel
+## Step 5: Build and Test Locally
+
+Before deploying, make sure everything works locally:
+
+```bash
+# Install dependencies
+npm install
+
+# Run the development server
+npm run dev
+
+# Build the project to check for errors
+npm run build
+```
+
+## Step 6: Deploy to Vercel
+
+### Automatic Deployment
+
+1. Run the deployment script:
+   ```bash
+   ./deploy-to-vercel.sh
+   ```
+
+2. Go to [Vercel](https://vercel.com) and sign in
+3. Click "Add New" → "Project"
+4. Import your GitHub repository
+5. Vercel should automatically detect the Next.js project and set up the build configuration
+6. Click "Deploy"
+
+### Manual Deployment
 
 1. Go to [Vercel](https://vercel.com) and sign in
 2. Click "Add New" → "Project"
@@ -53,7 +93,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzd
    - `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Your Supabase anon key
 6. Click "Deploy"
 
-## Step 5: Verify Deployment
+## Step 7: Verify Deployment
 
 After deployment:
 

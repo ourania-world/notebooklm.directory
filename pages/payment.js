@@ -344,24 +344,7 @@ export default function Payment() {
                       marginBottom: '0.75rem',
                       fontSize: '0.9rem'
                     }}>
-                      <input
-                        type="checkbox"
-                        id="terms"
-                        required
-                        style={{
-                          width: '18px',
-                          height: '18px',
-                          accentColor: '#00ff88'
-                        }}
-                      />
-                      <label htmlFor="terms" style={{ color: '#e2e8f0' }}>
-                        I agree to the <Link href="/terms" style={{ color: '#00ff88', textDecoration: 'none' }}>Terms of Service</Link> and <Link href="/privacy" style={{ color: '#00ff88', textDecoration: 'none' }}>Privacy Policy</Link>
-                      </label>
-                    </div>
-                  </div>
-                  
-                  <button
-                    onClick={handleInitiatePayment}
+                      <input 
                     disabled={paymentLoading}
                     style={{
                       width: '100%',

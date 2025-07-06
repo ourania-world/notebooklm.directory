@@ -99,10 +99,8 @@ export default function ResetPassword() {
                   fontSize: '1rem',
                   fontWeight: '600',
                   cursor: 'pointer',
-                }}
-              >
-                Return to Login
-              </Link>
+                  textDecoration: 'none',
+                  display: 'inline-block'
             </div>
           ) : (
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
@@ -148,7 +146,7 @@ export default function ResetPassword() {
                 }}
               >
                 {loading ? 'Sending...' : 'Send Reset Link'}
-
+              </button>
               <div style={{ textAlign: 'center', marginTop: '1rem' }}>
                 <a
                   href="/login"

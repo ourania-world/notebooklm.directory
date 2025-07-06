@@ -17,6 +17,7 @@ export default function AudioPlayer({
   const progressRef = useRef(null);  
   const waveformRef = useRef(null);  
   const animationRef = useRef(null);  
+  const [mounted, setMounted] = useState(false);
   
   // Make sure we have a valid audio URL
   const fullAudioUrl = mounted ? getAudioUrl(audioUrl) : null;
@@ -34,6 +35,8 @@ export default function AudioPlayer({
       setLoading(false);
       return;
     }
+    
+    const audio = audioRef.current;
     if (!audio || !fullAudioUrl) return;
      
     const handleCanPlayThrough = () => {
@@ -55,6 +58,7 @@ export default function AudioPlayer({
       console.error('Audio error:', e);
       setError(`Failed to load audio: ${e.target?.error?.message || 'Unknown error'}`);
       setLoading(false);
+    };
     
     audio.addEventListener('canplaythrough', handleCanPlayThrough);
     audio.addEventListener('timeupdate', handleTimeUpdate);
@@ -79,6 +83,10 @@ export default function AudioPlayer({
     
     if (isPlaying) {
       audioRef.current.play().catch(err => {
+        console.error('Error playing audio:', err);
+        setError(`Playback error: ${err.message}`);
+        setIsPlaying(false);
+      });
       animateWaveform();
     } else {
       audioRef.current.pause();
@@ -276,7 +284,7 @@ export default function AudioPlayer({
                 background: isPlaying ? '#00ff88' : 'rgba(0, 255, 136, 0.3)',
                 borderRadius: '1px', 
                 transition: 'height 0.2s ease',
-                animationPlayState: isPlaying ? 'running' : 'paused',
+                animationPlayState: isPlaying ? 'running' : 'paused'
               }}
               className={isPlaying ? 'waveform-bar' : ''} 
             />
@@ -292,6 +300,9 @@ export default function AudioPlayer({
           padding: '0.5rem' 
         }}>
           {error} 
+          <div style={{ fontSize: '0.8rem', marginTop: '0.5rem', opacity: 0.7 }}>
+            Try refreshing the page or check your audio file
+          </div>
         </div>
       )}
       
