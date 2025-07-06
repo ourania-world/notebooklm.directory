@@ -12,22 +12,10 @@ export default function UserMenu() {
     setMounted(true);
   }, []);
 
-  // Don't render during SSR or loading to prevent hydration mismatch
+  // Don't render during SSR to prevent hydration mismatch
   if (!mounted) {
     return null;
   }
-
-  const handleSignOut = async () => {
-    try {
-      setSignOutLoading(true);
-      await signOut();
-      setIsOpen(false);
-    } catch (error) {
-      console.error('Error signing out:', error);
-    } finally {
-      setSignOutLoading(false);
-    }
-  };
 
   if (loading) {
     return null;
@@ -36,6 +24,19 @@ export default function UserMenu() {
   if (!user) {
     return null; // Login button is now in Layout.js
   }
+
+  const handleSignOut = async () => {
+    try {
+      setSignOutLoading(true);
+      await signOut();
+      setIsOpen(false);
+      window.location.href = '/';
+    } catch (error) {
+      console.error('Error signing out:', error);
+    } finally {
+      setSignOutLoading(false);
+    }
+  };
 
   return (
     <div style={{ position: 'relative' }}>
@@ -110,11 +111,9 @@ export default function UserMenu() {
             overflow: 'hidden'
           }}>
             <div style={{ padding: '0.5rem 0' }}>
-              <button
-                onClick={() => {
-                  window.location.href = '/profile';
-                  setIsOpen(false);
-                }}
+              <Link
+                href="/profile"
+                onClick={() => setIsOpen(false)}
                 style={{
                   width: '100%',
                   background: 'none',
@@ -128,7 +127,8 @@ export default function UserMenu() {
                   transition: 'all 0.2s ease',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '0.75rem'
+                  gap: '0.75rem',
+                  textDecoration: 'none'
                 }}
                 onMouseEnter={(e) => {
                   e.target.style.background = 'rgba(0, 255, 136, 0.1)';
@@ -140,12 +140,10 @@ export default function UserMenu() {
                 }}
               >
                 👤 Profile
-              </button>
-              <button
-                onClick={() => {
-                  window.location.href = '/my-notebooks';
-                  setIsOpen(false);
-                }}
+              </Link>
+              <Link
+                href="/my-notebooks"
+                onClick={() => setIsOpen(false)}
                 style={{
                   width: '100%',
                   background: 'none',
@@ -159,7 +157,8 @@ export default function UserMenu() {
                   transition: 'all 0.2s ease',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '0.75rem'
+                  gap: '0.75rem',
+                  textDecoration: 'none'
                 }}
                 onMouseEnter={(e) => {
                   e.target.style.background = 'rgba(0, 255, 136, 0.1)';
@@ -171,12 +170,10 @@ export default function UserMenu() {
                 }}
               >
                 📚 My Notebooks
-              </button>
-              <button
-                onClick={() => {
-                  window.location.href = '/saved';
-                  setIsOpen(false);
-                }}
+              </Link>
+              <Link
+                href="/saved"
+                onClick={() => setIsOpen(false)}
                 style={{
                   width: '100%',
                   background: 'none',
@@ -190,7 +187,8 @@ export default function UserMenu() {
                   transition: 'all 0.2s ease',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '0.75rem'
+                  gap: '0.75rem',
+                  textDecoration: 'none'
                 }}
                 onMouseEnter={(e) => {
                   e.target.style.background = 'rgba(0, 255, 136, 0.1)';
@@ -202,7 +200,7 @@ export default function UserMenu() {
                 }}
               >
                 💾 Saved
-              </button>
+              </Link>
               <hr style={{ 
                 margin: '0.5rem 0', 
                 border: 'none', 

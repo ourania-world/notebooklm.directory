@@ -775,6 +775,7 @@ export default function Home({ initialFeaturedNotebooks }) {
             </div>
           </div>
         )}
+      </div>
           
           <div style={{ textAlign: 'center', marginTop: '2rem' }}>
             <button 

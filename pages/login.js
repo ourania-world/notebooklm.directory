@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Layout from '../components/Layout';
 import { useAuth } from '../context/AuthContext';
+import Link from 'next/link';
 
 export default function Login() {
   const router = useRouter();
@@ -36,7 +37,7 @@ export default function Login() {
     <Layout title="Log In - NotebookLM Directory">
       <div style={{ 
         background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)',
-        minHeight: '100vh',
+        minHeight: '80vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -146,7 +147,7 @@ export default function Login() {
             </button>
 
             <div style={{ textAlign: 'center', marginTop: '1rem' }}>
-              <a
+              <Link
                 href="/reset-password"
                 style={{
                   color: '#00ff88',
@@ -155,13 +156,13 @@ export default function Login() {
                 }}
               >
                 Forgot password?
-              </a>
+              </Link>
             </div>
 
             <div style={{ textAlign: 'center', marginTop: '1rem' }}>
               <p style={{ color: '#e2e8f0', fontSize: '0.9rem' }}>
                 Don't have an account?{' '}
-                <a
+                <Link
                   href="/signup"
                   style={{
                     color: '#00ff88',
@@ -170,7 +171,7 @@ export default function Login() {
                   }}
                 >
                   Sign up
-                </a>
+                </Link>
               </p>
             </div>
           </form>

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Layout from '../components/Layout';
 import { useAuth } from '../context/AuthContext';
+import Link from 'next/link';
 
 export default function Signup() {
   const router = useRouter();
@@ -58,7 +59,7 @@ export default function Signup() {
     <Layout title="Sign Up - NotebookLM Directory">
       <div style={{ 
         background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)',
-        minHeight: '100vh',
+        minHeight: '80vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -111,8 +112,8 @@ export default function Signup() {
               <p style={{ marginBottom: '1.5rem' }}>
                 Check your email for a confirmation link to complete your registration.
               </p>
-              <button
-                onClick={() => router.push('/login')}
+              <Link
+                href="/login"
                 style={{
                   background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
                   color: '#0a0a0a',
@@ -121,11 +122,13 @@ export default function Signup() {
                   borderRadius: '8px',
                   fontSize: '1rem',
                   fontWeight: '600',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  textDecoration: 'none',
+                  display: 'inline-block'
                 }}
               >
                 Go to Login
-              </button>
+              </Link>
             </div>
           ) : (
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
@@ -258,7 +261,7 @@ export default function Signup() {
               <div style={{ textAlign: 'center', marginTop: '1rem' }}>
                 <p style={{ color: '#e2e8f0', fontSize: '0.9rem' }}>
                   Already have an account?{' '}
-                  <a
+                  <Link
                     href="/login"
                     style={{
                       color: '#00ff88',
@@ -267,7 +270,7 @@ export default function Signup() {
                     }}
                   >
                     Sign in
-                  </a>
+                  </Link>
                 </p>
               </div>
             </form>
