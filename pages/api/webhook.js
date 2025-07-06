@@ -1,5 +1,6 @@
 // Use raw body parser instead of micro
 import { supabase } from '../../lib/supabase';
+import { buffer } from 'micro';
 
 // Disable body parsing, we need the raw body for Stripe signature verification
 export const config = {
@@ -14,8 +15,9 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Get the raw body for Stripe signature verification
-    const rawBody = await getRawBody(req);
+    // Get the raw body as a buffer
+    const rawBody = await buffer(req);
+    const payload = rawBody.toString();
     const signature = req.headers['stripe-signature'];
 
     // In a real implementation, you would verify the Stripe signature
@@ -27,6 +29,9 @@ export default async function handler(req, res) {
 
     // For now, we'll just parse the JSON body
     const event = JSON.parse(rawBody.toString());
+
+    // Log the webhook event (for demonstration purposes)
+    console.log('Received webhook event:', payload);
 
     // Process different event types
     switch (event.type) {
@@ -67,27 +72,10 @@ export default async function handler(req, res) {
         console.log(`Unhandled event type: ${event.type}`);
     }
 
-    // Return a 200 response to acknowledge receipt of the event
+    // Respond with success
     res.status(200).json({ received: true });
   } catch (error) {
     console.error('Webhook error:', error);
     res.status(400).json({ error: error.message });
   }
-}
-
-// Helper function to get raw request body
-async function getRawBody(req) {
-  return new Promise((resolve, reject) => {
-    const chunks = [];
-    
-    req.on('data', (chunk) => {
-      chunks.push(chunk);
-    });
-    
-    req.on('end', () => {
-      resolve(Buffer.concat(chunks));
-    });
-    
-    req.on('error', reject);
-  });
 }
