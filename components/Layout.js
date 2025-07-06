@@ -293,6 +293,8 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                   • Submit your NotebookLM projects<br />
                   • Discover innovative approaches<br />
                   • Connect with other creators
+                }
+                }
                 </div>
               </div>
             </div>
