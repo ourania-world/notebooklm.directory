@@ -4,11 +4,11 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import UserMenu from './UserMenu';
 import SubscriptionBanner from './SubscriptionBanner';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/AuthContext'; 
 
 export default function Layout({ children, title = "NotebookLM Directory" }) {
   const router = useRouter();
-  const { user, loading } = useAuth();
+  const { user, isLoading } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -117,7 +117,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                 Pricing
               </Link>
               
-              {!loading && user && (
+              {!isLoading && user && (
                 <Link href="/analytics" style={{ 
                   color: router.pathname === '/analytics' ? '#00ff88' : '#e2e8f0', 
                   textDecoration: 'none',

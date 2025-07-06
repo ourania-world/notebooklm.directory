@@ -2,10 +2,24 @@ import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 
 export default function UserMenu() {
-  const { user, signOut } = useAuth();
+  const { user, signOut, isLoading } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
 
-  if (!user) {
+  if (isLoading) {
+    return (
+      <div style={{ display: 'flex', gap: '1rem' }}>
+        <div style={{
+          width: '32px',
+          height: '32px',
+          borderRadius: '50%',
+          background: 'rgba(0, 255, 136, 0.1)',
+          border: '1px solid rgba(0, 255, 136, 0.3)'
+        }} />
+      </div>
+    );
+  }
+
+  if (!isLoading && !user) {
     return (
       <div style={{ display: 'flex', gap: '1rem' }}>
         <button

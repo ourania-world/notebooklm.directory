@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 
 export default function SubscriptionBanner() {
-  const { user } = useAuth();
+  const { user, isLoading } = useAuth();
   const [subscription, setSubscription] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!user) {
@@ -28,7 +28,7 @@ export default function SubscriptionBanner() {
     fetchSubscription();
   }, [user]);
 
-  if (loading || !user || (subscription?.plan?.id === 'professional' || subscription?.plan?.id === 'enterprise' || subscription?.plan?.id === 'standard')) {
+  if (isLoading || loading || !user || (subscription?.plan?.id === 'professional' || subscription?.plan?.id === 'enterprise' || subscription?.plan?.id === 'standard')) {
     return null;
   }
 

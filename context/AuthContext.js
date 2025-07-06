@@ -5,19 +5,21 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [session, setSession] = useState(null);
 
   useEffect(() => {
+    setLoading(true);
     // Get initial session
     const getInitialSession = async () => {
       try {
-        const { data: { session }, error } = await supabase.auth.getSession();
+        const { data, error } = await supabase.auth.getSession();
+        const session = data?.session;
         if (error) {
           console.warn('Error getting session:', error);
         } else {
-          setSession(session);
-          setUser(session?.user ?? null);
+          setSession(session || null);
+          setUser(session?.user || null);
         }
       } catch (error) {
         console.warn('Failed to get initial session:', error);
@@ -34,8 +36,8 @@ export const AuthProvider = ({ children }) => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         console.log('Auth state changed:', event, session?.user?.email);
-        setSession(session);
-        setUser(session?.user ?? null);
+        setSession(session || null);
+        setUser(session?.user || null);
         setLoading(false);
       }
     );
@@ -104,14 +106,14 @@ export const AuthProvider = ({ children }) => {
   const value = {
     user,
     session,
-    loading,
+    loading: loading,
     signOut,
     signIn,
     signUp,
     resetPassword,
     // Helper methods
     isAuthenticated: !!user,
-    isLoading: loading
+    isLoading: loading,
   };
 
   return (
