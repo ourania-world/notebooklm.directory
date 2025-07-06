@@ -58,29 +58,33 @@ export default function SubscriptionManager() {
     setSuccess(null)
 
     try {
-      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-      const response = await fetch(
-        `${supabaseUrl}/functions/v1/manage-subscription?action=${action}`,
-        {
+      let result;
+      
+      if (action === 'portal') {
+        // Get customer portal URL
+        const returnUrl = `${window.location.origin}/subscription/manage`;
+        const portalUrl = await getCustomerPortalUrl(returnUrl);
+        result = { url: portalUrl };
+      } else if (action === 'cancel') {
+        // Cancel subscription
+        result = await cancelSubscription(subscription.stripe_subscription_id);
+      } else if (action === 'reactivate') {
+        // Reactivate subscription
+        const { data, error } = await supabase.functions.invoke('manage-subscription', {
           method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`,
-            'Content-Type': 'application/json'
-          }
-        }
-      )
-
-      if (!response.ok) {
-        throw new Error('Failed to process request')
+          query: { action: 'reactivate' },
+          body: {}
+        });
+        
+        if (error) throw error;
+        result = data;
       }
 
-      const data = await response.json()
-
-      if (action === 'portal') {
+      if (action === 'portal' && result.url) {
         // Redirect to Stripe customer portal
-        window.location.href = data.url
+        window.location.href = result.url
       } else {
-        setSuccess(data.message)
+        setSuccess(result.message || 'Operation completed successfully')
         // Refresh subscription data
         window.location.reload()
       }

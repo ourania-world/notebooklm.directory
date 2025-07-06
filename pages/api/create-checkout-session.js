@@ -19,7 +19,7 @@ export default async function handler(req, res) {
     const { priceId, successUrl, cancelUrl } = req.body;
 
     if (!priceId) {
-      return res.status(400).json({ error: 'Price ID is required' });
+      return res.status(400).json({ error: 'Price ID is required. Please select a plan.' });
     }
 
     // Create Stripe checkout session
@@ -34,14 +34,21 @@ export default async function handler(req, res) {
       mode: 'subscription',
       success_url: successUrl || `${req.headers.origin}/subscription/success`,
       cancel_url: cancelUrl || `${req.headers.origin}/subscription/cancel`,
-      customer_email: session.user.email,
+      customer_email: session.user.email, // Pre-fill customer email
       metadata: {
-        userId: session.user.id
+        userId: session.user.id,
+        planId: priceId.includes('standard') ? 'standard' : 
+                priceId.includes('professional') ? 'professional' : 
+                priceId.includes('enterprise') ? 'enterprise' : 'free'
       },
       subscription_data: {
         metadata: {
-          userId: session.user.id
-        }
+          userId: session.user.id,
+          planId: priceId.includes('standard') ? 'standard' : 
+                  priceId.includes('professional') ? 'professional' : 
+                  priceId.includes('enterprise') ? 'enterprise' : 'free'
+        },
+        trial_period_days: 7 // Add a 7-day free trial
       }
     });
 

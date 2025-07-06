@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
-import Stripe from 'https://esm.sh/stripe@14.21.0'
+import Stripe from 'npm:stripe@14.18.0'
+import { createClient } from 'npm:@supabase/supabase-js@2'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -25,13 +26,17 @@ serve(async (req) => {
 
     // Plan configuration
     const plans = {
-      basic: {
-        priceId: Deno.env.get('STRIPE_BASIC_PRICE_ID'),
-        name: 'Basic Plan'
+      standard: {
+        priceId: Deno.env.get('STRIPE_STANDARD_PRICE_ID'),
+        name: 'Standard Plan'
       },
-      premium: {
-        priceId: Deno.env.get('STRIPE_PREMIUM_PRICE_ID'),
-        name: 'Premium Plan'
+      professional: {
+        priceId: Deno.env.get('STRIPE_PROFESSIONAL_PRICE_ID'),
+        name: 'Professional Plan'
+      },
+      enterprise: {
+        priceId: Deno.env.get('STRIPE_ENTERPRISE_PRICE_ID'),
+        name: 'Enterprise Plan'
       }
     }
 

@@ -4,7 +4,7 @@ import { getCurrentUser } from '../lib/auth'
 
 export default function SubscriptionModal({ isOpen, onClose, currentPlan = 'free' }) {
   const [loading, setLoading] = useState(false)
-  const [selectedPlan, setSelectedPlan] = useState('basic')
+  const [selectedPlan, setSelectedPlan] = useState('standard')
 
   const handleUpgrade = async (planId) => {
     try {
@@ -12,14 +12,43 @@ export default function SubscriptionModal({ isOpen, onClose, currentPlan = 'free
       const user = await getCurrentUser()
       
       if (!user) {
-        alert('Please sign in to upgrade your subscription')
+        alert('Please sign in to upgrade your subscription.')
         return
       }
 
       const successUrl = `${window.location.origin}/subscription/success`
       const cancelUrl = `${window.location.origin}/subscription/cancel`
       
-      const { url } = await createCheckoutSession(user.id, planId, successUrl, cancelUrl)
+      // Get the Stripe price ID based on the selected plan
+      let priceId;
+      switch(planId) {
+        case 'standard':
+          priceId = 'price_standard_monthly'; // Replace with your actual Stripe price ID
+          break;
+        case 'professional':
+          priceId = 'price_professional_monthly'; // Replace with your actual Stripe price ID
+          break;
+        case 'enterprise':
+          priceId = 'price_enterprise_monthly'; // Replace with your actual Stripe price ID
+          break;
+        default:
+          throw new Error('Invalid plan selected');
+      }
+      
+      // Create checkout session
+      const response = await fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          priceId,
+          successUrl,
+          cancelUrl,
+        }),
+      });
+      
+      const { url } = await response.json();
       
       if (url) {
         window.location.href = url
@@ -102,10 +131,10 @@ export default function SubscriptionModal({ isOpen, onClose, currentPlan = 'free
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-          gap: '2rem',
+          gap: '1.5rem',
           marginBottom: '2rem'
         }}>
-          {[SUBSCRIPTION_PLANS.FREE, SUBSCRIPTION_PLANS.STANDARD, SUBSCRIPTION_PLANS.PROFESSIONAL].map((plan) => (
+          {[SUBSCRIPTION_PLANS.FREE, SUBSCRIPTION_PLANS.STANDARD, SUBSCRIPTION_PLANS.PROFESSIONAL, SUBSCRIPTION_PLANS.ENTERPRISE].map((plan) => (
             <div
               key={plan.id}
               style={{
@@ -133,13 +162,13 @@ export default function SubscriptionModal({ isOpen, onClose, currentPlan = 'free
                 }
               }}
             >
-              {plan.id === 'professional' && (
+              {plan.popular && (
                 <div style={{
                   position: 'absolute',
                   top: '-10px',
                   left: '50%',
                   transform: 'translateX(-50%)',
-                  background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
+                  background: plan.id === 'enterprise' ? 'rgba(255, 255, 255, 0.2)' : 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
                   color: '#0a0a0a',
                   padding: '0.5rem 1rem',
                   borderRadius: '20px',
@@ -148,7 +177,7 @@ export default function SubscriptionModal({ isOpen, onClose, currentPlan = 'free
                   textTransform: 'uppercase',
                   letterSpacing: '0.5px'
                 }}>
-                  Most Popular
+                  {plan.id === 'enterprise' ? 'COMING SOON' : 'Most Popular'}
                 </div>
               )}
 

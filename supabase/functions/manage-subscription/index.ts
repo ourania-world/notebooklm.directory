@@ -1,4 +1,4 @@
-import { createClient } from 'jsr:@supabase/supabase-js@2.39.7'
+import { createClient } from 'npm:@supabase/supabase-js@2'
 import Stripe from 'npm:stripe@14.18.0'
 
 const corsHeaders = {
@@ -6,9 +6,6 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
 }
-
-// Initialize Stripe with your secret key
-const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY')!)
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -18,13 +15,14 @@ Deno.serve(async (req) => {
   try {
     // Get the authorization header from the request
     const authHeader = req.headers.get('Authorization')
+    
     if (!authHeader) {
       return new Response(
-        JSON.stringify({ error: 'No authorization header' }),
+        JSON.stringify({ error: 'Authentication required' }),
         { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
-
+    
     // Initialize Supabase client with the user's JWT
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL')!,
@@ -118,6 +116,11 @@ Deno.serve(async (req) => {
         )
       }
 
+      // Initialize Stripe with your secret key
+      const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') || '', {
+        apiVersion: '2023-10-16',
+      })
+
       // Cancel the subscription at period end via Stripe
       await stripe.subscriptions.update(
         subscription.stripe_subscription_id,
@@ -151,6 +154,11 @@ Deno.serve(async (req) => {
         )
       }
 
+      // Initialize Stripe with your secret key
+      const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') || '', {
+        apiVersion: '2023-10-16',
+      })
+
       // Reactivate the subscription via Stripe
       await stripe.subscriptions.update(
         subscription.stripe_subscription_id,
@@ -170,6 +178,11 @@ Deno.serve(async (req) => {
     } else if (req.method === 'POST' && action === 'portal') {
       // Create a customer portal session for plan changes and payment updates
       const customerId = await getStripeCustomerId(user.id)
+      
+      // Initialize Stripe with your secret key
+      const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') || '', {
+        apiVersion: '2023-10-16',
+      })
       
       const session = await stripe.billingPortal.sessions.create({
         customer: customerId,
@@ -221,6 +234,11 @@ async function getStripeCustomerId(userId: string): Promise<string> {
   if (!user?.user?.email) {
     throw new Error('User email not found')
   }
+  
+  // Initialize Stripe with your secret key
+  const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY')!, {
+    apiVersion: '2023-10-16',
+  })
   
   // Create new Stripe customer
   const customer = await stripe.customers.create({
