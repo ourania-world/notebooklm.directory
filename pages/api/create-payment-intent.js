@@ -13,25 +13,26 @@ export default async function handler(req, res) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
 
-    const { amount, currency = 'usd', description } = req.body;
+    const { amount, currency = 'usd', description, planId } = req.body;
 
-    if (!amount) {
-      return res.status(400).json({ error: 'Amount is required' });
+    if (!amount && !planId) {
+      return res.status(400).json({ error: 'Amount or plan ID is required' });
     }
 
     // In a real implementation, this would create a Stripe payment intent
-    // For now, we'll just simulate success
+    // For now, we'll just simulate success with a mock client secret
     
-    // Simulate a payment intent ID
-    const paymentIntentId = `pi_${Math.random().toString(36).substring(2, 15)}`;
-    const clientSecret = `${paymentIntentId}_secret_${Math.random().toString(36).substring(2, 15)}`;
+    // Generate a mock client secret
+    const clientSecret = `pi_mock_${Math.random().toString(36).substring(2, 15)}_secret_${Math.random().toString(36).substring(2, 15)}`;
+
+    // In a real implementation, you would store the payment intent in your database
+    // and associate it with the user and subscription
 
     res.status(200).json({ 
       clientSecret,
-      paymentIntentId,
-      amount,
-      currency,
-      description
+      amount: amount || 1999, // Default to $19.99 if not specified
+      currency: currency || 'usd',
+      description: description || 'Subscription payment'
     });
   } catch (error) {
     console.error('Error creating payment intent:', error);
