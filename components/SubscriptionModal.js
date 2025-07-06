@@ -257,40 +257,6 @@ export default function SubscriptionModal({ isOpen, onClose, initialPlan = 'stan
                     {(feature.includes('API') || 
                       feature.includes('analytics') || 
                       feature.includes('metrics') || 
-                      feature.includes('recommendations') || 
-                      feature.includes('Email notifications')) && (
-                      <span style={{ 
-                        marginLeft: '0.25rem',
-                        fontSize: '0.7rem',
-                        color: '#ffc107',
-                        background: 'rgba(255, 193, 7, 0.1)',
-                        padding: '0.1rem 0.3rem',
-                        borderRadius: '4px'
-                      }}>
-                        Coming Soon
-                      </span>
-                    )}
-                  </li>
-                ))}
-              </ul>
-
-              {plan.id === 'enterprise' ? (
-                <button
-                  disabled
-                  style={{
-                    width: '100%',
-                    background: 'rgba(255, 255, 255, 0.1)',
-                    color: '#ffffff',
-                    border: '1px solid rgba(255, 255, 255, 0.2)',
-                    padding: '1rem',
-                    borderRadius: '12px',
-                    fontSize: '1rem',
-                    fontWeight: '600',
-                    cursor: 'not-allowed'
-                  }}
-                >
-                  Coming Soon
-                </button>
               ) : plan.id === 'free' ? (
                 <button
                   onClick={onClose}
@@ -311,36 +277,6 @@ export default function SubscriptionModal({ isOpen, onClose, initialPlan = 'stan
                     e.target.style.color = '#00ff88';
                   } : (e) => {
                     if (!loading) {
-                      e.target.style.transform = 'translateY(-2px)';
-                      e.target.style.boxShadow = '0 12px 32px rgba(0, 255, 136, 0.4)';
-                    }
-                  }}
-                  onMouseLeave={plan.id === 'professional' ? (e) => {
-                    e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)';
-                    e.target.style.color = '#e2e8f0';
-                  }}
-                >
-                  Continue Free
-                </button>
-              ) : (
-                <button
-                  onClick={() => handleUpgrade(plan.id)} 
-                  disabled={loading}
-                  style={plan.id === 'professional' ? {
-                    width: '100%',
-                    background: loading ? 
-                      'rgba(255, 255, 255, 0.1)' : 
-                      'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
-                    color: loading ? '#ffffff' : '#0a0a0a',
-                    border: 'none',
-                    padding: '1rem',
-                    borderRadius: '12px',
-                    fontSize: '1rem',
-                    fontWeight: '700',
-                    cursor: loading ? 'not-allowed' : 'pointer',
-                    transition: 'all 0.2s ease',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.5px'
                   }}
                   onMouseEnter={plan.id === 'professional' ? (e) => {
                     if (!loading) {
@@ -348,16 +284,6 @@ export default function SubscriptionModal({ isOpen, onClose, initialPlan = 'stan
                       e.target.style.boxShadow = '0 12px 32px rgba(0, 255, 136, 0.4)';
                     }
                   } : (e) => {
-                    if (!loading) {
-                      e.target.style.transform = 'translateY(-2px)';
-                      e.target.style.boxShadow = '0 12px 32px rgba(0, 255, 136, 0.4)';
-                    }
-                  }}
-                  onMouseLeave={plan.id === 'professional' ? (e) => {
-                    if (!loading) {
-                      e.target.style.transform = 'translateY(0)';
-                      e.target.style.boxShadow = 'none';
-                    }
                   }}
                 >
                   {loading ? 'Processing...' : plan.id === 'professional' ? 'Upgrade to Pro' : `Upgrade to ${plan.name}`}
