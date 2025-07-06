@@ -91,22 +91,20 @@ export default function Home({ initialFeaturedNotebooks }) {
           position: 'relative',
           zIndex: 2
         }}>
-          <div style={{ marginBottom: '2rem' }}>
-            <div style={{
-              display: 'inline-flex',
-              alignItems: 'center', 
-              gap: '0.5rem', 
-              background: 'rgba(0, 0, 0, 0.4)', 
-              border: '1px solid rgba(0, 255, 136, 0.3)', 
-              borderRadius: '50px', 
-              padding: '0.5rem 1.5rem', 
-              marginBottom: '2rem', 
-              fontSize: '0.9rem', 
-              color: '#00ff88', 
-              backdropFilter: 'blur(10px)'
-            }}>
-              ⭐ Trusted by 10,000+ AI Researchers • Excellent Reviews
-            </div>
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center', 
+            gap: '0.5rem', 
+            background: 'rgba(0, 0, 0, 0.4)', 
+            border: '1px solid rgba(0, 255, 136, 0.3)', 
+            borderRadius: '50px', 
+            padding: '0.5rem 1.5rem', 
+            marginBottom: '2rem', 
+            fontSize: '0.9rem', 
+            color: '#00ff88', 
+            backdropFilter: 'blur(10px)'
+          }}>
+            ⭐ Trusted by 10,000+ AI Researchers • Excellent Reviews
           </div>
           
           <h1 style={{ 
@@ -158,7 +156,7 @@ export default function Home({ initialFeaturedNotebooks }) {
           <div style={{ 
             display: 'flex', 
             gap: '1rem', 
-            justifyContent: 'center',
+            justifyContent: 'center', 
             flexWrap: 'wrap',
             marginBottom: '3rem',
             marginTop: '2rem'
@@ -172,7 +170,7 @@ export default function Home({ initialFeaturedNotebooks }) {
           <div style={{ 
             display: 'flex', 
             gap: '1rem', 
-            justifyContent: 'center',
+            justifyContent: 'center', 
             flexWrap: 'wrap',
             marginBottom: '3rem'
           }}>
@@ -263,61 +261,6 @@ export default function Home({ initialFeaturedNotebooks }) {
                   CO₂ Emissions Prevented
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      
-      {/* Quote Section */}
-      <section style={{
-        background: '#0a0a0a',
-        padding: '4rem 0',
-        position: 'relative'
-      }}>
-        <div style={{ maxWidth: '800px', margin: '0 auto', padding: '0 2rem' }}>
-          <div style={{
-            background: 'rgba(0, 0, 0, 0.4)',
-            backdropFilter: 'blur(20px)',
-            border: '1px solid rgba(0, 255, 136, 0.2)',
-            borderRadius: '20px',
-            padding: '2rem',
-            textAlign: 'center'
-          }}>
-            <p style={{ 
-              color: '#e2e8f0', 
-              fontSize: '1.1rem',
-              lineHeight: '1.7',
-              margin: '0 0 1.5rem 0'
-            }}>
-              "Help us build a network of researchers. By curating and sharing notebooks, we can prevent redundant work and reduce the massive computational footprint of AI research."
-            </p>
-            
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
-              <button style={{
-                background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
-                color: '#0a0a0a',
-                border: 'none',
-                padding: '0.75rem 1.5rem',
-                borderRadius: '8px',
-                fontWeight: '600',
-                cursor: 'pointer',
-                fontSize: '0.9rem'
-              }}>
-                SUBMIT YOUR NOTEBOOK
-              </button>
-              
-              <button style={{
-                background: 'transparent',
-                color: '#e2e8f0',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
-                padding: '0.75rem 1.5rem',
-                borderRadius: '8px',
-                fontWeight: '500',
-                cursor: 'pointer',
-                fontSize: '0.9rem'
-              }}>
-                EXPLORE CONTENT
-              </button>
             </div>
           </div>
         </div>
@@ -688,7 +631,7 @@ export default function Home({ initialFeaturedNotebooks }) {
       {/* Vision Audio Section */}
       <section style={{
         background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
-        padding: '6rem 0',
+        padding: '4rem 0',
         textAlign: 'center'
       }}>
         <div style={{ maxWidth: '800px', margin: '0 auto', padding: '0 2rem' }}>
@@ -711,71 +654,6 @@ export default function Home({ initialFeaturedNotebooks }) {
             audioUrl="/overview.mp3"
             title="Listen to the Vision"
           />
-        </div>
-      </section>
-      
-      {/* Popular Notebooks Section */}
-      <section style={{
-        padding: '6rem 0',
-        background: '#0a0a0a'
-      }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
-          <h2 style={{ 
-            fontSize: '2.5rem', 
-            textAlign: 'center', 
-            margin: '0 0 3rem 0',
-            color: '#ffffff',
-            fontWeight: '700'
-          }}>
-            Popular <span style={{ color: '#00ff88' }}>Notebooks</span>
-          </h2>
-          
-          {loading ? (
-            <div style={{ textAlign: 'center', padding: '2rem' }}>
-              <p style={{ color: '#e2e8f0' }}>Loading notebooks...</p>
-            </div>
-          ) : (
-            <div style={{ 
-              display: 'grid', 
-              gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', 
-              gap: '2rem',
-              marginBottom: '3rem'
-            }}>
-              {featuredNotebooks.slice(0, 6).map(notebook => (
-                <ProjectCard key={notebook.id} notebook={notebook} />
-              ))}
-            </div>
-          )}
-          
-          <div style={{ textAlign: 'center' }}>
-            <button 
-              onClick={() => window.location.href = '/browse'}
-              style={{
-                background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
-                color: '#0a0a0a',
-                border: 'none',
-                padding: '1rem 2rem',
-                borderRadius: '12px',
-                fontWeight: '700',
-                cursor: 'pointer',
-                fontSize: '1rem',
-                transition: 'all 0.3s ease',
-                boxShadow: '0 8px 32px rgba(0, 255, 136, 0.3)',
-                textTransform: 'uppercase',
-                letterSpacing: '0.5px'
-              }}
-              onMouseEnter={(e) => {
-                e.target.style.transform = 'translateY(-2px)';
-                e.target.style.boxShadow = '0 12px 40px rgba(0, 255, 136, 0.4)';
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.transform = 'translateY(0)';
-                e.target.style.boxShadow = '0 8px 32px rgba(0, 255, 136, 0.3)';
-              }}
-            >
-              View All Projects
-            </button>
-          </div>
         </div>
       </section>
       

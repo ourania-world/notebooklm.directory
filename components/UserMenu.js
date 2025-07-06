@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
+import Link from 'next/link';
 
 export default function UserMenu() {
   const { user, signOut, loading } = useAuth();
@@ -12,7 +13,7 @@ export default function UserMenu() {
   }, []);
 
   // Don't render during SSR or loading to prevent hydration mismatch
-  if (!mounted || loading) {
+  if (!mounted) {
     return null;
   }
 
@@ -28,34 +29,14 @@ export default function UserMenu() {
     }
   };
 
-  if (!user) {
-    return (
-      <div>
-        <button
-          onClick={() => window.location.href = '/login'}
-          style={{
-            background: 'rgba(255, 255, 255, 0.1)',
-            color: '#ffffff',
-            border: 'none',
-            padding: '0.5rem 1.25rem',
-            borderRadius: '6px',
-            cursor: 'pointer',
-            fontSize: '0.9rem',
-            fontWeight: '500',
-            transition: 'all 0.2s ease'
-          }}
-          onMouseEnter={(e) => {
-            e.target.style.background = 'rgba(255, 255, 255, 0.15)';
-          }}
-          onMouseLeave={(e) => {
-            e.target.style.background = 'rgba(255, 255, 255, 0.1)';
-          }}
-        >
-          Log in
-        </button>
-      </div>
-    );
+  if (loading) {
+    return null;
   }
+
+  if (!user) {
+    return null; // Login button is now in Layout.js
+  }
+
   return (
     <div style={{ position: 'relative' }}>
       <button

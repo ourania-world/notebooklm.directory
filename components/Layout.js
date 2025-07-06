@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -10,6 +10,11 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
   const router = useRouter();
   const { user, loading } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <>
@@ -47,38 +52,32 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
             justifyContent: 'space-between',
             alignItems: 'center'
           }}>
-            <div style={{
+            <Link href="/" style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '1rem'
+              gap: '0.5rem',
+              textDecoration: 'none'
             }}>
-              <Link href="/" style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                textDecoration: 'none'
+              <div style={{ 
+                background: '#00ff88',
+                color: '#0a0a0a',
+                padding: '0.5rem 0.75rem',
+                borderRadius: '8px',
+                fontSize: '0.9rem',
+                fontWeight: '700',
+                letterSpacing: '1px',
+                fontFamily: 'monospace'
               }}>
-                <div style={{ 
-                  background: '#00ff88',
-                  color: '#0a0a0a',
-                  padding: '0.5rem 0.75rem',
-                  borderRadius: '8px',
-                  fontSize: '0.9rem',
-                  fontWeight: '700',
-                  letterSpacing: '1px',
-                  fontFamily: 'monospace'
-                }}>
-                  NLM_D
-                </div>
-                <div style={{
-                  fontSize: '1.25rem',
-                  fontWeight: '700',
-                  color: '#ffffff'
-                }}>
-                  notebooklm.<span style={{ color: '#00ff88' }}>directory</span>
-                </div>
-              </Link>
-            </div>
+                NLM_D
+              </div>
+              <div style={{
+                fontSize: '1.25rem',
+                fontWeight: '700',
+                color: '#ffffff'
+              }}>
+                notebooklm.<span style={{ color: '#00ff88' }}>directory</span>
+              </div>
+            </Link>
             
             <div style={{ 
               display: 'flex', 
@@ -124,7 +123,23 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
             </div>
 
             <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-              <UserMenu />
+              {mounted && !loading && !user ? (
+                <Link href="/login" style={{
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  color: '#ffffff',
+                  border: 'none',
+                  padding: '0.5rem 1.25rem',
+                  borderRadius: '6px',
+                  fontSize: '0.9rem',
+                  fontWeight: '500',
+                  textDecoration: 'none',
+                  transition: 'all 0.2s ease'
+                }}>
+                  Log in
+                </Link>
+              ) : (
+                <UserMenu />
+              )}
               <button
                 onClick={() => window.location.href = '/pricing'}
                 style={{

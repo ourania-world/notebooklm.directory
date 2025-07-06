@@ -14,12 +14,13 @@ export default function AudioPlayer({
   const [error, setError] = useState(null);
   
   const audioRef = useRef(null); 
-  const progressRef = useRef(null);
-  const waveformRef = useRef(null);
-  const animationRef = useRef(null);
+  const progressRef = useRef(null); 
+  const waveformRef = useRef(null); 
+  const animationRef = useRef(null); 
   const [mounted, setMounted] = useState(false);
   
-  const fullAudioUrl = getAudioUrl(audioUrl);
+  // Make sure we have a valid audio URL
+  const fullAudioUrl = mounted ? getAudioUrl(audioUrl) : null;
   
   useEffect(() => {
     // Mark component as mounted to prevent hydration mismatch
@@ -36,7 +37,7 @@ export default function AudioPlayer({
     }
     
     const audio = audioRef.current;
-    if (!audio) return;
+    if (!audio || !fullAudioUrl) return;
     
     const handleCanPlayThrough = () => {
       setLoading(false);
@@ -56,7 +57,7 @@ export default function AudioPlayer({
     const handleError = (e) => {
       console.error('Audio error:', e);
       console.error('Audio source:', fullAudioUrl);
-      setError('Failed to load audio');
+      setError(`Failed to load audio: ${e.target?.error?.message || 'Unknown error'}`);
       setLoading(false);
     };
     
@@ -79,10 +80,14 @@ export default function AudioPlayer({
   
   useEffect(() => {
     // Don't run during SSR
-    if (typeof window === 'undefined' || !mounted) return;
+    if (typeof window === 'undefined' || !mounted || !audioRef.current) return;
     
     if (isPlaying) {
-      audioRef.current.play();
+      audioRef.current.play().catch(err => {
+        console.error('Error playing audio:', err);
+        setError(`Playback error: ${err.message}`);
+        setIsPlaying(false);
+      });
       animateWaveform();
     } else {
       audioRef.current.pause();
@@ -103,7 +108,7 @@ export default function AudioPlayer({
   };
 
   // Don't render during SSR to prevent hydration mismatch
-  if (!mounted && typeof window !== 'undefined') return null;
+  if (!mounted) return null;
   
   const animateWaveform = () => {
     if (waveformRef.current && showWaveform) {
@@ -128,7 +133,7 @@ export default function AudioPlayer({
       border: '1px solid rgba(0, 255, 136, 0.2)',
       width: '100%'
     }}> 
-      <audio ref={audioRef} src={fullAudioUrl} preload="metadata" />
+      {fullAudioUrl && <audio ref={audioRef} src={fullAudioUrl} preload="metadata" />}
       
       <div style={{
         display: 'flex',
@@ -292,7 +297,7 @@ export default function AudioPlayer({
         }}>
           {error} 
           <div style={{ fontSize: '0.8rem', marginTop: '0.5rem', opacity: 0.7 }}>
-            Try refreshing the page or check your connection
+            Try refreshing the page or check your audio file
           </div>
         </div>
       )}
