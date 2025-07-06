@@ -70,11 +70,12 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
               notebooklm.directory
             </Link>
             
-            <div style={{
-              display: 'flex',
-              gap: '2rem',
-              alignItems: 'center'
-            }}> 
+            <div style={{ 
+              display: 'flex', 
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              gap: '2rem'
+            }}>
               <Link href="/browse" style={{ 
                 color: router.pathname === '/browse' ? '#00ff88' : '#e2e8f0', 
                 textDecoration: 'none',
@@ -118,9 +119,9 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                   Analytics
                 </Link>
               )}
-              
-              <UserMenu />
             </div>
+            
+            <UserMenu />
             
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}

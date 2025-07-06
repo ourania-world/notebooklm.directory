@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 
 export default function UserMenu() {
-  const { user, signOut } = useAuth();
+  const { user, signOut, loading } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [signOutLoading, setSignOutLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -11,8 +11,8 @@ export default function UserMenu() {
     setMounted(true);
   }, []);
 
-  // Don't render during SSR to prevent hydration mismatch
-  if (!mounted) {
+  // Don't render during SSR or loading to prevent hydration mismatch
+  if (!mounted || loading) {
     return null;
   }
 
@@ -31,7 +31,8 @@ export default function UserMenu() {
   if (!user) {
     return (
       <div style={{ display: 'flex', gap: '1rem' }}>
-        <button
+        <a
+          href="/login"
           onClick={() => window.location.href = '/login'}
           style={{
             background: 'transparent',
@@ -54,9 +55,9 @@ export default function UserMenu() {
           }}
         >
           Log in
-        </button>
-        <button
-          onClick={() => window.location.href = '/signup'}
+        </a>
+        <a
+          href="/signup"
           style={{
             background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
             color: '#0a0a0a',
@@ -79,7 +80,7 @@ export default function UserMenu() {
           }}
         >
           Get Started
-        </button>
+        </a>
       </div>
     );
   }

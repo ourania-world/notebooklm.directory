@@ -207,19 +207,19 @@ export default function Home({ initialFeaturedNotebooks }) {
           {/* Stats Dashboard Preview */}
           <div style={{ 
             background: 'rgba(0, 0, 0, 0.4)',
-            backdropFilter: 'blur(20px)',
-            border: '1px solid rgba(0, 255, 136, 0.2)',
-            borderRadius: '20px',
-            padding: '2rem',
-            maxWidth: '800px',
-            margin: '0 auto',
-            position: 'relative'
+            backdropFilter: 'blur(20px)', 
+            border: '1px solid rgba(0, 255, 136, 0.2)', 
+            borderRadius: '20px', 
+            padding: '2rem', 
+            maxWidth: '800px', 
+            margin: '0 auto', 
+            position: 'relative' 
           }}>
             <p style={{ 
               color: '#00ff88', 
               fontSize: '1.2rem', 
-              textAlign: 'center',
-              margin: 0
+              textAlign: 'center', 
+              margin: 0 
             }}>
               Join our community of researchers building the future of sustainable AI research
             </p>
