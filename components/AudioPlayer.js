@@ -13,7 +13,6 @@ export default function AudioPlayer({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [mounted, setMounted] = useState(false);
-  const [mounted, setMounted] = useState(false);
   
   const audioRef = useRef(null);  
   const progressRef = useRef(null);  
