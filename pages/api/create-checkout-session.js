@@ -29,7 +29,7 @@ export default async function handler(req, res) {
         {
           price: priceId,
           quantity: 1,
-        },
+        }
       ],
       mode: 'subscription',
       success_url: successUrl || `${req.headers.origin}/subscription/success`,
@@ -40,18 +40,11 @@ export default async function handler(req, res) {
         planId: priceId.includes('standard') ? 'standard' : 
                 priceId.includes('professional') ? 'professional' : 
                 priceId.includes('enterprise') ? 'enterprise' : 'free'
-        planId: priceId.includes('standard') ? 'standard' : 
-                priceId.includes('professional') ? 'professional' : 
-                priceId.includes('enterprise') ? 'enterprise' : 'free'
       },
       subscription_data: {
         metadata: {
           userId: session.user.id,
           planId: priceId.includes('standard') ? 'standard' : 
-                  priceId.includes('professional') ? 'professional' : 
-                  priceId.includes('enterprise') ? 'enterprise' : 'free'
-        },
-        trial_period_days: 7 // Add a 7-day free trial
                   priceId.includes('professional') ? 'professional' : 
                   priceId.includes('enterprise') ? 'enterprise' : 'free'
         },
