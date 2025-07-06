@@ -4,31 +4,36 @@ import { useAuth } from '../context/AuthContext';
 export default function SubscriptionBanner() {
   const { user, isLoading } = useAuth();
   const [subscription, setSubscription] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [subLoading, setSubLoading] = useState(false);
 
   useEffect(() => {
     if (!user) {
-      setLoading(false);
+      setSubLoading(false);
       return;
     }
 
     async function fetchSubscription() {
       try {
-        const response = await fetch('/api/subscription-status');
-        if (!response.ok) throw new Error('Failed to fetch subscription');
-        const data = await response.json();
-        setSubscription(data);
+        setSubLoading(true);
+        try {
+          const response = await fetch('/api/subscription-status');
+          if (!response.ok) throw new Error('Failed to fetch subscription');
+          const data = await response.json();
+          setSubscription(data);
+        } catch (error) {
+          console.error('Error fetching subscription:', error);
+        }
       } catch (error) {
         console.error('Error fetching subscription:', error);
       } finally {
-        setLoading(false);
+        setSubLoading(false);
       }
     }
 
     fetchSubscription();
   }, [user]);
 
-  if (isLoading || loading || !user || (subscription?.plan?.id === 'professional' || subscription?.plan?.id === 'enterprise' || subscription?.plan?.id === 'standard')) {
+  if (isLoading || subLoading || !user || (subscription?.plan?.id === 'professional' || subscription?.plan?.id === 'enterprise' || subscription?.plan?.id === 'standard')) {
     return null;
   }
 

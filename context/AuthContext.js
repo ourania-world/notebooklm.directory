@@ -5,18 +5,19 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [session, setSession] = useState(null);
 
   useEffect(() => {
-    setLoading(true);
     // Get initial session
     const getInitialSession = async () => {
       try {
-        const { data, error } = await supabase.auth.getSession();
-        const session = data?.session;
+        const { data: sessionData, error } = await supabase.auth.getSession();
+        const session = sessionData?.session;
         if (error) {
           console.warn('Error getting session:', error);
+          setSession(null);
+          setUser(null);
         } else {
           setSession(session || null);
           setUser(session?.user || null);
@@ -35,7 +36,9 @@ export const AuthProvider = ({ children }) => {
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        console.log('Auth state changed:', event, session?.user?.email);
+        if (event) {
+          console.log('Auth state changed:', event, session?.user?.email);
+        }
         setSession(session || null);
         setUser(session?.user || null);
         setLoading(false);
@@ -106,7 +109,7 @@ export const AuthProvider = ({ children }) => {
   const value = {
     user,
     session,
-    loading: loading,
+    loading,
     signOut,
     signIn,
     signUp,
@@ -114,6 +117,7 @@ export const AuthProvider = ({ children }) => {
     // Helper methods
     isAuthenticated: !!user,
     isLoading: loading,
+    initialized: true
   };
 
   return (

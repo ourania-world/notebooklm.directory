@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 export default function UserMenu() {
   const { user, signOut, isLoading } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
+  const [signOutLoading, setSignOutLoading] = useState(false);
 
   if (isLoading) {
     return (
@@ -12,8 +13,11 @@ export default function UserMenu() {
           width: '32px',
           height: '32px',
           borderRadius: '50%',
-          background: 'rgba(0, 255, 136, 0.1)',
-          border: '1px solid rgba(0, 255, 136, 0.3)'
+          background: 'rgba(0, 255, 136, 0.05)',
+          border: '1px solid rgba(0, 255, 136, 0.2)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
         }} />
       </div>
     );
@@ -77,10 +81,13 @@ export default function UserMenu() {
 
   const handleSignOut = async () => {
     try {
+      setSignOutLoading(true);
       await signOut();
       setIsOpen(false);
     } catch (error) {
       console.error('Error signing out:', error);
+    } finally {
+      setSignOutLoading(false);
     }
   };
 
