@@ -80,7 +80,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
             <div style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '2rem'
+              gap: '1.5rem'
             }}>
               <Link href="/browse" style={{
                 color: router.pathname === '/browse' ? '#00ff88' : '#e2e8f0',
@@ -136,7 +136,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
               {mounted && !loading && !user ? (
                 <Link href="/login" style={{
                   background: 'rgba(255, 255, 255, 0.1)',
-                  color: '#ffffff',
+                  color: '#ffffff', 
                   border: '1px solid rgba(255, 255, 255, 0.2)',
                   padding: '0.5rem 1.25rem',
                   borderRadius: '6px',
@@ -151,7 +151,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                 <UserMenu />
               )}
               <Link
-                href="/pricing"
+                href={user ? "/submit" : "/signup"}
                 style={{
                   background: '#00ff88',
                   color: '#0a0a0a',
@@ -163,7 +163,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                   cursor: 'pointer',
                   transition: 'all 0.2s ease'
                 }}
-                onMouseEnter={(e) => {
+                onMouseEnter={(e) => { 
                   e.target.style.transform = 'translateY(-1px)';
                   e.target.style.boxShadow = '0 4px 12px rgba(0, 255, 136, 0.3)';
                 }}
@@ -172,7 +172,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                   e.target.style.boxShadow = 'none';
                 }}
               >
-                Get Started
+                {user ? "Submit Project" : "Get Started"}
               </Link>
             </div>
 

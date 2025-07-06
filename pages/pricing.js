@@ -143,7 +143,7 @@ export default function Pricing() {
       <div style={{ 
         background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)',
         minHeight: '100vh',
-        padding: '4rem 0'
+        padding: '4rem 0' 
       }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
           {/* Hero Section */}
@@ -171,7 +171,7 @@ export default function Pricing() {
             <div style={{
               display: 'flex',
               gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-              gap: '2rem',
+              gap: '2rem', 
               maxWidth: '800px',
               margin: '0 auto',
               padding: '2rem',
@@ -210,10 +210,8 @@ export default function Pricing() {
 
           {/* Pricing Cards */}
           <div style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
-            justifyContent: 'center',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
             gap: '2rem',
             marginBottom: '4rem'
           }}>
@@ -221,8 +219,6 @@ export default function Pricing() {
               <div
                 key={plan.id}
                 style={{
-                  width: '280px',
-                  width: '280px',
                   background: plan.popular ? 
                     'linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, rgba(0, 255, 136, 0.05) 100%)' :
                     'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
@@ -259,7 +255,7 @@ export default function Pricing() {
                     color: '#0a0a0a', 
                     padding: '0.5rem 1.5rem',
                     borderRadius: '20px',
-                    fontSize: '0.8rem',
+                    fontSize: '0.8rem', 
                     fontWeight: '700',
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px'
@@ -365,7 +361,7 @@ export default function Pricing() {
                     color: plan.id === 'enterprise' ? '#ffffff' : (plan.popular ? '#0a0a0a' : '#00ff88'),
                     border: plan.id === 'enterprise' || plan.popular ? 'none' : '1px solid rgba(0, 255, 136, 0.3)',
                     padding: '1rem',
-                    borderRadius: '12px', 
+                    borderRadius: '12px',  
                     fontSize: '1rem',
                     fontWeight: '700',
                     cursor: plan.id === 'enterprise' || loading ? 'not-allowed' : 'pointer',
@@ -407,14 +403,14 @@ export default function Pricing() {
             background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)', 
             borderRadius: '20px',
             padding: '2.5rem',
-            border: '1px solid rgba(0, 255, 136, 0.2)',
+            border: '1px solid rgba(0, 255, 136, 0.2)', 
             marginBottom: '4rem'
           }}>
             <h2 style={{
               fontSize: '2rem',
               fontWeight: '700',
               color: '#ffffff',
-              textAlign: 'center',
+              textAlign: 'center', 
               marginBottom: '2rem' 
             }}>
               Frequently Asked Questions
@@ -423,7 +419,7 @@ export default function Pricing() {
             <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
-              gap: '2rem' 
+              gap: '2rem'  
             }}>
               <div>
                 <h3 style={{ color: '#00ff88', marginBottom: '0.5rem' }}>
@@ -468,7 +464,7 @@ export default function Pricing() {
             textAlign: 'center',
             color: '#e2e8f0',
             fontSize: '0.9rem'
-          }}>
+          }}> 
             <p style={{ margin: '0 0 1rem 0' }}>
               ✓ 30-day money-back guarantee • ✓ Cancel anytime • ✓ Secure payment with Stripe
             </p>
