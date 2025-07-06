@@ -95,6 +95,8 @@ export default function ResetPassword() {
                   cursor: 'pointer',
                   textDecoration: 'none',
                   display: 'inline-block'
+                  textDecoration: 'none',
+                  display: 'inline-block'
                 }}
               >
                 Return to Login
@@ -144,7 +146,7 @@ export default function ResetPassword() {
                 }}
               >
                 {loading ? 'Sending...' : 'Send Reset Link'}
-              </button>
+              </Link>
 
               <div style={{ textAlign: 'center', marginTop: '1rem' }}>
                 <a
