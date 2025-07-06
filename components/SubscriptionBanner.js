@@ -23,6 +23,9 @@ export default function SubscriptionBanner() {
         setSubLoading(true);
         // Simple simulation - in production, you would fetch from your API
         setTimeout(() => {
+        }
+        )
+      }
       // Simulate subscription check - in production, fetch from your API
       setSubLoading(true);
       setTimeout(() => {
