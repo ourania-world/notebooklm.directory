@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 
-const AuthContext = createContext();
+const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -9,6 +9,7 @@ export const AuthProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [mounted, setMounted] = useState(false);
 
+  // Initialize auth state
   useEffect(() => {
     // Mark component as mounted to prevent hydration mismatch
     setMounted(true);
@@ -17,7 +18,7 @@ export const AuthProvider = ({ children }) => {
     if (typeof window !== 'undefined') {
       const getInitialSession = async () => {
         try {
-          setLoading(true);
+          setLoading(true); 
           
           // Get initial session
           const { data, error } = await supabase.auth.getSession();
@@ -37,7 +38,7 @@ export const AuthProvider = ({ children }) => {
       };
 
       getInitialSession();
-
+      
       // Listen for auth changes
       const { data: { subscription } } = supabase.auth.onAuthStateChange(
         async (event, session) => {
@@ -115,11 +116,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Don't render anything during SSR to prevent hydration mismatch
-  if (!mounted && typeof window !== 'undefined') {
-    return null;
-  }
-
   const value = {
     user,
     loading,
@@ -133,6 +129,8 @@ export const AuthProvider = ({ children }) => {
     isLoading: loading
   };
 
+  // During SSR, just return children without user data
+  // This prevents hydration mismatches
   return (
     <AuthContext.Provider value={value}>
       {children}
@@ -142,7 +140,7 @@ export const AuthProvider = ({ children }) => {
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (context === undefined) {
+  if (context === null && typeof window !== 'undefined') {
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;

@@ -8,28 +8,31 @@ export default function UserMenu() {
   const [signOutLoading, setSignOutLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
 
+  // Set mounted state on client-side only
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Don't render during SSR to prevent hydration mismatch
+  // Don't render anything during SSR to prevent hydration mismatch
   if (!mounted) {
     return null;
   }
 
+  // Show loading state
   if (loading) {
     return null;
   }
 
+  // Don't render if no user (login button is in Layout)
   if (!user) {
-    return null; // Login button is now in Layout.js
+    return null;
   }
 
   const handleSignOut = async () => {
     try {
       setSignOutLoading(true);
       await signOut();
-      setIsOpen(false);
+      setIsOpen(false); 
       window.location.href = '/';
     } catch (error) {
       console.error('Error signing out:', error);
@@ -47,7 +50,7 @@ export default function UserMenu() {
           border: '1px solid rgba(0, 255, 136, 0.3)',
           color: '#ffffff',
           padding: '0.75rem 1rem',
-          borderRadius: '12px',
+          borderRadius: '12px', 
           cursor: 'pointer',
           display: 'flex',
           alignItems: 'center',
@@ -56,7 +59,7 @@ export default function UserMenu() {
           fontWeight: '500'
         }}
         onMouseEnter={(e) => {
-          e.target.style.background = 'rgba(0, 255, 136, 0.2)';
+          e.target.style.background = 'rgba(0, 255, 136, 0.2)'; 
           e.target.style.borderColor = '#00ff88';
         }}
         onMouseLeave={(e) => {
@@ -69,7 +72,7 @@ export default function UserMenu() {
           height: '32px',
           borderRadius: '50%',
           background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
-          color: '#0a0a0a',
+          color: '#0a0a0a', 
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -79,7 +82,7 @@ export default function UserMenu() {
           {user.user_metadata?.full_name?.[0] || user.email?.[0]?.toUpperCase() || 'U'}
         </div>
         <span style={{ fontSize: '0.9rem' }}>
-          {user.user_metadata?.full_name || user.email?.split('@')[0] || 'User'}
+          {user.user_metadata?.full_name || user.email?.split('@')[0] || 'User'} 
         </span>
         <span style={{ fontSize: '0.7rem', opacity: 0.7 }}>▼</span>
       </button>
@@ -91,7 +94,7 @@ export default function UserMenu() {
               position: 'fixed',
               top: 0,
               left: 0,
-              right: 0,
+              right: 0, 
               bottom: 0,
               zIndex: 999
             }}
@@ -101,7 +104,7 @@ export default function UserMenu() {
             position: 'absolute',
             top: '100%',
             right: 0,
-            marginTop: '0.5rem',
+            marginTop: '0.5rem', 
             background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
             borderRadius: '12px',
             boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)',
@@ -121,7 +124,7 @@ export default function UserMenu() {
                   padding: '1rem 1.5rem',
                   textAlign: 'left',
                   cursor: 'pointer',
-                  color: '#ffffff',
+                  color: '#ffffff', 
                   fontSize: '0.9rem',
                   fontWeight: '500',
                   transition: 'all 0.2s ease',
@@ -151,7 +154,7 @@ export default function UserMenu() {
                   padding: '1rem 1.5rem',
                   textAlign: 'left',
                   cursor: 'pointer',
-                  color: '#ffffff',
+                  color: '#ffffff', 
                   fontSize: '0.9rem',
                   fontWeight: '500',
                   transition: 'all 0.2s ease',
@@ -181,7 +184,7 @@ export default function UserMenu() {
                   padding: '1rem 1.5rem',
                   textAlign: 'left',
                   cursor: 'pointer',
-                  color: '#ffffff',
+                  color: '#ffffff', 
                   fontSize: '0.9rem',
                   fontWeight: '500',
                   transition: 'all 0.2s ease',
@@ -216,7 +219,7 @@ export default function UserMenu() {
                   padding: '1rem 1.5rem',
                   textAlign: 'left',
                   cursor: signOutLoading ? 'wait' : 'pointer',
-                  color: '#dc3545',
+                  color: '#dc3545', 
                   fontSize: '0.9rem',
                   fontWeight: '500',
                   transition: 'all 0.2s ease',
@@ -227,7 +230,7 @@ export default function UserMenu() {
                 onMouseEnter={(e) => {
                   if (!signOutLoading) {
                     e.target.style.background = 'rgba(220, 53, 69, 0.1)';
-                  }
+                  } 
                 }}
                 onMouseLeave={(e) => {
                   e.target.style.background = 'none';

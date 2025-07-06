@@ -1,6 +1,7 @@
 import { AuthProvider } from '../context/AuthContext';
 import '../styles/globals.css';
 
+// Main app component
 function MyApp({ Component, pageProps }) {
   return (
     <AuthProvider>
@@ -8,5 +9,3 @@ function MyApp({ Component, pageProps }) {
     </AuthProvider>
   );
 }
-
-export default MyApp;

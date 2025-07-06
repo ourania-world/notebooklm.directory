@@ -94,7 +94,7 @@ export default function Home({ initialFeaturedNotebooks }) {
           <div style={{
             display: 'inline-flex',
             alignItems: 'center', 
-            gap: '0.5rem', 
+            gap: '0.5rem',  
             background: 'rgba(0, 0, 0, 0.4)', 
             border: '1px solid rgba(0, 255, 136, 0.3)', 
             borderRadius: '50px', 
@@ -170,7 +170,7 @@ export default function Home({ initialFeaturedNotebooks }) {
           <div style={{ 
             display: 'flex', 
             gap: '1rem', 
-            justifyContent: 'center',
+            justifyContent: 'center', 
             flexWrap: 'wrap',
             marginBottom: '2rem'
           }}>
@@ -179,7 +179,7 @@ export default function Home({ initialFeaturedNotebooks }) {
               style={{
                 background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
                 color: '#0a0a0a',
-                border: 'none',
+                border: 'none', 
                 padding: '1rem 2.5rem',
                 borderRadius: '12px',
                 fontWeight: '700',
@@ -190,7 +190,7 @@ export default function Home({ initialFeaturedNotebooks }) {
                 textTransform: 'uppercase',
                 letterSpacing: '0.5px'
               }}
-              onMouseEnter={(e) => {
+              onMouseEnter={(e) => { 
                 e.target.style.transform = 'translateY(-2px)';
                 e.target.style.boxShadow = '0 12px 40px rgba(0, 255, 136, 0.4)';
               }}
@@ -207,7 +207,7 @@ export default function Home({ initialFeaturedNotebooks }) {
           <div style={{
             background: 'rgba(0, 0, 0, 0.4)',
             backdropFilter: 'blur(20px)', 
-            border: '1px solid rgba(0, 255, 136, 0.2)',
+            border: '1px solid rgba(0, 255, 136, 0.2)', 
             borderRadius: '20px', 
             padding: '2rem', 
             maxWidth: '800px', 
@@ -223,7 +223,7 @@ export default function Home({ initialFeaturedNotebooks }) {
               <div>
                 <div style={{ 
                   fontSize: '2.5rem', 
-                  fontWeight: '700', 
+                  fontWeight: '700',  
                   color: '#00ff88',
                   fontFamily: 'monospace'
                 }}>
@@ -236,7 +236,7 @@ export default function Home({ initialFeaturedNotebooks }) {
               <div>
                 <div style={{ 
                   fontSize: '2.5rem', 
-                  fontWeight: '700', 
+                  fontWeight: '700',  
                   color: '#00ff88',
                   fontFamily: 'monospace'
                 }}>
@@ -249,7 +249,7 @@ export default function Home({ initialFeaturedNotebooks }) {
               <div>
                 <div style={{ 
                   fontSize: '2.5rem', 
-                  fontWeight: '700', 
+                  fontWeight: '700',  
                   color: '#00ff88',
                   fontFamily: 'monospace'
                 }}>
@@ -266,7 +266,7 @@ export default function Home({ initialFeaturedNotebooks }) {
       
       {/* Features Section */}
       
-      <section style={{
+      <section style={{ 
         background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)',
         padding: '6rem 0',
         position: 'relative'
@@ -275,7 +275,7 @@ export default function Home({ initialFeaturedNotebooks }) {
           <h2 style={{ 
             fontSize: '2.5rem',
             fontWeight: '700', 
-            margin: '0 0 1.5rem 0',
+            margin: '0 0 1.5rem 0', 
             color: '#ffffff',
             textAlign: 'center'
           }}>
@@ -285,7 +285,7 @@ export default function Home({ initialFeaturedNotebooks }) {
           <p style={{
             fontSize: '1.1rem',
             color: '#e2e8f0',
-            textAlign: 'center',
+            textAlign: 'center', 
             maxWidth: '800px',
             margin: '0 auto 4rem auto'
           }}>
@@ -295,14 +295,14 @@ export default function Home({ initialFeaturedNotebooks }) {
           <div style={{ 
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-            gap: '2rem',
+            gap: '2rem', 
             marginBottom: '4rem'
           }}>
             {/* Feature 1 */}
             <div style={{
               background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)', 
               borderRadius: '16px',
-              padding: '2rem',
+              padding: '2rem', 
               border: '1px solid rgba(0, 255, 136, 0.2)'
             }}>
               <div style={{
@@ -335,7 +335,7 @@ export default function Home({ initialFeaturedNotebooks }) {
             <div style={{
               background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
               borderRadius: '16px', 
-              padding: '2rem',
+              padding: '2rem', 
               border: '1px solid rgba(0, 255, 136, 0.2)'
             }}>
               <div style={{
@@ -368,7 +368,7 @@ export default function Home({ initialFeaturedNotebooks }) {
             <div style={{
               background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
               borderRadius: '16px', 
-              padding: '2rem',
+              padding: '2rem', 
               border: '1px solid rgba(0, 255, 136, 0.2)'
             }}>
               <div style={{
@@ -403,7 +403,7 @@ export default function Home({ initialFeaturedNotebooks }) {
       {/* CTA Section */}
       <section style={{ 
         background: '#0a0a0a',
-        padding: '6rem 0',
+        padding: '6rem 0', 
         textAlign: 'center'
       }}>
         <div style={{ maxWidth: '800px', margin: '0 auto', padding: '0 2rem' }}>
@@ -464,7 +464,7 @@ export default function Home({ initialFeaturedNotebooks }) {
       {/* Sustainable Research Section */}
       <section style={{
         background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)',
-        padding: '6rem 0',
+        padding: '6rem 0', 
         textAlign: 'center'
       }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
@@ -494,7 +494,7 @@ export default function Home({ initialFeaturedNotebooks }) {
       {/* Help Build Section */}
       <section style={{ 
         background: '#0a0a0a', 
-        padding: '6rem 0'
+        padding: '6rem 0' 
       }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
           <h2 style={{
@@ -630,7 +630,7 @@ export default function Home({ initialFeaturedNotebooks }) {
       {/* Vision Audio Section */}
       <section style={{ 
         background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
-        padding: '4rem 0',
+        padding: '4rem 0', 
         textAlign: 'center'
       }}>
         <div style={{ maxWidth: '800px', margin: '0 auto', padding: '0 2rem' }}>
@@ -659,7 +659,7 @@ export default function Home({ initialFeaturedNotebooks }) {
       {/* Featured Collections */}
       <section style={{ 
         padding: '6rem 0',
-        background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)'
+        background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)' 
       }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
           <h2 style={{ 
@@ -745,7 +745,7 @@ export default function Home({ initialFeaturedNotebooks }) {
       {/* Featured Projects */}
       <section style={{ 
         padding: '6rem 0',
-        background: '#0a0a0a'
+        background: '#0a0a0a' 
       }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
           <h2 style={{ 
@@ -761,11 +761,11 @@ export default function Home({ initialFeaturedNotebooks }) {
           {loading ? (
             <div style={{ textAlign: 'center', padding: '2rem' }}>
               <p style={{ color: '#e2e8f0' }}>Loading notebooks...</p>
-            </div> 
+            </div>
           ) : (
             <div style={{ 
               display: 'grid', 
-              gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', 
+              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
               gap: '2rem'
             }}>
               {featuredNotebooks.slice(0, 6).map(notebook => (
