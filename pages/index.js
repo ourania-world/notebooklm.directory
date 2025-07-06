@@ -92,7 +92,6 @@ export default function Home({ initialFeaturedNotebooks }) {
           zIndex: 2
         }}>
           <div style={{
-            <div style={{ 
             alignItems: 'center', 
             gap: '0.5rem',
             background: 'rgba(0, 0, 0, 0.4)', 
@@ -253,37 +252,11 @@ export default function Home({ initialFeaturedNotebooks }) {
                   color: '#00ff88',
                   fontFamily: 'monospace'
                 }}>
-              }}> 
-                $3.2M
+                  156T
+                </div>
                 <div style={{ color: '#00ff88', fontSize: '0.9rem', marginTop: '0.5rem' }}>
-              <div style={{ color: '#00ff88', fontSize: '0.9rem', marginTop: '0.5rem' }}> 
-                Computational Costs Saved
-              </div>
-            </div>
-            <div>
-              <div style={{ 
-                fontSize: '2.5rem', 
-                fontWeight: '700',
-                color: '#00ff88',
-                fontFamily: 'monospace'
-              }}> 
-                47%
-              </div>
-              <div style={{ color: '#00ff88', fontSize: '0.9rem', marginTop: '0.5rem' }}> 
-                Reduction in Redundant Research
-              </div>
-            </div>
-            <div>
-              <div style={{ 
-                fontSize: '2.5rem', 
-                fontWeight: '700',
-                color: '#00ff88',
-                fontFamily: 'monospace'
-              }}> 
-                156T
-              </div>
-              <div style={{ color: '#00ff88', fontSize: '0.9rem', marginTop: '0.5rem' }}> 
-                CO₂ Emissions Prevented
+                  CO₂ Emissions Prevented
+                </div>
               </div>
             </div>
           </div>
@@ -291,7 +264,6 @@ export default function Home({ initialFeaturedNotebooks }) {
       </section>
       
       {/* Features Section */}
-      
       <section style={{ 
         background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)',
         padding: '6rem 0',
@@ -639,16 +611,13 @@ export default function Home({ initialFeaturedNotebooks }) {
               <div style={{
                 width: '120px',
                 height: '120px',
-              background: 'rgba(0, 0, 0, 0.4)', 
-              border: '1px solid rgba(0, 255, 136, 0.3)', 
-              borderRadius: '50px', 
-              padding: '0.5rem 1.5rem', 
-              marginBottom: '2rem', 
-              fontSize: '0.9rem', 
-              color: '#00ff88', 
-              backdropFilter: 'blur(10px)'
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '3rem'
+              }}>
                 🚀
-              ⭐ Trusted by Researchers Worldwide • Join Our Community
+              </div>
             </div>
           </div>
         </div>
