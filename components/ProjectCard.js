@@ -73,15 +73,18 @@ export default function ProjectCard({ notebook }) {
 
   return (
     <div 
-      className="card-hover"
+      className="card-hover premium-card"
       style={{ 
-        background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
+        background: 'linear-gradient(135deg, rgba(26, 26, 46, 0.8) 0%, rgba(22, 33, 62, 0.8) 100%)',
         borderRadius: '16px',
         overflow: 'hidden',
         border: '1px solid rgba(0, 255, 136, 0.2)',
         cursor: 'pointer',
         height: '100%',
-        display: 'flex',
+        display: 'flex', 
+        backdropFilter: 'blur(10px)',
+        WebkitBackdropFilter: 'blur(10px)',
+        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
         flexDirection: 'column'
       }}
       onClick={handleCardClick}
@@ -89,10 +92,11 @@ export default function ProjectCard({ notebook }) {
       {/* Category Badge */}
       <div style={{
         position: 'absolute',
-        top: '1rem',
-        left: '1rem',
-        background: 'rgba(0, 0, 0, 0.6)',
-        backdropFilter: 'blur(4px)',
+        top: '1.2rem',
+        left: '1.2rem',
+        background: 'rgba(0, 0, 0, 0.7)',
+        backdropFilter: 'blur(8px)',
+        WebkitBackdropFilter: 'blur(8px)',
         padding: '0.25rem 0.75rem',
         borderRadius: '12px',
         fontSize: '0.7rem',
@@ -106,8 +110,8 @@ export default function ProjectCard({ notebook }) {
       {/* Save Button */}
       <button
         onClick={handleSaveToggle}
-        disabled={saving}
-        style={{
+        disabled={saving} 
+        style={{ 
           position: 'absolute', 
           top: '1rem',
           right: '1rem',
@@ -123,7 +127,7 @@ export default function ProjectCard({ notebook }) {
           cursor: saving ? 'wait' : 'pointer', 
           zIndex: 1,
           color: isSaved ? '#00ff88' : '#ffffff',
-          fontSize: '1.2rem',
+          fontSize: '1.1rem',
           transition: 'all 0.2s ease'
         }}
         onMouseEnter={(e) => {
@@ -145,7 +149,8 @@ export default function ProjectCard({ notebook }) {
       {/* Header Image or Gradient */}
       <div style={{
         height: '120px',
-        background: 'linear-gradient(135deg, rgba(0, 255, 136, 0.15) 0%, rgba(0, 230, 122, 0.05) 100%)',
+        background: 'linear-gradient(135deg, rgba(0, 255, 136, 0.15) 0%, rgba(0, 230, 122, 0.05) 100%)', 
+        backgroundSize: '200% 200%',
         position: 'relative'
       }}>
         {notebook.featured && (
@@ -153,7 +158,8 @@ export default function ProjectCard({ notebook }) {
             position: 'absolute',
             bottom: '0.5rem',
             right: '0.5rem',
-            background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
+            background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)', 
+            boxShadow: '0 2px 8px rgba(0, 255, 136, 0.3)',
             color: '#0a0a0a',
             padding: '0.25rem 0.5rem',
             borderRadius: '6px',
@@ -171,7 +177,8 @@ export default function ProjectCard({ notebook }) {
             position: 'absolute',
             bottom: '0.5rem',
             left: '0.5rem',
-            background: 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)',
+            background: 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)', 
+            boxShadow: '0 2px 8px rgba(255, 215, 0, 0.3)',
             color: '#0a0a0a',
             padding: '0.25rem 0.5rem',
             borderRadius: '6px',
@@ -187,7 +194,7 @@ export default function ProjectCard({ notebook }) {
       
       {/* Content */}
       <div style={{ 
-        padding: '1.5rem',
+        padding: '1.75rem 1.5rem',
         flex: 1, 
         display: 'flex',
         flexDirection: 'column'
@@ -195,7 +202,8 @@ export default function ProjectCard({ notebook }) {
         <h3 style={{ 
           fontSize: '1.3rem', 
           fontWeight: '700',
-          color: '#ffffff',
+          color: '#ffffff', 
+          textShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
           margin: '0 0 0.75rem 0', 
           lineHeight: '1.3'
         }}>
@@ -203,7 +211,7 @@ export default function ProjectCard({ notebook }) {
         </h3>
         
         <p style={{ 
-          color: '#e2e8f0', 
+          color: 'rgba(226, 232, 240, 0.9)', 
           fontSize: '0.9rem',
           lineHeight: '1.5',
           margin: '0 0 1rem 0', 
@@ -223,7 +231,8 @@ export default function ProjectCard({ notebook }) {
             display: 'flex',
             flexWrap: 'wrap',
             gap: '0.5rem',
-            marginBottom: '1rem'
+          marginBottom: '1rem', 
+          marginTop: '0.5rem'
           }}> 
             {notebook.tags.slice(0, 3).map((tag, index) => (
               <span 
@@ -231,7 +240,8 @@ export default function ProjectCard({ notebook }) {
                 style={{
                   background: 'rgba(0, 255, 136, 0.1)',
                   color: '#00ff88',
-                  padding: '0.25rem 0.5rem',
+                  padding: '0.25rem 0.75rem', 
+                  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
                   borderRadius: '6px',
                   fontSize: '0.7rem',
                   fontWeight: '600'
@@ -257,7 +267,8 @@ export default function ProjectCard({ notebook }) {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          marginTop: 'auto',
+          marginTop: 'auto', 
+          paddingTop: '1.25rem',
           paddingTop: '1rem', 
           borderTop: '1px solid rgba(255, 255, 255, 0.1)'
         }}>
@@ -265,7 +276,7 @@ export default function ProjectCard({ notebook }) {
             <div style={{ color: '#ffffff', fontWeight: '600', fontSize: '0.9rem' }}>
               {notebook.author}
             </div>
-            {notebook.institution && (
+            {notebook.institution && ( 
               <div style={{ color: '#e2e8f0', fontSize: '0.8rem' }}>
                 {notebook.institution}
               </div>
@@ -278,7 +289,7 @@ export default function ProjectCard({ notebook }) {
             gap: '0.75rem'
           }}>
             <div style={{ 
-              display: 'flex', 
+              display: 'flex',  
               alignItems: 'center', 
               gap: '0.25rem',
               color: '#e2e8f0',
@@ -289,7 +300,7 @@ export default function ProjectCard({ notebook }) {
             </div>
             
             <div style={{ 
-              display: 'flex', 
+              display: 'flex',  
               alignItems: 'center', 
               gap: '0.25rem',
               color: '#e2e8f0',
@@ -307,12 +318,14 @@ export default function ProjectCard({ notebook }) {
         <div style={{
           position: 'absolute',
           top: '1rem',
-          right: '3.5rem',
+          right: '3.5rem', 
+          zIndex: 1,
           background: 'rgba(0, 0, 0, 0.6)',
           backdropFilter: 'blur(4px)',
           width: '32px',
           height: '32px', 
-          borderRadius: '50%',
+          borderRadius: '50%', 
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',

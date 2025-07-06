@@ -31,7 +31,9 @@ export default function Home({ initialFeaturedNotebooks }) {
     <Layout>
       {/* Hero Section */}
       <section style={{ 
-        background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%)',
+        background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%)', 
+        backgroundSize: '200% 200%',
+        className: 'morphing-bg subtle-pattern',
         color: 'white', 
         padding: '8rem 0',
         textAlign: 'center',
@@ -41,7 +43,7 @@ export default function Home({ initialFeaturedNotebooks }) {
         {/* Animated Background Pattern */}
         <div style={{
           position: 'absolute',
-          top: 0, 
+          top: 0,  
           left: 0,
           right: 0,
           bottom: 0,
@@ -49,7 +51,7 @@ export default function Home({ initialFeaturedNotebooks }) {
           zIndex: 1
         }}></div>
         <div style={{ 
-          maxWidth: '1200px', 
+          maxWidth: '1200px',  
           margin: '0 auto', 
           padding: '0 2rem',
           position: 'relative',
@@ -57,7 +59,7 @@ export default function Home({ initialFeaturedNotebooks }) {
         }}>
           <h1 style={{ 
             fontSize: 'clamp(2.5rem, 8vw, 4.5rem)', 
-            fontWeight: '700', 
+            fontWeight: '800',  
             margin: '0 0 1rem 0', 
             lineHeight: '1',
             background: 'linear-gradient(135deg, #ffffff 0%, #00ff88 100%)',
@@ -66,7 +68,7 @@ export default function Home({ initialFeaturedNotebooks }) {
             backgroundClip: 'text'
           }}>
             The Premier NotebookLM<br />
-            <span style={{ color: '#00ff88' }}>Directory</span>
+            <span className="neon-text">Directory</span>
           </h1>
           
           <h2 style={{ 
@@ -75,7 +77,7 @@ export default function Home({ initialFeaturedNotebooks }) {
             color: '#ffffff',
             fontWeight: '500',
             letterSpacing: '0.5px'
-          }}>
+          }}> 
             <span className="float-animation">Discover. Build. Accelerate.</span>
           </h2>
           
@@ -83,7 +85,7 @@ export default function Home({ initialFeaturedNotebooks }) {
             fontSize: '1.3rem', 
             margin: '0 0 1rem 0',
             opacity: 0.9,
-            maxWidth: '700px',
+            maxWidth: '700px', 
             margin: '0 auto 1rem auto',
             color: '#e2e8f0',
             lineHeight: '1.6'
@@ -96,7 +98,7 @@ export default function Home({ initialFeaturedNotebooks }) {
           <div style={{ 
             display: 'flex', 
             gap: '1rem', 
-            justifyContent: 'center', 
+            justifyContent: 'center',  
             flexWrap: 'wrap',
             marginTop: '2rem'
           }}>
@@ -104,7 +106,7 @@ export default function Home({ initialFeaturedNotebooks }) {
               background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
               color: '#0a0a0a',
               border: 'none', 
-              padding: '1rem 2.5rem',
+              padding: '1.25rem 2.5rem', 
               borderRadius: '12px',
               fontWeight: '700',
               cursor: 'pointer',
@@ -112,7 +114,7 @@ export default function Home({ initialFeaturedNotebooks }) {
               transition: 'all 0.3s ease',
               boxShadow: '0 8px 32px rgba(0, 255, 136, 0.3)',
               textTransform: 'uppercase',
-              letterSpacing: '0.5px',
+              letterSpacing: '1px', 
               textDecoration: 'none', 
               display: 'inline-block',
               className: 'button-glow'
@@ -123,7 +125,7 @@ export default function Home({ initialFeaturedNotebooks }) {
             <Link href="/submit" style={{
               background: 'transparent',
               color: '#ffffff',
-              border: '1px solid rgba(255, 255, 255, 0.3)',
+              border: '1px solid rgba(255, 255, 255, 0.3)', 
               padding: '1rem 2.5rem',
               borderRadius: '12px',
               fontWeight: '600',
@@ -141,7 +143,7 @@ export default function Home({ initialFeaturedNotebooks }) {
       
       {/* Features Section */}
       <section style={{ 
-        background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)',
+        background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)', 
         padding: '6rem 0', 
         position: 'relative'
       }}>
@@ -149,7 +151,7 @@ export default function Home({ initialFeaturedNotebooks }) {
           <h2 style={{ 
             fontSize: '2.5rem', 
             fontWeight: '700', 
-            margin: '0 0 1.5rem 0',
+            margin: '0 0 1.5rem 0', 
             color: '#ffffff', 
             textAlign: 'center'
           }}>
@@ -157,7 +159,7 @@ export default function Home({ initialFeaturedNotebooks }) {
           </h2>
           
           <p style={{ 
-            fontSize: '1.1rem',
+            fontSize: '1.1rem', 
             color: '#e2e8f0',
             textAlign: 'center',
             maxWidth: '800px',
@@ -168,7 +170,7 @@ export default function Home({ initialFeaturedNotebooks }) {
           
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
             gap: '2rem', 
             marginBottom: '4rem'
           }}>
@@ -176,7 +178,8 @@ export default function Home({ initialFeaturedNotebooks }) {
             <div className="card-hover glass-card" style={{
               background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
               borderRadius: '16px',
-              padding: '2rem',
+              padding: '2.5rem 2rem', 
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
               border: '1px solid rgba(0, 255, 136, 0.2)'
             }}>
               <div style={{
@@ -184,7 +187,7 @@ export default function Home({ initialFeaturedNotebooks }) {
                 marginBottom: '1rem',
                 textAlign: 'center'
               }}> 
-                🔍
+                <span className="float-animation" style={{ display: 'inline-block' }}>🔍</span>
               </div>
               <h3 style={{
                 fontSize: '1.3rem',
@@ -209,7 +212,8 @@ export default function Home({ initialFeaturedNotebooks }) {
             <div className="card-hover glass-card" style={{
               background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
               borderRadius: '16px',
-              padding: '2rem',
+              padding: '2.5rem 2rem', 
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
               border: '1px solid rgba(0, 255, 136, 0.2)'
             }}>
               <div style={{
@@ -217,7 +221,7 @@ export default function Home({ initialFeaturedNotebooks }) {
                 marginBottom: '1rem',
                 textAlign: 'center'
               }}> 
-                🧠
+                <span className="float-animation" style={{ display: 'inline-block' }}>🧠</span>
               </div>
               <h3 style={{
                 fontSize: '1.3rem',
@@ -242,7 +246,8 @@ export default function Home({ initialFeaturedNotebooks }) {
             <div className="card-hover glass-card" style={{
               background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
               borderRadius: '16px',
-              padding: '2rem',
+              padding: '2.5rem 2rem', 
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
               border: '1px solid rgba(0, 255, 136, 0.2)'
             }}>
               <div style={{
@@ -250,7 +255,7 @@ export default function Home({ initialFeaturedNotebooks }) {
                 marginBottom: '1rem',
                 textAlign: 'center'
               }}> 
-                🌍
+                <span className="float-animation" style={{ display: 'inline-block' }}>🌍</span>
               </div>
               <h3 style={{
                 fontSize: '1.3rem',
@@ -276,7 +281,7 @@ export default function Home({ initialFeaturedNotebooks }) {
       
       {/* CTA Section */}
       <section style={{ 
-        background: 'linear-gradient(135deg, rgba(10, 10, 10, 0.9) 0%, rgba(26, 26, 46, 0.9) 100%)',
+        background: 'linear-gradient(135deg, rgba(10, 10, 10, 0.9) 0%, rgba(26, 26, 46, 0.9) 100%)', 
         padding: '6rem 0', 
         position: 'relative',
         borderTop: '1px solid rgba(0, 255, 136, 0.1)',
@@ -284,7 +289,7 @@ export default function Home({ initialFeaturedNotebooks }) {
         textAlign: 'center'
       }}>
         <div style={{
-          position: 'absolute',
+          position: 'absolute', 
           top: 0,
           left: 0,
           right: 0,
@@ -292,7 +297,7 @@ export default function Home({ initialFeaturedNotebooks }) {
           background: 'rgba(0, 0, 0, 0.3)',
           zIndex: 1
         }}></div>
-        <div style={{ maxWidth: '800px', margin: '0 auto', padding: '0 2rem' }}>
+        <div style={{ maxWidth: '800px', margin: '0 auto', padding: '0 2rem', position: 'relative', zIndex: 2 }}>
           <div style={{
             fontSize: '3rem',
             marginBottom: '1.5rem',
@@ -300,7 +305,7 @@ export default function Home({ initialFeaturedNotebooks }) {
             position: 'relative',
             zIndex: 2
           }}>
-            ✨
+            <span className="float-animation" style={{ display: 'inline-block' }}>✨</span>
           </div>
           <h2 style={{ 
             fontSize: '2.5rem', 
@@ -308,7 +313,7 @@ export default function Home({ initialFeaturedNotebooks }) {
             color: '#ffffff',
             fontWeight: '700',
             position: 'relative',
-            zIndex: 2
+            zIndex: 2, 
           }}> 
             Ready to Get Started?
           </h2>
@@ -316,7 +321,7 @@ export default function Home({ initialFeaturedNotebooks }) {
             fontSize: '1.1rem',
             color: '#e2e8f0',
             lineHeight: '1.6',
-            marginBottom: '2rem',
+            marginBottom: '2rem', 
             position: 'relative',
             zIndex: 2
           }}> 
@@ -324,7 +329,7 @@ export default function Home({ initialFeaturedNotebooks }) {
           </p>
           
           <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap', position: 'relative', zIndex: 2 }}>
-            <Link href="/submit" style={{
+            <Link href="/submit" className="gradient-button" style={{
               background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%, #00ff88 200%)',
               color: '#0a0a0a',
               border: 'none',
@@ -333,7 +338,7 @@ export default function Home({ initialFeaturedNotebooks }) {
               fontWeight: '600',
               cursor: 'pointer',
               fontSize: '0.9rem',
-              textDecoration: 'none',
+              textDecoration: 'none', 
               display: 'inline-block',
               className: 'gradient-button'
             }}>
