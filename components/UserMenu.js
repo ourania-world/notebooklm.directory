@@ -50,6 +50,13 @@ export default function UserMenu() {
   // Don't render during SSR or loading to prevent hydration mismatch
   if (!mounted) {
     return null;
+  }
+
+  return (
+    <div>
+      {isOpen && (
+        <>
+          <div style={{
               position: 'fixed',
               top: 0,
               left: 0,
