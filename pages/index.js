@@ -215,14 +215,20 @@ export default function Home({ initialFeaturedNotebooks }) {
             margin: '0 auto', 
             position: 'relative' 
           }}>
-            <p style={{ 
-              color: '#00ff88', 
-              fontSize: '1.2rem', 
-              textAlign: 'center', 
-              margin: 0 
+            <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
             }}>
-              Join our community of researchers building the future of sustainable AI research
-            </p>
+              <p style={{ 
+                color: '#00ff88', 
+                fontSize: '1.2rem', 
+                textAlign: 'center', 
+                margin: 0 
+              }}>
+                Join our community of researchers building the future of sustainable AI research
+              </p>
+            </div>
           </div>
         </div>
       </section>

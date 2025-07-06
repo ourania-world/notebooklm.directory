@@ -31,8 +31,7 @@ export default function UserMenu() {
   if (!user) {
     return (
       <div style={{ display: 'flex', gap: '1rem' }}>
-        <a
-          href="/login"
+        <button
           onClick={() => window.location.href = '/login'}
           style={{
             background: 'transparent',
@@ -55,9 +54,9 @@ export default function UserMenu() {
           }}
         >
           Log in
-        </a>
-        <a
-          href="/signup"
+        </button>
+        <button
+          onClick={() => window.location.href = '/signup'}
           style={{
             background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
             color: '#0a0a0a',
@@ -80,7 +79,7 @@ export default function UserMenu() {
           }}
         >
           Get Started
-        </a>
+        </button>
       </div>
     );
   }

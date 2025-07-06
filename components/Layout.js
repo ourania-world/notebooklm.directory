@@ -71,8 +71,8 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
             </Link>
             
             <div style={{ 
-              display: 'flex', 
-              justifyContent: 'space-between',
+              display: 'flex',
+              flexDirection: 'row',
               alignItems: 'center',
               gap: '2rem'
             }}>
@@ -120,8 +120,10 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                 </Link>
               )}
             </div>
-            
-            <UserMenu />
+
+            <div style={{ marginLeft: 'auto' }}>
+              <UserMenu />
+            </div>
             
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
