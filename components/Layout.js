@@ -290,13 +290,10 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                   padding: '1rem',
                   fontSize: '0.9rem'
                 }}>
-                  <div style={{ color: '#e2e8f0', fontSize: '0.8rem', lineHeight: '1.6' }}>
+                    • Connect with other creators
                     • Submit your NotebookLM projects<br />
                     • Discover innovative approaches<br />
                     • Connect with other creators
-                  </div>
-                </div>
-              </div>
             </div>
 
             <div style={{

@@ -370,44 +370,6 @@ export default function Pricing() {
             <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
-              gap: '2rem'
-            }}>
-              <div>
-                <h3 style={{ color: '#00ff88', marginBottom: '0.5rem' }}>
-                  Can I upgrade or downgrade anytime?
-                </h3>
-                <p style={{ color: '#e2e8f0', lineHeight: '1.6' }}>
-                  Yes! You can upgrade, downgrade, or cancel your subscription at any time. Changes take effect at your next billing cycle, and we'll prorate any differences. All plans include a 7-day free trial.
-                </p>
-              </div>
-
-              <div>
-                <h3 style={{ color: '#00ff88', marginBottom: '0.5rem' }}>
-                  What's included in the API access?
-                </h3>
-                <p style={{ color: '#e2e8f0', lineHeight: '1.6' }}> 
-                  Professional plans include 1,000 API calls per month for integrating our notebook discovery into your workflows. Enterprise plans include unlimited API access plus custom integrations.
-                </p>
-              </div>
-
-              <div>
-                <h3 style={{ color: '#00ff88', marginBottom: '0.5rem' }}>
-                  What are the advanced search features?
-                </h3>
-                <p style={{ color: '#e2e8f0', lineHeight: '1.6' }}> 
-                  Standard plan includes category filtering, tag search, and saved searches. Professional plan adds AI-powered recommendations, content similarity search, and personalized results.
-                </p>
-              </div>
-
-              <div>
-                <h3 style={{ color: '#00ff88', marginBottom: '0.5rem' }}>
-                  How many notebooks can I submit?
-                </h3>
-                <p style={{ color: '#e2e8f0', lineHeight: '1.6' }}>
-                  All plans allow unlimited notebook submissions. We believe in making knowledge sharing accessible to everyone, regardless of subscription tier.
-                </p>
-              </div>
-            </div>
           </div>
 
           {/* Trust Signals */}

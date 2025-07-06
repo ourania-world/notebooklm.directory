@@ -491,36 +491,37 @@ export default function Home({ initialFeaturedNotebooks }) {
                 fontWeight: '700',
                 cursor: 'pointer',
                 display: 'block',
-                margin: '0 auto',
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: '2rem'
+          }}>
+            <button 
+              onClick={() => window.location.href = '/browse'}
+              style={{
+                background: 'rgba(0, 0, 0, 0.4)',
+                backdropFilter: 'blur(20px)',
+                border: '1px solid rgba(0, 255, 136, 0.2)',
+                borderRadius: '20px',
+                padding: '1rem 2rem',
+                color: '#00ff88',
+                fontSize: '1.1rem',
+                fontWeight: '600',
+                cursor: 'pointer',
                 transition: 'all 0.2s ease'
               }}
               onMouseEnter={(e) => {
+                e.target.style.background = 'rgba(0, 0, 0, 0.6)';
                 e.target.style.transform = 'translateY(-2px)';
               }}
               onMouseLeave={(e) => {
+                e.target.style.background = 'rgba(0, 0, 0, 0.4)';
                 e.target.style.transform = 'translateY(0)';
               }}
             >
-              EXPLORE NOTEBOOKS
+              Join Our Growing Community →
             </button>
-            
-            <div style={{
-              flex: 1,
-              display: 'flex',
-              alignItems: 'center', 
-              justifyContent: 'center'  
-            }}>
-              <div style={{
-                width: '120px',
-                height: '120px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '3rem'
-              }}>
-                🚀
-              </div>
-            </div>
           </div>
         </div>
       </section>
