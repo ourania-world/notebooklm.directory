@@ -13,14 +13,20 @@ export default function ResetPassword() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError(null);
+    setError(null); 
 
     try {
       await resetPassword(email);
-      setSuccess(true);
+      // Success is handled in finally block
     } catch (err) {
-      setError(err.message || 'Failed to send reset email');
+      // Only show errors for unexpected issues, not "user not found"
+      if (!err.message.includes('user not found')) {
+        setError('An unexpected error occurred. Please try again later.');
+      }
     } finally {
+      // Always show success message regardless of whether the email exists
+      // This prevents account enumeration
+      setSuccess(true);
       setLoading(false);
     }
   };
@@ -80,7 +86,7 @@ export default function ResetPassword() {
               <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>✉️</div>
               <h3 style={{ marginBottom: '1rem' }}>Check Your Email</h3>
               <p style={{ marginBottom: '1.5rem' }}>
-                We've sent a password reset link to {email}. Please check your inbox and follow the instructions.
+                If an account exists for <strong>{email}</strong>, a password reset link has been sent. Please check your inbox and follow the instructions.
               </p>
               <Link
                 href="/login"
