@@ -7,42 +7,54 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
-    // Handle initial session and auth state changes
-    const setupAuth = async () => {
-      try {
-        // First, try to get the session
-        const { data, error } = await supabase.auth.getSession();
-        
-        if (error) {
-          console.warn('Error getting initial session:', error);
-          setLoading(false);
-          return;
-        }
-        
-        setUser(data.session?.user || null);
-        
-        // Set up auth state change listener
-        const { data: { subscription } } = supabase.auth.onAuthStateChange(
-          (_event, session) => {
-            setUser(session?.user || null);
-          }
-        );
-        
-        setLoading(false);
-        
-        // Cleanup function to unsubscribe
-        return () => {
-          subscription?.unsubscribe();
-        };
-      } catch (error) {
-        console.error('Auth setup error:', error);
-        setLoading(false);
-      }
-    };
+    // Mark component as mounted to prevent hydration mismatch
+    setHasMounted(true);
     
-    setupAuth();
+    // Only run auth logic on the client side
+    if (typeof window !== 'undefined') {
+      // Handle initial session and auth state changes
+      const setupAuth = async () => {
+        try {
+          // First, try to get the session
+          const { data, error } = await supabase.auth.getSession();
+          
+          if (error) {
+            console.warn('Error getting initial session:', error);
+            setError(error);
+            setLoading(false);
+            return;
+          }
+          
+          setUser(data.session?.user || null);
+          
+          // Set up auth state change listener
+          const { data: { subscription } } = supabase.auth.onAuthStateChange(
+            (_event, session) => {
+              setUser(session?.user || null);
+            }
+          );
+          
+          setLoading(false);
+          
+          // Cleanup function to unsubscribe
+          return () => {
+            subscription?.unsubscribe();
+          };
+        } catch (error) {
+          console.error('Auth setup error:', error);
+          setError(error);
+          setLoading(false);
+        }
+      };
+      
+      setupAuth();
+    } else {
+      // On server, just set loading to false without auth checks
+      setLoading(false);
+    }
   }, []);
 
   // Auth methods
@@ -101,6 +113,11 @@ export const AuthProvider = ({ children }) => {
       throw error;
     }
   };
+
+  // Don't render anything during SSR to prevent hydration mismatch
+  if (!hasMounted) {
+    return <>{children}</>;
+  }
 
   const value = {
     user,
