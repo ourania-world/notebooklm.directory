@@ -149,11 +149,11 @@ export default function Pricing() {
             <p style={{ 
               color: '#e2e8f0', 
               fontSize: '1.1rem',
-              lineHeight: '1.6',
+              lineHeight: '1.6', 
               maxWidth: '600px',
               margin: '0 auto 2rem auto'
             }}>
-              Choose the plan that's right for you. All plans include a 7-day free trial.
+              Choose the plan that's right for you. No commitments, cancel anytime.
             </p>
           </div>
 
@@ -402,10 +402,10 @@ export default function Pricing() {
           <div style={{
             textAlign: 'center',
             color: '#e2e8f0',
-            fontSize: '0.9rem'
+            fontSize: '0.9rem' 
           }}> 
             <p style={{ margin: '0 0 1rem 0' }}>
-              ✓ 7-day free trial • ✓ Cancel anytime • ✓ Secure payment with Stripe
+              ✓ Cancel anytime • ✓ No hidden fees • ✓ Secure payment with Stripe
             </p>
             <p style={{ margin: 0, opacity: 0.7 }}>
               Questions? Contact us at support@notebooklm.directory 
