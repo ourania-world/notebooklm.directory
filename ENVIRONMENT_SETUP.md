@@ -8,8 +8,9 @@ Set these in your Supabase Dashboard → Settings → Edge Functions:
 ```bash
 STRIPE_SECRET_KEY=sk_test_... # Your Stripe secret key
 STRIPE_WEBHOOK_SECRET=whsec_... # Your Stripe webhook signing secret
-STRIPE_BASIC_PRICE_ID=price_... # Basic plan price ID from Stripe
-STRIPE_PREMIUM_PRICE_ID=price_... # Premium plan price ID from Stripe
+STRIPE_STANDARD_PRICE_ID=price_... # Standard plan price ID from Stripe
+STRIPE_PROFESSIONAL_PRICE_ID=price_... # Professional plan price ID from Stripe
+STRIPE_ENTERPRISE_PRICE_ID=price_... # Enterprise plan price ID from Stripe
 ```
 
 ### Application Configuration
@@ -21,14 +22,19 @@ FRONTEND_URL=https://your-domain.com # Your deployed frontend URL
 
 ### 1. Create Products in Stripe Dashboard
 
-**Basic Plan:**
-- Name: "Basic Plan"
+**Standard Plan:**
+- Name: "Standard Plan"
 - Price: $9.99/month
 - Copy the Price ID (starts with `price_`)
 
-**Premium Plan:**
-- Name: "Premium Plan"  
+**Professional Plan:**
+- Name: "Professional Plan"  
 - Price: $19.99/month
+- Copy the Price ID (starts with `price_`)
+
+**Enterprise Plan:**
+- Name: "Enterprise Plan"
+- Price: $99.00/user/month
 - Copy the Price ID (starts with `price_`)
 
 ### 2. Configure Webhook Endpoints
@@ -42,6 +48,8 @@ Add these webhook endpoints in Stripe Dashboard → Webhooks:
 - `invoice.payment_succeeded`
 - `invoice.payment_failed`
 - `customer.subscription.deleted`
+- `customer.subscription.updated`
+- `customer.subscription.created`
 
 Copy the webhook signing secret (starts with `whsec_`)
 
@@ -50,6 +58,7 @@ Copy the webhook signing secret (starts with `whsec_`)
 Use Stripe's test mode with these test cards:
 - **Success:** 4242 4242 4242 4242
 - **Decline:** 4000 0000 0000 0002
+- **Requires Authentication:** 4000 0000 0000 3220
 
 ## Deployment Checklist
 

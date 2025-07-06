@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext'
 export default function Pricing() {
   const { user } = useAuth()
   const [loading, setLoading] = useState(false)
-  const [selectedPlan, setSelectedPlan] = useState('professional')
+  const [selectedPlan, setSelectedPlan] = useState('standard')
 
   const plans = [
     {
@@ -34,7 +34,7 @@ export default function Pricing() {
     {
       id: 'professional',
       name: 'Professional',
-     price: 9.99,
+      price: 19.99,
       period: 'month',
       description: 'Accelerate Your Impact, Measure Your Footprint',
       features: [
@@ -58,10 +58,10 @@ export default function Pricing() {
     },
     {
       id: 'enterprise',
-     name: 'Enterprise',
+      name: 'Enterprise',
       price: 99,
-     period: 'user/month',
-     description: 'Scale Your Innovation, Achieve Your ESG Goals - COMING SOON',
+      period: 'user/month',
+      description: 'Scale Your Innovation, Achieve Your ESG Goals - COMING SOON',
       features: [
         'Everything in Professional',
         'Unlimited notebook submissions',
@@ -111,8 +111,10 @@ export default function Pricing() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          priceId: 'price_professional_monthly', // This would be your actual Stripe price ID
+        body: JSON.stringify({ 
+          priceId: plan.id === 'standard' ? 'price_standard_monthly' : 
+                  plan.id === 'professional' ? 'price_professional_monthly' : 
+                  'price_enterprise_monthly',
           successUrl: `${window.location.origin}/subscription/success`,
           cancelUrl: `${window.location.origin}/pricing`,
         }),
@@ -221,13 +223,13 @@ export default function Pricing() {
                 }}
                 onClick={() => setSelectedPlan(plan.id)}
                 onMouseEnter={(e) => {
-                  if (!plan.popular) {
+                  if (!plan.popular && plan.id !== 'enterprise') {
                     e.target.style.borderColor = 'rgba(0, 255, 136, 0.5)';
                     e.target.style.transform = 'translateY(-4px)';
                   }
                 }}
                 onMouseLeave={(e) => {
-                  if (!plan.popular) {
+                  if (!plan.popular && plan.id !== 'enterprise') {
                     e.target.style.borderColor = 'rgba(255, 255, 255, 0.1)';
                     e.target.style.transform = 'translateY(0)';
                   }
@@ -326,22 +328,22 @@ export default function Pricing() {
                   disabled={loading}
                   style={{
                     width: '100%',
-                   background: plan.id === 'enterprise' ? 'rgba(255, 255, 255, 0.1)' : (plan.popular ? 
+                    background: plan.id === 'enterprise' ? 'rgba(255, 255, 255, 0.1)' : (plan.popular ? 
                       'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)' :
-                     'transparent'),
-                   color: plan.id === 'enterprise' ? '#ffffff' : (plan.popular ? '#0a0a0a' : '#00ff88'),
-                   border: plan.id === 'enterprise' || plan.popular ? 'none' : '1px solid rgba(0, 255, 136, 0.3)',
+                      'transparent'),
+                    color: plan.id === 'enterprise' ? '#ffffff' : (plan.popular ? '#0a0a0a' : '#00ff88'),
+                    border: plan.id === 'enterprise' || plan.popular ? 'none' : '1px solid rgba(0, 255, 136, 0.3)',
                     padding: '1rem',
                     borderRadius: '12px',
                     fontSize: '1rem',
                     fontWeight: '700',
-                   cursor: plan.id === 'enterprise' || loading ? 'not-allowed' : 'pointer',
+                    cursor: plan.id === 'enterprise' || loading ? 'not-allowed' : 'pointer',
                     transition: 'all 0.2s ease',
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px'
                   }}
                   onMouseEnter={(e) => {
-                   if (!loading && plan.id !== 'enterprise') {
+                    if (!loading && plan.id !== 'enterprise') {
                       if (plan.popular) {
                         e.target.style.transform = 'translateY(-2px)';
                         e.target.style.boxShadow = '0 12px 32px rgba(0, 255, 136, 0.4)';
@@ -352,7 +354,7 @@ export default function Pricing() {
                     }
                   }}
                   onMouseLeave={(e) => {
-                   if (!loading && plan.id !== 'enterprise') {
+                    if (!loading && plan.id !== 'enterprise') {
                       if (plan.popular) {
                         e.target.style.transform = 'translateY(0)';
                         e.target.style.boxShadow = 'none';
@@ -363,7 +365,7 @@ export default function Pricing() {
                     }
                   }}
                 >
-                 {loading ? 'Processing...' : (plan.id === 'enterprise' ? 'Coming Soon' : plan.cta)}
+                  {loading ? 'Processing...' : (plan.id === 'enterprise' ? 'Coming Soon' : plan.cta)}
                 </button>
               </div>
             ))}
@@ -406,7 +408,7 @@ export default function Pricing() {
                   Can I upgrade or downgrade anytime?
                 </h3>
                 <p style={{ color: '#e2e8f0', lineHeight: '1.6' }}>
-                  Yes! You can upgrade, downgrade, or cancel your subscription at any time. Changes take effect at your next billing cycle, and we'll prorate any differences.
+                  Yes! You can upgrade, downgrade, or cancel your subscription at any time. Changes take effect at your next billing cycle, and we'll prorate any differences. All plans include a 7-day free trial.
                 </p>
               </div>
 
@@ -415,7 +417,7 @@ export default function Pricing() {
                   What's included in the API access?
                 </h3>
                 <p style={{ color: '#e2e8f0', lineHeight: '1.6' }}>
-                  Professional plans include 1,000 API calls per month for integrating our notebook discovery into your workflows. Enterprise plans include 10,000 calls plus custom integrations.
+                  Professional plans include 1,000 API calls per month for integrating our notebook discovery into your workflows. Enterprise plans include unlimited API access plus custom integrations.
                 </p>
               </div>
 
@@ -435,12 +437,12 @@ export default function Pricing() {
             textAlign: 'center',
             color: '#e2e8f0',
             fontSize: '0.9rem'
-          }}>
+          }}> 
             <p style={{ margin: '0 0 1rem 0' }}>
               ✓ 30-day money-back guarantee • ✓ Cancel anytime • ✓ Secure payment with Stripe
             </p>
             <p style={{ margin: 0, opacity: 0.7 }}>
-              Questions? Contact us at support@notebooklm.directory
+              Questions? Contact us at support@notebooklm.directory 
             </p>
           </div>
         </div>

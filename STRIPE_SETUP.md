@@ -17,13 +17,15 @@ If you don't already have a Stripe account:
 - **Description**: Enhanced features for serious researchers
 - **Price**: $9.99/month (recurring)
 - **Billing period**: Monthly
+- **Trial period**: 7 days (optional)
 - Save the Price ID (starts with `price_`)
 
 #### Professional Plan
 - **Name**: Professional Plan
 - **Description**: Accelerate Your Impact, Measure Your Footprint
-- **Price**: $9.99/month (recurring)
+- **Price**: $19.99/month (recurring)
 - **Billing period**: Monthly
+- **Trial period**: 7 days (optional)
 - Save the Price ID (starts with `price_`)
 
 #### Enterprise Plan
@@ -31,6 +33,7 @@ If you don't already have a Stripe account:
 - **Description**: Scale Your Innovation, Achieve Your ESG Goals
 - **Price**: $99.00/user/month (recurring)
 - **Billing period**: Monthly
+- **Trial period**: 7 days (optional)
 - Save the Price ID (starts with `price_`)
 
 ## 3. Set Up Webhook Endpoints

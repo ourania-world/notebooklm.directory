@@ -58,29 +58,22 @@ export default function SubscriptionManager() {
     setSuccess(null)
 
     try {
-      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-      const response = await fetch(
-        `${supabaseUrl}/functions/v1/manage-subscription?action=${action}`,
-        {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`,
-            'Content-Type': 'application/json'
-          }
+      const { data, error } = await supabase.functions.invoke('manage-subscription', {
+        body: { 
+          action,
+          returnUrl: window.location.origin + '/subscription/manage'
         }
-      )
+      })
 
-      if (!response.ok) {
-        throw new Error('Failed to process request')
+      if (error) {
+        throw error
       }
 
-      const data = await response.json()
-
-      if (action === 'portal') {
+      if (action === 'portal' && data.url) {
         // Redirect to Stripe customer portal
         window.location.href = data.url
       } else {
-        setSuccess(data.message)
+        setSuccess(data.message || 'Action completed successfully')
         // Refresh subscription data
         window.location.reload()
       }
@@ -185,7 +178,10 @@ export default function SubscriptionManager() {
                   {subscription.subscription_plans?.name || 'Unknown Plan'}
                 </div>
                 <div style={{ color: '#e2e8f0', fontSize: '0.9rem' }}>
-                  ${subscription.subscription_plans?.price || 0}/{subscription.subscription_plans?.interval || 'month'}
+                  ${subscription.subscription_plans?.price || 0}
+                  {subscription.subscription_plans?.interval ? 
+                    `/${subscription.subscription_plans?.interval}` : 
+                    '/month'}
                 </div>
               </div>
               <div style={{
@@ -219,8 +215,8 @@ export default function SubscriptionManager() {
               <button
                 onClick={() => handleAction('portal')}
                 disabled={actionLoading}
-                style={{
-                  background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
+                style={{ 
+                  background: 'rgba(220, 53, 69, 0.05)',
                   color: '#0a0a0a',
                   border: 'none',
                   padding: '0.75rem 1.5rem',
