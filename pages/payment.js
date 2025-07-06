@@ -345,8 +345,8 @@ export default function Payment() {
                       fontSize: '0.9rem'
                     }}>
                       <input
-                        id="terms"
                         type="checkbox"
+                        id="terms"
                         required
                         style={{
                           width: '18px',
