@@ -122,29 +122,8 @@ export default function Pricing() {
       return
     }
 
-    setLoading(true)
-    try {
-      // Create Stripe checkout session
-      const response = await fetch('/api/create-checkout-session', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ 
-          priceId: planId === 'standard' ? 'price_standard_monthly' : 'price_professional_monthly',
-          successUrl: `${window.location.origin}/subscription/success`,
-          cancelUrl: `${window.location.origin}/pricing`,
-        }),
-      })
-
-      const { url } = await response.json()
-      window.location.href = url
-    } catch (error) {
-      console.error('Error creating checkout session:', error)
-      alert('Error starting checkout. Please try again.')
-    } finally {
-      setLoading(false)
-    }
+    // Redirect to payment page with plan parameter
+    window.location.href = `/payment?plan=${planId}`
   }
 
   return (

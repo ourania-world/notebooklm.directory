@@ -111,10 +111,19 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
               <Link href="/pricing" style={{ 
                 color: router.pathname === '/pricing' ? '#00ff88' : '#e2e8f0', 
                 textDecoration: 'none',
-                transition: 'color 0.2s ease', 
+                transition: 'color 0.2s ease',
                 fontWeight: '500'
               }}>
                 Pricing
+              </Link>
+              
+              <Link href="/payment" style={{ 
+                color: router.pathname === '/payment' ? '#00ff88' : '#e2e8f0', 
+                textDecoration: 'none',
+                transition: 'color 0.2s ease',
+                fontWeight: '500'
+              }}>
+                Subscribe
               </Link>
               
               {!loading && user && (
