@@ -99,8 +99,6 @@ export default function ResetPassword() {
                   fontSize: '1rem',
                   fontWeight: '600',
                   cursor: 'pointer',
-                  textDecoration: 'none',
-                  display: 'inline-block'
                 }}
               >
                 Return to Login
@@ -150,7 +148,6 @@ export default function ResetPassword() {
                 }}
               >
                 {loading ? 'Sending...' : 'Send Reset Link'}
-              </Link>
 
               <div style={{ textAlign: 'center', marginTop: '1rem' }}>
                 <a
