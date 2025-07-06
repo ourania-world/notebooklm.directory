@@ -47,18 +47,22 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
           <nav style={{ 
             maxWidth: '1200px', 
             margin: '0 auto', 
-            padding: '0 1.5rem',
+            padding: '0 2rem',
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center'
           }}>
-            <Link href="/" style={{
+            <Link href="/" style={{ 
+              fontSize: '1.5rem', 
+              fontWeight: '700', 
+              textDecoration: 'none', 
+              color: '#ffffff',
               display: 'flex',
               alignItems: 'center',
-              gap: '0.5rem',
-              textDecoration: 'none'
+              gap: '0.75rem',
+              transition: 'all 0.3s ease'
             }}>
-              <div style={{ 
+              <span style={{ 
                 background: '#00ff88',
                 color: '#0a0a0a',
                 padding: '0.5rem 0.75rem',
@@ -69,14 +73,8 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                 fontFamily: 'monospace'
               }}>
                 NLM_D
-              </div>
-              <div style={{
-                fontSize: '1.25rem',
-                fontWeight: '700',
-                color: '#ffffff'
-              }}>
-                notebooklm.<span style={{ color: '#00ff88' }}>directory</span>
-              </div>
+              </span>
+              notebooklm.directory
             </Link>
             
             <div style={{ 
@@ -85,7 +83,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
               gap: '2rem'
             }}>
               <Link href="/browse" style={{ 
-                color: router.pathname === '/browse' ? '#00ff88' : '#e2e8f0', 
+                color: router.pathname === '/browse' ? '#00ff88' : '#e2e8f0',
                 textDecoration: 'none',
                 transition: 'color 0.2s ease',
                 fontWeight: '500',
@@ -120,6 +118,18 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
               }}>
                 About
               </Link>
+              
+              {!loading && user && (
+                <Link href="/analytics" style={{ 
+                  color: router.pathname === '/analytics' ? '#00ff88' : '#e2e8f0', 
+                  textDecoration: 'none',
+                  transition: 'color 0.2s ease',
+                  fontWeight: '500',
+                  fontSize: '0.95rem'
+                }}>
+                  Analytics
+                </Link>
+              )}
             </div>
 
             <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
@@ -127,7 +137,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                 <Link href="/login" style={{
                   background: 'rgba(255, 255, 255, 0.1)',
                   color: '#ffffff',
-                  border: 'none',
+                  border: '1px solid rgba(255, 255, 255, 0.2)',
                   padding: '0.5rem 1.25rem',
                   borderRadius: '6px',
                   fontSize: '0.9rem',
@@ -140,8 +150,8 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
               ) : (
                 <UserMenu />
               )}
-              <button
-                onClick={() => window.location.href = '/pricing'}
+              <Link
+                href="/pricing"
                 style={{
                   background: '#00ff88',
                   color: '#0a0a0a',
@@ -162,8 +172,8 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                   e.target.style.boxShadow = 'none';
                 }}
               >
-                Support Growth
-              </button>
+                Get Started
+              </Link>
             </div>
             
             <button

@@ -89,7 +89,8 @@ export default function Submit() {
         <h1 style={{
           fontSize: '2.5rem', 
           margin: '0 0 1rem 0',
-          color: '#ffffff'
+          color: '#ffffff',
+          fontWeight: '700'
         }}>
           Submit Your Project
         </h1>
@@ -406,7 +407,7 @@ export default function Submit() {
               background: isSubmitting ? 
                 'rgba(255, 255, 255, 0.1)' : 
                 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
-              color: isSubmitting ? '#ffffff' : '#0a0a0a',
+              color: '#ffffff',
               border: 'none',
               padding: '1rem 2rem',
               borderRadius: '12px',

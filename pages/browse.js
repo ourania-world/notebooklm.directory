@@ -110,10 +110,10 @@ export default function Browse({
   return (
     <Layout title="Browse Projects - NotebookLM Directory">
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem' }}>
-        <div style={{
+        <h1 style={{
           fontSize: '2.5rem', 
           margin: '0 0 2rem 0',
-          color: '#212529'
+          color: '#ffffff'
         }}>
           Browse Projects
         </h1>
@@ -193,7 +193,7 @@ export default function Browse({
         
         {/* Results Count */}
         <p style={{
-          color: '#6c757d', 
+          color: '#e2e8f0', 
           margin: '0 0 2rem 0',
           fontSize: '1rem'
         }}>
@@ -203,10 +203,10 @@ export default function Browse({
         {/* Projects Grid */}
         {loading ? (
           <div style={{ textAlign: 'center', padding: '2rem' }}>
-            <p>Loading notebooks...</p>
+            <p style={{ color: '#e2e8f0' }}>Loading notebooks...</p>
           </div>
         ) : error ? (
-          <div style={{ textAlign: 'center', padding: '2rem', color: '#dc3545' }}>
+          <div style={{ textAlign: 'center', padding: '2rem', color: '#ff6b6b' }}>
             <p>{error}</p>
           </div>
         ) : notebooks.length > 0 ? (
@@ -225,7 +225,7 @@ export default function Browse({
           <div style={{ 
             textAlign: 'center', 
             padding: '4rem 0',
-            color: '#6c757d'
+            color: '#e2e8f0'
           }}>
             <h3>No projects found</h3>
             <p>Try adjusting your search terms or category filter.</p>

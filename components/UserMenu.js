@@ -1,13 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import Link from 'next/link';
-import Link from 'next/link';
 
 export default function UserMenu() {
   const { user, signOut, loading } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [signOutLoading, setSignOutLoading] = useState(false);
-  const [mounted, setMounted] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -39,24 +37,56 @@ export default function UserMenu() {
     return null; // Login button is now in Layout.js
   }
 
-  if (loading) {
-    return null;
-  }
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // Don't render during SSR or loading to prevent hydration mismatch
-  if (!mounted) {
-    return null;
-  }
-
   return (
-    <div>
+    <div style={{ position: 'relative' }}>
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        style={{
+          background: 'rgba(0, 255, 136, 0.1)',
+          border: '1px solid rgba(0, 255, 136, 0.3)',
+          color: '#ffffff',
+          padding: '0.75rem 1rem',
+          borderRadius: '12px',
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.75rem',
+          transition: 'all 0.2s ease',
+          fontWeight: '500'
+        }}
+        onMouseEnter={(e) => {
+          e.target.style.background = 'rgba(0, 255, 136, 0.2)';
+          e.target.style.borderColor = '#00ff88';
+        }}
+        onMouseLeave={(e) => {
+          e.target.style.background = 'rgba(0, 255, 136, 0.1)';
+          e.target.style.borderColor = 'rgba(0, 255, 136, 0.3)';
+        }}
+      >
+        <div style={{
+          width: '32px',
+          height: '32px',
+          borderRadius: '50%',
+          background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
+          color: '#0a0a0a',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: '0.9rem',
+          fontWeight: '700'
+        }}>
+          {user.user_metadata?.full_name?.[0] || user.email?.[0]?.toUpperCase() || 'U'}
+        </div>
+        <span style={{ fontSize: '0.9rem' }}>
+          {user.user_metadata?.full_name || user.email?.split('@')[0] || 'User'}
+        </span>
+        <span style={{ fontSize: '0.7rem', opacity: 0.7 }}>▼</span>
+      </button>
+
       {isOpen && (
         <>
-          <div style={{
+          <div
+            style={{
               position: 'fixed',
               top: 0,
               left: 0,

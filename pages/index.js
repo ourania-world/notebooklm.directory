@@ -742,7 +742,7 @@ export default function Home({ initialFeaturedNotebooks }) {
           </div>
         </div>
       </section>
-      
+
       {/* Featured Projects */}
       <section style={{
         padding: '6rem 0',
@@ -770,10 +770,11 @@ export default function Home({ initialFeaturedNotebooks }) {
               gap: '2rem'
             }}>
               {featuredNotebooks.slice(0, 6).map(notebook => (
-                <ProjectCard key={notebook.id} notebook={notebook} />
+                <ProjectCard key={notebook.id || notebook.title} notebook={notebook} />
               ))}
             </div>
-          )}
+          </div>
+        )}
           
           <div style={{ textAlign: 'center', marginTop: '2rem' }}>
             <button 
@@ -804,7 +805,6 @@ export default function Home({ initialFeaturedNotebooks }) {
               View All Projects
             </button>
           </div>
-          )}
         </div>
       </section>
 
