@@ -3,7 +3,7 @@ import { supabase } from '../lib/supabase';
 
 const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
+function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [session, setSession] = useState(null);
   const [error, setError] = useState(null);
@@ -16,9 +16,7 @@ export const AuthProvider = ({ children }) => {
     if (typeof window !== 'undefined') {
       const getInitialSession = async () => {
         try {
-          // Get initial session
           const { data, error } = await supabase.auth.getSession();
-           
           if (error) {
             console.warn('Error getting session:', error); 
             setError(error);
@@ -35,31 +33,25 @@ export const AuthProvider = ({ children }) => {
       };
 
       getInitialSession();
-       
-      // Listen for auth changes
+
       const { data: { subscription } } = supabase.auth.onAuthStateChange(
         async (event, session) => {
-          if (event) {
-            // console.log('Auth state changed:', event);
-          }
           setSession(session || null);
           setUser(session?.user || null);
           setLoading(false);
         }
       );
-            
+
       return () => {
         if (subscription) {
           subscription.unsubscribe();
         }
       };
     } else {
-      // On server, just set loading to false
       setLoading(false);
     }
   }, []);
 
-  // Auth methods
   const signOut = async () => {
     try {
       const { error } = await supabase.auth.signOut();
@@ -117,27 +109,23 @@ export const AuthProvider = ({ children }) => {
     user,
     error,
     signOut,
-    signIn,  
+    signIn,
     signUp,
     resetPassword,
-    // Helper methods
     isAuthenticated: !!user,
     isLoading: loading,
-    session
+    session,
   };
 
-  // During SSR, just return children without user data
-  // This prevents hydration mismatches
   return <AuthContext.Provider value={value}>{mounted ? children : null}</AuthContext.Provider>;
-};
+}
 
-export const useAuth = () => {
+function useAuth() {
   const context = useContext(AuthContext);
   if (!context) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
-};
+}
 
-// Export the context for advanced usage
-export { AuthContext };
+export { AuthProvider, useAuth, AuthContext };
