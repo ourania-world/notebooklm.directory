@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 
 export default function SubscriptionBanner() {
-  const { user, isLoading } = useAuth();
+  const { user, loading } = useAuth();
   const [subscription, setSubscription] = useState(null);
-  const [subLoading, setSubLoading] = useState(false);
+  const [subLoading, setSubLoading] = useState(true);
 
   useEffect(() => {
     if (!user) {
@@ -15,14 +15,10 @@ export default function SubscriptionBanner() {
     async function fetchSubscription() {
       try {
         setSubLoading(true);
-        try {
-          const response = await fetch('/api/subscription-status');
-          if (!response.ok) throw new Error('Failed to fetch subscription');
-          const data = await response.json();
-          setSubscription(data);
-        } catch (error) {
-          console.error('Error fetching subscription:', error);
-        }
+        const response = await fetch('/api/subscription-status');
+        if (!response.ok) throw new Error('Failed to fetch subscription');
+        const data = await response.json();
+        setSubscription(data);
       } catch (error) {
         console.error('Error fetching subscription:', error);
       } finally {
@@ -33,7 +29,7 @@ export default function SubscriptionBanner() {
     fetchSubscription();
   }, [user]);
 
-  if (isLoading || subLoading || !user || (subscription?.plan?.id === 'professional' || subscription?.plan?.id === 'enterprise' || subscription?.plan?.id === 'standard')) {
+  if (loading || subLoading || !user || (subscription?.plan?.id === 'professional' || subscription?.plan?.id === 'enterprise' || subscription?.plan?.id === 'standard')) {
     return null;
   }
 

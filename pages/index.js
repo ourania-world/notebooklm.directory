@@ -61,107 +61,206 @@ export default function Home({ initialFeaturedNotebooks }) {
   return (
     <Layout>
       {/* Hero Section */}
-      <section style={{
-        background: 'linear-gradient(to bottom, #0a0a0a 0%, #1a1a2e 100%)',
-        padding: '6rem 0 4rem',
-        position: 'relative'
+      <section style={{ 
+        background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%)',
+        color: 'white',
+        padding: '8rem 0',
+        textAlign: 'center',
+        position: 'relative',
+        overflow: 'hidden'
       }}>
+        {/* Animated Background Pattern */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundImage: `
+            radial-gradient(circle at 20% 50%, rgba(0, 255, 136, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(0, 255, 136, 0.05) 0%, transparent 50%),
+            radial-gradient(circle at 40% 80%, rgba(0, 255, 136, 0.08) 0%, transparent 50%)
+          `,
+          zIndex: 1
+        }} />
+        
         <div style={{ 
           maxWidth: '1200px', 
           margin: '0 auto', 
           padding: '0 2rem',
-          textAlign: 'center'
+          position: 'relative',
+          zIndex: 2
         }}>
-          <div style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            background: 'rgba(0, 255, 136, 0.1)',
-            border: '1px solid rgba(0, 255, 136, 0.3)',
-            borderRadius: '50px',
-            padding: '0.5rem 1.5rem',
-            marginBottom: '2rem',
-            fontSize: '0.9rem',
-            color: '#00ff88'
-          }}>
-            🔥 July 2025 • Global Launch • Building Community
+          <div style={{ marginBottom: '2rem' }}>
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              background: 'rgba(0, 255, 136, 0.1)',
+              border: '1px solid rgba(0, 255, 136, 0.3)',
+              borderRadius: '50px',
+              padding: '0.5rem 1.5rem',
+              marginBottom: '2rem',
+              fontSize: '0.9rem',
+              color: '#00ff88'
+            }}>
+              ⭐ Trusted by 10,000+ AI Researchers • Excellent Reviews
+            </div>
           </div>
-
-          <h1 style={{
-            fontSize: 'clamp(2.5rem, 6vw, 3.5rem)',
-            fontWeight: '800',
-            margin: '0 0 1rem 0',
-            color: '#ffffff'
+          
+          <h1 style={{ 
+            fontSize: 'clamp(2.5rem, 8vw, 4.5rem)', 
+            fontWeight: '700', 
+            margin: '0 0 1.5rem 0',
+            lineHeight: '1.1',
+            background: 'linear-gradient(135deg, #ffffff 0%, #00ff88 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text'
           }}>
             The Premier NotebookLM<br />
             <span style={{ color: '#00ff88' }}>Directory</span>
           </h1>
           
-          <h2 style={{
-            fontSize: '1.5rem',
-            fontWeight: '500',
-            margin: '0 0 2rem 0',
-            color: '#ffffff'
+          <h2 style={{ 
+            fontSize: '1.5rem', 
+            margin: '0 0 1.5rem 0',
+            color: '#ffffff',
+            fontWeight: '500'
           }}>
             Discover. Build. Accelerate.
           </h2>
           
           <p style={{ 
-            fontSize: '1.1rem',
-            maxWidth: '800px',
-            margin: '0 auto 1.5rem',
+            fontSize: '1.3rem', 
+            margin: '0 0 1rem 0',
+            opacity: 0.9,
+            maxWidth: '700px',
+            margin: '0 auto 1rem auto',
             color: '#e2e8f0',
-            lineHeight: '1.7'
+            lineHeight: '1.6'
           }}>
             Help us build a network of researchers. By curating and sharing 
             notebooks, we can prevent redundant work and reduce the massive 
-            computational footprint of AI research. <a href="#" style={{ color: '#00ff88', textDecoration: 'none' }}>Contribute your work</a> and 
-            <a href="#" style={{ color: '#00ff88', textDecoration: 'none' }}> discover what's possible</a>.
+            computational footprint of AI research. <a href="#" style={{ 
+              color: '#00ff88', 
+              textDecoration: 'none',
+              borderBottom: '1px dotted #00ff88'
+            }}>Contribute your work</a> and 
+            <a href="#" style={{ 
+              color: '#00ff88', 
+              textDecoration: 'none',
+              borderBottom: '1px dotted #00ff88'
+            }}> discover what's possible</a>.
           </p>
           
-          <button style={{
-            background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
-            color: '#0a0a0a',
-            border: 'none',
-            padding: '0.75rem 1.5rem',
-            borderRadius: '8px',
-            fontWeight: '600',
-            cursor: 'pointer',
-            fontSize: '1rem',
-            marginBottom: '3rem'
+          <div style={{ 
+            display: 'flex', 
+            gap: '1rem', 
+            justifyContent: 'center', 
+            flexWrap: 'wrap',
+            marginBottom: '3rem',
+            marginTop: '2rem'
           }}>
-            GET STARTED
-          </button>
-
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <SearchBar 
               onSearch={handleSearch}
-              placeholder="Search..."
+              placeholder="Search notebooks, topics, or authors..."
             />
+          </div>
+          
+          <div style={{ 
+            display: 'flex', 
+            gap: '1rem', 
+            justifyContent: 'center', 
+            flexWrap: 'wrap',
+            marginBottom: '3rem'
+          }}>
+            <button 
+              onClick={() => setIsModalOpen(true)}
+              style={{
+                background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
+                color: '#0a0a0a',
+                border: 'none',
+                padding: '1rem 2.5rem',
+                borderRadius: '12px',
+                fontWeight: '700',
+                cursor: 'pointer',
+                fontSize: '1.1rem',
+                transition: 'all 0.3s ease',
+                boxShadow: '0 8px 32px rgba(0, 255, 136, 0.3)',
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.transform = 'translateY(-2px)';
+                e.target.style.boxShadow = '0 12px 40px rgba(0, 255, 136, 0.4)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.transform = 'translateY(0)';
+                e.target.style.boxShadow = '0 8px 32px rgba(0, 255, 136, 0.3)';
+              }}
+            >
+              GET STARTED
+            </button>
+          </div>
+          
+          {/* Stats Dashboard Preview */}
+          <div style={{
+            background: 'rgba(0, 0, 0, 0.4)',
+            backdropFilter: 'blur(20px)',
+            border: '1px solid rgba(0, 255, 136, 0.2)',
+            borderRadius: '20px',
+            padding: '2rem',
+            maxWidth: '800px',
+            margin: '0 auto',
+            position: 'relative'
+          }}>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+              gap: '2rem',
+              textAlign: 'center'
+            }}>
+              <div>
+                <div style={{ 
+                  fontSize: '2.5rem', 
+                  fontWeight: '700', 
+                  color: '#00ff88',
+                  fontFamily: 'monospace'
+                }}>
+                  $3,650,500,150
+                </div>
+                <div style={{ color: '#00ff88', fontSize: '0.9rem', marginTop: '0.5rem' }}>
+                  in Research Value Tracked
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
       
       {/* Quote Section */}
-      <section style={{
+      <section style={{ 
         background: '#0a0a0a',
-        padding: '3rem 0',
-        borderTop: '1px solid rgba(0, 255, 136, 0.1)'
+        padding: '4rem 0',
+        position: 'relative'
       }}>
         <div style={{ maxWidth: '800px', margin: '0 auto', padding: '0 2rem' }}>
           <div style={{
-            background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
-            borderRadius: '16px',
-            padding: '2rem',
+            background: 'rgba(0, 0, 0, 0.4)',
+            backdropFilter: 'blur(20px)',
             border: '1px solid rgba(0, 255, 136, 0.2)',
+            borderRadius: '20px',
+            padding: '2rem',
             textAlign: 'center'
           }}>
             <p style={{ 
               color: '#e2e8f0', 
-              fontSize: '0.9rem',
-              marginBottom: '1rem'
+              fontSize: '1.1rem',
+              lineHeight: '1.7',
+              margin: '0 0 1.5rem 0'
             }}>
-              Join 75K Researchers
+              "Help us build a network of researchers. By curating and sharing notebooks, we can prevent redundant work and reduce the massive computational footprint of AI research."
             </p>
             
             <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
@@ -196,22 +295,23 @@ export default function Home({ initialFeaturedNotebooks }) {
       </section>
       
       {/* Features Section */}
-      <section style={{
-        background: 'linear-gradient(to bottom, #0a0a0a 0%, #1a1a2e 100%)',
-        padding: '6rem 0'
+      <section style={{ 
+        background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)',
+        padding: '6rem 0',
+        position: 'relative'
       }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
-          <h2 style={{
-            fontSize: '2.5rem',
-            fontWeight: '700',
+          <h2 style={{ 
+            fontSize: '2.5rem', 
+            fontWeight: '700', 
+            margin: '0 0 1.5rem 0',
             color: '#ffffff',
-            textAlign: 'center',
-            marginBottom: '3rem'
+            textAlign: 'center'
           }}>
             Building the Future of <span style={{ color: '#00ff88' }}>AI Research</span>
           </h2>
           
-          <p style={{
+          <p style={{ 
             fontSize: '1.1rem',
             color: '#e2e8f0',
             textAlign: 'center',
@@ -330,7 +430,7 @@ export default function Home({ initialFeaturedNotebooks }) {
       </section>
       
       {/* CTA Section */}
-      <section style={{
+      <section style={{ 
         background: '#0a0a0a',
         padding: '6rem 0',
         textAlign: 'center'
@@ -343,15 +443,15 @@ export default function Home({ initialFeaturedNotebooks }) {
           }}>
             ✨
           </div>
-          <h2 style={{
-            fontSize: '2.5rem',
-            fontWeight: '700',
+          <h2 style={{ 
+            fontSize: '2.5rem', 
+            margin: '0 0 1.5rem 0',
             color: '#ffffff',
-            marginBottom: '1.5rem'
+            fontWeight: '700'
           }}>
             Help Us Build Something Amazing
           </h2>
-          <p style={{
+          <p style={{ 
             fontSize: '1.1rem',
             color: '#e2e8f0',
             lineHeight: '1.6',
@@ -392,7 +492,7 @@ export default function Home({ initialFeaturedNotebooks }) {
       
       {/* Sustainable Research Section */}
       <section style={{
-        background: 'linear-gradient(to bottom, #0a0a0a 0%, #1a1a2e 100%)',
+        background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)',
         padding: '6rem 0',
         textAlign: 'center'
       }}>
@@ -558,100 +658,110 @@ export default function Home({ initialFeaturedNotebooks }) {
       
       {/* Vision Audio Section */}
       <section style={{ 
-        background: '#0a0a0a',
+        background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
         padding: '6rem 0',
         textAlign: 'center'
       }}>
         <div style={{ maxWidth: '800px', margin: '0 auto', padding: '0 2rem' }}>
-          <h2 style={{
-            fontSize: '1.5rem',
-            fontWeight: '600',
+          <h2 style={{ 
+            fontSize: '2rem', 
+            margin: '0 0 1rem 0',
             color: '#ffffff',
-            marginBottom: '1.5rem',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '0.5rem'
+            fontWeight: '700'
           }}>
-            <span style={{
-              width: '24px',
-              height: '24px',
-              borderRadius: '50%',
-              background: 'rgba(0, 255, 136, 0.2)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: '#00ff88',
-              fontSize: '0.8rem'
-            }}>
-              🎧
-            </span>
-            Listen to the <span style={{ color: '#00ff88' }}>Vision</span>
+            🎧 Listen to the <span style={{ color: '#00ff88' }}>Vision</span>
           </h2>
-          
+          <p style={{ 
+            color: '#e2e8f0', 
+            margin: '0 0 2rem 0',
+            fontSize: '1.1rem'
+          }}>
+            Hear our AI-generated overview of how NotebookLM is transforming research and creativity
+          </p>
           <AudioPlayer 
             audioUrl="/overview.mp3"
-            title="Vision Overview"
+            title="Listen to the Vision"
           />
         </div>
       </section>
       
       {/* Popular Notebooks Section */}
       <section style={{ 
-        background: '#0a0a0a',
-        padding: '6rem 0'
+        padding: '6rem 0',
+        background: '#0a0a0a'
       }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
-          <h2 style={{
-            fontSize: '2.5rem',
-            fontWeight: '700',
+          <h2 style={{ 
+            fontSize: '2.5rem', 
+            textAlign: 'center', 
+            margin: '0 0 3rem 0',
             color: '#ffffff',
-            textAlign: 'center',
-            marginBottom: '3rem'
+            fontWeight: '700'
           }}>
             Popular <span style={{ color: '#00ff88' }}>Notebooks</span>
           </h2>
           
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-            gap: '2rem',
-            marginBottom: '3rem'
-          }}>
-            {featuredNotebooks.slice(0, 6).map(notebook => (
-              <ProjectCard key={notebook.id} notebook={notebook} />
-            ))}
-          </div>
+          {loading ? (
+            <div style={{ textAlign: 'center', padding: '2rem' }}>
+              <p style={{ color: '#e2e8f0' }}>Loading notebooks...</p>
+            </div>
+          ) : (
+            <div style={{ 
+              display: 'grid', 
+              gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', 
+              gap: '2rem',
+              marginBottom: '3rem'
+            }}>
+              {featuredNotebooks.slice(0, 6).map(notebook => (
+                <ProjectCard key={notebook.id} notebook={notebook} />
+              ))}
+            </div>
+          )}
           
           <div style={{ textAlign: 'center' }}>
-            <button style={{
-              background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
-              color: '#0a0a0a',
-              border: 'none',
-              padding: '0.75rem 1.5rem',
-              borderRadius: '8px',
-              fontWeight: '600',
-              cursor: 'pointer',
-              fontSize: '0.9rem'
-            }}>
-              VIEW ALL PROJECTS
+            <button 
+              onClick={() => window.location.href = '/browse'}
+              style={{
+                background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
+                color: '#0a0a0a',
+                border: 'none',
+                padding: '1rem 2rem',
+                borderRadius: '12px',
+                fontWeight: '700',
+                cursor: 'pointer',
+                fontSize: '1rem',
+                transition: 'all 0.3s ease',
+                boxShadow: '0 8px 32px rgba(0, 255, 136, 0.3)',
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.transform = 'translateY(-2px)';
+                e.target.style.boxShadow = '0 12px 40px rgba(0, 255, 136, 0.4)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.transform = 'translateY(0)';
+                e.target.style.boxShadow = '0 8px 32px rgba(0, 255, 136, 0.3)';
+              }}
+            >
+              View All Projects
             </button>
           </div>
         </div>
       </section>
       
-      {/* Featured Collections Section */}
-      <section style={{
-        background: 'linear-gradient(to bottom, #0a0a0a 0%, #1a1a2e 100%)',
-        padding: '6rem 0'
+      {/* Featured Collections */}
+      <section style={{ 
+        padding: '6rem 0',
+        background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)'
       }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
-          <h2 style={{
-            fontSize: '2.5rem',
-            fontWeight: '700',
+          <h2 style={{ 
+            fontSize: '2.5rem', 
+            textAlign: 'center', 
+            margin: '0 0 3rem 0',
             color: '#ffffff',
-            textAlign: 'center',
-            marginBottom: '3rem'
+            fontWeight: '700'
           }}>
             Featured <span style={{ color: '#00ff88' }}>Collections</span>
           </h2>
@@ -660,7 +770,8 @@ export default function Home({ initialFeaturedNotebooks }) {
             display: 'flex',
             justifyContent: 'center',
             gap: '1rem',
-            marginBottom: '3rem'
+            marginBottom: '3rem',
+            flexWrap: 'wrap'
           }}>
             <button style={{
               background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
@@ -712,9 +823,9 @@ export default function Home({ initialFeaturedNotebooks }) {
             Trending This Week
           </h3>
           
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', 
             gap: '2rem',
             marginBottom: '3rem'
           }}>
@@ -725,31 +836,37 @@ export default function Home({ initialFeaturedNotebooks }) {
         </div>
       </section>
       
-      {/* Featured Projects Section */}
-      <section style={{
-        background: '#0a0a0a',
-        padding: '6rem 0'
+      {/* Featured Projects */}
+      <section style={{ 
+        padding: '6rem 0',
+        background: '#0a0a0a'
       }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
-          <h2 style={{
-            fontSize: '2.5rem',
-            fontWeight: '700',
+          <h2 style={{ 
+            fontSize: '2.5rem', 
+            textAlign: 'center', 
+            margin: '0 0 3rem 0',
             color: '#ffffff',
-            textAlign: 'center',
-            marginBottom: '3rem'
+            fontWeight: '700'
           }}>
             Featured <span style={{ color: '#00ff88' }}>Projects</span>
           </h2>
           
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(450px, 1fr))',
-            gap: '2rem'
-          }}>
-            {featuredNotebooks.slice(0, 2).map(notebook => (
-              <ProjectCard key={notebook.id} notebook={notebook} />
-            ))}
-          </div>
+          {loading ? (
+            <div style={{ textAlign: 'center', padding: '2rem' }}>
+              <p style={{ color: '#e2e8f0' }}>Loading featured projects...</p>
+            </div>
+          ) : (
+            <div style={{ 
+              display: 'grid', 
+              gridTemplateColumns: 'repeat(auto-fit, minmax(450px, 1fr))', 
+              gap: '2rem'
+            }}>
+              {featuredNotebooks.slice(0, 2).map(notebook => (
+                <ProjectCard key={notebook.id} notebook={notebook} />
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

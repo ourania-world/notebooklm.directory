@@ -7,29 +7,24 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [session, setSession] = useState(null);
-  const [initialized, setInitialized] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     // Get initial session
     const getInitialSession = async () => {
       try {
-        const { data: sessionData, error } = await supabase.auth.getSession();
-        const session = sessionData?.session;
-        const session = sessionData?.session;
+        const { data, error } = await supabase.auth.getSession();
+        
         if (error) {
           console.warn('Error getting session:', error);
-          setSession(null);
-          setUser(null);
-          setSession(null);
-          setUser(null);
+          setError(error);
         } else {
-          setSession(session || null);
-          setUser(session?.user || null);
+          setSession(data.session || null);
+          setUser(data.session?.user || null);
         }
       } catch (error) {
         console.warn('Failed to get initial session:', error);
-        setSession(null);
-        setUser(null);
+        setError(error);
       } finally {
         setLoading(false);
       }
@@ -41,14 +36,11 @@ export const AuthProvider = ({ children }) => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         if (event) {
-          console.log('Auth state changed:', event, session?.user?.email);
+          console.log('Auth state changed:', event);
         }
         setSession(session || null);
         setUser(session?.user || null);
-        setSession(session || null);
-        setUser(session?.user || null);
         setLoading(false);
-        setInitialized(true);
       }
     );
 
@@ -117,15 +109,14 @@ export const AuthProvider = ({ children }) => {
     user,
     session,
     loading,
+    error,
     signOut,
     signIn,
     signUp,
     resetPassword,
     // Helper methods
     isAuthenticated: !!user,
-    isLoading: loading,
-    initialized
-    initialized: true
+    isLoading: loading
   };
 
   return (

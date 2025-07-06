@@ -2,28 +2,11 @@ import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 
 export default function UserMenu() {
-  const { user, signOut, isLoading } = useAuth();
+  const { user, signOut } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [signOutLoading, setSignOutLoading] = useState(false);
 
-  if (isLoading) {
-    return (
-      <div style={{ display: 'flex', gap: '1rem' }}>
-        <div style={{
-          width: '32px',
-          height: '32px',
-          borderRadius: '50%',
-          background: 'rgba(0, 255, 136, 0.05)',
-          border: '1px solid rgba(0, 255, 136, 0.2)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center'
-        }} />
-      </div>
-    );
-  }
-
-  if (!isLoading && !user) {
+  if (!user) {
     return (
       <div style={{ display: 'flex', gap: '1rem' }}>
         <button
@@ -264,13 +247,14 @@ export default function UserMenu() {
               }} />
               <button
                 onClick={handleSignOut}
+                disabled={signOutLoading}
                 style={{
                   width: '100%',
                   background: 'none',
                   border: 'none',
                   padding: '1rem 1.5rem',
                   textAlign: 'left',
-                  cursor: 'pointer',
+                  cursor: signOutLoading ? 'wait' : 'pointer',
                   color: '#dc3545',
                   fontSize: '0.9rem',
                   fontWeight: '500',
@@ -280,13 +264,15 @@ export default function UserMenu() {
                   gap: '0.75rem'
                 }}
                 onMouseEnter={(e) => {
-                  e.target.style.background = 'rgba(220, 53, 69, 0.1)';
+                  if (!signOutLoading) {
+                    e.target.style.background = 'rgba(220, 53, 69, 0.1)';
+                  }
                 }}
                 onMouseLeave={(e) => {
                   e.target.style.background = 'none';
                 }}
               >
-                🚪 Sign Out
+                {signOutLoading ? '⏳ Signing Out...' : '🚪 Sign Out'}
               </button>
             </div>
           </div>
