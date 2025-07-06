@@ -11,8 +11,9 @@ export default function UpgradePrompt({
 
   const planNames = {
     free: 'Free',
-    basic: 'Basic',
-    premium: 'Premium'
+    standard: 'Standard',
+    professional: 'Professional',
+    enterprise: 'Enterprise'
   }
 
   const featureMessages = {
@@ -98,12 +99,12 @@ export default function UpgradePrompt({
               {requiredPlan === 'basic' && (
                 <>
                   <li style={{ marginBottom: '0.5rem' }}>✓ Save unlimited notebooks</li>
-                  <li style={{ marginBottom: '0.5rem' }}>✓ Submit up to 10 notebooks</li>
+                  <li style={{ marginBottom: '0.5rem' }}>✓ Submit up to 25 notebooks</li>
                   <li style={{ marginBottom: '0.5rem' }}>✓ Advanced search & filters</li>
                   <li>✓ Priority support</li>
                 </>
               )}
-              {requiredPlan === 'premium' && (
+              {requiredPlan === 'professional' && (
                 <>
                   <li style={{ marginBottom: '0.5rem' }}>✓ Access premium content</li>
                   <li style={{ marginBottom: '0.5rem' }}>✓ Unlimited submissions</li>
@@ -150,7 +151,7 @@ export default function UpgradePrompt({
                 background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
                 color: '#0a0a0a',
                 border: 'none',
-                padding: '1rem 2rem',
+                padding: '1rem 1.5rem',
                 borderRadius: '12px',
                 fontSize: '1rem',
                 fontWeight: '700',
@@ -180,7 +181,7 @@ export default function UpgradePrompt({
           setShowSubscriptionModal(false)
           onClose()
         }}
-        currentPlan={currentPlan}
+        initialPlan={requiredPlan}
       />
     </>
   )
