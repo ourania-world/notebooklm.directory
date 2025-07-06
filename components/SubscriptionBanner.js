@@ -6,26 +6,16 @@ export default function SubscriptionBanner() {
   const [subscription, setSubscription] = useState(null);
   const [subLoading, setSubLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    
-    setMounted(true);
-    
+
     if (!user) {
       setSubLoading(false);
       return;
     }
 
     async function fetchSubscription() {
-      try {
-        setSubLoading(true);
-        // Simple simulation - in production, you would fetch from your API
-        setTimeout(() => {
-        }
-        )
-      }
       // Simulate subscription check - in production, fetch from your API
       setSubLoading(true);
       setTimeout(() => {
@@ -36,11 +26,6 @@ export default function SubscriptionBanner() {
 
     fetchSubscription();
   }, [user]);
-
-  // Don't render during SSR to prevent hydration mismatch
-  if (!mounted) {
-    return null;
-  }
 
   // Don't render during SSR to prevent hydration mismatch
   if (!mounted) {
