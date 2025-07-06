@@ -173,4 +173,4 @@ export default function Payment() {
           margin: '0 auto'
         }}>
           <h2 style={{ 
-            fontSize: '1.5
+            fontSize: '1.5'
