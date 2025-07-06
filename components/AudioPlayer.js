@@ -45,7 +45,7 @@ export default function AudioPlayer({
     
     const handleError = (e) => {
       console.error('Audio error:', e);
-      setLoading(false);
+      setLoading(false)
     };
     
     audio.addEventListener('canplaythrough', handleCanPlayThrough);
