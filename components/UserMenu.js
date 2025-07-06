@@ -144,6 +144,10 @@ export default function UserMenu() {
           onMouseEnter={(e) => {
             e.target.style.transform = 'translateY(-1px)';
             e.target.style.boxShadow = '0 6px 20px rgba(0, 255, 136, 0.4)';
+          }
+          }
+    )
+  }
   return (
     <div style={{ position: 'relative' }}>
       <button
