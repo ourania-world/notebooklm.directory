@@ -30,17 +30,16 @@ function CheckoutForm() {
     stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
       switch (paymentIntent?.status) {
         case 'succeeded':
-          setMessage('Payment succeeded!');
+          setMessage('✅ Payment succeeded!');
           break;
         case 'processing':
-          setMessage('Your payment is processing.');
+          setMessage('⏳ Your payment is processing...');
           break;
         case 'requires_payment_method':
-          setMessage('Your payment was not successful, please try again.');
+          setMessage('❌ Payment failed. Try again.');
           break;
         default:
-          setMessage('Something went wrong.');
-          break;
+          setMessage('⚠️ Something went wrong.');
       }
     });
   }, [stripe]);
@@ -60,12 +59,12 @@ function CheckoutForm() {
     });
 
     if (error) {
-      setMessage(error.message);
+      setMessage(`❌ ${error.message}`);
     } else if (paymentIntent?.status === 'succeeded') {
-      setMessage('Payment succeeded!');
+      setMessage('✅ Payment succeeded!');
       setTimeout(() => router.push('/payment-success'), 1500);
     } else {
-      setMessage('Unexpected payment state.');
+      setMessage('⚠️ Unexpected state.');
     }
 
     setIsLoading(false);
@@ -74,14 +73,15 @@ function CheckoutForm() {
   return (
     <form id="payment-form" onSubmit={handleSubmit}>
       <PaymentElement id="payment-element" />
+
       {message && (
         <div
           style={{
-            color: message.includes('succeeded') ? '#00ff88' : '#ff6b6b',
+            color: message.includes('✅') ? '#00ff88' : '#ff6b6b',
             margin: '1rem 0',
             padding: '0.75rem',
             borderRadius: '8px',
-            background: message.includes('succeeded')
+            background: message.includes('✅')
               ? 'rgba(0, 255, 136, 0.1)'
               : 'rgba(255, 107, 107, 0.1)',
             textAlign: 'center',
@@ -91,6 +91,7 @@ function CheckoutForm() {
           {message}
         </div>
       )}
+
       <button
         disabled={isLoading || !stripe || !elements}
         id="submit"
@@ -120,7 +121,7 @@ export default function StripeComponents({ clientSecret }) {
   if (!clientSecret) {
     return (
       <p style={{ color: '#ff6b6b', textAlign: 'center', marginTop: '2rem' }}>
-        ⚠️ No client secret provided. Unable to initialize Stripe.
+        ⚠️ No client secret provided. Stripe cannot be initialized.
       </p>
     );
   }
