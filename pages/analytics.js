@@ -37,7 +37,7 @@ export default function Analytics() {
     loadData()
   }, [])
 
-  const isPremium = subscription?.subscription_plans?.limits?.premiumContent === true
+  const hasPremiumAccess = subscription?.subscription_plans?.limits?.premiumContent === true
 
   if (loading) {
     return (
@@ -49,7 +49,7 @@ export default function Analytics() {
     )
   }
 
-  if (selectedReport !== 'overview' && !isPremium) {
+  if (selectedReport !== 'overview' && !hasPremiumAccess) {
     return (
       <>
         <Layout title="Analytics - NotebookLM Directory">
@@ -78,31 +78,31 @@ export default function Analytics() {
                 <button
                   key={report.id}
                   onClick={() => setSelectedReport(report.id)}
-                  disabled={report.premium && !isPremium}
+                  disabled={report.premium && !hasPremiumAccess}
                   style={{
                     background: selectedReport === report.id ? 
                       'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)' :
                       'rgba(255, 255, 255, 0.05)',
                     color: selectedReport === report.id ? '#0a0a0a' : 
-                           (report.premium && !isPremium) ? '#666' : '#ffffff',
+                           (report.premium && !hasPremiumAccess) ? '#666' : '#ffffff',
                     border: selectedReport === report.id ? 
                       'none' : 
                       '1px solid rgba(255, 255, 255, 0.2)',
                     padding: '0.75rem 1.5rem',
                     borderRadius: '8px',
-                    cursor: (report.premium && !isPremium) ? 'not-allowed' : 'pointer',
+                    cursor: (report.premium && !hasPremiumAccess) ? 'not-allowed' : 'pointer',
                     fontSize: '0.9rem',
                     fontWeight: '600',
                     transition: 'all 0.2s ease',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '0.5rem',
-                    opacity: (report.premium && !isPremium) ? 0.5 : 1
+                    opacity: (report.premium && !hasPremiumAccess) ? 0.5 : 1
                   }}
                 >
                   <span>{report.icon}</span>
                   {report.name}
-                  {report.premium && !isPremium && (
+                  {report.premium && !hasPremiumAccess && (
                     <span style={{ fontSize: '0.7rem', marginLeft: '0.25rem' }}>🔒</span>
                   )}
                 </button>
@@ -149,11 +149,11 @@ export default function Analytics() {
           </div>
         </Layout>
         
-        {selectedReport !== 'overview' && !isPremium && (
+        {selectedReport !== 'overview' && !hasPremiumAccess && (
           <UpgradePrompt
             feature="analytics"
             currentPlan={subscription?.subscription_plans?.id || 'free'}
-            requiredPlan="premium"
+            requiredPlan="professional"
             onClose={() => setSelectedReport('overview')}
           />
         )}
@@ -188,31 +188,31 @@ export default function Analytics() {
             <button
               key={report.id}
               onClick={() => setSelectedReport(report.id)}
-              disabled={report.premium && !isPremium}
+              disabled={report.premium && !hasPremiumAccess}
               style={{
                 background: selectedReport === report.id ? 
                   'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)' :
                   'rgba(255, 255, 255, 0.05)',
                 color: selectedReport === report.id ? '#0a0a0a' : 
-                       (report.premium && !isPremium) ? '#666' : '#ffffff',
+                       (report.premium && !hasPremiumAccess) ? '#666' : '#ffffff',
                 border: selectedReport === report.id ? 
                   'none' : 
                   '1px solid rgba(255, 255, 255, 0.2)',
                 padding: '0.75rem 1.5rem',
                 borderRadius: '8px',
-                cursor: (report.premium && !isPremium) ? 'not-allowed' : 'pointer',
+                cursor: (report.premium && !hasPremiumAccess) ? 'not-allowed' : 'pointer',
                 fontSize: '0.9rem',
                 fontWeight: '600',
                 transition: 'all 0.2s ease',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '0.5rem',
-                opacity: (report.premium && !isPremium) ? 0.5 : 1
+                opacity: (report.premium && !hasPremiumAccess) ? 0.5 : 1
               }}
             >
               <span>{report.icon}</span>
               {report.name}
-              {report.premium && !isPremium && (
+              {report.premium && !hasPremiumAccess && (
                 <span style={{ fontSize: '0.7rem', marginLeft: '0.25rem' }}>🔒</span>
               )}
             </button>
