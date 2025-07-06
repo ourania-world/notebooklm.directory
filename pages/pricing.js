@@ -55,13 +55,13 @@ export default function Pricing() {
       description: 'Accelerate Your Impact, Measure Your Footprint',
       features: [
         'Everything in Standard',
-        'Save unlimited notebooks',
-        'Submit up to 25 notebooks',
-        'Advanced search & AI recommendations',
-        'Personal environmental dashboard',
-        'Priority support',
-        'API access (1000 calls/month)',
-        'Export & integration tools'
+        'Computational Footprint Dashboard',
+        'Advanced resource-efficient search',
+        'Unlimited sustainable storage',
+        'Performance optimization metrics',
+        'Priority support from green-tech experts',
+        'API access with efficiency monitoring',
+        'ESG-ready impact reporting'
       ],
       limits: { savedNotebooks: -1, submittedNotebooks: 25, premiumContent: true },
       cta: 'Upgrade to Professional',
@@ -76,14 +76,13 @@ export default function Pricing() {
       description: 'Scale Your Innovation, Achieve Your ESG Goals - COMING SOON',
       features: [
         'Everything in Professional',
-        'Unlimited notebook submissions',
-        'Team collaboration tools',
-        'Advanced analytics dashboard',
-        'Custom ESG reporting',
-        'White-label options',
-        'Dedicated account manager',
-        'API access (10,000 calls/month)',
-        'Custom integrations'
+        'Enterprise-grade sustainability reporting',
+        'Team carbon footprint aggregation',
+        'Custom ESG dashboard integration',
+        'Dedicated sustainability consultant',
+        'Carbon offset contribution options',
+        'Advanced security with green compliance',
+        'White-label sustainable platform'
       ],
       limits: { savedNotebooks: -1, submittedNotebooks: -1, premiumContent: true },
       cta: 'Contact Sales',
@@ -170,7 +169,7 @@ export default function Pricing() {
             {/* Environmental Impact Stats */}
             <div style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+              gridTemplateColumns: 'repeat(3, 1fr)',
               gap: '2rem', 
               maxWidth: '800px',
               margin: '0 auto',
@@ -355,11 +354,17 @@ export default function Pricing() {
                   disabled={loading || plan.id === 'enterprise'}
                   style={{
                     width: '100%',
-                    background: plan.id === 'enterprise' ? 'rgba(255, 255, 255, 0.1)' : (plan.popular ? 
-                      'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)' :
-                      'transparent'),
-                    color: plan.id === 'enterprise' ? '#ffffff' : (plan.popular ? '#0a0a0a' : '#00ff88'),
-                    border: plan.id === 'enterprise' || plan.popular ? 'none' : '1px solid rgba(0, 255, 136, 0.3)',
+                    background: plan.id === 'enterprise' ? 
+                      'rgba(255, 255, 255, 0.1)' : 
+                      (plan.popular ? 
+                        'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)' :
+                        'transparent'),
+                    color: plan.id === 'enterprise' ? 
+                      '#ffffff' : 
+                      (plan.popular ? '#0a0a0a' : '#00ff88'),
+                    border: plan.id === 'enterprise' || plan.popular ? 
+                      'none' : 
+                      '1px solid rgba(0, 255, 136, 0.3)',
                     padding: '1rem',
                     borderRadius: '12px',
                     fontSize: '1rem',
