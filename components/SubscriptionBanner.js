@@ -15,10 +15,11 @@ export default function SubscriptionBanner() {
         if (session?.user) {
           // Check if user has a subscription
           const { data: subscription } = await supabase
-            .from('subscriptions')
-            .select(`
-              *,
-              subscription_plans (*)
+        // Mock subscription data for now
+        // In production, this would fetch from an API
+        setSubscription({
+          plan: { id: 'free' }
+        });
             `)
             .eq('user_id', session.user.id)
             .eq('status', 'active')
