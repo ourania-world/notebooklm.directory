@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import ProjectCard from '../components/ProjectCard';
-import { getCurrentUser } from '../lib/auth';
+import { getCurrentUser } from '../lib/supabase';
 import { getSavedNotebooks } from '../lib/profiles';
 
 export default function SavedNotebooks() {

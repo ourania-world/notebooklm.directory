@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import UserMenu from './UserMenu';
+import AuthStatusDisplay from './AuthStatusDisplay';
 import SubscriptionBanner from './SubscriptionBanner';
 import { useAuth } from '../context/AuthContext';
 
@@ -111,7 +111,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
               <Link href="/pricing" style={{ 
                 color: router.pathname === '/pricing' ? '#00ff88' : '#e2e8f0', 
                 textDecoration: 'none',
-                transition: 'color 0.2s ease',
+                transition: 'color 0.2s ease', 
                 fontWeight: '500'
               }}>
                 Pricing
@@ -128,7 +128,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                 </Link>
               )}
               
-              <UserMenu />
+              <AuthStatusDisplay />
             </div>
             
             <button

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Layout from '../../components/Layout'
 import SubscriptionManager from '../../components/SubscriptionManager'
-import { getCurrentUser } from '../../lib/auth'
+import { getCurrentUser } from '../../lib/supabase'
 
 export default function ManageSubscription() {
   const router = useRouter()

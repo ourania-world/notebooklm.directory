@@ -63,7 +63,7 @@ export default function ResetPassword() {
               marginBottom: '1.5rem',
               border: '1px solid rgba(220, 53, 69, 0.3)'
             }}>
-              </Link>
+              {error}
             </div>
           )}
 
