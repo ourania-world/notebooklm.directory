@@ -101,10 +101,8 @@ export default function ResetPassword() {
                   cursor: 'pointer',
                   textDecoration: 'none',
                   display: 'inline-block'
-                }}
-              >
-                Back to Login
-              </Link>
+                }
+                }
             </div>
           ) : (
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
