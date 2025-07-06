@@ -61,14 +61,14 @@ export default function Home({ initialFeaturedNotebooks }) {
   return (
     <Layout>
       {/* Hero Section */}
-      <section style={{ 
-        background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%)',
-        color: 'white',
-        padding: '8rem 0',
-        textAlign: 'center',
-        position: 'relative',
-        overflow: 'hidden'
-      }}>
+      <section style={{
+        background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%)', 
+        color: 'white', 
+        padding: '8rem 0', 
+        textAlign: 'center', 
+        position: 'relative', 
+        overflow: 'hidden' 
+      }}> 
         {/* Animated Background Pattern */}
         <div style={{
           position: 'absolute',
@@ -84,9 +84,9 @@ export default function Home({ initialFeaturedNotebooks }) {
           zIndex: 1
         }} />
         
-        <div style={{ 
-          maxWidth: '1200px', 
-          margin: '0 auto', 
+        <div style={{
+          maxWidth: '1200px',
+          margin: '0 auto',
           padding: '0 2rem',
           position: 'relative',
           zIndex: 2
@@ -111,7 +111,7 @@ export default function Home({ initialFeaturedNotebooks }) {
           <h1 style={{ 
             fontSize: 'clamp(2.5rem, 8vw, 4.5rem)', 
             fontWeight: '700', 
-            margin: '0 0 1.5rem 0',
+            margin: '0 0 1.5rem 0', 
             lineHeight: '1.1',
             background: 'linear-gradient(135deg, #ffffff 0%, #00ff88 100%)',
             WebkitBackgroundClip: 'text',
@@ -134,7 +134,7 @@ export default function Home({ initialFeaturedNotebooks }) {
           <p style={{ 
             fontSize: '1.3rem', 
             margin: '0 0 1rem 0',
-            opacity: 0.9,
+            opacity: 0.9, 
             maxWidth: '700px',
             margin: '0 auto 1rem auto',
             color: '#e2e8f0',
@@ -157,7 +157,7 @@ export default function Home({ initialFeaturedNotebooks }) {
           <div style={{ 
             display: 'flex', 
             gap: '1rem', 
-            justifyContent: 'center', 
+            justifyContent: 'center',
             flexWrap: 'wrap',
             marginBottom: '3rem',
             marginTop: '2rem'
@@ -171,7 +171,7 @@ export default function Home({ initialFeaturedNotebooks }) {
           <div style={{ 
             display: 'flex', 
             gap: '1rem', 
-            justifyContent: 'center', 
+            justifyContent: 'center',
             flexWrap: 'wrap',
             marginBottom: '3rem'
           }}>
@@ -205,7 +205,7 @@ export default function Home({ initialFeaturedNotebooks }) {
           </div>
           
           {/* Stats Dashboard Preview */}
-          <div style={{
+          <div style={{ 
             background: 'rgba(0, 0, 0, 0.4)',
             backdropFilter: 'blur(20px)',
             border: '1px solid rgba(0, 255, 136, 0.2)',
@@ -224,7 +224,7 @@ export default function Home({ initialFeaturedNotebooks }) {
               <div>
                 <div style={{ 
                   fontSize: '2.5rem', 
-                  fontWeight: '700', 
+                  fontWeight: '700',
                   color: '#00ff88',
                   fontFamily: 'monospace'
                 }}>
@@ -240,7 +240,7 @@ export default function Home({ initialFeaturedNotebooks }) {
       </section>
       
       {/* Quote Section */}
-      <section style={{ 
+      <section style={{
         background: '#0a0a0a',
         padding: '4rem 0',
         position: 'relative'
@@ -295,7 +295,7 @@ export default function Home({ initialFeaturedNotebooks }) {
       </section>
       
       {/* Features Section */}
-      <section style={{ 
+      <section style={{
         background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)',
         padding: '6rem 0',
         position: 'relative'
@@ -430,7 +430,7 @@ export default function Home({ initialFeaturedNotebooks }) {
       </section>
       
       {/* CTA Section */}
-      <section style={{ 
+      <section style={{
         background: '#0a0a0a',
         padding: '6rem 0',
         textAlign: 'center'
@@ -491,7 +491,7 @@ export default function Home({ initialFeaturedNotebooks }) {
       </section>
       
       {/* Sustainable Research Section */}
-      <section style={{
+      <section style={{ 
         background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)',
         padding: '6rem 0',
         textAlign: 'center'
@@ -521,7 +521,7 @@ export default function Home({ initialFeaturedNotebooks }) {
       </section>
       
       {/* Help Build Section */}
-      <section style={{
+      <section style={{ 
         background: '#0a0a0a',
         padding: '6rem 0'
       }}>
@@ -657,7 +657,7 @@ export default function Home({ initialFeaturedNotebooks }) {
       </section>
       
       {/* Vision Audio Section */}
-      <section style={{ 
+      <section style={{
         background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
         padding: '6rem 0',
         textAlign: 'center'
@@ -686,7 +686,7 @@ export default function Home({ initialFeaturedNotebooks }) {
       </section>
       
       {/* Popular Notebooks Section */}
-      <section style={{ 
+      <section style={{
         padding: '6rem 0',
         background: '#0a0a0a'
       }}>
@@ -751,7 +751,7 @@ export default function Home({ initialFeaturedNotebooks }) {
       </section>
       
       {/* Featured Collections */}
-      <section style={{ 
+      <section style={{
         padding: '6rem 0',
         background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)'
       }}>
@@ -837,7 +837,7 @@ export default function Home({ initialFeaturedNotebooks }) {
       </section>
       
       {/* Featured Projects */}
-      <section style={{ 
+      <section style={{
         padding: '6rem 0',
         background: '#0a0a0a'
       }}>

@@ -2,14 +2,65 @@ import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 
 export default function UserMenu() {
-  const { user, signOut } = useAuth();
+  const { user, signOut, loading: authLoading } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [signOutLoading, setSignOutLoading] = useState(false);
 
   if (!user) {
+  if (!user && !authLoading) {
     return (
       <div style={{ display: 'flex', gap: '1rem' }}>
         <button
+          onClick={() => window.location.href = '/login'}
+          style={{
+            background: 'transparent',
+            color: '#e2e8f0',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
+            padding: '0.5rem 1rem',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            fontSize: '0.9rem',
+            fontWeight: '500',
+            transition: 'all 0.2s ease'
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.borderColor = '#00ff88';
+            e.target.style.color = '#00ff88';
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+            e.target.style.color = '#e2e8f0';
+          }}
+        >
+          Log in
+        </button>
+        <button
+          onClick={() => window.location.href = '/signup'}
+          style={{
+            background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
+            color: '#0a0a0a',
+            border: 'none',
+            padding: '0.5rem 1rem',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            fontSize: '0.9rem',
+            fontWeight: '600',
+            transition: 'all 0.2s ease',
+            boxShadow: '0 4px 16px rgba(0, 255, 136, 0.3)'
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.transform = 'translateY(-1px)';
+            e.target.style.boxShadow = '0 6px 20px rgba(0, 255, 136, 0.4)';
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.transform = 'translateY(0)';
+            e.target.style.boxShadow = '0 4px 16px rgba(0, 255, 136, 0.3)';
+          }}
+        >
+          Get Started
+        </button>
+      </div>
+    );
           onClick={() => window.location.href = '/login'}
           style={{
             background: 'transparent',
@@ -69,12 +120,39 @@ export default function UserMenu() {
       setIsOpen(false);
     } catch (error) {
       console.error('Error signing out:', error);
+      alert('Failed to sign out. Please try again.');
     } finally {
       setSignOutLoading(false);
     }
   };
 
-  return (
+  if (authLoading) {
+    return (
+      <div style={{
+        background: 'rgba(0, 255, 136, 0.1)',
+        border: '1px solid rgba(0, 255, 136, 0.3)',
+        color: '#ffffff',
+        padding: '0.75rem 1rem',
+        borderRadius: '12px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '0.75rem',
+        opacity: 0.7
+      }}>
+        <div style={{
+          width: '20px',
+          height: '20px',
+          borderRadius: '50%',
+          border: '2px solid rgba(0, 255, 136, 0.3)',
+          borderTop: '2px solid #00ff88',
+          animation: 'spin 1s linear infinite'
+        }} />
+        <span style={{ fontSize: '0.9rem' }}>Loading...</span>
+      </div>
+    );
+  }
+
+  return user ? (
     <div style={{ position: 'relative' }}>
       <button
         onClick={() => setIsOpen(!isOpen)}
@@ -278,6 +356,58 @@ export default function UserMenu() {
           </div>
         </>
       )}
+    </div>
+  ) : (
+    <div style={{ display: 'flex', gap: '1rem' }}>
+      <button
+        onClick={() => window.location.href = '/login'}
+        style={{
+          background: 'transparent',
+          color: '#e2e8f0',
+          border: '1px solid rgba(255, 255, 255, 0.2)',
+          padding: '0.5rem 1rem',
+          borderRadius: '8px',
+          cursor: 'pointer',
+          fontSize: '0.9rem',
+          fontWeight: '500',
+          transition: 'all 0.2s ease'
+        }}
+        onMouseEnter={(e) => {
+          e.target.style.borderColor = '#00ff88';
+          e.target.style.color = '#00ff88';
+        }}
+        onMouseLeave={(e) => {
+          e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+          e.target.style.color = '#e2e8f0';
+        }}
+      >
+        Log in
+      </button>
+      <button
+        onClick={() => window.location.href = '/signup'}
+        style={{
+          background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
+          color: '#0a0a0a',
+          border: 'none',
+          padding: '0.5rem 1rem',
+          borderRadius: '8px',
+          cursor: 'pointer',
+          fontSize: '0.9rem',
+          fontWeight: '600',
+          transition: 'all 0.2s ease',
+          boxShadow: '0 4px 16px rgba(0, 255, 136, 0.3)'
+        }}
+        onMouseEnter={(e) => {
+          e.target.style.transform = 'translateY(-1px)';
+          e.target.style.boxShadow = '0 6px 20px rgba(0, 255, 136, 0.4)';
+        }}
+        onMouseLeave={(e) => {
+          e.target.style.transform = 'translateY(0)';
+          e.target.style.boxShadow = '0 4px 16px rgba(0, 255, 136, 0.3)';
+        }}
+      >
+        Get Started
+      </button>
     </div>
   );
 }

@@ -6,38 +6,33 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [session, setSession] = useState(null);
+  const [session, setSession] = useState(null); 
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Get initial session
-    const getInitialSession = async () => {
+    const handleAuthChange = async () => {
       try {
         const { data, error } = await supabase.auth.getSession();
-        
         if (error) {
-          console.warn('Error getting session:', error);
+          console.error('Error getting session:', error);
           setError(error);
         } else {
           setSession(data.session || null);
           setUser(data.session?.user || null);
         }
+        setLoading(false);
       } catch (error) {
-        console.warn('Failed to get initial session:', error);
+        console.error('Failed to get initial session:', error);
         setError(error);
-      } finally {
         setLoading(false);
       }
     };
 
-    getInitialSession();
+    handleAuthChange();
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        if (event) {
-          console.log('Auth state changed:', event);
-        }
         setSession(session || null);
         setUser(session?.user || null);
         setLoading(false);
@@ -45,7 +40,7 @@ export const AuthProvider = ({ children }) => {
     );
 
     return () => {
-      subscription?.unsubscribe();
+      if (subscription) subscription.unsubscribe();
     };
   }, []);
 
@@ -56,6 +51,7 @@ export const AuthProvider = ({ children }) => {
       if (error) throw error;
       setUser(null);
       setSession(null);
+      return true;
     } catch (error) {
       console.error('Error signing out:', error);
       throw error;
@@ -120,7 +116,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={value}>
+    <AuthContext.Provider value={value}> 
       {children}
     </AuthContext.Provider>
   );
