@@ -12,15 +12,15 @@ export default function Pricing() {
       id: 'free',
       name: 'Explorer',
       price: 0,
-      period: 'forever',
+      period: 'forever', 
       description: 'Perfect for getting started',
       features: [
-        'Access to public notebooks',
-        'Browse curated collections',
-        'Basic search features',
-        'Community access',
-        'Save up to 5 notebooks',
-        'Submit unlimited notebooks'
+        'Access to all public notebooks',
+        'Browse curated collections', 
+        'Basic search features', 
+        'Community access', 
+        'Save up to 5 notebooks', 
+        'Submit unlimited notebooks' 
       ],
       limits: {
         savedNotebooks: 5,
@@ -34,7 +34,7 @@ export default function Pricing() {
       id: 'standard',
       name: 'Standard',
       price: 9.99,
-      period: 'month',
+      period: 'month', 
       description: 'Great for regular users',
       features: [
         'Everything in Explorer',
@@ -56,12 +56,12 @@ export default function Pricing() {
       id: 'professional',
       name: 'Professional',
       price: 19.99,
-      period: 'month',
+      period: 'month', 
       description: 'For power users and professionals',
       features: [
         'Everything in Standard',
-        'Unlimited saved notebooks',
-        'Submit unlimited notebooks',
+        'Unlimited saved notebooks', 
+        'Submit unlimited notebooks', 
         'AI-powered search & recommendations',
         'Performance metrics',
         'Priority support',
@@ -80,17 +80,17 @@ export default function Pricing() {
       id: 'enterprise',
       name: 'Enterprise',
       price: 99,
-      period: 'user/month',
+      period: 'user/month', 
       description: 'For teams & organizations',
       features: [
-        'Everything in Professional',
-        'Team collaboration tools',
-        'Advanced analytics dashboard',
-        'Custom reporting',
-        'White-label options',
-        'Dedicated account manager',
-        'API access (10,000 calls/month)',
-        'Custom integrations'
+        'Everything in Professional', 
+        'Team collaboration tools', 
+        'Advanced analytics dashboard', 
+        'Custom reporting', 
+        'White-label options', 
+        'Dedicated account manager', 
+        'API access (10,000 calls/month)', 
+        'Custom integrations' 
       ],
       limits: {
         savedNotebooks: -1,
@@ -149,11 +149,11 @@ export default function Pricing() {
             <p style={{ 
               color: '#e2e8f0', 
               fontSize: '1.1rem',
-              lineHeight: '1.6', 
+              lineHeight: '1.6',  
               maxWidth: '600px',
               margin: '0 auto 2rem auto'
             }}>
-              Choose the plan that's right for you. No commitments, cancel anytime.
+            Choose the plan that's right for you. All plans include unlimited notebook submissions.
             </p>
           </div>
 
@@ -402,10 +402,10 @@ export default function Pricing() {
           <div style={{
             textAlign: 'center',
             color: '#e2e8f0',
-            fontSize: '0.9rem' 
+            fontSize: '0.9rem'  
           }}> 
             <p style={{ margin: '0 0 1rem 0' }}>
-              ✓ Cancel anytime • ✓ No hidden fees • ✓ Secure payment with Stripe
+              ✓ Unlimited submissions • ✓ Cancel anytime • ✓ No hidden fees
             </p>
             <p style={{ margin: 0, opacity: 0.7 }}>
               Questions? Contact us at support@notebooklm.directory 

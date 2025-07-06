@@ -22,14 +22,14 @@ export default async function handler(req, res) {
         id: 'free',
         name: 'Explorer',
         price: 0,
-        interval: null,
+        interval: null, 
         features: [
-          'Browse 10,000+ curated notebooks',
-          'Save up to 5 notebooks',
-          'Basic search & filtering',
+          'Access to all public notebooks',
+          'Browse curated collections',
+          'Basic search features',
           'Community access',
-          'Environmental impact tracking',
-          'Mobile-optimized experience'
+          'Save up to 5 notebooks',
+          'Submit unlimited notebooks'
         ],
         limits: {
           savedNotebooks: 5,
@@ -42,7 +42,7 @@ export default async function handler(req, res) {
           count: 0,
           limit: 5,
           remaining: 5,
-          unlimited: false
+          unlimited: false 
         },
         submitted: {
           count: 0,
