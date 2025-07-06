@@ -17,7 +17,6 @@ export default function AudioPlayer({
   const progressRef = useRef(null);  
   const waveformRef = useRef(null);  
   const animationRef = useRef(null);  
-  const [mounted, setMounted] = useState(false);
   
   // Make sure we have a valid audio URL
   const fullAudioUrl = mounted ? getAudioUrl(audioUrl) : null;
@@ -28,7 +27,6 @@ export default function AudioPlayer({
     
     // Don't run audio logic during SSR 
     if (typeof window === 'undefined') return;
-    
     // Check if audio is supported
     if (!isAudioSupported()) {
       setError('Audio not supported in this browser');
@@ -37,6 +35,7 @@ export default function AudioPlayer({
     }
     
     const audio = audioRef.current;
+    if (!audio || !fullAudioUrl) return;
     if (!audio || !fullAudioUrl) return;
      
     const handleCanPlayThrough = () => {
@@ -56,7 +55,6 @@ export default function AudioPlayer({
     
     const handleError = (e) => {
       console.error('Audio error:', e);
-      setError(`Failed to load audio: ${e.target?.error?.message || 'Unknown error'}`);
       setLoading(false);
     };
     
@@ -164,7 +162,6 @@ export default function AudioPlayer({
             flexShrink: 0,
             transition: 'all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)',
             boxShadow: '0 4px 12px rgba(0, 255, 136, 0.3)', 
-            className: 'button-glow'
           }}
           onMouseEnter={(e) => {
             if (!loading && !error) {
