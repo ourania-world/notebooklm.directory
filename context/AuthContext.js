@@ -7,6 +7,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [session, setSession] = useState(null);
+  const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
     // Get initial session
@@ -14,8 +15,11 @@ export const AuthProvider = ({ children }) => {
       try {
         const { data: sessionData, error } = await supabase.auth.getSession();
         const session = sessionData?.session;
+        const session = sessionData?.session;
         if (error) {
           console.warn('Error getting session:', error);
+          setSession(null);
+          setUser(null);
           setSession(null);
           setUser(null);
         } else {
@@ -41,7 +45,10 @@ export const AuthProvider = ({ children }) => {
         }
         setSession(session || null);
         setUser(session?.user || null);
+        setSession(session || null);
+        setUser(session?.user || null);
         setLoading(false);
+        setInitialized(true);
       }
     );
 
@@ -117,6 +124,7 @@ export const AuthProvider = ({ children }) => {
     // Helper methods
     isAuthenticated: !!user,
     isLoading: loading,
+    initialized
     initialized: true
   };
 
