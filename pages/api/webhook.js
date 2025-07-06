@@ -55,8 +55,7 @@ export default async function handler(req, res) {
 async function handleCheckoutSessionCompleted(session) {
   const userId = session.metadata.userId;
   const planId = session.metadata.planId;
-  const planId = session.metadata.planId;
-
+  try {
     // Create or update subscription in database
     const { error } = await supabase
       .from('subscriptions')
@@ -69,7 +68,6 @@ async function handleCheckoutSessionCompleted(session) {
         current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
         current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
         canceled_at: subscription.cancel_at ? new Date(subscription.cancel_at * 1000).toISOString() : null
-        canceled_at: subscription.cancel_at ? new Date(subscription.cancel_at * 1000).toISOString() : null
       });
 
     if (error) {
@@ -77,19 +75,6 @@ async function handleCheckoutSessionCompleted(session) {
     }
     
     // Also update the user's profile with the Stripe customer ID and subscription tier
-    const { error: profileError } = await supabase
-      .from('profiles')
-      .update({ 
-        stripe_customer_id: session.customer,
-        subscription_tier: planId
-      })
-      .eq('id', userId);
-      
-    if (profileError) {
-      console.error('Error updating profile:', profileError);
-    }
-    
-    // Also update the user's profile with the Stripe customer ID
     const { error: profileError } = await supabase
       .from('profiles')
       .update({ 
