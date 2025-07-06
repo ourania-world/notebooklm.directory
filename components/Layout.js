@@ -15,11 +15,6 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
   useEffect(() => {
     setMounted(true);
   }, []);
-  const [mounted, setMounted] = useState(false); 
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   return (
     <>
@@ -86,51 +81,47 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
               display: 'flex',
               alignItems: 'center',
               gap: '2rem' 
+            }}>
+              <Link href="/browse" style={{
+                color: router.pathname === '/browse' ? '#00ff88' : '#e2e8f0',
+                textDecoration: 'none',
+                fontWeight: '500',
+                fontSize: '0.95rem'
+              }}>
+                Browse Projects
               </Link>
               <Link href="/submit" style={{
                 color: router.pathname === '/submit' ? '#00ff88' : '#e2e8f0',
                 textDecoration: 'none',
-              <Link href="/browse" style={{
-                color: router.pathname === '/browse' ? '#00ff88' : '#e2e8f0',
-                fontSize: '0.95rem'
-              }}>
                 fontWeight: '500',
                 fontSize: '0.95rem'
-              </Link>
-                Browse Projects
-                color: router.pathname === '/pricing' ? '#00ff88' : '#e2e8f0',
-              <Link href="/submit" style={{
-                color: router.pathname === '/submit' ? '#00ff88' : '#e2e8f0',
-                fontWeight: '500', 
-                fontSize: '0.95rem'
-                fontWeight: '500', 
-                fontSize: '0.95rem'
-                Pricing
+              }}>
                 Submit Project
-              <Link href="/about" style={{
+              </Link>
               <Link href="/pricing" style={{
                 color: router.pathname === '/pricing' ? '#00ff88' : '#e2e8f0',
-                transition: 'color 0.2s ease',
-                fontWeight: '500', 
-                fontWeight: '500', 
-                fontWeight: '500', 
+                textDecoration: 'none',
+                fontWeight: '500',
+                fontSize: '0.95rem'
+              }}>
+                Pricing
+              </Link>
+              <Link href="/about" style={{
+                color: router.pathname === '/about' ? '#00ff88' : '#e2e8f0',
+                textDecoration: 'none',
+                fontWeight: '500',
                 fontSize: '0.95rem'
               }}>
                 About
               </Link>
-              <Link href="/about" style={{
-                color: router.pathname === '/about' ? '#00ff88' : '#e2e8f0',
-                <Link href="/analytics" style={{
-                  color: router.pathname === '/analytics' ? '#00ff88' : '#e2e8f0',
-                  textDecoration: 'none',
-                  transition: 'color 0.2s ease',
-                  fontWeight: '500', 
-                  fontSize: '0.95rem'
-                  fontSize: '0.95rem'
-                }}>
-                  Analytics
-                </Link>
-              )}
+              <Link href="/analytics" style={{
+                color: router.pathname === '/analytics' ? '#00ff88' : '#e2e8f0',
+                textDecoration: 'none',
+                fontWeight: '500',
+                fontSize: '0.95rem'
+              }}>
+                Analytics
+              </Link>
             </div>
 
             <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
@@ -210,7 +201,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               style={{
-                display: 'none', // Hide on desktop, show on mobile with media query
+                display: 'none',
                 background: 'transparent',
                 border: '1px solid rgba(0, 255, 136, 0.3)',
                 color: '#00ff88',
@@ -311,55 +302,8 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                     • $3.2M in computational costs saved<br />
                     • 156T CO₂ emissions prevented 
                   </div>
-            </div>
-
-            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-              {mounted && !loading && !user ? (
-                <>
-                  <Link href="/login" style={{
-                    background: 'transparent',
-                    color: '#e2e8f0', 
-                    border: '1px solid rgba(255, 255, 255, 0.2)',
-                    padding: '0.5rem 1.25rem',
-                    borderRadius: '6px',
-                    fontSize: '0.9rem',
-                    fontWeight: '500',
-                    textDecoration: 'none',
-                    transition: 'all 0.2s ease'
-                  }}>
-                    Log in
-                  </Link>
-                  <Link
-                    href="/signup"
-                    style={{
-                      background: '#00ff88',
-                      color: '#0a0a0a',
-                      border: 'none',
-                      padding: '0.5rem 1.25rem',
-                      borderRadius: '6px',
-                      fontSize: '0.9rem',
-                      fontWeight: '600',
-                      cursor: 'pointer',
-                      transition: 'all 0.2s ease',
-                      textDecoration: 'none'
-                    }}
-                    onMouseEnter={(e) => { 
-                      e.target.style.transform = 'translateY(-1px)';
-                      e.target.style.boxShadow = '0 4px 12px rgba(0, 255, 136, 0.3)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.transform = 'translateY(0)';
-                      e.target.style.boxShadow = 'none';
-                    }}
-                  >
-                    Get Started
-                  </Link>
-                </>
-              ) : (
-                <>
-                  <UserMenu />
-                </>
-              )}
+                </div>
+              </div>
             </div>
 
             <div style={{
