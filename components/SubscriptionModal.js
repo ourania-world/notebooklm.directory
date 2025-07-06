@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { SUBSCRIPTION_PLANS, createCheckoutSession } from '../lib/subscriptions'
-import { getCurrentUser } from '../lib/auth'
+import { getCurrentUser } from '../lib/supabase'
 
 export default function SubscriptionModal({ isOpen, onClose, initialPlan = 'standard', currentPlan = 'free' }) { 
   const [loading, setLoading] = useState(false)

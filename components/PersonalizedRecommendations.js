@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getCurrentUser } from '../lib/auth';
+import { getCurrentUser } from '../lib/supabase';
 import { getNotebooks } from '../lib/notebooks';
 import ProjectCard from './ProjectCard';
 

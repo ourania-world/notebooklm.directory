@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Layout from '../../components/Layout'
-import { getCurrentUser } from '../../lib/auth'
+import { getCurrentUser } from '../../lib/supabase'
 import { getUserSubscription } from '../../lib/subscriptions'
 
 export default function SubscriptionSuccess() {

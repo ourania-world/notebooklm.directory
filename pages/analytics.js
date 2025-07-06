@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import Layout from '../components/Layout'
-import { getCurrentUser } from '../lib/auth'
+import { getCurrentUser } from '../lib/supabase'
 import { getUserSubscription } from '../lib/subscriptions'
 import AnalyticsDashboard from '../components/AnalyticsDashboard'
 import UpgradePrompt from '../components/UpgradePrompt'

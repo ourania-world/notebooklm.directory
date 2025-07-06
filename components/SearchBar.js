@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { trackSearch } from '../lib/analytics'
-import { getCurrentUser } from '../lib/auth'
+import { getCurrentUser } from '../lib/supabase'
 
 export default function SearchBar({ 
   onSearch, 

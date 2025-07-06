@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { getCurrentUser } from '../lib/auth';
+import { getCurrentUser } from '../lib/supabase';
 import { createNotebook } from '../lib/notebooks';
 
 export default function NotebookModal({ isOpen, onClose, onNotebookCreated }) {

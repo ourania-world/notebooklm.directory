@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { getCurrentUser } from '../lib/auth'
+import { getCurrentUser } from '../lib/supabase'
 
 export default function SubscriptionManager() {
   const [user, setUser] = useState(null)

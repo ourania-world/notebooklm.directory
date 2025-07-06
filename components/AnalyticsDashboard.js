@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { getCurrentUser } from '../lib/auth'
+import { getCurrentUser } from '../lib/supabase'
 import { getUserSubscription } from '../lib/subscriptions'
 
 export default function AnalyticsDashboard({ reportType = 'overview', timeframe = '30d' }) {
