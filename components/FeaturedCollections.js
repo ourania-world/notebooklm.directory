@@ -1,20 +1,94 @@
 import { useState, useEffect } from 'react';
 import { getNotebooks } from '../lib/notebooks';
 import ProjectCard from './ProjectCard';
+import Link from 'next/link';
 
 export default function FeaturedCollections() {
   const [collections, setCollections] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [activeFilter, setActiveFilter] = useState('trending');
 
   useEffect(() => {
     async function loadCollections() {
       try {
-        // Get notebooks for each collection
+          margin: '0 0 2rem 0',
         const [academicNotebooks, businessNotebooks, researchNotebooks] = await Promise.all([
           getNotebooks({ category: 'Academic', limit: 3 }),
           getNotebooks({ category: 'Business', limit: 3 }),
           getNotebooks({ category: 'Research', limit: 3 })
         ]);
+        
+        {/* Filter Tabs */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          gap: '1rem',
+          marginBottom: '3rem',
+          flexWrap: 'wrap'
+        }}>
+          <button 
+            onClick={() => setActiveFilter('trending')}
+            style={{
+              background: activeFilter === 'trending' ? 
+                'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)' : 
+                'transparent',
+              color: activeFilter === 'trending' ? '#0a0a0a' : '#e2e8f0',
+              border: activeFilter === 'trending' ? 
+                'none' : 
+                '1px solid rgba(255, 255, 255, 0.2)',
+              padding: '0.5rem 1rem',
+              borderRadius: '20px',
+              fontWeight: activeFilter === 'trending' ? '600' : '500',
+              cursor: 'pointer',
+              fontSize: '0.8rem',
+              transition: 'all 0.2s ease'
+            }}
+          >
+            Trending This Week
+          </button>
+          
+          <button
+            onClick={() => setActiveFilter('new')}
+            style={{
+              background: activeFilter === 'new' ? 
+                'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)' : 
+                'transparent',
+              color: activeFilter === 'new' ? '#0a0a0a' : '#e2e8f0',
+              border: activeFilter === 'new' ? 
+                'none' : 
+                '1px solid rgba(255, 255, 255, 0.2)',
+              padding: '0.5rem 1rem',
+              borderRadius: '20px',
+              fontWeight: activeFilter === 'new' ? '600' : '500',
+              cursor: 'pointer',
+              fontSize: '0.8rem',
+              transition: 'all 0.2s ease'
+            }}
+          >
+            Newest Additions
+          </button>
+          
+          <button
+            onClick={() => setActiveFilter('popular')}
+            style={{
+              background: activeFilter === 'popular' ? 
+                'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)' : 
+                'transparent',
+              color: activeFilter === 'popular' ? '#0a0a0a' : '#e2e8f0',
+              border: activeFilter === 'popular' ? 
+                'none' : 
+                '1px solid rgba(255, 255, 255, 0.2)',
+              padding: '0.5rem 1rem',
+              borderRadius: '20px',
+              fontWeight: activeFilter === 'popular' ? '600' : '500',
+              cursor: 'pointer',
+              fontSize: '0.8rem',
+              transition: 'all 0.2s ease'
+            }}
+          >
+            All-Time Popular
+          </button>
+        </div>
         
         setCollections([
           {
@@ -90,10 +164,10 @@ export default function FeaturedCollections() {
                 <p style={{ color: '#e2e8f0', margin: 0 }}>
                   {collection.description}
                 </p>
-              </div>
+              </div> 
               
-              <button
-                onClick={() => window.location.href = `/browse?category=${collection.id}`}
+              <Link
+                href={`/browse?category=${collection.id}`}
                 style={{
                   background: 'transparent',
                   color: '#00ff88',
@@ -115,7 +189,7 @@ export default function FeaturedCollections() {
                 }}
               >
                 View All
-              </button>
+              </Link>
             </div>
             
             <div style={{
@@ -126,7 +200,7 @@ export default function FeaturedCollections() {
               {collection.notebooks.map(notebook => (
                 <ProjectCard key={notebook.id} notebook={notebook} />
               ))}
-            </div>
+            </div> 
           </div>
         ))}
       </div>

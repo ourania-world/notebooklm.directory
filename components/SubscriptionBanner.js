@@ -47,7 +47,9 @@ export default function SubscriptionBanner() {
     <div style={{
       background: 'linear-gradient(90deg, rgba(0, 255, 136, 0.1) 0%, rgba(0, 255, 136, 0.2) 100%)',
       borderBottom: '1px solid rgba(0, 255, 136, 0.3)',
-      padding: '0.75rem 0',
+      padding: '0.75rem 0', 
+      backdropFilter: 'blur(10px)',
+      WebkitBackdropFilter: 'blur(10px)',
       position: 'relative',
       overflow: 'hidden'
     }}>
@@ -74,7 +76,7 @@ export default function SubscriptionBanner() {
             background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
             color: '#0a0a0a',
             border: 'none',
-            padding: '0.5rem 1rem',
+            padding: '0.5rem 1rem', 
             borderRadius: '8px',
             fontSize: '0.8rem',
             fontWeight: '600',
@@ -82,7 +84,8 @@ export default function SubscriptionBanner() {
             textTransform: 'uppercase',
             letterSpacing: '0.5px',
             textDecoration: 'none'
-          }}
+          }} 
+          className="button-glow"
         >
           Upgrade Now
         </Link>

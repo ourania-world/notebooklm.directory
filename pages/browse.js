@@ -213,7 +213,8 @@ export default function Browse({
           <div style={{ 
             display: 'grid', 
             gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', 
-            gap: '2rem'
+            gap: '2rem',
+            className: 'glass-card'
           }}>
             {notebooks.map(notebook => (
               <ProjectCard key={notebook.id} notebook={notebook} />
