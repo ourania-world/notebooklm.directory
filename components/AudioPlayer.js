@@ -18,7 +18,6 @@ export default function AudioPlayer({
   const waveformRef = useRef(null);  
   const animationRef = useRef(null);  
   const [mounted, setMounted] = useState(false);
-  const [mounted, setMounted] = useState(false);
   
   // Make sure we have a valid audio URL
   const fullAudioUrl = mounted ? getAudioUrl(audioUrl) : null;
@@ -39,7 +38,7 @@ export default function AudioPlayer({
     
   // Make sure we have a valid audio URL
   const fullAudioUrl = mounted ? getAudioUrl(audioUrl) : null;
-    if (!audio || !fullAudioUrl) return;
+    if (!fullAudioUrl) return;
      
     // Mark component as mounted to prevent hydration mismatch
     setMounted(true);
@@ -68,8 +67,9 @@ export default function AudioPlayer({
     const handleError = (e) => {
       console.error('Audio error:', e);
       setError(`Failed to load audio: ${e.target?.error?.message || 'Unknown error'}`);
-      setError(`Failed to load audio: ${e.target?.error?.message || 'Unknown error'}`);
       setLoading(false);
+    };
+    
     audio.addEventListener('canplaythrough', handleCanPlayThrough);
     audio.addEventListener('timeupdate', handleTimeUpdate);
     audio.addEventListener('ended', handleEnded);
@@ -96,10 +96,6 @@ export default function AudioPlayer({
     
     if (isPlaying) {
       audioRef.current.play().catch(err => {
-        console.error('Error playing audio:', err);
-        setError(`Playback error: ${err.message}`);
-        setIsPlaying(false);
-      });
         console.error('Error playing audio:', err);
         setError(`Playback error: ${err.message}`);
         setIsPlaying(false);
@@ -307,11 +303,6 @@ export default function AudioPlayer({
                 width: '3px',
                 height: isPlaying ? `${Math.random() * 30 + 10}px` : '10px',
                 background: isPlaying ? '#00ff88' : 'rgba(0, 255, 136, 0.3)',
-                borderRadius: '1px', 
-                transition: 'height 0.2s ease',
-                animationPlayState: isPlaying ? 'running' : 'paused'
-                height: isPlaying ? `${Math.random() * 30 + 10}px` : '10px',
-              className={isPlaying ? 'waveform-bar' : ''} 
                 borderRadius: '1px', 
                 transition: 'height 0.2s ease',
                 animationPlayState: isPlaying ? 'running' : 'paused'
