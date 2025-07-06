@@ -7,6 +7,35 @@ export default function Pricing() {
   const [loading, setLoading] = useState(false)
   const [selectedPlan, setSelectedPlan] = useState('standard')
 
+  // Define which features are currently supported
+  const supportedFeatures = {
+    'Access to public notebooks': true,
+    'Browse curated collections': true,
+    'Basic search features': true,
+    'Community access': true,
+    'Save up to 5 notebooks': true,
+    'Submit unlimited notebooks': true,
+    'Everything in Free': true,
+    'Everything in Explorer': true,
+    'Unlimited saved notebooks': true,
+    'Advanced search with filters': true,
+    'Email notifications': false,
+    'Basic analytics': false,
+    'Everything in Standard': true,
+    'AI-powered search & recommendations': false,
+    'Performance metrics': false,
+    'Priority support': false,
+    'API access (1000 calls/month)': false,
+    'Export & integration tools': false,
+    'Team collaboration tools': false,
+    'Advanced analytics dashboard': false,
+    'Custom reporting': false,
+    'White-label options': false,
+    'Dedicated account manager': false,
+    'API access (10,000 calls/month)': false,
+    'Custom integrations': false
+  }
+
   const plans = [
     {
       id: 'free',
@@ -267,10 +296,10 @@ export default function Pricing() {
                   
                   <p style={{
                     color: '#e2e8f0',
-                    fontSize: '1rem',
+                    Which features are currently available?
                     margin: '0 0 1rem 0'
                   }}> 
-                    {plan.description}
+                    All core features are available now, including unlimited notebook submissions and browsing. Some advanced features like AI recommendations, analytics, and API access are coming soon and will be automatically enabled for subscribers when ready.
                   </p>
                 </div>
 
@@ -286,10 +315,23 @@ export default function Pricing() {
                       gap: '0.75rem',
                       marginBottom: '0.75rem',
                       color: '#e2e8f0', 
-                      fontSize: '0.95rem'
+                      fontSize: '0.95rem',
+                      opacity: supportedFeatures[feature] ? 1 : 0.6
                     }}>
                       <span style={{ color: '#00ff88', fontSize: '1.2rem', flexShrink: 0 }}>✓</span>
                       {feature}
+                      {!supportedFeatures[feature] && (
+                        <span style={{ 
+                          marginLeft: '0.5rem',
+                          fontSize: '0.75rem',
+                          color: '#ffc107',
+                          background: 'rgba(255, 193, 7, 0.1)',
+                          padding: '0.1rem 0.4rem',
+                          borderRadius: '4px'
+                        }}>
+                          Coming Soon
+                        </span>
+                      )}
                     </li>
                   ))}
                 </ul>
