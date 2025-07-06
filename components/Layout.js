@@ -12,6 +12,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
   const [mounted, setMounted] = useState(false); 
 
   useEffect(() => {
+    setMounted(true);
   }, []);
 
   return (
@@ -202,7 +203,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                 border: '1px solid rgba(0, 255, 136, 0.3)',
                 color: '#00ff88',
                 padding: '0.5rem', 
-                borderRadius: '8px',
+                borderRadius: '8px', 
                 cursor: 'pointer',
                 fontSize: '1.2rem'
               }}
@@ -288,21 +289,21 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                   border: '1px solid rgba(0, 255, 136, 0.2)',
                   borderRadius: '8px',
                   padding: '1rem',
-                  fontSize: '0.9rem'
-                }}>
-                  <div style={{ color: '#e2e8f0', fontSize: '0.8rem', lineHeight: '1.6' }}>
                     • Submit your NotebookLM projects<br />
-                    • Discover innovative approaches<br />
-                    • Connect with other creators
-                  </div>
+                  • Submit your NotebookLM projects<br />
+                  • Discover innovative approaches<br />
+                  • Connect with other creators
                 </div>
+              </div>
+            </div>
+            <div style={{
               display: 'flex',
               justifyContent: 'space-between', 
               alignItems: 'center',
               flexWrap: 'wrap',
               gap: '1rem'
             }}>
-              <p style={{ margin: 0, color: '#e2e8f0', fontSize: '0.9rem' }}>
+              <p style={{ margin: 0, color: '#e2e8f0', fontSize: '0.9rem' }}> 
                 © 2025 notebooklm.directory. Empowering AI research.
               </p>
                

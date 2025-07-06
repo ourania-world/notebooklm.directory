@@ -73,7 +73,7 @@ export default function SubscriptionBanner() {
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
               <span style={{ color: '#00ff88', fontSize: '1.2rem' }}>✨</span>
               <p style={{ margin: 0, color: '#ffffff', fontSize: '0.9rem' }}>
-                Upgrade to <strong>Standard</strong> for unlimited saved notebooks
+                Upgrade to <strong>Standard</strong> for unlimited saved notebooks and advanced features
               </p>
             </div>
             

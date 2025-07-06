@@ -11,8 +11,8 @@ export default function Pricing() {
   const plans = [
     {
       id: 'explorer',
-      name: 'Free',
-      price: '$0',
+      name: 'Explorer',
+      price: '$0', 
       period: 'forever',
       description: 'Perfect for getting started',
       features: [
@@ -31,7 +31,7 @@ export default function Pricing() {
       id: 'standard',
       name: 'Standard',
       price: '$9.99', 
-      period: 'month',
+      period: '/month',
       description: 'Great for regular users',
       features: [
         'Everything in Free',
@@ -49,7 +49,7 @@ export default function Pricing() {
       id: 'professional',
       name: 'Professional',
       price: '$19.99', 
-      period: 'month',
+      period: '/month',
       description: 'For power users and professionals',
       features: [
         'Everything in Standard',
@@ -69,7 +69,7 @@ export default function Pricing() {
       id: 'enterprise',
       name: 'Enterprise',
       price: '$99', 
-      period: 'user/month',
+      period: '/user/month',
       description: 'For teams & organizations',
       features: [
         'Everything in Professional',
@@ -150,7 +150,7 @@ export default function Pricing() {
               margin: '0 0 1rem 0',
               lineHeight: '1.1'
             }}>
-              Choose Your <span style={{ color: '#00ff88' }}>Plan</span>
+              Simple, Transparent <span style={{ color: '#00ff88' }}>Pricing</span>
             </h1>
             <p style={{ 
               fontSize: '1.3rem',
@@ -159,10 +159,10 @@ export default function Pricing() {
               margin: '0 auto 2rem auto',
               lineHeight: '1.6'
             }}>
-              Select the plan that best fits your needs
+              Choose the plan that works for you
             </p>
           </div>
-
+          
           {/* Pricing Cards */}
           <div style={{
             display: 'grid',
@@ -361,7 +361,7 @@ export default function Pricing() {
               fontSize: '2rem',
               fontWeight: '700',
               color: '#ffffff',
-              textAlign: 'center',
+              textAlign: 'center', 
               marginBottom: '2rem'
             }}>
               Frequently Asked Questions
@@ -371,6 +371,28 @@ export default function Pricing() {
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
             }}>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
+              gap: '2rem'
+            }}>
+              <div>
+                <h3 style={{ color: '#00ff88', marginBottom: '0.5rem' }}>
+                  Can I upgrade or downgrade anytime?
+                </h3>
+                <p style={{ color: '#e2e8f0', lineHeight: '1.6' }}>
+                  Yes! You can upgrade, downgrade, or cancel your subscription at any time. Changes take effect at your next billing cycle, and we'll prorate any differences.
+                </p>
+              </div>
+
+              <div>
+                <h3 style={{ color: '#00ff88', marginBottom: '0.5rem' }}>
+                  What's included in the API access?
+                </h3>
+                <p style={{ color: '#e2e8f0', lineHeight: '1.6' }}>
+                  Professional plans include 1,000 API calls per month for integrating our notebook discovery into your workflows. Enterprise plans include unlimited API access plus custom integrations.
+                </p>
+              </div>
             </div>
           </div>
 
@@ -381,7 +403,7 @@ export default function Pricing() {
             fontSize: '0.9rem'
           }}>
             <p style={{ margin: '0 0 1rem 0' }}>
-              ✓ 30-day money-back guarantee • ✓ Cancel anytime • ✓ Secure payment with Stripe
+              ✓ 7-day free trial • ✓ Cancel anytime • ✓ Secure payment with Stripe
             </p>
             <p style={{ margin: 0, opacity: 0.7 }}>
               Questions? Contact us at support@notebooklm.directory
