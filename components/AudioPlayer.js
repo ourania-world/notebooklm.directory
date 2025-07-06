@@ -280,7 +280,6 @@ export default function AudioPlayer({
               key={i}
               style={{ 
                 width: '3px',
-                height: isPlaying ? `${Math.random() * 30 + 10}px` : '10px',
                 background: isPlaying ? '#00ff88' : 'rgba(0, 255, 136, 0.3)',
                 borderRadius: '1px', 
                 transition: 'height 0.2s ease',

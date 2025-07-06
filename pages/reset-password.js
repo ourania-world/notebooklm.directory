@@ -147,7 +147,7 @@ export default function ResetPassword() {
                   marginTop: '1rem'
                 }}
               >
-                {loading ? 'Sending...' : 'Send Reset Link'}
+            </button>
               </button>
               <div style={{ textAlign: 'center', marginTop: '1rem' }}>
                 <a
