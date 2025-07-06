@@ -163,7 +163,7 @@ export default function SubscriptionModal({ isOpen, onClose, currentPlan = 'free
           gap: '1.5rem',
           marginBottom: '2rem'
         }}>
-          {[SUBSCRIPTION_PLANS.FREE, SUBSCRIPTION_PLANS.STANDARD, SUBSCRIPTION_PLANS.PROFESSIONAL, SUBSCRIPTION_PLANS.ENTERPRISE].map((plan) => (
+          {Object.values(SUBSCRIPTION_PLANS).map((plan) => (
             <div
               key={plan.id}
               style={{

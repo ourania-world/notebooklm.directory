@@ -8,7 +8,7 @@ The NotebookLM Directory uses Stripe to handle payments and subscriptions for th
 
 1. **Explorer** (Free) - Basic features
 2. **Standard** ($9.99/month) - Enhanced features
-3. **Professional** ($9.99/month) - Premium features with advanced analytics
+3. **Professional** ($19.99/month) - Premium features with advanced analytics
 4. **Enterprise** ($99/user/month) - Team features (Coming Soon)
 
 ## Setup Requirements
@@ -49,7 +49,7 @@ The subscription system uses these tables:
 1. Go to [Stripe Dashboard](https://dashboard.stripe.com/products)
 2. Create products for each plan:
    - Standard Plan ($9.99/month)
-   - Professional Plan ($9.99/month)
+   - Professional Plan ($19.99/month)
    - Enterprise Plan ($99/user/month)
 3. Note the Price IDs for each plan
 

@@ -57,7 +57,7 @@ export default function Pricing() {
     {
       id: 'professional',
       name: 'Professional',
-      price: 9.99,
+      price: 19.99,
       period: 'month',
       description: 'Accelerate Your Impact, Measure Your Footprint',
       features: [

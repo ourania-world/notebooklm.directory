@@ -29,7 +29,7 @@ FRONTEND_URL=https://your-domain.com # Your deployed frontend URL
 
 **Professional Plan:**
 - Name: "Professional Plan"  
-- Price: $9.99/month
+- Price: $19.99/month
 - Copy the Price ID (starts with `price_`)
 
 **Enterprise Plan:**
