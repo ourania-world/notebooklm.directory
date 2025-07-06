@@ -11,10 +11,8 @@ export default function UpgradePrompt({
 
   const planNames = {
     free: 'Free',
-    standard: 'Standard',
-    professional: 'Professional',
-    enterprise: 'Enterprise'
-    enterprise: 'Enterprise'
+    basic: 'Basic',
+    premium: 'Premium'
   }
 
   const featureMessages = {
@@ -97,36 +95,20 @@ export default function UpgradePrompt({
               margin: 0,
               color: '#ffffff'
             }}>
-              {requiredPlan === 'standard' && (
+              {requiredPlan === 'basic' && (
                 <>
-                  <li style={{ marginBottom: '0.5rem' }}>✓ Save up to 25 notebooks</li>
+                  <li style={{ marginBottom: '0.5rem' }}>✓ Save unlimited notebooks</li>
                   <li style={{ marginBottom: '0.5rem' }}>✓ Submit up to 10 notebooks</li>
                   <li style={{ marginBottom: '0.5rem' }}>✓ Advanced search & filters</li>
                   <li>✓ Priority support</li>
                 </>
               )}
-              {requiredPlan === 'professional' && (
+              {requiredPlan === 'premium' && (
                 <>
                   <li style={{ marginBottom: '0.5rem' }}>✓ Access premium content</li>
-                  <li style={{ marginBottom: '0.5rem' }}>✓ Submit up to 25 notebooks</li>
+                  <li style={{ marginBottom: '0.5rem' }}>✓ Unlimited submissions</li>
                   <li style={{ marginBottom: '0.5rem' }}>✓ Analytics dashboard</li>
                   <li>✓ API access</li>
-                </>
-              )}
-              {requiredPlan === 'enterprise' && (
-                <>
-                  <li style={{ marginBottom: '0.5rem' }}>✓ Enterprise-grade sustainability reporting</li>
-                  <li style={{ marginBottom: '0.5rem' }}>✓ Team carbon footprint aggregation</li>
-                  <li style={{ marginBottom: '0.5rem' }}>✓ Custom ESG dashboard integration</li>
-                  <li>✓ Dedicated sustainability consultant</li>
-                </>
-              )}
-              {requiredPlan === 'enterprise' && (
-                <>
-                  <li style={{ marginBottom: '0.5rem' }}>✓ Enterprise-grade sustainability reporting</li>
-                  <li style={{ marginBottom: '0.5rem' }}>✓ Team carbon footprint aggregation</li>
-                  <li style={{ marginBottom: '0.5rem' }}>✓ Custom ESG dashboard integration</li>
-                  <li>✓ Dedicated sustainability consultant</li>
                 </>
               )}
             </ul>

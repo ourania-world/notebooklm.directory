@@ -1,10 +1,10 @@
-import { createClient } from 'npm:@supabase/supabase-js@2'
+import { createClient } from 'npm:@supabase/supabase-js@2.39.7'
 import Stripe from 'npm:stripe@14.18.0'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
 }
 
 Deno.serve(async (req) => {
@@ -13,18 +13,28 @@ Deno.serve(async (req) => {
   }
 
   try {
-    // Get the authorization header from the request
-    const authHeader = req.headers.get('Authorization')
+    // Parse the request body
+    const { action, returnUrl } = await req.json()
     
+    // Validate required parameters
+    if (!action) {
+      return new Response(
+        JSON.stringify({ error: 'Missing required parameters' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+    
+    // Get the user's JWT token from the Authorization header
+    const authHeader = req.headers.get('Authorization')
     if (!authHeader) {
       return new Response(
-        JSON.stringify({ error: 'Authentication required' }),
+        JSON.stringify({ error: 'Missing authorization header' }),
         { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
     
     // Initialize Supabase client with the user's JWT
-    const supabaseClient = createClient(
+    const supabase = createClient(
       Deno.env.get('SUPABASE_URL')!,
       Deno.env.get('SUPABASE_ANON_KEY')!,
       {
@@ -33,226 +43,131 @@ Deno.serve(async (req) => {
         }
       }
     )
-
-    // Get the user's session
-    const { data: { user }, error: userError } = await supabaseClient.auth.getUser()
+    
+    // Get the authenticated user
+    const { data: { user }, error: userError } = await supabase.auth.getUser()
     if (userError || !user) {
       return new Response(
         JSON.stringify({ error: 'Unauthorized' }),
         { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
-
-    // Parse request method and path
-    const url = new URL(req.url)
-    const action = url.searchParams.get('action') || 'get'
-
-    // Handle different operations based on action
-    if (req.method === 'GET' && action === 'get') {
-      // Get subscription details
-      const { data: subscription, error: subscriptionError } = await supabaseClient
-        .from('subscriptions')
-        .select(`
-          id,
-          status,
-          current_period_start,
-          current_period_end,
-          canceled_at,
-          stripe_subscription_id,
-          subscription_plans (
-            id,
-            name,
-            description,
-            price,
-            interval,
-            features
+    
+    // Get the user's subscription information
+    const { data: subscription, error: subscriptionError } = await supabase
+      .from('subscriptions')
+      .select('*')
+      .eq('user_id', user.id)
+      .maybeSingle()
+      
+    if (subscriptionError && subscriptionError.code !== 'PGRST116') {
+      return new Response(
+        JSON.stringify({ error: 'Error fetching subscription' }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+    
+    // Initialize Stripe with your secret key
+    const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY')!, {
+      apiVersion: '2023-10-16',
+    })
+    
+    switch (action) {
+      case 'portal': {
+        // Create a customer portal session
+        if (!subscription?.stripe_customer_id) {
+          return new Response(
+            JSON.stringify({ error: 'No active subscription found' }),
+            { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
           )
-        `)
-        .eq('user_id', user.id)
-        .eq('status', 'active')
-        .maybeSingle()
-
-      if (subscriptionError) {
+        }
+        
+        const session = await stripe.billingPortal.sessions.create({
+          customer: subscription.stripe_customer_id,
+          return_url: returnUrl || `${Deno.env.get('FRONTEND_URL')}/account`
+        })
+        
         return new Response(
-          JSON.stringify({ error: 'Error fetching subscription' }),
-          { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          JSON.stringify({ url: session.url }),
+          { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
         )
       }
-
-      // Get available plans
-      const { data: availablePlans, error: plansError } = await supabaseClient
-        .from('subscription_plans')
-        .select('*')
-        .eq('active', true)
-        .order('price', { ascending: true })
-
-      if (plansError) {
-        return new Response(
-          JSON.stringify({ error: 'Error fetching plans' }),
-          { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        )
-      }
-
-      return new Response(
-        JSON.stringify({
-          subscription: subscription || null,
-          availablePlans: availablePlans || []
-        }),
-        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      )
-    } else if (req.method === 'POST' && action === 'cancel') {
-      // Cancel subscription at period end
-      const { data: subscription, error: subscriptionError } = await supabaseClient
-        .from('subscriptions')
-        .select('stripe_subscription_id')
-        .eq('user_id', user.id)
-        .eq('status', 'active')
-        .maybeSingle()
-
-      if (subscriptionError || !subscription) {
-        return new Response(
-          JSON.stringify({ error: 'No active subscription found' }),
-          { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        )
-      }
-
-      // Initialize Stripe with your secret key
-      const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') || '', {
-        apiVersion: '2023-10-16',
-      })
-
-      // Cancel the subscription at period end via Stripe
-      await stripe.subscriptions.update(
-        subscription.stripe_subscription_id,
-        { cancel_at_period_end: true }
-      )
-
-      // Update the local subscription record
-      await supabaseClient
-        .from('subscriptions')
-        .update({ canceled_at: new Date().toISOString() })
-        .eq('stripe_subscription_id', subscription.stripe_subscription_id)
-
-      return new Response(
-        JSON.stringify({ success: true, message: 'Subscription will be canceled at the end of the billing period' }),
-        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      )
-    } else if (req.method === 'POST' && action === 'reactivate') {
-      // Reactivate a subscription that was set to cancel
-      const { data: subscription, error: subscriptionError } = await supabaseClient
-        .from('subscriptions')
-        .select('stripe_subscription_id')
-        .eq('user_id', user.id)
-        .eq('status', 'active')
-        .not('canceled_at', 'is', null)
-        .maybeSingle()
-
-      if (subscriptionError || !subscription) {
-        return new Response(
-          JSON.stringify({ error: 'No subscription found that is set to cancel' }),
-          { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        )
-      }
-
-      // Initialize Stripe with your secret key
-      const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') || '', {
-        apiVersion: '2023-10-16',
-      })
-
-      // Reactivate the subscription via Stripe
-      await stripe.subscriptions.update(
-        subscription.stripe_subscription_id,
-        { cancel_at_period_end: false }
-      )
-
-      // Update the local subscription record
-      await supabaseClient
-        .from('subscriptions')
-        .update({ canceled_at: null })
-        .eq('stripe_subscription_id', subscription.stripe_subscription_id)
-
-      return new Response(
-        JSON.stringify({ success: true, message: 'Subscription reactivated successfully' }),
-        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      )
-    } else if (req.method === 'POST' && action === 'portal') {
-      // Create a customer portal session for plan changes and payment updates
-      const customerId = await getStripeCustomerId(user.id)
       
-      // Initialize Stripe with your secret key
-      const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') || '', {
-        apiVersion: '2023-10-16',
-      })
+      case 'cancel': {
+        // Cancel subscription at period end
+        if (!subscription?.stripe_subscription_id) {
+          return new Response(
+            JSON.stringify({ error: 'No active subscription found' }),
+            { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          )
+        }
+        
+        await stripe.subscriptions.update(subscription.stripe_subscription_id, {
+          cancel_at_period_end: true
+        })
+        
+        // Update local record
+        const { error: updateError } = await supabase
+          .from('subscriptions')
+          .update({
+            cancel_at_period_end: true,
+            updated_at: new Date().toISOString()
+          })
+          .eq('user_id', user.id)
+          
+        if (updateError) {
+          console.error('Error updating subscription:', updateError)
+        }
+        
+        return new Response(
+          JSON.stringify({ message: 'Subscription will be canceled at the end of the current period' }),
+          { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        )
+      }
       
-      const session = await stripe.billingPortal.sessions.create({
-        customer: customerId,
-        return_url: `${Deno.env.get('FRONTEND_URL') || 'http://localhost:3000'}/profile`,
-      })
-
-      return new Response(
-        JSON.stringify({ url: session.url }),
-        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      )
-    } else {
-      return new Response(
-        JSON.stringify({ error: 'Method not allowed' }),
-        { status: 405, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      )
+      case 'reactivate': {
+        // Reactivate a subscription that was set to cancel
+        if (!subscription?.stripe_subscription_id) {
+          return new Response(
+            JSON.stringify({ error: 'No active subscription found' }),
+            { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          )
+        }
+        
+        await stripe.subscriptions.update(subscription.stripe_subscription_id, {
+          cancel_at_period_end: false
+        })
+        
+        // Update local record
+        const { error: updateError } = await supabase
+          .from('subscriptions')
+          .update({
+            cancel_at_period_end: false,
+            updated_at: new Date().toISOString()
+          })
+          .eq('user_id', user.id)
+          
+        if (updateError) {
+          console.error('Error updating subscription:', updateError)
+        }
+        
+        return new Response(
+          JSON.stringify({ message: 'Subscription reactivated successfully' }),
+          { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        )
+      }
+      
+      default:
+        return new Response(
+          JSON.stringify({ error: 'Invalid action' }),
+          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        )
     }
   } catch (error) {
     console.error('Error managing subscription:', error)
     return new Response(
-      JSON.stringify({ error: 'Failed to process subscription request' }),
+      JSON.stringify({ error: 'Internal server error' }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )
   }
 })
-
-// Helper function to get or create a Stripe customer ID for a user
-async function getStripeCustomerId(userId: string): Promise<string> {
-  // Initialize Supabase admin client
-  const supabaseAdmin = createClient(
-    Deno.env.get('SUPABASE_URL')!,
-    Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
-  )
-  
-  // Get user profile
-  const { data: profile } = await supabaseAdmin
-    .from('profiles')
-    .select('stripe_customer_id')
-    .eq('id', userId)
-    .single()
-  
-  if (profile?.stripe_customer_id) {
-    return profile.stripe_customer_id
-  }
-  
-  // Get user email from auth
-  const { data: user } = await supabaseAdmin
-    .auth.admin.getUserById(userId)
-  
-  if (!user?.user?.email) {
-    throw new Error('User email not found')
-  }
-  
-  // Initialize Stripe with your secret key
-  const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY')!, {
-    apiVersion: '2023-10-16',
-  })
-  
-  // Create new Stripe customer
-  const customer = await stripe.customers.create({
-    email: user.user.email,
-    metadata: {
-      user_id: userId
-    }
-  })
-  
-  // Save Stripe customer ID to profile
-  await supabaseAdmin
-    .from('profiles')
-    .update({ stripe_customer_id: customer.id })
-    .eq('id', userId)
-  
-  return customer.id
-}

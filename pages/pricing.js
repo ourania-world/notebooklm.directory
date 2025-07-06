@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext'
 export default function Pricing() {
   const { user } = useAuth()
   const [loading, setLoading] = useState(false)
-  const [selectedPlan, setSelectedPlan] = useState('standard')
+  const [selectedPlan, setSelectedPlan] = useState('professional')
 
   const plans = [
     {
@@ -32,32 +32,9 @@ export default function Pricing() {
       environmental: 'Join the sustainable research movement'
     },
     {
-      id: 'standard',
-      name: 'Standard',
-      price: 9.99,
-      period: 'month',
-      description: 'Enhanced features for serious researchers',
-      features: [
-        'Everything in Explorer',
-        'Save up to 25 notebooks',
-        'Submit up to 10 notebooks',
-        'Advanced search features',
-        'Email notifications',
-        'Basic analytics'
-      ],
-      limits: {
-        savedNotebooks: 25,
-        submittedNotebooks: 10,
-        premiumContent: false
-      },
-      cta: 'Upgrade to Standard',
-      popular: false,
-      environmental: 'Reduce research redundancy by 25%'
-    },
-    {
       id: 'professional',
       name: 'Professional',
-      price: 19.99,
+     price: 9.99,
       period: 'month',
       description: 'Accelerate Your Impact, Measure Your Footprint',
       features: [
@@ -81,10 +58,10 @@ export default function Pricing() {
     },
     {
       id: 'enterprise',
-      name: 'Enterprise',
+     name: 'Enterprise',
       price: 99,
-      period: 'user/month',
-      description: 'Scale Your Innovation, Achieve Your ESG Goals - COMING SOON',
+     period: 'user/month',
+     description: 'Scale Your Innovation, Achieve Your ESG Goals - COMING SOON',
       features: [
         'Everything in Professional',
         'Unlimited notebook submissions',
@@ -262,7 +239,7 @@ export default function Pricing() {
                     top: '-12px',
                     left: '50%',
                     transform: 'translateX(-50%)',
-                    background: plan.id === 'enterprise' ? 'rgba(255, 255, 255, 0.2)' : 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
+                   background: plan.id === 'enterprise' ? 'rgba(255, 255, 255, 0.2)' : 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
                     color: '#0a0a0a',
                     padding: '0.5rem 1.5rem',
                     borderRadius: '20px',
@@ -349,22 +326,22 @@ export default function Pricing() {
                   disabled={loading}
                   style={{
                     width: '100%',
-                    background: plan.id === 'enterprise' ? 'rgba(255, 255, 255, 0.1)' : (plan.popular ? 
+                   background: plan.id === 'enterprise' ? 'rgba(255, 255, 255, 0.1)' : (plan.popular ? 
                       'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)' :
-                      'transparent'),
-                    color: plan.id === 'enterprise' ? '#ffffff' : (plan.popular ? '#0a0a0a' : '#00ff88'),
-                    border: plan.id === 'enterprise' || plan.popular ? 'none' : '1px solid rgba(0, 255, 136, 0.3)',
+                     'transparent'),
+                   color: plan.id === 'enterprise' ? '#ffffff' : (plan.popular ? '#0a0a0a' : '#00ff88'),
+                   border: plan.id === 'enterprise' || plan.popular ? 'none' : '1px solid rgba(0, 255, 136, 0.3)',
                     padding: '1rem',
                     borderRadius: '12px',
                     fontSize: '1rem',
                     fontWeight: '700',
-                    cursor: plan.id === 'enterprise' || loading ? 'not-allowed' : 'pointer',
+                   cursor: plan.id === 'enterprise' || loading ? 'not-allowed' : 'pointer',
                     transition: 'all 0.2s ease',
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px'
                   }}
                   onMouseEnter={(e) => {
-                    if (!loading && plan.id !== 'enterprise') {
+                   if (!loading && plan.id !== 'enterprise') {
                       if (plan.popular) {
                         e.target.style.transform = 'translateY(-2px)';
                         e.target.style.boxShadow = '0 12px 32px rgba(0, 255, 136, 0.4)';
@@ -375,7 +352,7 @@ export default function Pricing() {
                     }
                   }}
                   onMouseLeave={(e) => {
-                    if (!loading && plan.id !== 'enterprise') {
+                   if (!loading && plan.id !== 'enterprise') {
                       if (plan.popular) {
                         e.target.style.transform = 'translateY(0)';
                         e.target.style.boxShadow = 'none';
@@ -386,7 +363,7 @@ export default function Pricing() {
                     }
                   }}
                 >
-                  {loading ? 'Processing...' : (plan.id === 'enterprise' ? 'Coming Soon' : plan.cta)}
+                 {loading ? 'Processing...' : (plan.id === 'enterprise' ? 'Coming Soon' : plan.cta)}
                 </button>
               </div>
             ))}
