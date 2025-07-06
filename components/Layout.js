@@ -25,7 +25,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
       </Head>
-      
+
       <div style={{ 
         minHeight: '100vh', 
         fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
@@ -33,7 +33,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
         color: '#ffffff'
       }}>
         <SubscriptionBanner />
-        
+
         <header style={{ 
           position: 'sticky',
           top: 0,
@@ -73,7 +73,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
 
               <AuthStatusDisplay />
             </Link>
-            
+
             <div style={{
               display: 'flex',
               alignItems: 'center',
@@ -212,11 +212,11 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
             </button>
           </nav>
         </header>
-        
+
         <main>
           {children}
         </main>
-        
+
         <footer style={{ 
           background: 'linear-gradient(135deg, #1a1a2e 0%, #0a0a0a 100%)', 
           padding: '3rem 0', 
@@ -242,7 +242,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                   Building the future of AI research through community collaboration and environmental responsibility.
                 </p>
               </div>
-              
+
               <div>
                 <h4 style={{ color: '#ffffff', marginBottom: '1rem', fontSize: '1rem' }}>
                   Quick Links
@@ -259,7 +259,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                   </Link>
                 </div>
               </div>
-              
+
               <div>
                 <h4 style={{ color: '#ffffff', marginBottom: '1rem', fontSize: '1rem' }}>
                   Community
@@ -279,7 +279,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                   </a>
                 </div>
               </div>
-              
+
               <div>
                 <h4 style={{ color: '#ffffff', marginBottom: '1rem', fontSize: '1rem' }}>
                   Get Involved
@@ -289,12 +289,12 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                   border: '1px solid rgba(0, 255, 136, 0.2)',
                   borderRadius: '8px',
                   padding: '1rem',
-                    • Submit your NotebookLM projects<br />
-                  • Submit your NotebookLM projects<br />
-                  • Discover innovative approaches<br />
-                  • Connect with other creators
-                }
-                }
+                  color: '#e2e8f0',
+                  fontSize: '0.9rem'
+                }}>
+                  &bull; Submit your NotebookLM projects<br />
+                  &bull; Discover innovative approaches<br />
+                  &bull; Connect with other creators
                 </div>
               </div>
             </div>
@@ -308,7 +308,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
               <p style={{ margin: 0, color: '#e2e8f0', fontSize: '0.9rem' }}> 
                 © 2025 notebooklm.directory. Empowering AI research.
               </p>
-               
+
               <div style={{ display: 'flex', gap: '1.5rem' }}>
                 <a href="#" style={{ color: '#e2e8f0', fontSize: '0.9rem', textDecoration: 'none' }}>
                   Privacy
