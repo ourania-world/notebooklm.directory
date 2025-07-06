@@ -154,5 +154,7 @@ Deno.serve(async (req) => {
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         status: 400,
-import { createClient } from 'npm:@supabase/supabase-js@2'
       }
+    )
+  }
+})
