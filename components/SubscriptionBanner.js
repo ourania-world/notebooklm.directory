@@ -15,7 +15,8 @@ export default function SubscriptionBanner() {
     async function fetchSubscription() {
       try {
         setSubLoading(true);
-        // Simulate subscription check - in production this would call the API
+        // In a real implementation, this would fetch from an API
+        // For now, we'll simulate a free plan for all users
         setSubscription({
           plan: { id: 'free' }
         });

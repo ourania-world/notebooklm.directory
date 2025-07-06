@@ -6,42 +6,43 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [session, setSession] = useState(null); 
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const handleAuthChange = async () => {
+    // Handle initial session and auth state changes
+    const setupAuth = async () => {
       try {
+        // First, try to get the session
         const { data, error } = await supabase.auth.getSession();
+        
         if (error) {
-          console.error('Error getting session:', error);
-          setError(error);
-        } else {
-          setSession(data.session || null);
-          setUser(data.session?.user || null);
+          console.warn('Error getting initial session:', error);
+          setLoading(false);
+          return;
         }
+        
+        setUser(data.session?.user || null);
+        
+        // Set up auth state change listener
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(
+          (_event, session) => {
+            setUser(session?.user || null);
+          }
+        );
+        
         setLoading(false);
+        
+        // Cleanup function to unsubscribe
+        return () => {
+          subscription?.unsubscribe();
+        };
       } catch (error) {
-        console.error('Failed to get initial session:', error);
-        setError(error);
+        console.error('Auth setup error:', error);
         setLoading(false);
       }
     };
-
-    handleAuthChange();
-
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        setSession(session || null);
-        setUser(session?.user || null);
-        setLoading(false);
-      }
-    );
-
-    return () => {
-      if (subscription) subscription.unsubscribe();
-    };
+    
+    setupAuth();
   }, []);
 
   // Auth methods
@@ -50,7 +51,6 @@ export const AuthProvider = ({ children }) => {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
       setUser(null);
-      setSession(null);
       return true;
     } catch (error) {
       console.error('Error signing out:', error);
@@ -95,6 +95,7 @@ export const AuthProvider = ({ children }) => {
         redirectTo: `${window.location.origin}/reset-password`
       });
       if (error) throw error;
+      return true;
     } catch (error) {
       console.error('Error resetting password:', error);
       throw error;
@@ -103,7 +104,6 @@ export const AuthProvider = ({ children }) => {
 
   const value = {
     user,
-    session,
     loading,
     error,
     signOut,
@@ -116,7 +116,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={value}> 
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );
