@@ -104,7 +104,7 @@ export default function ResetPassword() {
                 }}
               >
                 Return to Login
-              </Link>
+              </button>
             </div>
           ) : (
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>

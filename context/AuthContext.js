@@ -2,38 +2,13 @@ import { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 
 const AuthContext = createContext({ 
-  user: null,
-  loading: true,
-  error: null,
-  signOut: async () => {},
-  signIn: async () => {},
-  signUp: async () => {},
-  resetPassword: async () => {},
-  isAuthenticated: false,
-  isLoading: true
-});
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [mounted, setMounted] = useState(false); 
-  const [session, setSession] = useState(null);
-
   // Initialize auth state
-  useEffect(() => {
-    // Mark component as mounted to prevent hydration mismatch
-    setMounted(true); 
-    
-    // Only run auth logic on the client side
-    if (typeof window !== 'undefined') {
-      const getInitialSession = async () => {
-        // Set loading to true initially 
-        setLoading(true);
-        
-        try {
-          // Get initial session
-          const { data, error } = await supabase.auth.getSession();
            
           if (error) {
             console.warn('Error getting session:', error); 
@@ -150,7 +125,6 @@ export function AuthProvider({ children }) {
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context && typeof window !== 'undefined') {
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
