@@ -1,4 +1,4 @@
-import { buffer } from 'micro';
+// Use raw body parser instead of micro
 import { supabase } from '../../lib/supabase';
 
 // Disable body parsing, we need the raw body for Stripe signature verification
@@ -15,7 +15,7 @@ export default async function handler(req, res) {
 
   try {
     // Get the raw body for Stripe signature verification
-    const rawBody = await buffer(req);
+    const rawBody = await getRawBody(req);
     const signature = req.headers['stripe-signature'];
 
     // In a real implementation, you would verify the Stripe signature
@@ -73,4 +73,21 @@ export default async function handler(req, res) {
     console.error('Webhook error:', error);
     res.status(400).json({ error: error.message });
   }
+}
+
+// Helper function to get raw request body
+async function getRawBody(req) {
+  return new Promise((resolve, reject) => {
+    const chunks = [];
+    
+    req.on('data', (chunk) => {
+      chunks.push(chunk);
+    });
+    
+    req.on('end', () => {
+      resolve(Buffer.concat(chunks));
+    });
+    
+    req.on('error', reject);
+  });
 }
