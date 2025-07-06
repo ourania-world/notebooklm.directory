@@ -48,8 +48,6 @@ export default function AudioPlayer({
       setLoading(false);
     };
     
-    };
-    
     audio.addEventListener('canplaythrough', handleCanPlayThrough);
     audio.addEventListener('timeupdate', handleTimeUpdate);
     audio.addEventListener('ended', handleEnded);
@@ -70,6 +68,8 @@ export default function AudioPlayer({
   useEffect(() => {
     if (isPlaying) {
       audioRef.current.play().catch(err => {
+        console.error(err);
+      });
       animateWaveform();
     } else {
       audioRef.current.pause();
@@ -88,6 +88,7 @@ export default function AudioPlayer({
   
   const handleProgressChange = (e) => {
     const newTime = e.target.value;
+  };
   
   const animateWaveform = () => {
     if (waveformRef.current && showWaveform) {
@@ -141,6 +142,8 @@ export default function AudioPlayer({
             flexShrink: 0,
             transition: 'all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)',
             boxShadow: '0 4px 12px rgba(0, 255, 136, 0.3)'
+          }}
+          onMouseEnter={(e) => {
             if (!loading && !error) {
               e.target.style.transform = 'scale(1.1)';
               e.target.style.boxShadow = '0 6px 16px rgba(0, 255, 136, 0.4)';
@@ -249,9 +252,18 @@ export default function AudioPlayer({
             height: '40px'
           }}
         >
-          {[...Array(50)].map((_, i) => ( 
+          {[...Array(50)].map((_, i) => (
+            <div
+              key={i}
+              style={{
+                flex: 1,
+                background: '#00ff88',
+                opacity: 0.2,
+                margin: '0 1px',
+                height: '20px',
                 borderRadius: '1px', 
-                transition: 'height 0.2s ease',
+                transition: 'height 0.2s ease'
+              }}
             />
           ))}
         </div>
