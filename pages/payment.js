@@ -344,27 +344,28 @@ export default function Payment() {
                       marginBottom: '0.75rem',
                       fontSize: '0.9rem'
                     }}>
-                      <input 
-                    disabled={paymentLoading}
-                    style={{
-                      width: '100%',
-                      background: paymentLoading ? 
-                        'rgba(255, 255, 255, 0.1)' : 
-                        'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
-                      color: paymentLoading ? '#ffffff' : '#0a0a0a',
-                      border: 'none',
-                      padding: '1.25rem',
-                      borderRadius: '12px',
-                      fontSize: '1.1rem',
-                      fontWeight: '700',
-                      cursor: paymentLoading ? 'not-allowed' : 'pointer',
-                      transition: 'all 0.2s ease',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.5px'
-                    }}
-                  >
-                    {paymentLoading ? 'Processing...' : `Pay $${selectedPlan.price}/${selectedPlan.interval || 'once'}`}
-                  </button>
+                      <button 
+  onClick={handleInitiatePayment}
+  disabled={paymentLoading}
+  style={{
+    width: '100%',
+    background: paymentLoading ? 
+      'rgba(255, 255, 255, 0.1)' : 
+      'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
+    color: paymentLoading ? '#ffffff' : '#0a0a0a',
+    border: 'none',
+    padding: '1.25rem',
+    borderRadius: '12px',
+    fontSize: '1.1rem',
+    fontWeight: '700',
+    cursor: paymentLoading ? 'not-allowed' : 'pointer',
+    transition: 'all 0.2s ease',
+    textTransform: 'uppercase',
+    letterSpacing: '0.5px'
+  }}
+>
+  {paymentLoading ? 'Processing...' : `Pay $${selectedPlan.price}/${selectedPlan.interval || 'once'}`}
+</button>
                   
                   <div style={{
                     display: 'flex',
