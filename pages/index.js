@@ -241,8 +241,9 @@ export default function Home({ initialFeaturedNotebooks }) {
       {/* Features Section */}
       <section style={{ 
         background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)',
-        padding: '6rem 0',
-        position: 'relative'
+        padding: '4rem 0',
+        textAlign: 'center',
+        display: 'none' // Hide this section
       }}> 
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
           <h2 style={{ 
@@ -375,97 +376,6 @@ export default function Home({ initialFeaturedNotebooks }) {
       
       {/* CTA Section */}
       <section style={{ 
-        background: '#0a0a0a',
-        padding: '6rem 0', 
-        textAlign: 'center'
-      }}> 
-        <div style={{ maxWidth: '800px', margin: '0 auto', padding: '0 2rem' }}>
-          <div style={{
-            fontSize: '3rem',
-            marginBottom: '1.5rem',
-            color: '#ffffff'
-          }}> 
-            ✨
-          </div>
-          <h2 style={{ 
-            fontSize: '2.5rem', 
-            margin: '0 0 1.5rem 0',
-            color: '#ffffff',
-            fontWeight: '700'
-          }}> 
-            Help Us Build Something Amazing
-          </h2>
-          <p style={{ 
-            fontSize: '1.1rem',
-            color: '#e2e8f0',
-            lineHeight: '1.6',
-            marginBottom: '2rem'
-          }}> 
-            Share your NotebookLM projects, discover innovative approaches, and help build a community for the future of AI research.
-          </p>
-          
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
-            <button style={{
-              background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
-              color: '#0a0a0a',
-              border: 'none',
-              padding: '0.75rem 1.5rem',
-              borderRadius: '8px',
-              fontWeight: '600',
-              cursor: 'pointer',
-              fontSize: '0.9rem' 
-            }}>
-              SUBMIT YOUR NOTEBOOK
-            </button>
-            
-            <button style={{
-              background: 'transparent',
-              color: '#e2e8f0',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
-              padding: '0.75rem 1.5rem',
-              borderRadius: '8px',
-              fontWeight: '500',
-              cursor: 'pointer',
-              fontSize: '0.9rem' 
-            }}>
-              EXPLORE FIRST
-            </button>
-          </div>
-        </div>
-      </section>
-      
-      {/* Sustainable Research Section */}
-      <section style={{
-        background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)',
-        padding: '6rem 0', 
-        textAlign: 'center'
-      }}> 
-        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
-          <h2 style={{
-            fontSize: '2.5rem',
-            fontWeight: '700',
-            color: '#ffffff',
-            marginBottom: '1.5rem'
-          }}> 
-            Building the Future of <span style={{ color: '#00ff88' }}>Sustainable</span><br />
-            AI Research Discovery<br />
-            <span style={{ color: '#00ff88', fontSize: '1.8rem' }}>One Notebook at a Time</span>
-          </h2>
-          
-          <p style={{
-            fontSize: '1.1rem',
-            color: '#e2e8f0',
-            lineHeight: '1.6',
-            maxWidth: '800px',
-            margin: '0 auto 4rem auto'
-          }}> 
-            Every shared notebook prevents redundant research, reduces computational footprint, and accelerates discovery for the entire AI community.
-          </p>
-        </div>
-      </section>
-      
-      {/* Help Build Section */}
-      <section style={{ 
         background: '#0a0a0a', 
         padding: '6rem 0' 
       }}> 
@@ -474,10 +384,10 @@ export default function Home({ initialFeaturedNotebooks }) {
             fontSize: '2.5rem',
             fontWeight: '700',
             color: '#ffffff',
-            marginBottom: '1.5rem'
+            marginBottom: '1.5rem',
+            textAlign: 'center'
           }}> 
-            Help Build the Future of <span style={{ color: '#00ff88' }}>AI Research</span><br />
-            <span style={{ color: '#00ff88', fontSize: '1.8rem' }}>Discovery</span>
+            Get Involved
           </h2>
           
           <p style={{
@@ -485,9 +395,11 @@ export default function Home({ initialFeaturedNotebooks }) {
             color: '#e2e8f0',
             lineHeight: '1.6',
             maxWidth: '800px',
-            marginBottom: '3rem' 
+            marginBottom: '3rem',
+            textAlign: 'center',
+            margin: '0 auto 3rem auto'
           }}>
-            Join our community of researchers building the definitive discovery platform for NotebookLM projects
+            Join our community of researchers sharing NotebookLM projects
           </p>
           
           <div style={{
@@ -549,33 +461,46 @@ export default function Home({ initialFeaturedNotebooks }) {
                   </div>
                   <div style={{ color: '#e2e8f0' }}>
                     Share your own work and accelerate discovery
-                  </div>
+            border: '1px solid rgba(255, 255, 255, 0.1)',
                 </div>
                 
                 <div style={{
                   display: 'flex',
                   alignItems: 'center',
                   gap: '1rem'
-                }}>
-                  <div style={{
-                    width: '24px',
-                    height: '24px',
-                    borderRadius: '50%',
-                    background: 'rgba(0, 255, 136, 0.2)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: '#00ff88',
-                    fontSize: '0.8rem'
-                  }}> 
-                    3 
-                  </div>
-                  <div style={{ color: '#e2e8f0' }}>
-                    Build on existing knowledge, don't reinvent
-                  </div>
-                </div>
-              </div>
-            </div>
+            <h3 style={{ 
+              color: '#ffffff', 
+              textAlign: 'center',
+              margin: '0 0 1.5rem 0',
+              fontSize: '1.5rem',
+              fontWeight: '600'
+            }}>
+              Join Our Growing Community
+            </h3>
+            <button
+              onClick={() => window.location.href = '/browse'}
+              style={{
+                background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
+                color: '#0a0a0a',
+                border: 'none',
+                padding: '1rem 2rem',
+                borderRadius: '12px',
+                fontSize: '1.1rem',
+                fontWeight: '700',
+                cursor: 'pointer',
+                display: 'block',
+                margin: '0 auto',
+                transition: 'all 0.2s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.transform = 'translateY(-2px)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.transform = 'translateY(0)';
+              }}
+            >
+              EXPLORE NOTEBOOKS
+            </button>
             
             <div style={{
               flex: 1,
@@ -599,35 +524,6 @@ export default function Home({ initialFeaturedNotebooks }) {
       </section>
       
       {/* Vision Audio Section */}
-      <section style={{ 
-        background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
-        padding: '4rem 0', 
-        textAlign: 'center'
-      }}> 
-        <div style={{ maxWidth: '800px', margin: '0 auto', padding: '0 2rem' }}>
-          <h2 style={{ 
-            fontSize: '2rem', 
-            margin: '0 0 1rem 0',
-            color: '#ffffff', 
-            fontWeight: '700'
-          }}> 
-            🎧 Listen to the <span style={{ color: '#00ff88' }}>Vision</span>
-          </h2>
-          <p style={{ 
-            color: '#e2e8f0', 
-            margin: '0 0 2rem 0',
-            fontSize: '1.1rem'
-          }}>
-            Hear our overview of how NotebookLM is transforming research and creativity
-          </p>
-          <AudioPlayer 
-            audioUrl="/overview.mp3"
-            title="Listen to the Vision"
-          />
-        </div>
-      </section>
-      
-      {/* Featured Collections */}
       <section style={{ 
         padding: '6rem 0',
         background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)' 
@@ -658,124 +554,6 @@ export default function Home({ initialFeaturedNotebooks }) {
               borderRadius: '20px',
               fontWeight: '600',
               cursor: 'pointer',
-              fontSize: '0.8rem' 
-            }}>
-              Popular This Week
-            </button>
-            
-            <button style={{
-              background: 'transparent',
-              color: '#e2e8f0',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
-              padding: '0.5rem 1rem',
-              borderRadius: '20px',
-              fontWeight: '500',
-              cursor: 'pointer',
-              fontSize: '0.8rem' 
-            }}>
-              Academic Research
-            </button>
-            
-            <button style={{
-              background: 'transparent',
-              color: '#e2e8f0',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
-              padding: '0.5rem 1rem',
-              borderRadius: '20px',
-              fontWeight: '500',
-              cursor: 'pointer',
-              fontSize: '0.8rem' 
-            }}>
-              Creative Projects
-            </button>
-          </div>
-          
-          <h3 style={{
-            fontSize: '1.5rem',
-            fontWeight: '600',
-            color: '#ffffff',
-            textAlign: 'center', 
-            marginBottom: '2rem' 
-          }}>
-            Trending This Week
-          </h3>
-          
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: '1rem',
-            marginBottom: '3rem'  
-          }}>
-            {featuredNotebooks.slice(0, 6).map(notebook => (
-              <ProjectCard key={notebook.id} notebook={notebook} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Projects */}
-      <section style={{ 
-        padding: '6rem 0',
-        background: '#0a0a0a' 
-      }}> 
-        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
-          <h2 style={{ 
-            fontSize: '2.5rem', 
-            textAlign: 'center', 
-            margin: '0 0 3rem 0',
-            color: '#ffffff',
-            fontWeight: '700'  
-          }}>
-            Popular <span style={{ color: '#00ff88' }}>Notebooks</span>
-          </h2>
-          
-          {loading ? (
-            <div style={{ textAlign: 'center', padding: '2rem' }}>
-              <p style={{ color: '#e2e8f0' }}>Loading notebooks...</p>
-            </div>
-          ) : (
-            <div style={{ 
-              display: 'grid', 
-              gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', 
-              gap: '2rem'
-            }}>
-              {featuredNotebooks.slice(0, 6).map(notebook => (
-                <ProjectCard key={notebook.id || notebook.title} notebook={notebook} />
-              ))}
-            </div> 
-          )}
-          
-          <div style={{ textAlign: 'center', marginTop: '2rem' }}>
-            <button 
-              onClick={() => window.location.href = '/browse'}
-              style={{
-                background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
-                color: '#0a0a0a',
-                border: 'none',
-                padding: '1rem 2rem', 
-                borderRadius: '12px',
-                fontWeight: '700',
-                cursor: 'pointer',
-                fontSize: '1rem',
-                transition: 'all 0.3s ease',
-                boxShadow: '0 8px 32px rgba(0, 255, 136, 0.3)',
-                textTransform: 'uppercase',
-                letterSpacing: '0.5px' 
-              }}
-              onMouseEnter={(e) => {
-                e.target.style.transform = 'translateY(-2px)';
-                e.target.style.boxShadow = '0 12px 40px rgba(0, 255, 136, 0.4)';
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.transform = 'translateY(0)';
-                e.target.style.boxShadow = '0 8px 32px rgba(0, 255, 136, 0.3)';
-              }}
-            >
-              View All Projects
-            </button>
-          </div>
-        </div>
-      </section>
 
       <NotebookModal 
         isOpen={isModalOpen}

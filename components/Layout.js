@@ -2,18 +2,16 @@ import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router'; 
-import UserMenu from './UserMenu';
+import AuthStatusDisplay from './AuthStatusDisplay';
 import SubscriptionBanner from './SubscriptionBanner';
 import { useAuth } from '../context/AuthContext';
 
 export default function Layout({ children, title = "NotebookLM Directory" }) {
   const router = useRouter();
   const { user, loading } = useAuth();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false); 
 
   useEffect(() => {
-    setMounted(true);
   }, []);
 
   return (
@@ -62,19 +60,17 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
               gap: '0.75rem',
               transition: 'all 0.3s ease'
             }}>
-              <span style={{ 
-                background: '#00ff88',
-                color: '#0a0a0a',
-                padding: '0.5rem 0.75rem',
-                borderRadius: '8px', 
-                fontSize: '0.9rem',
-                fontWeight: '700',
-                letterSpacing: '1px',
-                fontFamily: 'monospace'
+
+              <Link href="/analytics" style={{ 
+                color: router.pathname === '/analytics' ? '#00ff88' : '#e2e8f0', 
+                textDecoration: 'none',
+                transition: 'color 0.2s ease',
+                fontWeight: '500'
               }}>
-                NLM_D
-              </span> 
-              notebooklm.directory
+                Analytics
+              </Link>
+
+              <AuthStatusDisplay />
             </Link>
             
             <div style={{
