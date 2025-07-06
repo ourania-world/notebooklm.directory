@@ -294,7 +294,6 @@ export default function Pricing() {
                     )}
                   </div>
                   
-                  <p style={{
                     margin: '0 0 1rem 0'
                   }}> 
                     {plan.description}

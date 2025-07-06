@@ -3,36 +3,15 @@ import { supabase } from '../lib/supabase';
 
 const AuthContext = createContext({ 
   user: null,
-  loading: true,
-  error: null,
-  signOut: async () => {},
-  signIn: async () => {},
-  signUp: async () => {},
-  resetPassword: async () => {},
-  isAuthenticated: false,
-  isLoading: true,
-  session: null
-});
 
 export function AuthProvider({ children }) {
+export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [session, setSession] = useState(null);
   const [session, setSession] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [mounted, setMounted] = useState(false); 
-
-  // Initialize auth state
-  useEffect(() => {
-    // Mark component as mounted to prevent hydration mismatch
-    setMounted(true); 
-    
-    // Only run auth logic on the client side
-    if (typeof window !== 'undefined') {
-      const getInitialSession = async () => {
-        // Set loading to true initially 
-        setLoading(true);
-        
-        try {
           // Get initial session
           const { data, error } = await supabase.auth.getSession();
            
@@ -144,17 +123,15 @@ export function AuthProvider({ children }) {
   };
 
   // During SSR, just return children without user data
+}
   // This prevents hydration mismatches
   return <AuthContext.Provider value={value}>{mounted ? children : null}</AuthContext.Provider>;
 }
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context && typeof window !== 'undefined') {
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
 };
-
-// Export the context for advanced usage
 export { AuthContext };

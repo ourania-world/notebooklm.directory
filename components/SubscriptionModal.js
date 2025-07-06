@@ -308,23 +308,6 @@ export default function SubscriptionModal({ isOpen, onClose, initialPlan = 'stan
                 >
                   Coming Soon
                 </button>
-              ) : plan.id === currentPlan ? (
-                <button
-                  disabled
-                  style={{
-                    width: '100%',
-                    background: 'rgba(255, 255, 255, 0.1)',
-                    color: '#ffffff',
-                    border: '1px solid rgba(255, 255, 255, 0.2)',
-                    padding: '1rem',
-                    borderRadius: '12px',
-                    fontSize: '1rem',
-                    fontWeight: '600',
-                    cursor: 'not-allowed'
-                  }}
-                >
-                  Current Plan
-                </button>
               ) : plan.id === 'free' ? (
                 <button
                   onClick={onClose}
@@ -390,21 +373,6 @@ export default function SubscriptionModal({ isOpen, onClose, initialPlan = 'stan
                     transition: 'all 0.2s ease',
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px'
-                  } : {
-                    width: '100%',
-                    background: loading ? 
-                      'rgba(255, 255, 255, 0.1)' : 
-                      'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
-                    color: loading ? '#ffffff' : '#0a0a0a',
-                    border: 'none',
-                    padding: '1rem',
-                    borderRadius: '12px',
-                    fontSize: '1rem',
-                    fontWeight: '700',
-                    cursor: loading ? 'not-allowed' : 'pointer',
-                    transition: 'all 0.2s ease',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.5px'
                   }}
                   onMouseEnter={plan.id === 'professional' ? (e) => {
                     if (!loading) {
@@ -418,11 +386,6 @@ export default function SubscriptionModal({ isOpen, onClose, initialPlan = 'stan
                     }
                   }}
                   onMouseLeave={plan.id === 'professional' ? (e) => {
-                    if (!loading) {
-                      e.target.style.transform = 'translateY(0)';
-                      e.target.style.boxShadow = 'none';
-                    }
-                  } : (e) => {
                     if (!loading) {
                       e.target.style.transform = 'translateY(0)';
                       e.target.style.boxShadow = 'none';
