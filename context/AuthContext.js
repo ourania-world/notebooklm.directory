@@ -12,36 +12,15 @@ const AuthContext = createContext({
   isAuthenticated: false,
   isLoading: true
 });
-  user: null,
-  loading: true,
-  error: null,
-  signOut: async () => {},
-  signIn: async () => {},
-  signUp: async () => {},
-  resetPassword: async () => {},
-  isAuthenticated: false,
-  isLoading: true
-});
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
-  const [mounted, setMounted] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
 
   // Initialize auth state
   useEffect(() => {
-    // Mark component as mounted to prevent hydration mismatch
-    setMounted(true); 
-    
-    // Only run auth logic on the client side
-    if (typeof window !== 'undefined') {
-      const getInitialSession = async () => {
-        try {
-          setLoading(true); 
-          
-          // Get initial session
-          const { data, error } = await supabase.auth.getSession();
     // Mark component as mounted to prevent hydration mismatch
     setMounted(true); 
     
@@ -67,7 +46,7 @@ export const AuthProvider = ({ children }) => {
           setLoading(false);
         }
       };
-        async (event, session) => {
+
       getInitialSession();
       
       // Listen for auth changes
@@ -80,7 +59,7 @@ export const AuthProvider = ({ children }) => {
           setLoading(false);
         }
       );
-            console.log('Auth state changed:', event); 
+            
       return () => {
         if (subscription) {
           subscription.unsubscribe();
@@ -149,8 +128,8 @@ export const AuthProvider = ({ children }) => {
   const value = {
     user,
     error,
-    signOut, 
-    signOut, 
+    signOut,
+    signIn, 
     signUp,
     resetPassword,
     // Helper methods
