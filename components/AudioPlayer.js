@@ -17,11 +17,18 @@ export default function AudioPlayer({
   const progressRef = useRef(null);  
   const waveformRef = useRef(null);  
   const animationRef = useRef(null);  
+  const [mounted, setMounted] = useState(false);
   
   // Make sure we have a valid audio URL
   const fullAudioUrl = mounted ? getAudioUrl(audioUrl) : null;
   
   useEffect(() => {
+    // Mark component as mounted to prevent hydration mismatch
+    setMounted(true);
+    
+    // Don't run audio logic during SSR 
+    if (typeof window === 'undefined') return;
+    
     // Check if audio is supported
     if (!isAudioSupported()) {
       setError('Audio not supported in this browser');
@@ -52,6 +59,7 @@ export default function AudioPlayer({
       setError(`Failed to load audio: ${e.target?.error?.message || 'Unknown error'}`);
       setLoading(false);
     };
+    
     audio.addEventListener('canplaythrough', handleCanPlayThrough);
     audio.addEventListener('timeupdate', handleTimeUpdate);
     audio.addEventListener('ended', handleEnded);
@@ -75,6 +83,10 @@ export default function AudioPlayer({
     
     if (isPlaying) {
       audioRef.current.play().catch(err => {
+        console.error('Error playing audio:', err);
+        setError(`Playback error: ${err.message}`);
+        setIsPlaying(false);
+      });
       animateWaveform();
     } else {
       audioRef.current.pause();
@@ -96,7 +108,7 @@ export default function AudioPlayer({
     setCurrentTime(newTime);
     audioRef.current.currentTime = newTime;
   };
-
+  
   const animateWaveform = () => {
     if (waveformRef.current && showWaveform) {
       const bars = waveformRef.current.children; 
@@ -153,6 +165,7 @@ export default function AudioPlayer({
             transition: 'all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)',
             boxShadow: '0 4px 12px rgba(0, 255, 136, 0.3)', 
             className: 'button-glow'
+          }}
           onMouseEnter={(e) => {
             if (!loading && !error) {
               e.target.style.transform = 'scale(1.1)';
@@ -269,6 +282,7 @@ export default function AudioPlayer({
               style={{ 
                 width: '3px',
                 height: isPlaying ? `${Math.random() * 30 + 10}px` : '10px',
+                background: isPlaying ? '#00ff88' : 'rgba(0, 255, 136, 0.3)',
                 borderRadius: '1px', 
                 transition: 'height 0.2s ease',
                 animationPlayState: isPlaying ? 'running' : 'paused',
@@ -288,6 +302,9 @@ export default function AudioPlayer({
           padding: '0.5rem' 
         }}>
           {error} 
+          <div style={{ fontSize: '0.8rem', marginTop: '0.5rem', opacity: 0.7 }}>
+            Try refreshing the page or check your audio file
+          </div>
         </div>
       )}
       

@@ -17,9 +17,9 @@ This is the most critical step. You must apply the database migrations in the co
 3. Click on "SQL Editor" in the left sidebar
 4. Create a new query
 5. Copy and paste the contents of each migration file in order:
-   - `supabase/migrations/20250707000000_create_notebooks.sql`
-   - `supabase/migrations/20250707000001_create_profiles.sql`
-   - `supabase/migrations/20250707000002_create_audio_bucket.sql`
+   - `supabase/migrations/20250705070830_jade_poetry.sql`
+   - `supabase/migrations/20250705072047_crimson_hall.sql`
+   - `supabase/migrations/20250705080908_wooden_beacon.sql`
 6. Execute each migration and verify it completes successfully
 
 ## Step 2: Deploy Edge Functions
@@ -34,8 +34,8 @@ This is the most critical step. You must apply the database migrations in the co
 Create a `.env.local` file with these variables for local development:
 
 ```
-NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+NEXT_PUBLIC_SUPABASE_URL=https://ciwlmdnmnsymiwmschej.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNpd2xtZG5tbnN5bWl3bXNjaGVqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE2OTQzNjMsImV4cCI6MjA2NzI3MDM2M30.Ri_L-EBOOIvTY3WnMd91oegjauObj76pS4JmVIr4yjw
 ```
 
 ## Step 4: Deploy to Vercel
