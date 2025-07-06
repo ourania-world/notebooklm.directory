@@ -756,7 +756,7 @@ export default function Home({ initialFeaturedNotebooks }) {
             color: '#ffffff',
             fontWeight: '700'
           }}>
-            Featured <span style={{ color: '#00ff88' }}>Projects</span>
+            Popular <span style={{ color: '#00ff88' }}>Notebooks</span>
           </h2>
           
           {loading ? (
@@ -766,13 +766,44 @@ export default function Home({ initialFeaturedNotebooks }) {
           ) : (
             <div style={{ 
               display: 'grid', 
-              gridTemplateColumns: 'repeat(auto-fit, minmax(450px, 1fr))', 
+              gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', 
               gap: '2rem'
             }}>
-              {featuredNotebooks.slice(0, 2).map(notebook => (
+              {featuredNotebooks.slice(0, 6).map(notebook => (
                 <ProjectCard key={notebook.id} notebook={notebook} />
               ))}
             </div>
+          )}
+          
+          <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+            <button 
+              onClick={() => window.location.href = '/browse'}
+              style={{
+                background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
+                color: '#0a0a0a',
+                border: 'none',
+                padding: '1rem 2rem',
+                borderRadius: '12px',
+                fontWeight: '700',
+                cursor: 'pointer',
+                fontSize: '1rem',
+                transition: 'all 0.3s ease',
+                boxShadow: '0 8px 32px rgba(0, 255, 136, 0.3)',
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.transform = 'translateY(-2px)';
+                e.target.style.boxShadow = '0 12px 40px rgba(0, 255, 136, 0.4)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.transform = 'translateY(0)';
+                e.target.style.boxShadow = '0 8px 32px rgba(0, 255, 136, 0.3)';
+              }}
+            >
+              View All Projects
+            </button>
+          </div>
           )}
         </div>
       </section>

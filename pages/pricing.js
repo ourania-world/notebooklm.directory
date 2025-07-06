@@ -93,7 +93,7 @@ export default function Pricing() {
   ]
 
   const handlePlanSelect = async (plan) => {
-    if (plan.id === 'explorer') {
+    if (plan.id === 'free') {
       // Free plan - just redirect to signup
       window.location.href = user ? '/browse' : '/'
       return
