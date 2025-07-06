@@ -53,53 +53,6 @@ export default function UserMenu() {
     );
   }
 
-  const handleSignOut = async () => {
-    try {
-      setSignOutLoading(true);
-      await signOut();
-      setIsOpen(false);
-      // Force page reload to clear any cached state
-      window.location.href = '/';
-    } catch (error) {
-      console.error('Error signing out:', error);
-      alert('Failed to sign out. Please try again.');
-    } finally {
-      setSignOutLoading(false);
-    }
-  };
-
-  if (authLoading) {
-    return (
-      <div style={{
-        background: 'rgba(0, 255, 136, 0.1)',
-        border: '1px solid rgba(0, 255, 136, 0.3)',
-        color: '#ffffff',
-        padding: '0.75rem 1rem',
-        borderRadius: '12px',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '0.75rem',
-        opacity: 0.7
-      }}>
-        <div style={{
-          width: '20px',
-          height: '20px',
-          borderRadius: '50%',
-          border: '2px solid rgba(0, 255, 136, 0.3)',
-          borderTop: '2px solid #00ff88',
-          animation: 'spin 1s linear infinite'
-        }} />
-        <span style={{ fontSize: '0.9rem' }}>Loading...</span>
-        <style jsx>{`
-          @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-          }
-        `}</style>
-      </div>
-    );
-  }
-
   if (!user) {
     return (
       <div style={{ display: 'flex', gap: '1rem' }}>
@@ -144,9 +97,16 @@ export default function UserMenu() {
           onMouseEnter={(e) => {
             e.target.style.transform = 'translateY(-1px)';
             e.target.style.boxShadow = '0 6px 20px rgba(0, 255, 136, 0.4)';
-          }
-          }
-    )
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.transform = 'translateY(0)';
+            e.target.style.boxShadow = '0 4px 16px rgba(0, 255, 136, 0.3)';
+          }}
+        >
+          Get Started
+        </button>
+      </div>
+    );
   }
   return (
     <div style={{ position: 'relative' }}>

@@ -2,7 +2,6 @@ import { AuthProvider } from '../context/AuthContext';
 import { useState, useEffect } from 'react';
 import '../styles/globals.css';
 
-// Wrap the app with AuthProvider to provide authentication context
 function MyApp({ Component, pageProps }) {
   const [hasMounted, setHasMounted] = useState(false);
   
@@ -10,6 +9,11 @@ function MyApp({ Component, pageProps }) {
     setHasMounted(true);
   }, []);
   
+  // During SSR or before hydration, render minimal content
+  if (!hasMounted) {
+    return null;
+  }
+
   return (
     <AuthProvider>
       <Component {...pageProps} />
