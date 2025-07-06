@@ -262,7 +262,7 @@ export default function Pricing() {
                       color: '#e2e8f0',
                       fontWeight: '400'
                     }}>
-                      {plan.period}
+                      /{plan.period}
                     </span>
                   </div>
                   
@@ -370,6 +370,8 @@ export default function Pricing() {
             <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
+            }}>
+            </div>
           </div>
 
           {/* Trust Signals */}
