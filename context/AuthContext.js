@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 
-const AuthContext = createContext({ 
+const AuthContext = createContext({
   user: null, 
   loading: true,
   error: null,
@@ -9,14 +9,14 @@ const AuthContext = createContext({
   signIn: async () => {},
   signUp: async () => {},
   resetPassword: async () => {},
-  isAuthenticated: false,
+  isAuthenticated: false, 
   isLoading: true
 });
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
+  const [session, setSession] = useState(null);
   const [mounted, setMounted] = useState(false);
   const [session, setSession] = useState(null);
 
@@ -31,7 +31,6 @@ export function AuthProvider({ children }) {
         // Set loading to true initially 
         setLoading(true);
         
-        try {
           // Get initial session
           const { data, error } = await supabase.auth.getSession();
            
@@ -39,6 +38,7 @@ export function AuthProvider({ children }) {
             console.warn('Error getting session:', error); 
             setError(error);
           } else {
+            setSession(data.session || null);
             setSession(data.session || null);
             setUser(data.session?.user || null);
           }
@@ -58,6 +58,7 @@ export function AuthProvider({ children }) {
           if (event) {
             // console.log('Auth state changed:', event);
           }
+          setSession(session || null);
           setSession(session || null);
           setUser(session?.user || null);
           setLoading(false);
@@ -142,6 +143,7 @@ export function AuthProvider({ children }) {
     session
   };
 
+
   // During SSR, just return children without user data
   // This prevents hydration mismatches
   return <AuthContext.Provider value={value}>{mounted ? children : null}</AuthContext.Provider>;
@@ -149,7 +151,7 @@ export function AuthProvider({ children }) {
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context && typeof window !== 'undefined') {
+
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;

@@ -152,7 +152,7 @@ export default function ResetPassword() {
                 }}
               >
                 {loading ? 'Sending...' : 'Send Reset Link'}
-              </Link>
+              </button>
             </button>
               <div style={{ textAlign: 'center', marginTop: '1rem' }}>
                 <a
