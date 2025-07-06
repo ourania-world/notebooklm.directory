@@ -285,7 +285,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
               
               <div>
                 <h4 style={{ color: '#ffffff', marginBottom: '1rem', fontSize: '1rem' }}>
-                  Environmental Impact
+                  Community
                 </h4>
                 <div style={{  
                   background: 'rgba(0, 255, 136, 0.1)',
@@ -295,12 +295,12 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                   fontSize: '0.9rem'
                 }}>
                   <div style={{ color: '#00ff88', fontWeight: '600', marginBottom: '0.5rem' }}>
-                    Join Our Community:
+                    Get Involved:
                   </div>
                   <div style={{ color: '#e2e8f0', fontSize: '0.8rem', lineHeight: '1.6' }}>
-                    • Share your innovative projects<br />
-                    • Discover cutting-edge research<br />
-                    • Connect with other researchers
+                    • Submit your NotebookLM projects<br />
+                    • Discover innovative approaches<br />
+                    • Connect with other creators
                   </div>
                 </div>
               </div>

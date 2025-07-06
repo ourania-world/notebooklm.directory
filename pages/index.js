@@ -205,13 +205,13 @@ export default function Home({ initialFeaturedNotebooks }) {
           {/* Stats Dashboard Preview */}
           <div style={{
             background: 'rgba(0, 0, 0, 0.4)',
-            backdropFilter: 'blur(20px)', 
+            backdropFilter: 'blur(20px)',
             border: '1px solid rgba(0, 255, 136, 0.2)',
-            borderRadius: '20px',  
-            padding: '2rem', 
-            maxWidth: '800px', 
-            margin: '0 auto', 
-            position: 'relative' 
+            borderRadius: '20px',
+            padding: '2rem',
+            maxWidth: '800px',
+            margin: '0 auto',
+            position: 'relative'
           }}>
             <div style={{
               display: 'grid',
@@ -221,15 +221,15 @@ export default function Home({ initialFeaturedNotebooks }) {
             }}>
               <div>
                 <div style={{ 
-                  fontSize: '2rem', 
+                  fontSize: '2rem',
                   fontWeight: '700',
                   color: '#00ff88',
                   fontFamily: 'monospace'
                 }}>
-                  The Premier NotebookLM Directory
+                  Join Our Growing Community
                 </div>
                 <div style={{ color: '#00ff88', fontSize: '0.9rem', marginTop: '0.5rem' }}>
-                  Discover, share, and collaborate with researchers worldwide
+                  Discover and share innovative NotebookLM projects
                 </div>
               </div>
             </div>

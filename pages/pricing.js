@@ -18,7 +18,7 @@ export default function Pricing() {
       features: [
         'Access to all public notebooks',
         'Browse curated notebook collection',
-        'Basic search features',
+        'Basic search',
         'Community access',
         'Save up to 5 notebooks',
         'Submit unlimited notebooks'
@@ -35,9 +35,9 @@ export default function Pricing() {
       description: 'Great for regular users',
       features: [
         'Everything in Explorer',
-        'Save up to 25 notebooks',
+        'Unlimited saved notebooks',
         'Submit unlimited notebooks',
-        'Advanced search features',
+        'Advanced search',
         'Email notifications',
         'Basic analytics'
       ],
@@ -54,8 +54,7 @@ export default function Pricing() {
       features: [
         'Everything in Standard',
         'Unlimited saved notebooks',
-        'Submit unlimited notebooks',
-        'Advanced search & AI recommendations',
+        'Advanced search & recommendations',
         'Performance optimization metrics',
         'Priority support',
         'API access (1000 calls/month)',
@@ -74,7 +73,7 @@ export default function Pricing() {
       features: [
         'Everything in Professional',
         'Team collaboration tools',
-        'Advanced analytics dashboard',
+        'Advanced analytics',
         'Custom reporting',
         'White-label options',
         'Dedicated account manager',
@@ -385,17 +384,17 @@ export default function Pricing() {
                 <h3 style={{ color: '#00ff88', marginBottom: '0.5rem' }}>
                   What's included in the API access?
                 </h3>
-                <p style={{ color: '#e2e8f0', lineHeight: '1.6' }}>
+                <p style={{ color: '#e2e8f0', lineHeight: '1.6' }}> 
                   Professional plans include 1,000 API calls per month for integrating our notebook discovery into your workflows. Enterprise plans include unlimited API access plus custom integrations.
                 </p>
               </div>
 
               <div>
                 <h3 style={{ color: '#00ff88', marginBottom: '0.5rem' }}>
-                  Do you offer educational discounts?
+                  What are the advanced search features?
                 </h3>
                 <p style={{ color: '#e2e8f0', lineHeight: '1.6' }}>
-                  Yes! We offer 50% discounts for students and educators. Contact us with your academic email for verification and discount codes.
+                  Standard plan includes category filtering, tag search, and saved searches. Professional plan adds AI-powered recommendations, content similarity search, and personalized results based on your interests.
                 </p>
               </div>
 
@@ -403,7 +402,7 @@ export default function Pricing() {
                 <h3 style={{ color: '#00ff88', marginBottom: '0.5rem' }}>
                   How many notebooks can I submit?
                 </h3>
-                <p style={{ color: '#e2e8f0', lineHeight: '1.6' }}>
+                <p style={{ color: '#e2e8f0', lineHeight: '1.6' }}> 
                   All plans allow unlimited notebook submissions. We believe in making knowledge sharing accessible to everyone, regardless of subscription tier.
                 </p>
               </div>
