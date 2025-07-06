@@ -5,6 +5,10 @@ export default function SubscriptionBanner() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+
+    const checkSubscriptionStatus = async () => {
+      try {
         const { supabase } = await import('../lib/supabase');
         const { data: { session } } = await supabase.auth.getSession();
         
@@ -25,15 +29,18 @@ export default function SubscriptionBanner() {
             (subscription?.subscription_plans?.id !== 'professional' && 
              subscription?.subscription_plans?.id !== 'enterprise')));
         } else {
-          setShouldShow(false);
+          setShouldShow(true); // Show banner for unauthenticated users
         }
-      setSubLoading(true);
+      } catch (error) {
         console.error('Error checking subscription status:', error);
         setShouldShow(false);
-      }, 100);
-    }
+      }
+    };
 
-    checkSubscriptionStatus();
+    // Add a small delay to prevent hydration mismatch
+    setTimeout(() => {
+      checkSubscriptionStatus();
+    }, 100);
   }, []);
 
   // Don't render during SSR to prevent hydration mismatch
@@ -90,53 +97,6 @@ export default function SubscriptionBanner() {
           </div>
         </div>
       )}
-    </div>
-  );
-}
-
-  return (
-    <div style={{
-      background: 'linear-gradient(90deg, rgba(0, 255, 136, 0.1) 0%, rgba(0, 255, 136, 0.2) 100%)',
-      borderBottom: '1px solid rgba(0, 255, 136, 0.3)',
-      padding: '0.75rem 0',
-      position: 'relative',
-      overflow: 'hidden'
-    }}>
-      <div style={{
-        maxWidth: '1200px',
-        margin: '0 auto',
-        padding: '0 2rem',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        flexWrap: 'wrap',
-        gap: '1rem'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <span style={{ color: '#00ff88', fontSize: '1.2rem' }}>✨</span>
-          <p style={{ margin: 0, color: '#ffffff', fontSize: '0.9rem' }}>
-            Upgrade to <strong>Standard</strong> for unlimited saved notebooks and advanced features
-          </p>
-        </div>
-        
-        <button
-          onClick={() => window.location.href = '/pricing'}
-          style={{
-            background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
-            color: '#0a0a0a',
-            border: 'none',
-            padding: '0.5rem 1rem',
-            borderRadius: '8px',
-            fontSize: '0.8rem',
-            fontWeight: '600',
-            cursor: 'pointer',
-            textTransform: 'uppercase',
-            letterSpacing: '0.5px'
-          }}
-        >
-          Upgrade Now
-        </button>
-      </div>
     </div>
   );
 }
