@@ -72,6 +72,7 @@ export default function ResetPassword() {
         )}
 
         {error && <p style={{ color: '#ff4d4d', marginTop: '1rem' }}>⚠️ {error}</p>}
+        }
       </div>
     </Layout>
   );

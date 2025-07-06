@@ -257,7 +257,7 @@ export default function SubscriptionModal({ isOpen, onClose, initialPlan = 'stan
                     {(feature.includes('API') || 
                       feature.includes('analytics') || 
                       feature.includes('metrics') || 
-              ) : plan.id === 'free' ? (
+                                  ) : plan.id === 'free' ? (
                 <button
                   onClick={onClose}
                   style={{
@@ -277,7 +277,8 @@ export default function SubscriptionModal({ isOpen, onClose, initialPlan = 'stan
                     e.target.style.color = '#00ff88';
                   } : (e) => {
                     if (!loading) {
-                  }}
+                                      }}
+                  }
                   onMouseEnter={plan.id === 'professional' ? (e) => {
                     if (!loading) {
                       e.target.style.transform = 'translateY(-2px)';
@@ -288,7 +289,10 @@ export default function SubscriptionModal({ isOpen, onClose, initialPlan = 'stan
                 >
                   {loading ? 'Processing...' : plan.id === 'professional' ? 'Upgrade to Pro' : `Upgrade to ${plan.name}`}
                 </button>
-              )}
+              )                    }
+                )
+                )
+                }
             </div>
           ))}
         </div>
