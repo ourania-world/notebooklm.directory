@@ -92,7 +92,7 @@ export default function Home({ initialFeaturedNotebooks }) {
           zIndex: 2
         }}>
           <div style={{
-            display: 'inline-flex',
+            <div style={{ 
             alignItems: 'center', 
             gap: '0.5rem',
             background: 'rgba(0, 0, 0, 0.4)', 
@@ -253,11 +253,37 @@ export default function Home({ initialFeaturedNotebooks }) {
                   color: '#00ff88',
                   fontFamily: 'monospace'
                 }}>
-                  156T
-                </div>
+              }}> 
+                $3.2M
                 <div style={{ color: '#00ff88', fontSize: '0.9rem', marginTop: '0.5rem' }}>
-                  CO₂ Emissions Prevented
-                </div>
+              <div style={{ color: '#00ff88', fontSize: '0.9rem', marginTop: '0.5rem' }}> 
+                Computational Costs Saved
+              </div>
+            </div>
+            <div>
+              <div style={{ 
+                fontSize: '2.5rem', 
+                fontWeight: '700',
+                color: '#00ff88',
+                fontFamily: 'monospace'
+              }}> 
+                47%
+              </div>
+              <div style={{ color: '#00ff88', fontSize: '0.9rem', marginTop: '0.5rem' }}> 
+                Reduction in Redundant Research
+              </div>
+            </div>
+            <div>
+              <div style={{ 
+                fontSize: '2.5rem', 
+                fontWeight: '700',
+                color: '#00ff88',
+                fontFamily: 'monospace'
+              }}> 
+                156T
+              </div>
+              <div style={{ color: '#00ff88', fontSize: '0.9rem', marginTop: '0.5rem' }}> 
+                CO₂ Emissions Prevented
               </div>
             </div>
           </div>
@@ -607,21 +633,22 @@ export default function Home({ initialFeaturedNotebooks }) {
             <div style={{
               flex: 1,
               display: 'flex',
-              alignItems: 'center',
+              alignItems: 'center', 
               justifyContent: 'center'  
             }}>
               <div style={{
                 width: '120px',
                 height: '120px',
-                borderRadius: '50%',
-                background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '3rem'  
-              }}>
+              background: 'rgba(0, 0, 0, 0.4)', 
+              border: '1px solid rgba(0, 255, 136, 0.3)', 
+              borderRadius: '50px', 
+              padding: '0.5rem 1.5rem', 
+              marginBottom: '2rem', 
+              fontSize: '0.9rem', 
+              color: '#00ff88', 
+              backdropFilter: 'blur(10px)'
                 🚀
-              </div>
+              ⭐ Trusted by Researchers Worldwide • Join Our Community
             </div>
           </div>
         </div>
@@ -731,8 +758,8 @@ export default function Home({ initialFeaturedNotebooks }) {
           
           <div style={{ 
             display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', 
-            gap: '2rem',
+            gridTemplateColumns: 'repeat(3, 1fr)',
+            gap: '1rem',
             marginBottom: '3rem'  
           }}>
             {featuredNotebooks.slice(0, 6).map(notebook => (

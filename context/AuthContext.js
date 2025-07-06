@@ -12,15 +12,36 @@ const AuthContext = createContext({
   isAuthenticated: false,
   isLoading: true
 });
+  user: null,
+  loading: true,
+  error: null,
+  signOut: async () => {},
+  signIn: async () => {},
+  signUp: async () => {},
+  resetPassword: async () => {},
+  isAuthenticated: false,
+  isLoading: true
+});
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [mounted, setMounted] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   // Initialize auth state
   useEffect(() => {
+    // Mark component as mounted to prevent hydration mismatch
+    setMounted(true); 
+    
+    // Only run auth logic on the client side
+    if (typeof window !== 'undefined') {
+      const getInitialSession = async () => {
+        try {
+          setLoading(true); 
+          
+          // Get initial session
+          const { data, error } = await supabase.auth.getSession();
     // Mark component as mounted to prevent hydration mismatch
     setMounted(true); 
     
@@ -46,7 +67,7 @@ export const AuthProvider = ({ children }) => {
           setLoading(false);
         }
       };
-
+        async (event, session) => {
       getInitialSession();
       
       // Listen for auth changes
@@ -59,7 +80,7 @@ export const AuthProvider = ({ children }) => {
           setLoading(false);
         }
       );
-
+            console.log('Auth state changed:', event); 
       return () => {
         if (subscription) {
           subscription.unsubscribe();
@@ -76,7 +97,6 @@ export const AuthProvider = ({ children }) => {
     try {
       const { error } = await supabase.auth.signOut();
       if (error) throw error; 
-      setUser(null);
     } catch (error) {
       console.error('Error signing out:', error);
       throw error;
@@ -128,10 +148,9 @@ export const AuthProvider = ({ children }) => {
 
   const value = {
     user,
-    loading,
     error,
     signOut, 
-    signIn,
+    signOut, 
     signUp,
     resetPassword,
     // Helper methods
@@ -141,11 +160,8 @@ export const AuthProvider = ({ children }) => {
 
   // During SSR, just return children without user data
   // This prevents hydration mismatches
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  // Return the provider with the current value
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => {

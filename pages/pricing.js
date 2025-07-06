@@ -3,6 +3,7 @@ import Layout from '../components/Layout'
 import { useAuth } from '../context/AuthContext'
 import Link from 'next/link'
 import Link from 'next/link'
+import Link from 'next/link'
 
 export default function Pricing() {
   const { user } = useAuth()
@@ -32,7 +33,7 @@ export default function Pricing() {
     {
       id: 'standard',
       name: 'Standard',
-      price: 9.99,
+      price: 9.99, 
       period: '/month',
       description: 'Enhanced features for serious researchers',
       features: [
@@ -45,13 +46,13 @@ export default function Pricing() {
       ],
       limits: { savedNotebooks: 25, submittedNotebooks: 10, premiumContent: false },
       cta: 'Upgrade to Standard',
-      popular: true,
+      popular: false,
       environmental: 'Efficient research collaboration'
     },
     {
       id: 'professional',
       name: 'Professional',
-      price: 19.99,
+      price: 19.99, 
       period: '/month',
       description: 'Accelerate Your Impact, Measure Your Footprint',
       features: [
@@ -72,7 +73,7 @@ export default function Pricing() {
     {
       id: 'enterprise',
       name: 'Enterprise',
-      price: 99,
+      price: 99, 
       period: '/user/month',
       description: 'Scale Your Innovation, Achieve Your ESG Goals - COMING SOON',
       features: [
@@ -215,12 +216,15 @@ export default function Pricing() {
             flexWrap: 'wrap',
             justifyContent: 'center',
             gap: '1.5rem',
+            gap: '1.5rem',
             marginBottom: '4rem'
           }}>
             {plans.map((plan) => (
               <div
                 key={plan.id}
                 style={{
+                  flex: '1 1 250px',
+                  maxWidth: '350px',
                   flex: '1 1 250px',
                   maxWidth: '350px',
                   background: plan.popular ? 
@@ -254,7 +258,7 @@ export default function Pricing() {
                     position: 'absolute',
                     top: '-10px',
                     left: '50%',
-                    transform: 'translateX(-50%)',
+                    transform: 'translateX(-50%)', 
                     background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
                     color: '#0a0a0a', 
                     padding: '0.5rem 1.5rem',
@@ -326,10 +330,11 @@ export default function Pricing() {
                     color: '#ffffff',
                     padding: '0.5rem 1.5rem',
                     borderRadius: '20px',
-                    fontSize: '0.8rem',
+                    fontSize: '0.8rem', 
                     fontWeight: '700',
                     textTransform: 'uppercase',
-                    letterSpacing: '0.5px'
+                    letterSpacing: '0.5px',
+                    zIndex: 10
                     letterSpacing: '0.5px',
                     zIndex: 10
                   }}> 
@@ -375,6 +380,8 @@ export default function Pricing() {
                     transition: 'all 0.2s ease',
                     textTransform: 'uppercase', 
                     letterSpacing: '0.5px'
+                    letterSpacing: '0.5px',
+                    zIndex: 10
                   }}
                   onMouseEnter={plan.id === 'enterprise' ? null : (e) => {
                     if (!loading && plan.id !== 'enterprise') {

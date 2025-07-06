@@ -56,7 +56,8 @@ export default function UserMenu() {
           alignItems: 'center',
           gap: '0.75rem',
           transition: 'all 0.2s ease',
-          fontWeight: '500'
+          fontWeight: '500',
+          fontSize: '0.9rem'
         }}
         onMouseEnter={(e) => {
           e.target.style.background = 'rgba(0, 255, 136, 0.2)'; 
