@@ -35,8 +35,8 @@ Deno.serve(async (req) => {
     
     // Initialize Supabase client with the user's JWT
     const supabase = createClient(
-      Deno.env.get('SUPABASE_URL')!,
-      Deno.env.get('SUPABASE_ANON_KEY')!,
+      Deno.env.get('SUPABASE_URL') || '',
+      Deno.env.get('SUPABASE_ANON_KEY') || '',
       {
         global: {
           headers: { Authorization: authHeader }
@@ -68,7 +68,7 @@ Deno.serve(async (req) => {
     }
     
     // Initialize Stripe with your secret key
-    const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY')!, {
+    const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') || '', {
       apiVersion: '2023-10-16',
     })
     

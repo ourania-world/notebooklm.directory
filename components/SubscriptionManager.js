@@ -58,17 +58,10 @@ export default function SubscriptionManager() {
     setSuccess(null)
 
     try {
-      const { data, error } = await supabase.functions.invoke('manage-subscription', {
-        body: { 
-          action,
-          returnUrl: window.location.origin + '/subscription/manage'
-        }
       })
-
+        body: { 
       if (error) {
         throw error
-      }
-
       if (action === 'portal' && data.url) {
         // Redirect to Stripe customer portal
         window.location.href = data.url
@@ -179,6 +172,9 @@ export default function SubscriptionManager() {
                 </div>
                 <div style={{ color: '#e2e8f0', fontSize: '0.9rem' }}>
                   ${subscription.subscription_plans?.price || 0}
+                  {subscription.subscription_plans?.interval ? 
+                    `/${subscription.subscription_plans?.interval}` : 
+                    '/month'}
                   {subscription.subscription_plans?.interval ? 
                     `/${subscription.subscription_plans?.interval}` : 
                     '/month'}

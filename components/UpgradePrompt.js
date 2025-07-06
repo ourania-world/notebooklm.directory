@@ -14,6 +14,7 @@ export default function UpgradePrompt({
     standard: 'Standard',
     professional: 'Professional',
     enterprise: 'Enterprise'
+    enterprise: 'Enterprise'
   }
 
   const featureMessages = {

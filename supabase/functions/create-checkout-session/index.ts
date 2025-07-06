@@ -13,17 +13,16 @@ Deno.serve(async (req) => {
   }
 
   try {
-    // Parse the request body
+    const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') || '', {
+      apiVersion: '2023-10-16',
+    })
+
     const { planId, successUrl, cancelUrl } = await req.json()
-    
-    // Validate required parameters
+
     if (!planId) {
-      return new Response(
-        JSON.stringify({ error: 'Missing required parameters' }),
-        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      )
+      throw new Error('Missing required parameters')
     }
-    
+
     // Get the user's JWT token from the Authorization header
     const authHeader = req.headers.get('Authorization')
     if (!authHeader) {
@@ -35,8 +34,8 @@ Deno.serve(async (req) => {
     
     // Initialize Supabase client with the user's JWT
     const supabase = createClient(
-      Deno.env.get('SUPABASE_URL')!,
-      Deno.env.get('SUPABASE_ANON_KEY')!,
+      Deno.env.get('SUPABASE_URL') || '',
+      Deno.env.get('SUPABASE_ANON_KEY') || '',
       {
         global: {
           headers: { Authorization: authHeader }
@@ -52,15 +51,40 @@ Deno.serve(async (req) => {
         { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
+
+    // Get plan details from database
+    const { data: plan, error: planError } = await supabase
+      .from('subscription_plans')
+      .select('*')
+      .eq('id', planId)
+      .single()
+      
+    if (planError || !plan) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid plan selected' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
     
+    // Check if plan is coming soon
+    if (plan.is_coming_soon) {
+      return new Response(
+        JSON.stringify({ error: 'This plan is not available yet' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
     // Map plan ID to Stripe price ID
     let priceId
     switch (planId) {
-      case 'basic':
-        priceId = Deno.env.get('STRIPE_BASIC_PRICE_ID')
+      case 'standard':
+        priceId = Deno.env.get('STRIPE_STANDARD_PRICE_ID')
         break
-      case 'premium':
-        priceId = Deno.env.get('STRIPE_PREMIUM_PRICE_ID')
+      case 'professional':
+        priceId = Deno.env.get('STRIPE_PROFESSIONAL_PRICE_ID')
+        break
+      case 'enterprise':
+        priceId = Deno.env.get('STRIPE_ENTERPRISE_PRICE_ID')
         break
       default:
         return new Response(
@@ -68,7 +92,7 @@ Deno.serve(async (req) => {
           { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
         )
     }
-    
+
     // Get the user's profile to check if they already have a Stripe customer ID
     const { data: profile, error: profileError } = await supabase
       .from('profiles')
@@ -82,11 +106,6 @@ Deno.serve(async (req) => {
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
-    
-    // Initialize Stripe with your secret key
-    const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY')!, {
-      apiVersion: '2023-10-16',
-    })
     
     // Create or retrieve the Stripe customer
     let customerId = profile?.stripe_customer_id
@@ -132,7 +151,8 @@ Deno.serve(async (req) => {
         metadata: {
           userId: user.id,
           planId: planId
-        }
+        },
+        trial_period_days: 7 // 7-day free trial
       }
     })
     
@@ -143,7 +163,7 @@ Deno.serve(async (req) => {
   } catch (error) {
     console.error('Error creating checkout session:', error)
     return new Response(
-      JSON.stringify({ error: 'Internal server error' }),
+      JSON.stringify({ error: error.message }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )
   }

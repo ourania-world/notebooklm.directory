@@ -17,7 +17,15 @@ export default function SubscriptionModal({ isOpen, onClose, initialPlan = 'stan
       }
 
       const successUrl = `${window.location.origin}/subscription/success`
-      const cancelUrl = `${window.location.origin}/subscription/cancel`
+      const cancelUrl = `${window.location.origin}/subscription/cancel` 
+      
+      const { data, error } = await supabase.functions.invoke('create-checkout-session', {
+        body: {
+          planId,
+          successUrl,
+          cancelUrl
+        }
+      })
       
       const { data, error } = await supabase.functions.invoke('create-checkout-session', {
         body: {
@@ -127,6 +135,16 @@ export default function SubscriptionModal({ isOpen, onClose, initialPlan = 'stan
                 transition: 'all 0.3s ease',
                 opacity: 0.7
               } : {
+                background: 'rgba(255, 255, 255, 0.05)',
+                border: plan.id === currentPlan ? 
+                  '2px solid #00ff88' : 
+                  '1px solid rgba(255, 255, 255, 0.1)',
+                borderRadius: '16px',
+                padding: '2rem',
+                position: 'relative',
+                transition: 'all 0.3s ease',
+                opacity: 0.7
+              } : {
                 background: plan.id === 'premium' ? 
                   'linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, rgba(0, 255, 136, 0.05) 100%)' :
                   'rgba(255, 255, 255, 0.05)',
@@ -167,6 +185,25 @@ export default function SubscriptionModal({ isOpen, onClose, initialPlan = 'stan
                   letterSpacing: '0.5px'
                 }}>
                   Most Popular
+                </div>
+              )}
+              
+              {plan.id === 'enterprise' && (
+                <div style={{
+                  position: 'absolute',
+                  top: '-10px',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  background: 'rgba(255, 255, 255, 0.2)',
+                  color: '#ffffff',
+                  padding: '0.5rem 1rem',
+                  borderRadius: '20px',
+                  fontSize: '0.8rem',
+                  fontWeight: '700',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px'
+                }}>
+                  Coming Soon
                 </div>
               )}
               
@@ -269,6 +306,23 @@ export default function SubscriptionModal({ isOpen, onClose, initialPlan = 'stan
                     cursor: 'not-allowed'
                   }}
                 >
+                  Coming Soon
+                </button>
+              ) : plan.id === currentPlan ? (
+                <button
+                  disabled
+                  style={{
+                    width: '100%',
+                    background: 'rgba(255, 255, 255, 0.1)',
+                    color: '#ffffff',
+                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    padding: '1rem',
+                    borderRadius: '12px',
+                    fontSize: '1rem',
+                    fontWeight: '600',
+                    cursor: 'not-allowed'
+                  }}
+                >
                   Current Plan
                 </button>
               ) : plan.id === 'free' ? (
@@ -286,11 +340,16 @@ export default function SubscriptionModal({ isOpen, onClose, initialPlan = 'stan
                     cursor: 'pointer',
                     transition: 'all 0.2s ease'
                   }}
-                  onMouseEnter={(e) => {
+                  onMouseEnter={plan.id === 'professional' ? (e) => {
                     e.target.style.borderColor = '#00ff88';
                     e.target.style.color = '#00ff88';
+                  } : (e) => {
+                    if (!loading) {
+                      e.target.style.transform = 'translateY(-2px)';
+                      e.target.style.boxShadow = '0 12px 32px rgba(0, 255, 136, 0.4)';
+                    }
                   }}
-                  onMouseLeave={(e) => {
+                  onMouseLeave={plan.id === 'professional' ? (e) => {
                     e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)';
                     e.target.style.color = '#e2e8f0';
                   }}
@@ -299,9 +358,24 @@ export default function SubscriptionModal({ isOpen, onClose, initialPlan = 'stan
                 </button>
               ) : (
                 <button
-                  onClick={() => handleUpgrade(plan.id)}
+                  onClick={() => handleUpgrade(plan.id)} 
                   disabled={loading}
                   style={plan.id === 'professional' ? {
+                    width: '100%',
+                    background: loading ? 
+                      'rgba(255, 255, 255, 0.1)' : 
+                      'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
+                    color: loading ? '#ffffff' : '#0a0a0a',
+                    border: 'none',
+                    padding: '1rem',
+                    borderRadius: '12px',
+                    fontSize: '1rem',
+                    fontWeight: '700',
+                    cursor: loading ? 'not-allowed' : 'pointer',
+                    transition: 'all 0.2s ease',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.5px'
+                  } : {
                     width: '100%',
                     background: loading ? 
                       'rgba(255, 255, 255, 0.1)' : 
@@ -344,6 +418,11 @@ export default function SubscriptionModal({ isOpen, onClose, initialPlan = 'stan
                     }
                   }}
                   onMouseLeave={plan.id === 'professional' ? (e) => {
+                    if (!loading) {
+                      e.target.style.transform = 'translateY(0)';
+                      e.target.style.boxShadow = 'none';
+                    }
+                  } : (e) => {
                     if (!loading) {
                       e.target.style.transform = 'translateY(0)';
                       e.target.style.boxShadow = 'none';
