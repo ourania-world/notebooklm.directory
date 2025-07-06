@@ -243,7 +243,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                 <div style={{ 
                   background: 'rgba(0, 255, 136, 0.1)',
                   border: '1px solid rgba(0, 255, 136, 0.2)',
-                  borderRadius: '8px',
+                  borderRadius: '8px', 
                   padding: '1rem',
                   fontSize: '0.9rem'
                 }}>
@@ -253,7 +253,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                   <div style={{ color: '#e2e8f0', fontSize: '0.8rem', lineHeight: '1.6' }}>
                     • 47% reduction in redundant research<br />
                     • $3.2M in computational costs saved<br />
-                    • 156T CO₂ emissions prevented
+                    • 156T CO₂ emissions prevented 
                   </div>
                 </div>
               </div>

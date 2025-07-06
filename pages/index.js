@@ -209,7 +209,7 @@ export default function Home({ initialFeaturedNotebooks }) {
           <div style={{ 
             background: 'rgba(0, 0, 0, 0.4)',
             backdropFilter: 'blur(20px)', 
-            border: '1px solid rgba(0, 255, 136, 0.2)', 
+            border: '1px solid rgba(0, 255, 136, 0.2)',
             borderRadius: '20px', 
             padding: '2rem', 
             maxWidth: '800px', 
@@ -221,15 +221,48 @@ export default function Home({ initialFeaturedNotebooks }) {
               justifyContent: 'center',
               alignItems: 'center',
               padding: '1rem'
-            }}>
-              <p style={{ 
-                color: '#00ff88', 
-                fontSize: '1.2rem', 
-                textAlign: 'center', 
-                margin: 0 
-              }}>
-                Join our community of researchers building the future of sustainable AI research
-              </p>
+            }}> 
+              <div>
+                <div style={{ 
+                  fontSize: '2.5rem', 
+                  fontWeight: '700', 
+                  color: '#00ff88',
+                  fontFamily: 'monospace'
+                }}>
+                  $3.2M
+                </div>
+                <div style={{ color: '#00ff88', fontSize: '0.9rem', marginTop: '0.5rem' }}>
+                  Computational Costs Saved
+                </div>
+              </div>
+              <div style={{ width: '2rem' }}></div>
+              <div>
+                <div style={{ 
+                  fontSize: '2.5rem', 
+                  fontWeight: '700', 
+                  color: '#00ff88',
+                  fontFamily: 'monospace'
+                }}>
+                  47%
+                </div>
+                <div style={{ color: '#00ff88', fontSize: '0.9rem', marginTop: '0.5rem' }}>
+                  Reduction in Redundant Research
+                </div>
+              </div>
+              <div style={{ width: '2rem' }}></div>
+              <div>
+                <div style={{ 
+                  fontSize: '2.5rem', 
+                  fontWeight: '700', 
+                  color: '#00ff88',
+                  fontFamily: 'monospace'
+                }}>
+                  156T
+                </div>
+                <div style={{ color: '#00ff88', fontSize: '0.9rem', marginTop: '0.5rem' }}>
+                  CO₂ Emissions Prevented
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { getAudioUrl, formatDuration } from '../lib/audio';
+import { getAudioUrl, formatDuration, isAudioSupported } from '../lib/audio';
 
 export default function AudioPlayer({ 
   audioUrl, 
@@ -13,15 +13,30 @@ export default function AudioPlayer({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   
-  const audioRef = useRef(null);
+  const audioRef = useRef(null); 
   const progressRef = useRef(null);
   const waveformRef = useRef(null);
   const animationRef = useRef(null);
+  const [mounted, setMounted] = useState(false);
   
   const fullAudioUrl = getAudioUrl(audioUrl);
   
   useEffect(() => {
+    // Mark component as mounted to prevent hydration mismatch
+    setMounted(true);
+    
+    // Don't run audio logic during SSR
+    if (typeof window === 'undefined') return;
+    
+    // Check if audio is supported
+    if (!isAudioSupported()) {
+      setError('Audio not supported in this browser');
+      setLoading(false);
+      return;
+    }
+    
     const audio = audioRef.current;
+    if (!audio) return;
     
     const handleCanPlayThrough = () => {
       setLoading(false);
@@ -40,6 +55,7 @@ export default function AudioPlayer({
     
     const handleError = (e) => {
       console.error('Audio error:', e);
+      console.error('Audio source:', fullAudioUrl);
       setError('Failed to load audio');
       setLoading(false);
     };
@@ -62,6 +78,9 @@ export default function AudioPlayer({
   }, []);
   
   useEffect(() => {
+    // Don't run during SSR
+    if (typeof window === 'undefined' || !mounted) return;
+    
     if (isPlaying) {
       audioRef.current.play();
       animateWaveform();
@@ -70,7 +89,7 @@ export default function AudioPlayer({
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
-    }
+    } 
   }, [isPlaying]);
   
   const togglePlayPause = () => {
@@ -82,6 +101,9 @@ export default function AudioPlayer({
     setCurrentTime(newTime);
     audioRef.current.currentTime = newTime;
   };
+
+  // Don't render during SSR to prevent hydration mismatch
+  if (!mounted && typeof window !== 'undefined') return null;
   
   const animateWaveform = () => {
     if (waveformRef.current && showWaveform) {
@@ -105,7 +127,7 @@ export default function AudioPlayer({
       padding: compact ? '1rem' : '1.5rem',
       border: '1px solid rgba(0, 255, 136, 0.2)',
       width: '100%'
-    }}>
+    }}> 
       <audio ref={audioRef} src={fullAudioUrl} preload="metadata" />
       
       <div style={{
@@ -124,7 +146,7 @@ export default function AudioPlayer({
             background: loading ? 'rgba(0, 255, 136, 0.2)' : 
                       error ? 'rgba(255, 0, 0, 0.2)' : 
                       'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
-            border: 'none',
+            border: 'none', 
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -152,7 +174,7 @@ export default function AudioPlayer({
           {loading ? (
             <div style={{
               width: '20px',
-              height: '20px',
+              height: '20px', 
               border: '2px solid rgba(255, 255, 255, 0.3)',
               borderTop: '2px solid #ffffff',
               borderRadius: '50%',
@@ -266,9 +288,12 @@ export default function AudioPlayer({
           color: '#ff6b6b',
           fontSize: '0.9rem',
           textAlign: 'center',
-          padding: '0.5rem'
+          padding: '0.5rem' 
         }}>
-          {error}
+          {error} 
+          <div style={{ fontSize: '0.8rem', marginTop: '0.5rem', opacity: 0.7 }}>
+            Try refreshing the page or check your connection
+          </div>
         </div>
       )}
       
@@ -291,7 +316,7 @@ export default function AudioPlayer({
         input[type=range]::-moz-range-thumb {
           width: 12px;
           height: 12px;
-          border-radius: 50%;
+          border-radius: 50%; 
           background: #00ff88;
           cursor: pointer;
           border: none;

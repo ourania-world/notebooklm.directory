@@ -9,7 +9,7 @@ export default function Pricing() {
 
   const plans = [
     {
-      id: 'explorer',
+      id: 'free',
       name: 'Explorer',
       price: 0,
       period: 'forever',
@@ -22,14 +22,29 @@ export default function Pricing() {
         'Environmental impact tracking',
         'Mobile-optimized experience'
       ],
-      limits: {
-        savedNotebooks: 5,
-        submittedNotebooks: 2,
-        premiumContent: false
-      },
+      limits: { savedNotebooks: 5, submittedNotebooks: 2, premiumContent: false },
       cta: 'Start Free',
       popular: false,
       environmental: 'Join the sustainable research movement'
+    },
+    {
+      id: 'standard',
+      name: 'Standard',
+      price: 9.99,
+      period: 'month',
+      description: 'Enhanced features for serious researchers',
+      features: [
+        'Everything in Explorer',
+        'Save up to 25 notebooks',
+        'Submit up to 10 notebooks',
+        'Advanced search features',
+        'Email notifications',
+        'Basic analytics'
+      ],
+      limits: { savedNotebooks: 25, submittedNotebooks: 10, premiumContent: false },
+      cta: 'Upgrade to Standard',
+      popular: false,
+      environmental: 'Efficient research collaboration'
     },
     {
       id: 'professional',
@@ -38,7 +53,7 @@ export default function Pricing() {
       period: 'month',
       description: 'Accelerate Your Impact, Measure Your Footprint',
       features: [
-        'Everything in Explorer',
+        'Everything in Standard',
         'Save unlimited notebooks',
         'Submit up to 25 notebooks',
         'Advanced search & AI recommendations',
@@ -47,11 +62,7 @@ export default function Pricing() {
         'API access (1000 calls/month)',
         'Export & integration tools'
       ],
-      limits: {
-        savedNotebooks: -1,
-        submittedNotebooks: 25,
-        premiumContent: true
-      },
+      limits: { savedNotebooks: -1, submittedNotebooks: 25, premiumContent: true },
       cta: 'Upgrade to Professional',
       popular: true,
       environmental: '47% reduction in redundant research'
@@ -73,11 +84,7 @@ export default function Pricing() {
         'API access (10,000 calls/month)',
         'Custom integrations'
       ],
-      limits: {
-        savedNotebooks: -1,
-        submittedNotebooks: -1,
-        premiumContent: true
-      },
+      limits: { savedNotebooks: -1, submittedNotebooks: -1, premiumContent: true },
       cta: 'Contact Sales',
       popular: false,
       environmental: 'Institutional carbon footprint tracking'
