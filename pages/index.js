@@ -156,7 +156,7 @@ export default function Home({ initialFeaturedNotebooks }) {
           <div style={{ 
             display: 'flex', 
             gap: '1rem', 
-            justifyContent: 'center', 
+            justifyContent: 'center',
             flexWrap: 'wrap',
             marginBottom: '3rem',
             marginTop: '2rem'
@@ -170,9 +170,9 @@ export default function Home({ initialFeaturedNotebooks }) {
           <div style={{ 
             display: 'flex', 
             gap: '1rem', 
-            justifyContent: 'center', 
+            justifyContent: 'center',
             flexWrap: 'wrap',
-            marginBottom: '3rem'
+            marginBottom: '2rem'
           }}>
             <button 
               onClick={() => setIsModalOpen(true)}
@@ -204,7 +204,7 @@ export default function Home({ initialFeaturedNotebooks }) {
           </div>
           
           {/* Stats Dashboard Preview */}
-          <div style={{ 
+          <div style={{
             background: 'rgba(0, 0, 0, 0.4)',
             backdropFilter: 'blur(20px)', 
             border: '1px solid rgba(0, 255, 136, 0.2)',
@@ -215,11 +215,11 @@ export default function Home({ initialFeaturedNotebooks }) {
             position: 'relative' 
           }}>
             <div style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              padding: '1rem'
-            }}> 
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              gap: '1rem',
+              textAlign: 'center'
+            }}>
               <div>
                 <div style={{ 
                   fontSize: '2.5rem', 
@@ -233,7 +233,6 @@ export default function Home({ initialFeaturedNotebooks }) {
                   Computational Costs Saved
                 </div>
               </div>
-              <div style={{ width: '2rem' }}></div>
               <div>
                 <div style={{ 
                   fontSize: '2.5rem', 
@@ -247,7 +246,6 @@ export default function Home({ initialFeaturedNotebooks }) {
                   Reduction in Redundant Research
                 </div>
               </div>
-              <div style={{ width: '2rem' }}></div>
               <div>
                 <div style={{ 
                   fontSize: '2.5rem', 
@@ -267,6 +265,7 @@ export default function Home({ initialFeaturedNotebooks }) {
       </section>
       
       {/* Features Section */}
+      
       <section style={{
         background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)',
         padding: '6rem 0',
@@ -274,7 +273,7 @@ export default function Home({ initialFeaturedNotebooks }) {
       }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
           <h2 style={{ 
-            fontSize: '2.5rem', 
+            fontSize: '2.5rem',
             fontWeight: '700', 
             margin: '0 0 1.5rem 0',
             color: '#ffffff',
@@ -283,7 +282,7 @@ export default function Home({ initialFeaturedNotebooks }) {
             Building the Future of <span style={{ color: '#00ff88' }}>AI Research</span>
           </h2>
           
-          <p style={{ 
+          <p style={{
             fontSize: '1.1rem',
             color: '#e2e8f0',
             textAlign: 'center',
@@ -293,7 +292,7 @@ export default function Home({ initialFeaturedNotebooks }) {
             We're creating the world's most comprehensive AI research discovery platform
           </p>
           
-          <div style={{
+          <div style={{ 
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
             gap: '2rem',
@@ -301,7 +300,7 @@ export default function Home({ initialFeaturedNotebooks }) {
           }}>
             {/* Feature 1 */}
             <div style={{
-              background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
+              background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)', 
               borderRadius: '16px',
               padding: '2rem',
               border: '1px solid rgba(0, 255, 136, 0.2)'
@@ -310,7 +309,7 @@ export default function Home({ initialFeaturedNotebooks }) {
                 fontSize: '2.5rem',
                 marginBottom: '1rem',
                 textAlign: 'center'
-              }}>
+              }}> 
                 🔍
               </div>
               <h3 style={{
@@ -319,7 +318,7 @@ export default function Home({ initialFeaturedNotebooks }) {
                 color: '#00ff88',
                 marginBottom: '1rem',
                 textAlign: 'center'
-              }}>
+              }}> 
                 Curated Selection
               </h3>
               <p style={{
@@ -327,7 +326,7 @@ export default function Home({ initialFeaturedNotebooks }) {
                 fontSize: '0.9rem',
                 lineHeight: '1.6',
                 textAlign: 'center'
-              }}>
+              }}> 
                 Hand-picked collection of innovative NotebookLM projects across domains. Only the highest quality research makes it to the directory.
               </p>
             </div>
@@ -335,7 +334,7 @@ export default function Home({ initialFeaturedNotebooks }) {
             {/* Feature 2 */}
             <div style={{
               background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
-              borderRadius: '16px',
+              borderRadius: '16px', 
               padding: '2rem',
               border: '1px solid rgba(0, 255, 136, 0.2)'
             }}>
@@ -343,7 +342,7 @@ export default function Home({ initialFeaturedNotebooks }) {
                 fontSize: '2.5rem',
                 marginBottom: '1rem',
                 textAlign: 'center'
-              }}>
+              }}> 
                 🧠
               </div>
               <h3 style={{
@@ -352,7 +351,7 @@ export default function Home({ initialFeaturedNotebooks }) {
                 color: '#00ff88',
                 marginBottom: '1rem',
                 textAlign: 'center'
-              }}>
+              }}> 
                 Personalized Discovery
               </h3>
               <p style={{
@@ -360,7 +359,7 @@ export default function Home({ initialFeaturedNotebooks }) {
                 fontSize: '0.9rem',
                 lineHeight: '1.6',
                 textAlign: 'center'
-              }}>
+              }}> 
                 AI-powered recommendations based on your interests and research history. Find exactly what you need for your next project.
               </p>
             </div>
@@ -368,7 +367,7 @@ export default function Home({ initialFeaturedNotebooks }) {
             {/* Feature 3 */}
             <div style={{
               background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
-              borderRadius: '16px',
+              borderRadius: '16px', 
               padding: '2rem',
               border: '1px solid rgba(0, 255, 136, 0.2)'
             }}>
@@ -376,7 +375,7 @@ export default function Home({ initialFeaturedNotebooks }) {
                 fontSize: '2.5rem',
                 marginBottom: '1rem',
                 textAlign: 'center'
-              }}>
+              }}> 
                 🌍
               </div>
               <h3 style={{
@@ -385,7 +384,7 @@ export default function Home({ initialFeaturedNotebooks }) {
                 color: '#00ff88',
                 marginBottom: '1rem',
                 textAlign: 'center'
-              }}>
+              }}> 
                 Community Driven
               </h3>
               <p style={{
@@ -393,7 +392,7 @@ export default function Home({ initialFeaturedNotebooks }) {
                 fontSize: '0.9rem',
                 lineHeight: '1.6',
                 textAlign: 'center'
-              }}>
+              }}> 
                 Discover, share, and collaborate with researchers worldwide. Build on existing work instead of starting from scratch.
               </p>
             </div>
@@ -402,7 +401,7 @@ export default function Home({ initialFeaturedNotebooks }) {
       </section>
       
       {/* CTA Section */}
-      <section style={{
+      <section style={{ 
         background: '#0a0a0a',
         padding: '6rem 0',
         textAlign: 'center'
@@ -412,7 +411,7 @@ export default function Home({ initialFeaturedNotebooks }) {
             fontSize: '3rem',
             marginBottom: '1.5rem',
             color: '#ffffff'
-          }}>
+          }}> 
             ✨
           </div>
           <h2 style={{ 
@@ -420,7 +419,7 @@ export default function Home({ initialFeaturedNotebooks }) {
             margin: '0 0 1.5rem 0',
             color: '#ffffff',
             fontWeight: '700'
-          }}>
+          }}> 
             Help Us Build Something Amazing
           </h2>
           <p style={{ 
@@ -428,7 +427,7 @@ export default function Home({ initialFeaturedNotebooks }) {
             color: '#e2e8f0',
             lineHeight: '1.6',
             marginBottom: '2rem'
-          }}>
+          }}> 
             Share your NotebookLM projects, discover innovative approaches, and help build a community for the future of AI research.
           </p>
           
@@ -441,7 +440,7 @@ export default function Home({ initialFeaturedNotebooks }) {
               borderRadius: '8px',
               fontWeight: '600',
               cursor: 'pointer',
-              fontSize: '0.9rem'
+              fontSize: '0.9rem' 
             }}>
               SUBMIT YOUR NOTEBOOK
             </button>
@@ -454,7 +453,7 @@ export default function Home({ initialFeaturedNotebooks }) {
               borderRadius: '8px',
               fontWeight: '500',
               cursor: 'pointer',
-              fontSize: '0.9rem'
+              fontSize: '0.9rem' 
             }}>
               EXPLORE FIRST
             </button>
@@ -463,7 +462,7 @@ export default function Home({ initialFeaturedNotebooks }) {
       </section>
       
       {/* Sustainable Research Section */}
-      <section style={{ 
+      <section style={{
         background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)',
         padding: '6rem 0',
         textAlign: 'center'
@@ -474,7 +473,7 @@ export default function Home({ initialFeaturedNotebooks }) {
             fontWeight: '700',
             color: '#ffffff',
             marginBottom: '1.5rem'
-          }}>
+          }}> 
             Building the Future of <span style={{ color: '#00ff88' }}>Sustainable</span><br />
             AI Research Discovery<br />
             <span style={{ color: '#00ff88', fontSize: '1.8rem' }}>One Notebook at a Time</span>
@@ -486,7 +485,7 @@ export default function Home({ initialFeaturedNotebooks }) {
             lineHeight: '1.6',
             maxWidth: '800px',
             margin: '0 auto 4rem auto'
-          }}>
+          }}> 
             Every shared notebook prevents redundant research, reduces computational footprint, and accelerates discovery for the entire AI community.
           </p>
         </div>
@@ -494,7 +493,7 @@ export default function Home({ initialFeaturedNotebooks }) {
       
       {/* Help Build Section */}
       <section style={{ 
-        background: '#0a0a0a',
+        background: '#0a0a0a', 
         padding: '6rem 0'
       }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
@@ -503,7 +502,7 @@ export default function Home({ initialFeaturedNotebooks }) {
             fontWeight: '700',
             color: '#ffffff',
             marginBottom: '1.5rem'
-          }}>
+          }}> 
             Help Build the Future of <span style={{ color: '#00ff88' }}>AI Research</span><br />
             <span style={{ color: '#00ff88', fontSize: '1.8rem' }}>Discovery</span>
           </h2>
@@ -513,7 +512,7 @@ export default function Home({ initialFeaturedNotebooks }) {
             color: '#e2e8f0',
             lineHeight: '1.6',
             maxWidth: '800px',
-            marginBottom: '3rem'
+            marginBottom: '3rem' 
           }}>
             Join our community of researchers building the definitive discovery platform for NotebookLM projects
           </p>
@@ -521,7 +520,7 @@ export default function Home({ initialFeaturedNotebooks }) {
           <div style={{
             display: 'flex',
             gap: '2rem'
-          }}>
+          }}> 
             <div style={{
               background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
               borderRadius: '16px',
@@ -532,7 +531,7 @@ export default function Home({ initialFeaturedNotebooks }) {
               <div style={{
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '1rem'
+                gap: '1rem' 
               }}>
                 <div style={{
                   display: 'flex',
@@ -550,7 +549,7 @@ export default function Home({ initialFeaturedNotebooks }) {
                     color: '#00ff88',
                     fontSize: '0.8rem'
                   }}>
-                    1
+                    1 
                   </div>
                   <div style={{ color: '#e2e8f0' }}>
                     Discover cutting-edge notebooks for AI projects
@@ -573,7 +572,7 @@ export default function Home({ initialFeaturedNotebooks }) {
                     color: '#00ff88',
                     fontSize: '0.8rem'
                   }}>
-                    2
+                    2 
                   </div>
                   <div style={{ color: '#e2e8f0' }}>
                     Share your own work and accelerate discovery
@@ -596,7 +595,7 @@ export default function Home({ initialFeaturedNotebooks }) {
                     color: '#00ff88',
                     fontSize: '0.8rem'
                   }}>
-                    3
+                    3 
                   </div>
                   <div style={{ color: '#e2e8f0' }}>
                     Build on existing knowledge, don't reinvent
@@ -609,7 +608,7 @@ export default function Home({ initialFeaturedNotebooks }) {
               flex: 1,
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center'
+              justifyContent: 'center' 
             }}>
               <div style={{
                 width: '120px',
@@ -619,7 +618,7 @@ export default function Home({ initialFeaturedNotebooks }) {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: '3rem'
+                fontSize: '3rem' 
               }}>
                 🚀
               </div>
@@ -629,7 +628,7 @@ export default function Home({ initialFeaturedNotebooks }) {
       </section>
       
       {/* Vision Audio Section */}
-      <section style={{
+      <section style={{ 
         background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
         padding: '4rem 0',
         textAlign: 'center'
@@ -640,7 +639,7 @@ export default function Home({ initialFeaturedNotebooks }) {
             margin: '0 0 1rem 0',
             color: '#ffffff', 
             fontWeight: '700'
-          }}>
+          }}> 
             🎧 Listen to the <span style={{ color: '#00ff88' }}>Vision</span>
           </h2>
           <p style={{ 
@@ -648,7 +647,7 @@ export default function Home({ initialFeaturedNotebooks }) {
             margin: '0 0 2rem 0',
             fontSize: '1.1rem'
           }}>
-            Hear our AI-generated overview of how NotebookLM is transforming research and creativity
+            Hear our overview of how NotebookLM is transforming research and creativity
           </p>
           <AudioPlayer 
             audioUrl="/overview.mp3"
@@ -658,7 +657,7 @@ export default function Home({ initialFeaturedNotebooks }) {
       </section>
       
       {/* Featured Collections */}
-      <section style={{
+      <section style={{ 
         padding: '6rem 0',
         background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)'
       }}>
@@ -668,7 +667,7 @@ export default function Home({ initialFeaturedNotebooks }) {
             textAlign: 'center', 
             margin: '0 0 3rem 0',
             color: '#ffffff',
-            fontWeight: '700'
+            fontWeight: '700' 
           }}>
             Featured <span style={{ color: '#00ff88' }}>Collections</span>
           </h2>
@@ -678,7 +677,7 @@ export default function Home({ initialFeaturedNotebooks }) {
             justifyContent: 'center',
             gap: '1rem',
             marginBottom: '3rem',
-            flexWrap: 'wrap'
+            flexWrap: 'wrap' 
           }}>
             <button style={{
               background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
@@ -688,7 +687,7 @@ export default function Home({ initialFeaturedNotebooks }) {
               borderRadius: '20px',
               fontWeight: '600',
               cursor: 'pointer',
-              fontSize: '0.8rem'
+              fontSize: '0.8rem' 
             }}>
               Popular This Week
             </button>
@@ -701,7 +700,7 @@ export default function Home({ initialFeaturedNotebooks }) {
               borderRadius: '20px',
               fontWeight: '500',
               cursor: 'pointer',
-              fontSize: '0.8rem'
+              fontSize: '0.8rem' 
             }}>
               Academic Research
             </button>
@@ -714,7 +713,7 @@ export default function Home({ initialFeaturedNotebooks }) {
               borderRadius: '20px',
               fontWeight: '500',
               cursor: 'pointer',
-              fontSize: '0.8rem'
+              fontSize: '0.8rem' 
             }}>
               Creative Projects
             </button>
@@ -725,7 +724,7 @@ export default function Home({ initialFeaturedNotebooks }) {
             fontWeight: '600',
             color: '#ffffff',
             textAlign: 'center',
-            marginBottom: '2rem'
+            marginBottom: '2rem' 
           }}>
             Trending This Week
           </h3>
@@ -734,7 +733,7 @@ export default function Home({ initialFeaturedNotebooks }) {
             display: 'grid', 
             gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', 
             gap: '2rem',
-            marginBottom: '3rem'
+            marginBottom: '3rem' 
           }}>
             {featuredNotebooks.slice(0, 6).map(notebook => (
               <ProjectCard key={notebook.id} notebook={notebook} />
@@ -744,7 +743,7 @@ export default function Home({ initialFeaturedNotebooks }) {
       </section>
 
       {/* Featured Projects */}
-      <section style={{
+      <section style={{ 
         padding: '6rem 0',
         background: '#0a0a0a'
       }}>
@@ -754,15 +753,15 @@ export default function Home({ initialFeaturedNotebooks }) {
             textAlign: 'center', 
             margin: '0 0 3rem 0',
             color: '#ffffff',
-            fontWeight: '700'
+            fontWeight: '700' 
           }}>
             Popular <span style={{ color: '#00ff88' }}>Notebooks</span>
           </h2>
           
           {loading ? (
             <div style={{ textAlign: 'center', padding: '2rem' }}>
-              <p style={{ color: '#e2e8f0' }}>Loading featured projects...</p>
-            </div>
+              <p style={{ color: '#e2e8f0' }}>Loading notebooks...</p>
+            </div> 
           ) : (
             <div style={{ 
               display: 'grid', 
@@ -772,10 +771,8 @@ export default function Home({ initialFeaturedNotebooks }) {
               {featuredNotebooks.slice(0, 6).map(notebook => (
                 <ProjectCard key={notebook.id || notebook.title} notebook={notebook} />
               ))}
-            </div>
-          </div>
-        )}
-      </div>
+            </div> 
+          )}
           
           <div style={{ textAlign: 'center', marginTop: '2rem' }}>
             <button 
@@ -792,7 +789,7 @@ export default function Home({ initialFeaturedNotebooks }) {
                 transition: 'all 0.3s ease',
                 boxShadow: '0 8px 32px rgba(0, 255, 136, 0.3)',
                 textTransform: 'uppercase',
-                letterSpacing: '0.5px'
+                letterSpacing: '0.5px' 
               }}
               onMouseEnter={(e) => {
                 e.target.style.transform = 'translateY(-2px)';

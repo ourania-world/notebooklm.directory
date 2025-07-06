@@ -53,7 +53,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
             alignItems: 'center'
           }}>
             <Link href="/" style={{ 
-              fontSize: '1.5rem', 
+              fontSize: '1.5rem',
               fontWeight: '700', 
               textDecoration: 'none', 
               color: '#ffffff',
@@ -73,16 +73,16 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                 fontFamily: 'monospace'
               }}>
                 NLM_D
-              </span>
+              </span> 
               notebooklm.directory
             </Link>
             
-            <div style={{ 
-              display: 'flex', 
+            <div style={{
+              display: 'flex',
               alignItems: 'center',
               gap: '2rem'
             }}>
-              <Link href="/browse" style={{ 
+              <Link href="/browse" style={{
                 color: router.pathname === '/browse' ? '#00ff88' : '#e2e8f0',
                 textDecoration: 'none',
                 transition: 'color 0.2s ease',
@@ -91,8 +91,8 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
               }}>
                 Browse Projects
               </Link>
-              <Link href="/submit" style={{ 
-                color: router.pathname === '/submit' ? '#00ff88' : '#e2e8f0', 
+              <Link href="/submit" style={{
+                color: router.pathname === '/submit' ? '#00ff88' : '#e2e8f0',
                 textDecoration: 'none',
                 transition: 'color 0.2s ease',
                 fontWeight: '500',
@@ -100,8 +100,8 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
               }}>
                 Submit Project
               </Link>
-              <Link href="/pricing" style={{ 
-                color: router.pathname === '/pricing' ? '#00ff88' : '#e2e8f0', 
+              <Link href="/pricing" style={{
+                color: router.pathname === '/pricing' ? '#00ff88' : '#e2e8f0',
                 textDecoration: 'none',
                 transition: 'color 0.2s ease',
                 fontWeight: '500',
@@ -109,8 +109,8 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
               }}>
                 Pricing
               </Link>
-              <Link href="/about" style={{ 
-                color: router.pathname === '/about' ? '#00ff88' : '#e2e8f0', 
+              <Link href="/about" style={{
+                color: router.pathname === '/about' ? '#00ff88' : '#e2e8f0',
                 textDecoration: 'none',
                 transition: 'color 0.2s ease',
                 fontWeight: '500',
@@ -120,8 +120,8 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
               </Link>
               
               {!loading && user && (
-                <Link href="/analytics" style={{ 
-                  color: router.pathname === '/analytics' ? '#00ff88' : '#e2e8f0', 
+                <Link href="/analytics" style={{
+                  color: router.pathname === '/analytics' ? '#00ff88' : '#e2e8f0',
                   textDecoration: 'none',
                   transition: 'color 0.2s ease',
                   fontWeight: '500',
@@ -175,7 +175,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                 Get Started
               </Link>
             </div>
-            
+
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               style={{
