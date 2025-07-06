@@ -7,7 +7,7 @@ export default function Pricing() {
   const { user } = useAuth()
   const [loading, setLoading] = useState(false)
   const [selectedPlan, setSelectedPlan] = useState('standard')
-
+  
   const plans = [
     {
       id: 'explorer',
@@ -269,10 +269,10 @@ export default function Pricing() {
                   <p style={{
                     color: '#e2e8f0',
                     fontSize: '1rem',
-                    margin: '0 0 1rem 0'
+                    margin: '0 0 0.25rem 0'
                   }}>
                     {plan.description}
-                  </p>
+                  </p>                
                 </div>
 
                 <ul style={{

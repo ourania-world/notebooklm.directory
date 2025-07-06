@@ -283,22 +283,19 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                 <h4 style={{ color: '#ffffff', marginBottom: '1rem', fontSize: '1rem' }}>
                   Get Involved
                 </h4>
-                <div style={{  
+                <div style={{ 
                   background: 'rgba(0, 255, 136, 0.1)',
                   border: '1px solid rgba(0, 255, 136, 0.2)',
-                  borderRadius: '8px', 
+                  borderRadius: '8px',
                   padding: '1rem',
                   fontSize: '0.9rem'
                 }}>
-                    • Connect with other creators
+                  <div style={{ color: '#e2e8f0', fontSize: '0.8rem', lineHeight: '1.6' }}>
                     • Submit your NotebookLM projects<br />
                     • Discover innovative approaches<br />
                     • Connect with other creators
-            </div>
-
-            <div style={{
-              borderTop: '1px solid rgba(0, 255, 136, 0.1)',
-              paddingTop: '2rem',
+                  </div>
+                </div>
               display: 'flex',
               justifyContent: 'space-between', 
               alignItems: 'center',
@@ -306,7 +303,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
               gap: '1rem'
             }}>
               <p style={{ margin: 0, color: '#e2e8f0', fontSize: '0.9rem' }}>
-                © 2025 notebooklm.directory. Empowering sustainable AI research.
+                © 2025 notebooklm.directory. Empowering AI research.
               </p>
                
               <div style={{ display: 'flex', gap: '1.5rem' }}>
