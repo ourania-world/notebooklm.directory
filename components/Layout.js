@@ -42,37 +42,46 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
           <nav style={{ 
             maxWidth: '1200px', 
             margin: '0 auto', 
-            padding: '0 2rem',
+            padding: '0 1.5rem',
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center'
           }}>
-            <Link href="/" style={{ 
-              fontSize: '1.5rem', 
-              fontWeight: '700', 
-              textDecoration: 'none', 
-              color: '#ffffff',
+            <div style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '0.75rem',
-              transition: 'all 0.3s ease'
+              gap: '1rem'
             }}>
-              <span style={{ 
-                background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
-                color: '#0a0a0a',
-                padding: '0.5rem 0.75rem',
-                borderRadius: '8px',
-                fontSize: '0.9rem',
-                fontWeight: '700',
-                letterSpacing: '1px',
-                fontFamily: 'monospace'
-              }}>NLM_D</span>
-              notebooklm.directory
-            </Link>
+              <Link href="/" style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                textDecoration: 'none'
+              }}>
+                <div style={{ 
+                  background: '#00ff88',
+                  color: '#0a0a0a',
+                  padding: '0.5rem 0.75rem',
+                  borderRadius: '8px',
+                  fontSize: '0.9rem',
+                  fontWeight: '700',
+                  letterSpacing: '1px',
+                  fontFamily: 'monospace'
+                }}>
+                  NLM_D
+                </div>
+                <div style={{
+                  fontSize: '1.25rem',
+                  fontWeight: '700',
+                  color: '#ffffff'
+                }}>
+                  notebooklm.<span style={{ color: '#00ff88' }}>directory</span>
+                </div>
+              </Link>
+            </div>
             
             <div style={{ 
-              display: 'flex',
-              flexDirection: 'row',
+              display: 'flex', 
               alignItems: 'center',
               gap: '2rem'
             }}>
@@ -80,49 +89,66 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                 color: router.pathname === '/browse' ? '#00ff88' : '#e2e8f0', 
                 textDecoration: 'none',
                 transition: 'color 0.2s ease',
-                fontWeight: '500'
+                fontWeight: '500',
+                fontSize: '0.95rem'
               }}>
-                Browse
+                Browse Projects
               </Link>
               <Link href="/submit" style={{ 
                 color: router.pathname === '/submit' ? '#00ff88' : '#e2e8f0', 
                 textDecoration: 'none',
                 transition: 'color 0.2s ease',
-                fontWeight: '500'
+                fontWeight: '500',
+                fontSize: '0.95rem'
               }}>
-                Submit
-              </Link>
-              <Link href="/about" style={{ 
-                color: router.pathname === '/about' ? '#00ff88' : '#e2e8f0', 
-                textDecoration: 'none',
-                transition: 'color 0.2s ease',
-                fontWeight: '500'
-              }}>
-                About
+                Submit Project
               </Link>
               <Link href="/pricing" style={{ 
                 color: router.pathname === '/pricing' ? '#00ff88' : '#e2e8f0', 
                 textDecoration: 'none',
                 transition: 'color 0.2s ease',
-                fontWeight: '500'
+                fontWeight: '500',
+                fontSize: '0.95rem'
               }}>
                 Pricing
               </Link>
-              
-              {!loading && user && (
-                <Link href="/analytics" style={{ 
-                  color: router.pathname === '/analytics' ? '#00ff88' : '#e2e8f0', 
-                  textDecoration: 'none',
-                  transition: 'color 0.2s ease',
-                  fontWeight: '500'
-                }}>
-                  Analytics
-                </Link>
-              )}
+              <Link href="/about" style={{ 
+                color: router.pathname === '/about' ? '#00ff88' : '#e2e8f0', 
+                textDecoration: 'none',
+                transition: 'color 0.2s ease',
+                fontWeight: '500',
+                fontSize: '0.95rem'
+              }}>
+                About
+              </Link>
             </div>
 
-            <div style={{ marginLeft: 'auto' }}>
+            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
               <UserMenu />
+              <button
+                onClick={() => window.location.href = '/pricing'}
+                style={{
+                  background: '#00ff88',
+                  color: '#0a0a0a',
+                  border: 'none',
+                  padding: '0.5rem 1.25rem',
+                  borderRadius: '6px',
+                  fontSize: '0.9rem',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.transform = 'translateY(-1px)';
+                  e.target.style.boxShadow = '0 4px 12px rgba(0, 255, 136, 0.3)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.transform = 'translateY(0)';
+                  e.target.style.boxShadow = 'none';
+                }}
+              >
+                Support Growth
+              </button>
             </div>
             
             <button
