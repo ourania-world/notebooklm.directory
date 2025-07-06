@@ -491,6 +491,8 @@ export default function Home({ initialFeaturedNotebooks }) {
                 fontWeight: '700',
                 cursor: 'pointer',
                 display: 'block',
+              }
+              }
           <div style={{
             display: 'flex',
             justifyContent: 'center',
