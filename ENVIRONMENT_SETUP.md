@@ -58,7 +58,7 @@ Copy the webhook signing secret (starts with `whsec_`)
 Use Stripe's test mode with these test cards:
 - **Success:** 4242 4242 4242 4242
 - **Decline:** 4000 0000 0000 0002
-- **Requires Authentication:** 4000 0000 0000 3220
+- **3D Secure:** 4000 0000 0000 3220
 
 ## Deployment Checklist
 
