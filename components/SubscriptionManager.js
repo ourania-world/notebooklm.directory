@@ -58,10 +58,20 @@ export default function SubscriptionManager() {
     setSuccess(null)
 
     try {
-      })
+      const response = await fetch(`/api/subscription/${action}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
         body: { 
+          action 
+        }
+      })
+
+      const data = await response.json()
       if (error) {
         throw error
+      }
       if (action === 'portal' && data.url) {
         // Redirect to Stripe customer portal
         window.location.href = data.url
