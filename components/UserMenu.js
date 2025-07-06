@@ -7,7 +7,6 @@ export default function UserMenu() {
   const [signOutLoading, setSignOutLoading] = useState(false);
 
   if (!user) {
-  if (!user && !authLoading) {
     return (
       <div style={{ display: 'flex', gap: '1rem' }}>
         <button
@@ -61,6 +60,12 @@ export default function UserMenu() {
         </button>
       </div>
     );
+  }
+
+  if (!user && !authLoading) {
+    return (
+      <div style={{ display: 'flex', gap: '1rem' }}>
+        <button
           onClick={() => window.location.href = '/login'}
           style={{
             background: 'transparent',
