@@ -2,8 +2,6 @@ import { useState } from 'react'
 import Layout from '../components/Layout'
 import { useAuth } from '../context/AuthContext'
 import Link from 'next/link'
-import Link from 'next/link'
-import Link from 'next/link'
 
 export default function Pricing() {
   const { user } = useAuth()
