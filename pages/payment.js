@@ -522,8 +522,8 @@ export default function Payment() {
                        feature.includes('recommendations') || 
                        feature.includes('Email notifications') ? (
                         <span style={{ 
-                          marginLeft: '0.5rem',
-                          fontSize: '0.75rem',
+                          marginLeft: '0.25rem',
+                          fontSize: '0.7rem',
                           color: '#ffc107',
                           background: 'rgba(255, 193, 7, 0.1)',
                           padding: '0.1rem 0.4rem',
