@@ -266,6 +266,13 @@ export default function SearchBar({
           )}
         </div>
       )}
+      
+      <style jsx>{`
+        @keyframes waveform {
+          0%, 100% { height: 10px; }
+          50% { height: 30px; }
+        }
+      `}</style>
     </div>
   )
 }

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getNotebooks } from '../lib/notebooks';
+import ProjectCard from './ProjectCard';
 
 export default function FeaturedCollections() {
   const [collections, setCollections] = useState([]);
@@ -123,79 +124,7 @@ export default function FeaturedCollections() {
               gap: '1.5rem'
             }}>
               {collection.notebooks.map(notebook => (
-                <div 
-                  key={notebook.id}
-                  style={{
-                    background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
-                    borderRadius: '16px',
-                    overflow: 'hidden',
-                    border: '1px solid rgba(0, 255, 136, 0.2)',
-                    transition: 'all 0.3s ease',
-                    cursor: 'pointer'
-                  }}
-                  onClick={() => window.location.href = `/notebook/${notebook.id}`}
-                  onMouseEnter={(e) => {
-                    e.target.style.transform = 'translateY(-5px)';
-                    e.target.style.boxShadow = '0 12px 30px rgba(0, 0, 0, 0.2)';
-                    e.target.style.borderColor = '#00ff88';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.target.style.transform = 'translateY(0)';
-                    e.target.style.boxShadow = 'none';
-                    e.target.style.borderColor = 'rgba(0, 255, 136, 0.2)';
-                  }}
-                >
-                  <div style={{
-                    height: '8px',
-                    background: collection.color
-                  }} />
-                  
-                  <div style={{ padding: '1.5rem' }}>
-                    <h4 style={{ 
-                      fontSize: '1.2rem', 
-                      color: '#ffffff',
-                      margin: '0 0 0.5rem 0',
-                      fontWeight: '600'
-                    }}>
-                      {notebook.title}
-                    </h4>
-                    
-                    <p style={{ 
-                      color: '#e2e8f0', 
-                      fontSize: '0.9rem',
-                      margin: '0 0 1rem 0',
-                      display: '-webkit-box',
-                      WebkitLineClamp: 2,
-                      WebkitBoxOrient: 'vertical',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis'
-                    }}>
-                      {notebook.description}
-                    </p>
-                    
-                    <div style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center'
-                    }}>
-                      <div style={{ color: '#00ff88', fontSize: '0.8rem' }}>
-                        {notebook.author}
-                      </div>
-                      
-                      <div style={{ 
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.5rem',
-                        color: '#e2e8f0',
-                        fontSize: '0.8rem'
-                      }}>
-                        <span>{notebook.view_count || 0} views</span>
-                        <span>•</span>
-                        <span>{notebook.save_count || 0} saves</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <ProjectCard key={notebook.id} notebook={notebook} />
               ))}
             </div>
           </div>
