@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { SUBSCRIPTION_PLANS, createCheckoutSession } from '../lib/subscriptions'
+import { SUBSCRIPTION_PLANS } from '../lib/subscriptions'
 import { getCurrentUser } from '../lib/supabase'
 
 export default function SubscriptionModal({ isOpen, onClose, initialPlan = 'standard', currentPlan = 'free' }) { 
@@ -10,14 +10,6 @@ export default function SubscriptionModal({ isOpen, onClose, initialPlan = 'stan
     try {
       setLoading(true)
       const user = await getCurrentUser()
-      
-      if (!user) {
-        alert('Please sign in to upgrade your subscription')
-        return
-      }
-
-      const successUrl = `${window.location.origin}/subscription/success`
-      const cancelUrl = `${window.location.origin}/subscription/cancel` 
       
       const { data, error } = await supabase.functions.invoke('create-checkout-session', { 
         body: {
