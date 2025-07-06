@@ -15,12 +15,12 @@ export default function UserMenu() {
 
   // Don't render anything during SSR to prevent hydration mismatch
   if (!mounted) {
-    return null;
+    return <div style={{ width: '32px', height: '32px' }}></div>;
   }
 
   // Show loading state
   if (loading) {
-    return null;
+    return <div style={{ width: '32px', height: '32px' }}></div>;
   }
 
   // Don't render if no user (login button is in Layout)
@@ -32,7 +32,7 @@ export default function UserMenu() {
     try {
       setSignOutLoading(true);
       await signOut();
-      setIsOpen(false); 
+      setIsOpen(false);
       window.location.href = '/';
     } catch (error) {
       console.error('Error signing out:', error);
@@ -49,7 +49,7 @@ export default function UserMenu() {
           background: 'rgba(0, 255, 136, 0.1)',
           border: '1px solid rgba(0, 255, 136, 0.3)',
           color: '#ffffff',
-          padding: '0.75rem 1rem',
+          padding: '0.5rem 1rem',
           borderRadius: '12px', 
           cursor: 'pointer',
           display: 'flex',
@@ -103,7 +103,7 @@ export default function UserMenu() {
           <div style={{
             position: 'absolute',
             top: '100%',
-            right: 0,
+            right: 0, 
             marginTop: '0.5rem', 
             background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
             borderRadius: '12px',
@@ -119,7 +119,7 @@ export default function UserMenu() {
                 onClick={() => setIsOpen(false)}
                 style={{
                   width: '100%',
-                  background: 'none',
+                  background: 'none', 
                   border: 'none',
                   padding: '1rem 1.5rem',
                   textAlign: 'left',
@@ -149,7 +149,7 @@ export default function UserMenu() {
                 onClick={() => setIsOpen(false)}
                 style={{
                   width: '100%',
-                  background: 'none',
+                  background: 'none', 
                   border: 'none',
                   padding: '1rem 1.5rem',
                   textAlign: 'left',
@@ -179,7 +179,7 @@ export default function UserMenu() {
                 onClick={() => setIsOpen(false)}
                 style={{
                   width: '100%',
-                  background: 'none',
+                  background: 'none', 
                   border: 'none',
                   padding: '1rem 1.5rem',
                   textAlign: 'left',
@@ -214,7 +214,7 @@ export default function UserMenu() {
                 disabled={signOutLoading}
                 style={{
                   width: '100%',
-                  background: 'none',
+                  background: 'none', 
                   border: 'none',
                   padding: '1rem 1.5rem',
                   textAlign: 'left',
