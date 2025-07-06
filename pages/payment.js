@@ -174,3 +174,4 @@ export default function Payment() {
         }}>
           <h2 style={{ 
             fontSize: '1.5'
+      }}
