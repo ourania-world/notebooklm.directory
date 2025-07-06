@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Layout from '../components/Layout'
 import { useAuth } from '../context/AuthContext'
+import Link from 'next/link'
 
 export default function Pricing() {
   const { user } = useAuth()
@@ -15,11 +16,11 @@ export default function Pricing() {
       period: 'forever',
       description: 'Sustainable Discovery for All',
       features: [
-        'Browse 10,000+ curated notebooks',
+        'Access to resource-efficient platform',
+        'Browse curated notebook collection',
+        'Basic sustainable search features',
+        'Community access to responsible research',
         'Save up to 5 notebooks',
-        'Basic search & filtering',
-        'Community access',
-        'Environmental impact tracking',
         'Mobile-optimized experience'
       ],
       limits: { savedNotebooks: 5, submittedNotebooks: 2, premiumContent: false },
@@ -31,7 +32,7 @@ export default function Pricing() {
       id: 'standard',
       name: 'Standard',
       price: 9.99,
-      period: 'month',
+      period: '/month',
       description: 'Enhanced features for serious researchers',
       features: [
         'Everything in Explorer',
@@ -43,14 +44,14 @@ export default function Pricing() {
       ],
       limits: { savedNotebooks: 25, submittedNotebooks: 10, premiumContent: false },
       cta: 'Upgrade to Standard',
-      popular: false,
+      popular: true,
       environmental: 'Efficient research collaboration'
     },
     {
       id: 'professional',
       name: 'Professional',
       price: 19.99,
-      period: 'month',
+      period: '/month',
       description: 'Accelerate Your Impact, Measure Your Footprint',
       features: [
         'Everything in Standard',
@@ -64,14 +65,14 @@ export default function Pricing() {
       ],
       limits: { savedNotebooks: -1, submittedNotebooks: 25, premiumContent: true },
       cta: 'Upgrade to Professional',
-      popular: true,
+      popular: false,
       environmental: '47% reduction in redundant research'
     },
     {
       id: 'enterprise',
       name: 'Enterprise',
       price: 99,
-      period: 'user/month',
+      period: '/user/month',
       description: 'Scale Your Innovation, Achieve Your ESG Goals - COMING SOON',
       features: [
         'Everything in Professional',
@@ -148,7 +149,7 @@ export default function Pricing() {
           {/* Hero Section */}
           <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
             <h1 style={{ 
-              fontSize: 'clamp(2.5rem, 6vw, 4rem)', 
+              fontSize: 'clamp(2.5rem, 6vw, 3.5rem)', 
               fontWeight: '700',
               color: '#ffffff',
               margin: '0 0 1rem 0',
@@ -168,7 +169,7 @@ export default function Pricing() {
             
             {/* Environmental Impact Stats */}
             <div style={{
-              display: 'grid',
+              display: 'flex',
               gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
               gap: '2rem',
               maxWidth: '800px',
@@ -177,7 +178,7 @@ export default function Pricing() {
               background: 'rgba(0, 255, 136, 0.05)',
               borderRadius: '16px',
               border: '1px solid rgba(0, 255, 136, 0.2)'
-            }}>
+            }} justifyContent="center">
               <div style={{ textAlign: 'center' }}>
                 <div style={{ fontSize: '2rem', fontWeight: '700', color: '#00ff88' }}>
                   $3.2M
@@ -186,6 +187,7 @@ export default function Pricing() {
                   Computational Costs Saved
                 </div>
               </div>
+              <div style={{ width: '2rem' }}></div>
               <div style={{ textAlign: 'center' }}>
                 <div style={{ fontSize: '2rem', fontWeight: '700', color: '#00ff88' }}>
                   47%
@@ -194,6 +196,7 @@ export default function Pricing() {
                   Reduction in Redundant Research
                 </div>
               </div>
+              <div style={{ width: '2rem' }}></div>
               <div style={{ textAlign: 'center' }}>
                 <div style={{ fontSize: '2rem', fontWeight: '700', color: '#00ff88' }}>
                   156T
@@ -207,8 +210,9 @@ export default function Pricing() {
 
           {/* Pricing Cards */}
           <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
             gap: '2rem',
             marginBottom: '4rem'
           }}>
@@ -216,6 +220,7 @@ export default function Pricing() {
               <div
                 key={plan.id}
                 style={{
+                  width: '280px',
                   background: plan.popular ? 
                     'linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, rgba(0, 255, 136, 0.05) 100%)' :
                     'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
@@ -245,11 +250,11 @@ export default function Pricing() {
                 {plan.popular && (
                   <div style={{
                     position: 'absolute',
-                    top: '-12px',
+                    top: '-10px',
                     left: '50%',
                     transform: 'translateX(-50%)',
-                   background: plan.id === 'enterprise' ? 'rgba(255, 255, 255, 0.2)' : 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
-                    color: '#0a0a0a',
+                    background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
+                    color: '#0a0a0a', 
                     padding: '0.5rem 1.5rem',
                     borderRadius: '20px',
                     fontSize: '0.8rem',
@@ -257,7 +262,7 @@ export default function Pricing() {
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px'
                   }}>
-                   {plan.id === 'enterprise' ? 'COMING SOON' : 'Most Popular'}
+                   Most Popular
                   </div>
                 )}
 
@@ -278,15 +283,13 @@ export default function Pricing() {
                     margin: '0 0 0.25rem 0'
                   }}>
                     ${plan.price}
-                    {plan.period !== 'forever' && (
-                      <span style={{
-                        fontSize: '1rem',
-                        color: '#e2e8f0',
-                        fontWeight: '400'
-                      }}>
-                        /{plan.period}
-                      </span>
-                    )}
+                    <span style={{
+                      fontSize: '1rem',
+                      color: '#e2e8f0',
+                      fontWeight: '400'
+                    }}>
+                      {plan.period}
+                    </span>
                   </div>
                   
                   <p style={{
@@ -310,6 +313,25 @@ export default function Pricing() {
                   </div>
                 </div>
 
+                {plan.id === 'enterprise' && (
+                  <div style={{
+                    position: 'absolute',
+                    top: '-10px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    background: 'rgba(255, 255, 255, 0.2)',
+                    color: '#ffffff',
+                    padding: '0.5rem 1.5rem',
+                    borderRadius: '20px',
+                    fontSize: '0.8rem',
+                    fontWeight: '700',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.5px'
+                  }}>
+                    COMING SOON
+                  </div>
+                )}
+
                 <ul style={{
                   listStyle: 'none',
                   padding: 0,
@@ -331,7 +353,7 @@ export default function Pricing() {
                 </ul>
 
                 <button
-                  onClick={() => handlePlanSelect(plan)}
+                  onClick={plan.id === 'enterprise' ? null : () => handlePlanSelect(plan)}
                   disabled={loading}
                   style={{
                     width: '100%',
@@ -349,7 +371,7 @@ export default function Pricing() {
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px'
                   }}
-                  onMouseEnter={(e) => {
+                  onMouseEnter={plan.id === 'enterprise' ? null : (e) => {
                     if (!loading && plan.id !== 'enterprise') {
                       if (plan.popular) {
                         e.target.style.transform = 'translateY(-2px)';
@@ -360,7 +382,7 @@ export default function Pricing() {
                       }
                     }
                   }}
-                  onMouseLeave={(e) => {
+                  onMouseLeave={plan.id === 'enterprise' ? null : (e) => {
                     if (!loading && plan.id !== 'enterprise') {
                       if (plan.popular) {
                         e.target.style.transform = 'translateY(0)';
@@ -382,7 +404,7 @@ export default function Pricing() {
           <div style={{
             background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
             borderRadius: '20px',
-            padding: '3rem',
+            padding: '2.5rem',
             border: '1px solid rgba(0, 255, 136, 0.2)',
             marginBottom: '4rem'
           }}>
@@ -441,7 +463,7 @@ export default function Pricing() {
 
           {/* Trust Signals */}
           <div style={{
-            textAlign: 'center',
+            textAlign: 'center', 
             color: '#e2e8f0',
             fontSize: '0.9rem'
           }}> 
@@ -449,7 +471,7 @@ export default function Pricing() {
               ✓ 30-day money-back guarantee • ✓ Cancel anytime • ✓ Secure payment with Stripe
             </p>
             <p style={{ margin: 0, opacity: 0.7 }}>
-              Questions? Contact us at support@notebooklm.directory 
+              Questions? <Link href="mailto:support@notebooklm.directory" style={{ color: '#00ff88', textDecoration: 'none' }}>Contact us</Link>
             </p>
           </div>
         </div>
