@@ -1,4 +1,4 @@
-# Stripe Integration Setup Guide
+# Stripe Setup Guide for NotebookLM Directory
 
 ## 1. Create a Stripe Account
 

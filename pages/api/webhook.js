@@ -55,17 +55,7 @@ export default async function handler(req, res) {
 async function handleCheckoutSessionCompleted(session) {
   const userId = session.metadata.userId;
   const planId = session.metadata.planId;
-  const subscriptionId = session.subscription;
-
-  if (!userId || !subscriptionId || !planId) {
-    console.error('Missing userId, subscriptionId, or planId in session metadata');
-    return;
-  }
-
-  try {
-    // Get subscription details from Stripe
-    const subscription = await stripe.subscriptions.retrieve(subscriptionId);
-    const priceId = subscription.items.data[0].price.id;
+  const planId = session.metadata.planId;
 
     // Create or update subscription in database
     const { error } = await supabase
@@ -74,15 +64,29 @@ async function handleCheckoutSessionCompleted(session) {
         user_id: userId,
         stripe_subscription_id: subscriptionId,
         stripe_customer_id: session.customer, 
-        plan_id: planId,
+        plan_id: planId, 
         status: subscription.status,
         current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
         current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+        canceled_at: subscription.cancel_at ? new Date(subscription.cancel_at * 1000).toISOString() : null
         canceled_at: subscription.cancel_at ? new Date(subscription.cancel_at * 1000).toISOString() : null
       });
 
     if (error) {
       console.error('Error saving subscription:', error);
+    }
+    
+    // Also update the user's profile with the Stripe customer ID and subscription tier
+    const { error: profileError } = await supabase
+      .from('profiles')
+      .update({ 
+        stripe_customer_id: session.customer,
+        subscription_tier: planId
+      })
+      .eq('id', userId);
+      
+    if (profileError) {
+      console.error('Error updating profile:', profileError);
     }
     
     // Also update the user's profile with the Stripe customer ID

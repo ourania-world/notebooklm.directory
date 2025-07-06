@@ -49,6 +49,35 @@ export default function SubscriptionModal({ isOpen, onClose, currentPlan = 'free
       });
       
       const { url } = await response.json();
+      let priceId;
+      switch(planId) {
+        case 'standard':
+          priceId = 'price_standard_monthly'; // Replace with your actual Stripe price ID
+          break;
+        case 'professional':
+          priceId = 'price_professional_monthly'; // Replace with your actual Stripe price ID
+          break;
+        case 'enterprise':
+          priceId = 'price_enterprise_monthly'; // Replace with your actual Stripe price ID
+          break;
+        default:
+          throw new Error('Invalid plan selected');
+      }
+      
+      // Create checkout session
+      const response = await fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          priceId,
+          successUrl,
+          cancelUrl,
+        }),
+      });
+      
+      const { url } = await response.json();
       
       if (url) {
         window.location.href = url

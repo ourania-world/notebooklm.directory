@@ -14,6 +14,7 @@ export default function UpgradePrompt({
     standard: 'Standard',
     professional: 'Professional',
     enterprise: 'Enterprise'
+    enterprise: 'Enterprise'
   }
 
   const featureMessages = {
@@ -110,6 +111,14 @@ export default function UpgradePrompt({
                   <li style={{ marginBottom: '0.5rem' }}>✓ Submit up to 25 notebooks</li>
                   <li style={{ marginBottom: '0.5rem' }}>✓ Analytics dashboard</li>
                   <li>✓ API access</li>
+                </>
+              )}
+              {requiredPlan === 'enterprise' && (
+                <>
+                  <li style={{ marginBottom: '0.5rem' }}>✓ Enterprise-grade sustainability reporting</li>
+                  <li style={{ marginBottom: '0.5rem' }}>✓ Team carbon footprint aggregation</li>
+                  <li style={{ marginBottom: '0.5rem' }}>✓ Custom ESG dashboard integration</li>
+                  <li>✓ Dedicated sustainability consultant</li>
                 </>
               )}
               {requiredPlan === 'enterprise' && (
