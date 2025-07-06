@@ -70,20 +70,11 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
               notebooklm.directory
             </Link>
             
-            <div style={{ 
-              display: mobileMenuOpen ? 'flex' : 'flex',
-              flexDirection: mobileMenuOpen ? 'column' : 'row',
-              position: mobileMenuOpen ? 'absolute' : 'static',
-              top: mobileMenuOpen ? '100%' : 'auto',
-              left: mobileMenuOpen ? '0' : 'auto',
-              right: mobileMenuOpen ? '0' : 'auto',
-              background: mobileMenuOpen ? 'rgba(10, 10, 10, 0.95)' : 'transparent',
-              padding: mobileMenuOpen ? '1rem 2rem' : '0',
-              gap: mobileMenuOpen ? '1rem' : '2rem',
-              alignItems: 'center',
-              zIndex: 40,
-              borderBottom: mobileMenuOpen ? '1px solid rgba(0, 255, 136, 0.1)' : 'none'
-            }}>
+            <div style={{
+              display: 'flex',
+              gap: '2rem',
+              alignItems: 'center'
+            }}> 
               <Link href="/browse" style={{ 
                 color: router.pathname === '/browse' ? '#00ff88' : '#e2e8f0', 
                 textDecoration: 'none',

@@ -215,26 +215,14 @@ export default function Home({ initialFeaturedNotebooks }) {
             margin: '0 auto',
             position: 'relative'
           }}>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
-              gap: '2rem',
-              textAlign: 'center'
+            <p style={{ 
+              color: '#00ff88', 
+              fontSize: '1.2rem', 
+              textAlign: 'center',
+              margin: 0
             }}>
-              <div>
-                <div style={{ 
-                  fontSize: '2.5rem', 
-                  fontWeight: '700',
-                  color: '#00ff88',
-                  fontFamily: 'monospace'
-                }}>
-                  $3,650,500,150
-                </div>
-                <div style={{ color: '#00ff88', fontSize: '0.9rem', marginTop: '0.5rem' }}>
-                  in Research Value Tracked
-                </div>
-              </div>
-            </div>
+              Join our community of researchers building the future of sustainable AI research
+            </p>
           </div>
         </div>
       </section>
