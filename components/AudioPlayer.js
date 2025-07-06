@@ -48,8 +48,6 @@ export default function AudioPlayer({
       setLoading(false);
     };
     
-    };
-    
     audio.addEventListener('canplaythrough', handleCanPlayThrough);
     audio.addEventListener('timeupdate', handleTimeUpdate);
     audio.addEventListener('ended', handleEnded);
@@ -70,6 +68,8 @@ export default function AudioPlayer({
   useEffect(() => {
     if (isPlaying) {
       audioRef.current.play().catch(err => {
+        console.error(err);
+      });
       animateWaveform();
     } else {
       audioRef.current.pause();
@@ -144,7 +144,7 @@ export default function AudioPlayer({
             flexShrink: 0,
             transition: 'all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)',
             boxShadow: '0 4px 12px rgba(0, 255, 136, 0.3)', 
-            className: 'button-glow'
+            className: 'button-glow'}}
           onMouseEnter={(e) => {
             if (!loading && !error) {
               e.target.style.transform = 'scale(1.1)';
@@ -256,10 +256,10 @@ export default function AudioPlayer({
           }}
         >
           {[...Array(50)].map((_, i) => ( 
-            <div
+            <div style={{
                 borderRadius: '1px', 
-                transition: 'height 0.2s ease',
-            />
+                transition: 'height 0.2s ease'
+            }} />
           ))}
         </div>
       )}
