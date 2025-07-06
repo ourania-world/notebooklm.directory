@@ -1,6 +1,10 @@
-/** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true
+  reactStrictMode: true,
+  experimental: {
+    serverActions: {},
+    serverComponentsExternalPackages: ['@prisma/client'],
+    typedRoutes: true
+  }
 };
 
 module.exports = nextConfig;
