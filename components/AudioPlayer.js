@@ -12,6 +12,7 @@ export default function AudioPlayer({
   const [currentTime, setCurrentTime] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [mounted, setMounted] = useState(false);
   
   const audioRef = useRef(null);  
   const progressRef = useRef(null);  
@@ -24,6 +25,16 @@ export default function AudioPlayer({
   useEffect(() => {
     // Mark component as mounted to prevent hydration mismatch
     setMounted(true);
+    
+    // Don't run audio logic during SSR 
+    if (typeof window === 'undefined') return;
+    
+    // Check if audio is supported
+    if (!isAudioSupported()) {
+      setError('Audio not supported in this browser');
+      setLoading(false);
+      return;
+    }
     
     const audio = audioRef.current;
     if (!audio || !fullAudioUrl) return;
@@ -45,6 +56,7 @@ export default function AudioPlayer({
     
     const handleError = (e) => {
       console.error('Audio error:', e);
+      setError(`Failed to load audio: ${e.target?.error?.message || 'Unknown error'}`);
       setLoading(false);
     };
     
@@ -66,9 +78,14 @@ export default function AudioPlayer({
   }, [fullAudioUrl]);
   
   useEffect(() => {
+    // Don't run during SSR 
+    if (typeof window === 'undefined' || !mounted || !audioRef.current) return;
+    
     if (isPlaying) {
       audioRef.current.play().catch(err => {
-        console.error(err);
+        console.error('Error playing audio:', err);
+        setError(`Playback error: ${err.message}`);
+        setIsPlaying(false);
       });
       animateWaveform();
     } else {
@@ -88,8 +105,10 @@ export default function AudioPlayer({
   
   const handleProgressChange = (e) => {
     const newTime = e.target.value;
+    setCurrentTime(newTime);
+    audioRef.current.currentTime = newTime;
   };
-  
+
   const animateWaveform = () => {
     if (waveformRef.current && showWaveform) {
       const bars = waveformRef.current.children; 
@@ -111,6 +130,9 @@ export default function AudioPlayer({
       borderRadius: '16px',  
       padding: compact ? '1rem' : '1.5rem',
       border: '1px solid rgba(0, 255, 136, 0.2)',  
+      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
+      backdropFilter: 'blur(10px)',
+      WebkitBackdropFilter: 'blur(10px)',
       width: '100%'
     }}> 
       {fullAudioUrl && <audio ref={audioRef} src={fullAudioUrl} preload="metadata" />}
@@ -141,7 +163,8 @@ export default function AudioPlayer({
             fontWeight: '700', 
             flexShrink: 0,
             transition: 'all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)',
-            boxShadow: '0 4px 12px rgba(0, 255, 136, 0.3)'
+            boxShadow: '0 4px 12px rgba(0, 255, 136, 0.3)', 
+            className: 'button-glow'
           }}
           onMouseEnter={(e) => {
             if (!loading && !error) {
@@ -249,21 +272,22 @@ export default function AudioPlayer({
           style={{ 
             display: 'flex', 
             alignItems: 'center',
+            gap: '2px', 
             height: '40px'
           }}
         >
-          {[...Array(50)].map((_, i) => (
+          {[...Array(50)].map((_, i) => ( 
             <div
               key={i}
-              style={{
-                flex: 1,
-                background: '#00ff88',
-                opacity: 0.2,
-                margin: '0 1px',
-                height: '20px',
+              style={{ 
+                width: '3px',
+                height: isPlaying ? `${Math.random() * 30 + 10}px` : '10px',
+                background: isPlaying ? '#00ff88' : 'rgba(0, 255, 136, 0.3)',
                 borderRadius: '1px', 
-                transition: 'height 0.2s ease'
+                transition: 'height 0.2s ease',
+                animationPlayState: isPlaying ? 'running' : 'paused'
               }}
+              className={isPlaying ? 'waveform-bar' : ''} 
             />
           ))}
         </div>
@@ -277,6 +301,9 @@ export default function AudioPlayer({
           padding: '0.5rem' 
         }}>
           {error} 
+          <div style={{ fontSize: '0.8rem', marginTop: '0.5rem', opacity: 0.7 }}>
+            Try refreshing the page or check your audio file
+          </div>
         </div>
       )}
       
