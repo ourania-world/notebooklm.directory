@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { SUBSCRIPTION_PLANS, createCheckoutSession } from '../lib/subscriptions'
 import { getCurrentUser } from '../lib/auth'
 
-export default function SubscriptionModal({ isOpen, onClose, initialPlan = 'standard', currentPlan = 'free' }) {
+export default function SubscriptionModal({ isOpen, onClose, initialPlan = 'standard', currentPlan = 'free' }) { 
   const [loading, setLoading] = useState(false)
   const [selectedPlan, setSelectedPlan] = useState(initialPlan)
 
@@ -19,15 +19,7 @@ export default function SubscriptionModal({ isOpen, onClose, initialPlan = 'stan
       const successUrl = `${window.location.origin}/subscription/success`
       const cancelUrl = `${window.location.origin}/subscription/cancel` 
       
-      const { data, error } = await supabase.functions.invoke('create-checkout-session', {
-        body: {
-          planId,
-          successUrl,
-          cancelUrl
-        }
-      })
-      
-      const { data, error } = await supabase.functions.invoke('create-checkout-session', {
+      const { data, error } = await supabase.functions.invoke('create-checkout-session', { 
         body: {
           planId,
           successUrl,
@@ -134,7 +126,7 @@ export default function SubscriptionModal({ isOpen, onClose, initialPlan = 'stan
                 position: 'relative',
                 transition: 'all 0.3s ease',
                 opacity: 0.7
-              } : {
+              } : plan.id === 'enterprise' ? {
                 background: 'rgba(255, 255, 255, 0.05)',
                 border: plan.id === currentPlan ? 
                   '2px solid #00ff88' : 
@@ -148,7 +140,7 @@ export default function SubscriptionModal({ isOpen, onClose, initialPlan = 'stan
                 background: plan.id === 'premium' ? 
                   'linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, rgba(0, 255, 136, 0.05) 100%)' :
                   'rgba(255, 255, 255, 0.05)',
-                border: plan.id === currentPlan ? 
+                border: plan.id === currentPlan ?  
                   '2px solid #00ff88' : 
                   '1px solid rgba(255, 255, 255, 0.1)',
                 borderRadius: '16px',
@@ -178,7 +170,7 @@ export default function SubscriptionModal({ isOpen, onClose, initialPlan = 'stan
                   background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
                   color: '#0a0a0a',
                   padding: '0.5rem 1rem',
-                  borderRadius: '20px',
+                  borderRadius: '20px', 
                   fontSize: '0.8rem',
                   fontWeight: '700',
                   textTransform: 'uppercase',
@@ -193,7 +185,7 @@ export default function SubscriptionModal({ isOpen, onClose, initialPlan = 'stan
                   position: 'absolute',
                   top: '-10px',
                   left: '50%',
-                  transform: 'translateX(-50%)',
+                  transform: 'translateX(-50%)', 
                   background: 'rgba(255, 255, 255, 0.2)',
                   color: '#ffffff',
                   padding: '0.5rem 1rem',
@@ -212,7 +204,7 @@ export default function SubscriptionModal({ isOpen, onClose, initialPlan = 'stan
                   position: 'absolute',
                   top: '-10px',
                   left: '50%',
-                  transform: 'translateX(-50%)',
+                  transform: 'translateX(-50%)', 
                   background: 'rgba(255, 255, 255, 0.2)',
                   color: '#ffffff',
                   padding: '0.5rem 1rem',
