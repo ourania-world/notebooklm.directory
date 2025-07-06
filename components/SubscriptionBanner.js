@@ -15,6 +15,7 @@ export default function SubscriptionBanner() {
         if (session?.user) {
           // Check if user has a subscription
           const { data: subscription } = await supabase
+        }
         // Mock subscription data for now
         // In production, this would fetch from an API
         setSubscription({
@@ -100,4 +101,9 @@ export default function SubscriptionBanner() {
       )}
     </div>
   );
+}
+      }
+    }
+  }
+  )
 }
