@@ -18,7 +18,7 @@ export default function Pricing() {
       features: [
         'Access to all public notebooks',
         'Browse curated notebook collection',
-        'Basic search',
+        'Basic search features',
         'Community access',
         'Save up to 5 notebooks',
         'Submit unlimited notebooks'
@@ -35,9 +35,9 @@ export default function Pricing() {
       description: 'Great for regular users',
       features: [
         'Everything in Explorer',
-        'Unlimited saved notebooks',
+        'Unlimited saved notebooks', 
         'Submit unlimited notebooks',
-        'Advanced search',
+        'Advanced search features',
         'Email notifications',
         'Basic analytics'
       ],
@@ -53,8 +53,8 @@ export default function Pricing() {
       description: 'For power users and professionals',
       features: [
         'Everything in Standard',
-        'Unlimited saved notebooks',
-        'Advanced search & recommendations',
+        'Submit unlimited notebooks',
+        'Advanced search & AI recommendations',
         'Performance optimization metrics',
         'Priority support',
         'API access (1000 calls/month)',
@@ -69,7 +69,7 @@ export default function Pricing() {
       name: 'Enterprise',
       price: 99, 
       period: '/user/month',
-      description: 'Scale Your Innovation - COMING SOON',
+      description: 'For teams & organizations - COMING SOON',
       features: [
         'Everything in Professional',
         'Team collaboration tools',
@@ -393,8 +393,8 @@ export default function Pricing() {
                 <h3 style={{ color: '#00ff88', marginBottom: '0.5rem' }}>
                   What are the advanced search features?
                 </h3>
-                <p style={{ color: '#e2e8f0', lineHeight: '1.6' }}>
-                  Standard plan includes category filtering, tag search, and saved searches. Professional plan adds AI-powered recommendations, content similarity search, and personalized results based on your interests.
+                <p style={{ color: '#e2e8f0', lineHeight: '1.6' }}> 
+                  Standard plan includes category filtering, tag search, and saved searches. Professional plan adds AI-powered recommendations, content similarity search, and personalized results.
                 </p>
               </div>
 
@@ -402,7 +402,7 @@ export default function Pricing() {
                 <h3 style={{ color: '#00ff88', marginBottom: '0.5rem' }}>
                   How many notebooks can I submit?
                 </h3>
-                <p style={{ color: '#e2e8f0', lineHeight: '1.6' }}> 
+                <p style={{ color: '#e2e8f0', lineHeight: '1.6' }}>
                   All plans allow unlimited notebook submissions. We believe in making knowledge sharing accessible to everyone, regardless of subscription tier.
                 </p>
               </div>
