@@ -14,80 +14,76 @@ export default function Pricing() {
       name: 'Explorer',
       price: 0,
       period: 'forever',
-      description: 'Sustainable Discovery for All',
+      description: 'Perfect for getting started',
       features: [
-        'Access to resource-efficient platform',
+        'Access to all public notebooks',
         'Browse curated notebook collection',
-        'Basic sustainable search features',
-        'Community access to responsible research',
+        'Basic search features',
+        'Community access',
         'Save up to 5 notebooks',
-        'Mobile-optimized experience'
+        'Submit unlimited notebooks'
       ],
-      limits: { savedNotebooks: 5, submittedNotebooks: 2, premiumContent: false },
+      limits: { savedNotebooks: 5, submittedNotebooks: -1, premiumContent: false },
       cta: 'Start Free',
-      popular: false,
-      environmental: 'Join the sustainable research movement'
+      popular: false
     },
     {
       id: 'standard',
       name: 'Standard',
       price: 9.99, 
       period: '/month',
-      description: 'Enhanced features for serious researchers',
+      description: 'Great for regular users',
       features: [
         'Everything in Explorer',
         'Save up to 25 notebooks',
-        'Submit up to 10 notebooks',
+        'Submit unlimited notebooks',
         'Advanced search features',
         'Email notifications',
         'Basic analytics'
       ],
-      limits: { savedNotebooks: 25, submittedNotebooks: 10, premiumContent: false },
+      limits: { savedNotebooks: 25, submittedNotebooks: -1, premiumContent: false },
       cta: 'Upgrade to Standard',
-      popular: true,
-      environmental: 'Efficient research collaboration'
+      popular: true
     },
     {
       id: 'professional',
       name: 'Professional',
       price: 19.99, 
       period: '/month',
-      description: 'Accelerate Your Impact, Measure Your Footprint',
+      description: 'For power users and professionals',
       features: [
         'Everything in Standard',
-        'Computational Footprint Dashboard',
-        'Advanced resource-efficient search',
-        'Unlimited sustainable storage',
+        'Unlimited saved notebooks',
+        'Submit unlimited notebooks',
+        'Advanced search & AI recommendations',
         'Performance optimization metrics',
-        'Priority support from green-tech experts',
-        'API access with efficiency monitoring',
-        'ESG-ready impact reporting'
+        'Priority support',
+        'API access (1000 calls/month)',
+        'Export & integration tools'
       ],
-      limits: { savedNotebooks: -1, submittedNotebooks: 25, premiumContent: true },
+      limits: { savedNotebooks: -1, submittedNotebooks: -1, premiumContent: true },
       cta: 'Upgrade to Professional',
-      popular: false,
-      environmental: '47% reduction in redundant research'
+      popular: false
     },
     {
       id: 'enterprise',
       name: 'Enterprise',
       price: 99, 
       period: '/user/month',
-      description: 'Scale Your Innovation, Achieve Your ESG Goals - COMING SOON',
+      description: 'Scale Your Innovation - COMING SOON',
       features: [
         'Everything in Professional',
-        'Enterprise-grade sustainability reporting',
-        'Team carbon footprint aggregation',
-        'Custom ESG dashboard integration',
-        'Dedicated sustainability consultant',
-        'Carbon offset contribution options',
-        'Advanced security with green compliance',
-        'White-label sustainable platform'
+        'Team collaboration tools',
+        'Advanced analytics dashboard',
+        'Custom reporting',
+        'White-label options',
+        'Dedicated account manager',
+        'API access (10,000 calls/month)',
+        'Custom integrations'
       ],
       limits: { savedNotebooks: -1, submittedNotebooks: -1, premiumContent: true },
       cta: 'Contact Sales',
-      popular: false,
-      environmental: 'Institutional carbon footprint tracking'
+      popular: false
     }
   ]
 
@@ -154,7 +150,7 @@ export default function Pricing() {
               margin: '0 0 1rem 0',
               lineHeight: '1.1'
             }}>
-              Choose Your <span style={{ color: '#00ff88' }}>Impact</span>
+              Choose Your <span style={{ color: '#00ff88' }}>Plan</span>
             </h1>
             <p style={{ 
               fontSize: '1.3rem',
@@ -163,46 +159,8 @@ export default function Pricing() {
               margin: '0 auto 2rem auto',
               lineHeight: '1.6'
             }}>
-              Resource-efficient design delivers superior performance while reducing computational waste and accelerating discovery
+              Select the plan that best fits your needs
             </p>
-            
-            {/* Environmental Impact Stats */}
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(3, 1fr)',
-              gap: '2rem', 
-              maxWidth: '800px',
-              margin: '0 auto',
-              padding: '2rem',
-              background: 'rgba(0, 255, 136, 0.05)',
-              borderRadius: '16px',
-              border: '1px solid rgba(0, 255, 136, 0.2)'
-            }}>
-              <div style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: '2rem', fontWeight: '700', color: '#00ff88' }}>
-                  $3.2M
-                </div>
-                <div style={{ color: '#e2e8f0', fontSize: '0.9rem' }}>
-                  Computational Costs Saved
-                </div>
-              </div>
-              <div style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: '2rem', fontWeight: '700', color: '#00ff88' }}>
-                  47%
-                </div>
-                <div style={{ color: '#e2e8f0', fontSize: '0.9rem' }}>
-                  Reduction in Redundant Research
-                </div>
-              </div>
-              <div style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: '2rem', fontWeight: '700', color: '#00ff88' }}>
-                  156T
-                </div>
-                <div style={{ color: '#e2e8f0', fontSize: '0.9rem' }}>
-                  CO₂ Emissions Prevented
-                </div>
-              </div>
-            </div>
           </div>
 
           {/* Pricing Cards */}
@@ -315,18 +273,6 @@ export default function Pricing() {
                   }}>
                     {plan.description}
                   </p>
-                  
-                  <div style={{
-                    background: 'rgba(0, 255, 136, 0.1)',
-                    border: '1px solid rgba(0, 255, 136, 0.3)',
-                    borderRadius: '8px',
-                    padding: '0.75rem',
-                    fontSize: '0.9rem',
-                    color: '#00ff88',
-                    fontWeight: '600'
-                  }}>
-                    🌱 {plan.environmental}
-                  </div>
                 </div>
 
                 <ul style={{
@@ -428,15 +374,6 @@ export default function Pricing() {
             }}>
               <div>
                 <h3 style={{ color: '#00ff88', marginBottom: '0.5rem' }}>
-                  How do you calculate environmental impact?
-                </h3>
-                <p style={{ color: '#e2e8f0', lineHeight: '1.6' }}>
-                  We track computational resources saved through knowledge sharing, preventing redundant research cycles. Each shared notebook prevents an average of 10 redundant experiments, saving significant computational energy and costs.
-                </p>
-              </div>
-
-              <div>
-                <h3 style={{ color: '#00ff88', marginBottom: '0.5rem' }}>
                   Can I upgrade or downgrade anytime?
                 </h3>
                 <p style={{ color: '#e2e8f0', lineHeight: '1.6' }}>
@@ -459,6 +396,15 @@ export default function Pricing() {
                 </h3>
                 <p style={{ color: '#e2e8f0', lineHeight: '1.6' }}>
                   Yes! We offer 50% discounts for students and educators. Contact us with your academic email for verification and discount codes.
+                </p>
+              </div>
+
+              <div>
+                <h3 style={{ color: '#00ff88', marginBottom: '0.5rem' }}>
+                  How many notebooks can I submit?
+                </h3>
+                <p style={{ color: '#e2e8f0', lineHeight: '1.6' }}>
+                  All plans allow unlimited notebook submissions. We believe in making knowledge sharing accessible to everyone, regardless of subscription tier.
                 </p>
               </div>
             </div>

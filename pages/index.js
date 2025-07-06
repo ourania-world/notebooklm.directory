@@ -206,7 +206,7 @@ export default function Home({ initialFeaturedNotebooks }) {
           <div style={{
             background: 'rgba(0, 0, 0, 0.4)',
             backdropFilter: 'blur(20px)', 
-            border: '1px solid rgba(0, 255, 136, 0.2)', 
+            border: '1px solid rgba(0, 255, 136, 0.2)',
             borderRadius: '20px',  
             padding: '2rem', 
             maxWidth: '800px', 
@@ -215,47 +215,21 @@ export default function Home({ initialFeaturedNotebooks }) {
           }}>
             <div style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(3, 1fr)',
+              gridTemplateColumns: '1fr',
               gap: '1rem',
               textAlign: 'center'
             }}>
               <div>
                 <div style={{ 
-                  fontSize: '2.5rem', 
+                  fontSize: '2rem', 
                   fontWeight: '700',
                   color: '#00ff88',
                   fontFamily: 'monospace'
                 }}>
-                  $3.2M
+                  The Premier NotebookLM Directory
                 </div>
                 <div style={{ color: '#00ff88', fontSize: '0.9rem', marginTop: '0.5rem' }}>
-                  Computational Costs Saved
-                </div>
-              </div>
-              <div>
-                <div style={{ 
-                  fontSize: '2.5rem', 
-                  fontWeight: '700',
-                  color: '#00ff88',
-                  fontFamily: 'monospace'
-                }}>
-                  47%
-                </div>
-                <div style={{ color: '#00ff88', fontSize: '0.9rem', marginTop: '0.5rem' }}>
-                  Reduction in Redundant Research
-                </div>
-              </div>
-              <div>
-                <div style={{ 
-                  fontSize: '2.5rem', 
-                  fontWeight: '700',
-                  color: '#00ff88',
-                  fontFamily: 'monospace'
-                }}>
-                  156T
-                </div>
-                <div style={{ color: '#00ff88', fontSize: '0.9rem', marginTop: '0.5rem' }}>
-                  CO₂ Emissions Prevented
+                  Discover, share, and collaborate with researchers worldwide
                 </div>
               </div>
             </div>

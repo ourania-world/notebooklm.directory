@@ -295,12 +295,12 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                   fontSize: '0.9rem'
                 }}>
                   <div style={{ color: '#00ff88', fontWeight: '600', marginBottom: '0.5rem' }}>
-                    Our Impact Today:
+                    Join Our Community:
                   </div>
                   <div style={{ color: '#e2e8f0', fontSize: '0.8rem', lineHeight: '1.6' }}>
-                    • 47% reduction in redundant research<br />
-                    • $3.2M in computational costs saved<br />
-                    • 156T CO₂ emissions prevented 
+                    • Share your innovative projects<br />
+                    • Discover cutting-edge research<br />
+                    • Connect with other researchers
                   </div>
                 </div>
               </div>
