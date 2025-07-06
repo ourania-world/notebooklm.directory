@@ -1,15 +1,21 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 
+const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [session, setSession] = useState(null);
   const [session, setSession] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [mounted, setMounted] = useState(false); 
+
+  useEffect(() => {
+    setMounted(true);
+
+    if (typeof window !== 'undefined') {
+      const getInitialSession = async () => {
+        try {
           // Get initial session
           const { data, error } = await supabase.auth.getSession();
            
@@ -124,12 +130,14 @@ export function AuthProvider({ children }) {
   // This prevents hydration mismatches
   return <AuthContext.Provider value={value}>{mounted ? children : null}</AuthContext.Provider>;
 };
-}
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
+  if (!context) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
+  return context;
+};
 
 // Export the context for advanced usage
 export { AuthContext };
