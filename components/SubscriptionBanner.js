@@ -2,11 +2,14 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 
 export default function SubscriptionBanner() {
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading } = useAuth();
   const [subscription, setSubscription] = useState(null);
   const [subLoading, setSubLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+    
     if (!user) {
       setSubLoading(false);
       return;
@@ -15,22 +18,30 @@ export default function SubscriptionBanner() {
     async function fetchSubscription() {
       try {
         setSubLoading(true);
-        // In a real implementation, this would fetch from an API
-        // For now, we'll simulate a free plan for all users
-        setSubscription({
-          plan: { id: 'free' }
-        });
+        // Simple simulation - in production, you would fetch from your API
+        setTimeout(() => {
+          setSubscription({
+            plan: { id: 'free' }
+          });
+          setSubLoading(false);
+        }, 100);
       } catch (error) {
         console.error('Error fetching subscription:', error);
-      } finally {
         setSubLoading(false);
+      } finally {
+        // Handled in the setTimeout for the simulation
       }
     }
 
     fetchSubscription();
   }, [user]);
 
-  if (authLoading || subLoading || !user || (subscription?.plan?.id === 'professional' || subscription?.plan?.id === 'enterprise' || subscription?.plan?.id === 'standard')) {
+  // Don't render during SSR to prevent hydration mismatch
+  if (!mounted) {
+    return null;
+  }
+
+  if (loading || subLoading || !user || (subscription?.plan?.id === 'professional' || subscription?.plan?.id === 'enterprise' || subscription?.plan?.id === 'standard')) {
     return null;
   }
 

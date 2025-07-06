@@ -7,52 +7,53 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [hasMounted, setHasMounted] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     // Mark component as mounted to prevent hydration mismatch
-    setHasMounted(true);
+    setMounted(true);
     
     // Only run auth logic on the client side
     if (typeof window !== 'undefined') {
-      // Handle initial session and auth state changes
-      const setupAuth = async () => {
+      const getInitialSession = async () => {
         try {
-          // First, try to get the session
+          setLoading(true);
+          
+          // Get initial session
           const { data, error } = await supabase.auth.getSession();
           
           if (error) {
-            console.warn('Error getting initial session:', error);
+            console.warn('Error getting session:', error);
             setError(error);
-            setLoading(false);
-            return;
+          } else {
+            setUser(data.session?.user || null);
           }
-          
-          setUser(data.session?.user || null);
-          
-          // Set up auth state change listener
-          const { data: { subscription } } = supabase.auth.onAuthStateChange(
-            (_event, session) => {
-              setUser(session?.user || null);
-            }
-          );
-          
-          setLoading(false);
-          
-          // Cleanup function to unsubscribe
-          return () => {
-            subscription?.unsubscribe();
-          };
         } catch (error) {
-          console.error('Auth setup error:', error);
+          console.warn('Failed to get initial session:', error);
           setError(error);
+        } finally {
           setLoading(false);
         }
       };
-      
-      setupAuth();
+
+      getInitialSession();
+
+      // Listen for auth changes
+      const { data: { subscription } } = supabase.auth.onAuthStateChange(
+        async (event, session) => {
+          if (event) {
+            console.log('Auth state changed:', event);
+          }
+          setUser(session?.user || null);
+          setLoading(false);
+        }
+      );
+
+      return () => {
+        subscription?.unsubscribe();
+      };
     } else {
-      // On server, just set loading to false without auth checks
+      // On server, just set loading to false
       setLoading(false);
     }
   }, []);
@@ -63,7 +64,6 @@ export const AuthProvider = ({ children }) => {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
       setUser(null);
-      return true;
     } catch (error) {
       console.error('Error signing out:', error);
       throw error;
@@ -107,7 +107,6 @@ export const AuthProvider = ({ children }) => {
         redirectTo: `${window.location.origin}/reset-password`
       });
       if (error) throw error;
-      return true;
     } catch (error) {
       console.error('Error resetting password:', error);
       throw error;
@@ -115,8 +114,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   // Don't render anything during SSR to prevent hydration mismatch
-  if (!hasMounted) {
-    return <>{children}</>;
+  if (!mounted && typeof window !== 'undefined') {
+    return null;
   }
 
   const value = {
