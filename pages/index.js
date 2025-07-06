@@ -94,15 +94,16 @@ export default function Home({ initialFeaturedNotebooks }) {
           <div style={{ marginBottom: '2rem' }}>
             <div style={{
               display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              background: 'rgba(0, 255, 136, 0.1)',
-              border: '1px solid rgba(0, 255, 136, 0.3)',
-              borderRadius: '50px',
-              padding: '0.5rem 1.5rem',
-              marginBottom: '2rem',
-              fontSize: '0.9rem',
-              color: '#00ff88'
+              alignItems: 'center', 
+              gap: '0.5rem', 
+              background: 'rgba(0, 0, 0, 0.4)', 
+              border: '1px solid rgba(0, 255, 136, 0.3)', 
+              borderRadius: '50px', 
+              padding: '0.5rem 1.5rem', 
+              marginBottom: '2rem', 
+              fontSize: '0.9rem', 
+              color: '#00ff88', 
+              backdropFilter: 'blur(10px)'
             }}>
               ⭐ Trusted by 10,000+ AI Researchers • Excellent Reviews
             </div>
@@ -218,7 +219,8 @@ export default function Home({ initialFeaturedNotebooks }) {
             <div style={{
               display: 'flex',
               justifyContent: 'center',
-              alignItems: 'center'
+              alignItems: 'center',
+              padding: '1rem'
             }}>
               <p style={{ 
                 color: '#00ff88', 
@@ -660,7 +662,7 @@ export default function Home({ initialFeaturedNotebooks }) {
           <h2 style={{ 
             fontSize: '2rem', 
             margin: '0 0 1rem 0',
-            color: '#ffffff',
+            color: '#ffffff', 
             fontWeight: '700'
           }}>
             🎧 Listen to the <span style={{ color: '#00ff88' }}>Vision</span>
@@ -673,7 +675,7 @@ export default function Home({ initialFeaturedNotebooks }) {
             Hear our AI-generated overview of how NotebookLM is transforming research and creativity
           </p>
           <AudioPlayer 
-            audioUrl="overview.mp3"
+            audioUrl="/overview.mp3"
             title="Listen to the Vision"
           />
         </div>
