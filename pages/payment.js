@@ -212,18 +212,6 @@ export default function Payment() {
               </ul>
             </div>
             
-            <div style={{
-              background: 'rgba(0, 255, 136, 0.1)',
-              border: '1px solid rgba(0, 255, 136, 0.3)',
-              borderRadius: '12px',
-              padding: '1rem',
-              marginBottom: '2rem'
-            }}>
-              <p style={{ color: '#00ff88', margin: 0 }}>
-                <strong>7-day free trial included!</strong> You won't be charged until your trial ends, and you can cancel anytime.
-              </p>
-            </div>
-            
             <button
               onClick={handlePayment}
               disabled={paymentLoading}
@@ -254,7 +242,7 @@ export default function Payment() {
             fontSize: '0.9rem'
           }}>
             <p style={{ margin: '0 0 0.5rem 0' }}>
-              ✓ 7-day free trial • ✓ Cancel anytime • ✓ Secure payment with Stripe
+              ✓ Cancel anytime • ✓ Secure payment with Stripe
             </p>
             <p style={{ margin: 0, opacity: 0.7 }}>
               Questions? Contact us at support@notebooklm.directory
