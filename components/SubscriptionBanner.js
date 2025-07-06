@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { useAuth } from '../context/AuthContext';
 
 export default function SubscriptionBanner() {
@@ -67,8 +68,8 @@ export default function SubscriptionBanner() {
           </p>
         </div>
         
-        <button
-          onClick={() => window.location.href = '/pricing'}
+        <Link
+          href="/pricing"
           style={{
             background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
             color: '#0a0a0a',
@@ -79,11 +80,12 @@ export default function SubscriptionBanner() {
             fontWeight: '600',
             cursor: 'pointer',
             textTransform: 'uppercase',
-            letterSpacing: '0.5px'
+            letterSpacing: '0.5px',
+            textDecoration: 'none'
           }}
         >
           Upgrade Now
-        </button>
+        </Link>
       </div>
     </div>
   );

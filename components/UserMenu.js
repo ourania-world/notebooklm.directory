@@ -1,23 +1,11 @@
 import { useState } from 'react';
 import Link from 'next/link';
-import auth from '../lib/auth';
+import { useAuth } from '../context/AuthContext';
 
-export default function UserMenu({ user }) {
+export default function UserMenu() {
+  const { user, signOut } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [signOutLoading, setSignOutLoading] = useState(false);
-
-  const handleSignOut = async () => {
-    try {
-      setSignOutLoading(true);
-      await auth.signOut();
-      setIsOpen(false);
-      window.location.href = '/';
-    } catch (error) {
-      console.error('Error signing out:', error);
-    } finally {
-      setSignOutLoading(false);
-    }
-  };
 
   if (!user) {
     return (
@@ -54,6 +42,19 @@ export default function UserMenu({ user }) {
       </div>
     );
   }
+
+  const handleSignOut = async () => {
+    try {
+      setSignOutLoading(true);
+      await signOut();
+      setIsOpen(false);
+      window.location.href = '/';
+    } catch (error) {
+      console.error('Error signing out:', error);
+    } finally {
+      setSignOutLoading(false);
+    }
+  };
 
   return (
     <div style={{ position: 'relative' }}>
@@ -128,11 +129,9 @@ export default function UserMenu({ user }) {
             overflow: 'hidden'
           }}>
             <div style={{ padding: '0.5rem 0' }}>
-              <button
-                onClick={() => {
-                  window.location.href = '/profile';
-                  setIsOpen(false);
-                }}
+              <Link
+                href="/profile"
+                onClick={() => setIsOpen(false)}
                 style={{
                   width: '100%',
                   background: 'none',
@@ -146,24 +145,15 @@ export default function UserMenu({ user }) {
                   transition: 'all 0.2s ease',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '0.75rem'
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.background = 'rgba(0, 255, 136, 0.1)';
-                  e.target.style.color = '#00ff88';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.background = 'none';
-                  e.target.style.color = '#ffffff';
+                  gap: '0.75rem',
+                  textDecoration: 'none'
                 }}
               >
                 👤 Profile
-              </button>
-              <button
-                onClick={() => {
-                  window.location.href = '/my-notebooks';
-                  setIsOpen(false);
-                }}
+              </Link>
+              <Link
+                href="/my-notebooks"
+                onClick={() => setIsOpen(false)}
                 style={{
                   width: '100%',
                   background: 'none',
@@ -177,24 +167,15 @@ export default function UserMenu({ user }) {
                   transition: 'all 0.2s ease',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '0.75rem'
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.background = 'rgba(0, 255, 136, 0.1)';
-                  e.target.style.color = '#00ff88';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.background = 'none';
-                  e.target.style.color = '#ffffff';
+                  gap: '0.75rem',
+                  textDecoration: 'none'
                 }}
               >
                 📚 My Notebooks
-              </button>
-              <button
-                onClick={() => {
-                  window.location.href = '/saved';
-                  setIsOpen(false);
-                }}
+              </Link>
+              <Link
+                href="/saved"
+                onClick={() => setIsOpen(false)}
                 style={{
                   width: '100%',
                   background: 'none',
@@ -208,19 +189,12 @@ export default function UserMenu({ user }) {
                   transition: 'all 0.2s ease',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '0.75rem'
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.background = 'rgba(0, 255, 136, 0.1)';
-                  e.target.style.color = '#00ff88';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.background = 'none';
-                  e.target.style.color = '#ffffff';
+                  gap: '0.75rem',
+                  textDecoration: 'none'
                 }}
               >
                 💾 Saved
-              </button>
+              </Link>
               <hr style={{ 
                 margin: '0.5rem 0', 
                 border: 'none', 

@@ -1,130 +1,13 @@
-import Stripe from 'stripe';
-import { buffer } from 'micro';
-import { supabase } from '../../lib/supabase';
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
-
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
-
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const buf = await buffer(req);
-  const sig = req.headers['stripe-signature'];
+  // This is a mock webhook handler for demonstration purposes
+  // In a real implementation, this would verify and process Stripe webhook events
 
-  let event;
+  console.log('Received webhook event:', req.body);
 
-  try {
-    event = stripe.webhooks.constructEvent(buf.toString(), sig, webhookSecret);
-  } catch (err) {
-    console.error(`Webhook Error: ${err.message}`);
-    return res.status(400).send(`Webhook Error: ${err.message}`);
-  }
-
-  // Handle the event
-  switch (event.type) {
-    case 'checkout.session.completed': {
-      const session = event.data.object;
-      await handleCheckoutSessionCompleted(session);
-      break;
-    }
-    case 'customer.subscription.updated': {
-      const subscription = event.data.object;
-      await handleSubscriptionUpdated(subscription);
-      break;
-    }
-    case 'customer.subscription.deleted': {
-      const subscription = event.data.object;
-      await handleSubscriptionDeleted(subscription);
-      break;
-    }
-    default:
-      console.log(`Unhandled event type: ${event.type}`);
-  }
-
+  // Respond with success
   res.status(200).json({ received: true });
-}
-
-async function handleCheckoutSessionCompleted(session) {
-  const userId = session.metadata.userId;
-  const planId = session.metadata.planId;
-  try {
-    // Create or update subscription in database
-    const { error } = await supabase
-      .from('subscriptions')
-      .upsert({
-        user_id: userId,
-        stripe_subscription_id: subscriptionId,
-        stripe_customer_id: session.customer, 
-        plan_id: planId, 
-        status: subscription.status,
-        current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
-        current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
-        canceled_at: subscription.cancel_at ? new Date(subscription.cancel_at * 1000).toISOString() : null
-      });
-
-    if (error) {
-      console.error('Error saving subscription:', error);
-    }
-    
-    // Also update the user's profile with the Stripe customer ID and subscription tier
-    const { error: profileError } = await supabase
-      .from('profiles')
-      .update({ 
-        stripe_customer_id: session.customer,
-        subscription_tier: planId
-      })
-      .eq('id', userId);
-      
-    if (profileError) {
-      console.error('Error updating profile:', profileError);
-    }
-  } catch (error) {
-    console.error('Error handling checkout session completed:', error);
-  }
-}
-
-async function handleSubscriptionUpdated(subscription) {
-  try {
-    const { error } = await supabase
-      .from('subscriptions')
-      .update({
-        status: subscription.status,
-        current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
-        current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
-        canceled_at: subscription.canceled_at ? new Date(subscription.canceled_at * 1000).toISOString() : null,
-      })
-      .eq('stripe_subscription_id', subscription.id);
-
-    if (error) {
-      console.error('Error updating subscription:', error);
-    }
-  } catch (error) {
-    console.error('Error handling subscription updated:', error);
-  }
-}
-
-async function handleSubscriptionDeleted(subscription) {
-  try {
-    const { error } = await supabase
-      .from('subscriptions')
-      .update({
-        status: 'canceled',
-        canceled_at: new Date().toISOString(),
-      })
-      .eq('stripe_subscription_id', subscription.id);
-
-    if (error) {
-      console.error('Error updating subscription to canceled:', error);
-    }
-  } catch (error) {
-    console.error('Error handling subscription deleted:', error);
-  }
 }
