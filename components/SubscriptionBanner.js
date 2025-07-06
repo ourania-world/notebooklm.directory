@@ -67,7 +67,7 @@ export default function SubscriptionBanner() {
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <span style={{ color: '#00ff88', fontSize: '1.2rem' }}>✨</span>
           <p style={{ margin: 0, color: '#ffffff', fontSize: '0.9rem' }}>
-            Upgrade to <strong>Professional</strong> for unlimited saves and premium features
+            Upgrade to <strong>Professional</strong> for unlimited saves and upcoming premium features
           </p>
         </div> 
         

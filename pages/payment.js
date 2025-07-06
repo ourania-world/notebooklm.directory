@@ -319,7 +319,8 @@ export default function Payment() {
                 <div style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '1rem'
+                  gap: '1rem',
+                  marginTop: '1rem'
                 }}>
                   <div style={{
                     width: '40px',
@@ -343,8 +344,8 @@ export default function Payment() {
                     }}>
                       Instant Access
                     </h3>
-                    <p style={{ color: '#e2e8f0', margin: 0, fontSize: '0.9rem' }}>
-                      Get immediate access to all plan features
+                    <p style={{ color: '#e2e8f0', margin: 0, fontSize: '0.85rem' }}>
+                      Get immediate access to all available features. Coming soon features will be automatically enabled when ready.
                     </p>
                   </div>
                 </div>
@@ -510,11 +511,27 @@ export default function Payment() {
                       display: 'flex',
                       alignItems: 'center',
                       gap: '0.5rem',
-                      color: '#e2e8f0',
+                      marginBottom: '0.75rem',
                       fontSize: '0.9rem'
                     }}>
                       <input
-                        type="checkbox"
+                      {feature}
+                      {feature.includes('API access') || 
+                       feature.includes('analytics') || 
+                       feature.includes('metrics') || 
+                       feature.includes('recommendations') || 
+                       feature.includes('Email notifications') ? (
+                        <span style={{ 
+                          marginLeft: '0.5rem',
+                          fontSize: '0.75rem',
+                          color: '#ffc107',
+                          background: 'rgba(255, 193, 7, 0.1)',
+                          padding: '0.1rem 0.4rem',
+                          borderRadius: '4px'
+                        }}>
+                          Coming Soon
+                        </span>
+                      ) : null}
                         id="terms"
                         required
                         style={{

@@ -247,13 +247,29 @@ export default function SubscriptionModal({ isOpen, onClose, initialPlan = 'stan
                   <li key={index} style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '0.75rem',
+                    gap: '0.5rem',
                     marginBottom: '0.75rem',
                     color: '#e2e8f0',
                     fontSize: '0.9rem'
                   }}>
                     <span style={{ color: '#00ff88', fontSize: '1.2rem' }}>✓</span>
                     {feature}
+                    {(feature.includes('API') || 
+                      feature.includes('analytics') || 
+                      feature.includes('metrics') || 
+                      feature.includes('recommendations') || 
+                      feature.includes('Email notifications')) && (
+                      <span style={{ 
+                        marginLeft: '0.25rem',
+                        fontSize: '0.7rem',
+                        color: '#ffc107',
+                        background: 'rgba(255, 193, 7, 0.1)',
+                        padding: '0.1rem 0.3rem',
+                        borderRadius: '4px'
+                      }}>
+                        Coming Soon
+                      </span>
+                    )}
                   </li>
                 ))}
               </ul>
