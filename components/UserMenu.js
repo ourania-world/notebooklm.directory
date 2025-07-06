@@ -6,6 +6,7 @@ export default function UserMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const [signOutLoading, setSignOutLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -22,6 +23,15 @@ export default function UserMenu() {
       setSignOutLoading(false);
     }
   };
+
+  // Don't render during SSR to prevent hydration mismatch
+  if (!mounted) {
+    return null;
+  }
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Don't render during SSR to prevent hydration mismatch
   if (!mounted) {

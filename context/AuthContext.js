@@ -50,7 +50,9 @@ export const AuthProvider = ({ children }) => {
       );
 
       return () => {
-        subscription?.unsubscribe();
+        if (subscription) {
+          subscription.unsubscribe();
+        }
       };
     } else {
       // On server, just set loading to false

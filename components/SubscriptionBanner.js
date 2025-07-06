@@ -6,8 +6,11 @@ export default function SubscriptionBanner() {
   const [subscription, setSubscription] = useState(null);
   const [subLoading, setSubLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+    
     setMounted(true);
     
     if (!user) {
@@ -20,21 +23,21 @@ export default function SubscriptionBanner() {
         setSubLoading(true);
         // Simple simulation - in production, you would fetch from your API
         setTimeout(() => {
-          setSubscription({
-            plan: { id: 'free' }
-          });
-          setSubLoading(false);
-        }, 100);
-      } catch (error) {
-        console.error('Error fetching subscription:', error);
+      // Simulate subscription check - in production, fetch from your API
+      setSubLoading(true);
+      setTimeout(() => {
+        setSubscription({ plan: { id: 'free' } });
         setSubLoading(false);
-      } finally {
-        // Handled in the setTimeout for the simulation
-      }
+      }, 100);
     }
 
     fetchSubscription();
   }, [user]);
+
+  // Don't render during SSR to prevent hydration mismatch
+  if (!mounted) {
+    return null;
+  }
 
   // Don't render during SSR to prevent hydration mismatch
   if (!mounted) {
