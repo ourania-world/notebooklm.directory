@@ -296,10 +296,9 @@ export default function Pricing() {
                   
                   <p style={{
                     color: '#e2e8f0',
-                    Which features are currently available?
                     margin: '0 0 1rem 0'
                   }}> 
-                    All core features are available now, including unlimited notebook submissions and browsing. Some advanced features like AI recommendations, analytics, and API access are coming soon and will be automatically enabled for subscribers when ready.
+                    {plan.description}
                   </p>
                 </div>
 
@@ -382,6 +381,33 @@ export default function Pricing() {
                 </button>
               </div>
             ))}
+          </div>
+
+          {/* Feature Availability Notice */}
+          <div style={{
+            background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
+            borderRadius: '20px', 
+            padding: '2rem',
+            border: '1px solid rgba(0, 255, 136, 0.2)',
+            marginBottom: '4rem',
+            textAlign: 'center'
+          }}>
+            <h3 style={{
+              fontSize: '1.25rem',
+              fontWeight: '700',
+              color: '#00ff88', 
+              marginBottom: '1rem'
+            }}>
+              Which features are currently available?
+            </h3>
+            <p style={{ 
+              color: '#e2e8f0', 
+              lineHeight: '1.6',
+              maxWidth: '800px',
+              margin: '0 auto'
+            }}>
+              All core features are available now, including unlimited notebook submissions and browsing. Some advanced features like AI recommendations, analytics, and API access are coming soon and will be automatically enabled for subscribers when ready.
+            </p>
           </div>
 
           {/* FAQ Section */}
