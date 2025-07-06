@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Layout from '../components/Layout'
 import { useAuth } from '../context/AuthContext'
 import Link from 'next/link'
+import Link from 'next/link'
 
 export default function Pricing() {
   const { user } = useAuth()
@@ -210,15 +211,18 @@ export default function Pricing() {
 
           {/* Pricing Cards */}
           <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
-            gap: '2rem',
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            gap: '1.5rem',
             marginBottom: '4rem'
           }}>
             {plans.map((plan) => (
               <div
                 key={plan.id}
                 style={{
+                  flex: '1 1 250px',
+                  maxWidth: '350px',
                   background: plan.popular ? 
                     'linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, rgba(0, 255, 136, 0.05) 100%)' :
                     'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
@@ -230,7 +234,7 @@ export default function Pricing() {
                   position: 'relative',
                   transition: 'all 0.3s ease',
                   cursor: 'pointer'
-                }}
+                }} 
                 onClick={() => setSelectedPlan(plan.id)}
                 onMouseEnter={(e) => {
                   if (!plan.popular && plan.id !== 'enterprise') {
@@ -250,7 +254,7 @@ export default function Pricing() {
                     position: 'absolute',
                     top: '-10px',
                     left: '50%',
-                    transform: 'translateX(-50%)', 
+                    transform: 'translateX(-50%)',
                     background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
                     color: '#0a0a0a', 
                     padding: '0.5rem 1.5rem',
@@ -258,7 +262,8 @@ export default function Pricing() {
                     fontSize: '0.8rem', 
                     fontWeight: '700',
                     textTransform: 'uppercase',
-                    letterSpacing: '0.5px'
+                    letterSpacing: '0.5px',
+                    zIndex: 10
                   }}> 
                    Most Popular
                   </div>
@@ -278,7 +283,7 @@ export default function Pricing() {
                     fontSize: '3rem',
                     fontWeight: '700',
                     color: '#00ff88',
-                    margin: '0 0 0.25rem 0'
+                    margin: '0 0 0.25rem 0' 
                   }}>
                     ${plan.price}
                     <span style={{
@@ -294,7 +299,7 @@ export default function Pricing() {
                     color: '#e2e8f0',
                     fontSize: '1rem',
                     margin: '0 0 1rem 0'
-                  }}>
+                  }}> 
                     {plan.description}
                   </p>
                   
@@ -303,7 +308,7 @@ export default function Pricing() {
                     border: '1px solid rgba(0, 255, 136, 0.3)',
                     borderRadius: '8px',
                     padding: '0.75rem',
-                    fontSize: '0.9rem',
+                    fontSize: '0.9rem', 
                     color: '#00ff88',
                     fontWeight: '600'
                   }}>
@@ -314,7 +319,7 @@ export default function Pricing() {
                 {plan.id === 'enterprise' && (
                   <div style={{
                     position: 'absolute',
-                    top: '-10px',
+                    top: '-12px',
                     left: '50%',
                     transform: 'translateX(-50%)', 
                     background: 'rgba(255, 255, 255, 0.2)',
@@ -325,6 +330,8 @@ export default function Pricing() {
                     fontWeight: '700',
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px'
+                    letterSpacing: '0.5px',
+                    zIndex: 10
                   }}> 
                     COMING SOON
                   </div>
@@ -334,7 +341,7 @@ export default function Pricing() {
                   listStyle: 'none',
                   padding: 0,
                   margin: '0 0 2rem 0'
-                }}>
+                }}> 
                   {plan.features.map((feature, index) => (
                     <li key={index} style={{
                       display: 'flex',
@@ -357,7 +364,7 @@ export default function Pricing() {
                     width: '100%',
                     background: plan.id === 'enterprise' ? 'rgba(255, 255, 255, 0.1)' : (plan.popular ? 
                       'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)' :
-                      'transparent'),
+                      'transparent'), 
                     color: plan.id === 'enterprise' ? '#ffffff' : (plan.popular ? '#0a0a0a' : '#00ff88'),
                     border: plan.id === 'enterprise' || plan.popular ? 'none' : '1px solid rgba(0, 255, 136, 0.3)',
                     padding: '1rem',
@@ -366,7 +373,7 @@ export default function Pricing() {
                     fontWeight: '700',
                     cursor: plan.id === 'enterprise' || loading ? 'not-allowed' : 'pointer',
                     transition: 'all 0.2s ease',
-                    textTransform: 'uppercase',
+                    textTransform: 'uppercase', 
                     letterSpacing: '0.5px'
                   }}
                   onMouseEnter={plan.id === 'enterprise' ? null : (e) => {
@@ -391,7 +398,7 @@ export default function Pricing() {
                       }
                     }
                   }}
-                >
+                > 
                   {loading ? 'Processing...' : (plan.id === 'enterprise' ? 'Coming Soon' : plan.cta)} 
                 </button>
               </div>
@@ -403,14 +410,14 @@ export default function Pricing() {
             background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)', 
             borderRadius: '20px',
             padding: '2.5rem',
-            border: '1px solid rgba(0, 255, 136, 0.2)', 
+            border: '1px solid rgba(0, 255, 136, 0.2)',  
             marginBottom: '4rem'
           }}>
             <h2 style={{
               fontSize: '2rem',
               fontWeight: '700',
               color: '#ffffff',
-              textAlign: 'center', 
+              textAlign: 'center',  
               marginBottom: '2rem' 
             }}>
               Frequently Asked Questions
@@ -419,7 +426,7 @@ export default function Pricing() {
             <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
-              gap: '2rem'  
+              gap: '2rem'   
             }}>
               <div>
                 <h3 style={{ color: '#00ff88', marginBottom: '0.5rem' }}>
@@ -464,12 +471,12 @@ export default function Pricing() {
             textAlign: 'center',
             color: '#e2e8f0',
             fontSize: '0.9rem'
-          }}> 
+          }}>  
             <p style={{ margin: '0 0 1rem 0' }}>
               ✓ 30-day money-back guarantee • ✓ Cancel anytime • ✓ Secure payment with Stripe
             </p>
             <p style={{ margin: 0, opacity: 0.7 }}>
-              Questions? <Link href="mailto:support@notebooklm.directory" style={{ color: '#00ff88', textDecoration: 'none' }}>Contact us</Link>
+              Questions? Contact us at support@notebooklm.directory
             </p>
           </div>
         </div>

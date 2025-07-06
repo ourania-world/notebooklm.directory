@@ -94,7 +94,7 @@ export default function Home({ initialFeaturedNotebooks }) {
           <div style={{
             display: 'inline-flex',
             alignItems: 'center', 
-            gap: '0.5rem',  
+            gap: '0.5rem',
             background: 'rgba(0, 0, 0, 0.4)', 
             border: '1px solid rgba(0, 255, 136, 0.3)', 
             borderRadius: '50px', 
@@ -103,8 +103,8 @@ export default function Home({ initialFeaturedNotebooks }) {
             fontSize: '0.9rem', 
             color: '#00ff88', 
             backdropFilter: 'blur(10px)'
-          }}>
-            ⭐ Trusted by 10,000+ AI Researchers • Excellent Reviews
+          }}> 
+            ⭐ Trusted by Researchers Worldwide • Join Our Community
           </div>
           
           <h1 style={{ 
@@ -135,7 +135,7 @@ export default function Home({ initialFeaturedNotebooks }) {
             margin: '0 0 1rem 0',
             opacity: 0.9, 
             maxWidth: '700px',
-            margin: '0 auto 1rem auto',
+            margin: '0 auto 1rem auto', 
             color: '#e2e8f0',
             lineHeight: '1.6'
           }}>
@@ -157,7 +157,7 @@ export default function Home({ initialFeaturedNotebooks }) {
             display: 'flex', 
             gap: '1rem', 
             justifyContent: 'center',
-            flexWrap: 'wrap',
+            flexWrap: 'wrap', 
             marginBottom: '3rem',
             marginTop: '2rem'
           }}>
@@ -171,7 +171,7 @@ export default function Home({ initialFeaturedNotebooks }) {
             display: 'flex', 
             gap: '1rem', 
             justifyContent: 'center', 
-            flexWrap: 'wrap',
+            flexWrap: 'wrap', 
             marginBottom: '2rem'
           }}>
             <button 
@@ -180,7 +180,7 @@ export default function Home({ initialFeaturedNotebooks }) {
                 background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
                 color: '#0a0a0a',
                 border: 'none', 
-                padding: '1rem 2.5rem',
+                padding: '1rem 2.5rem', 
                 borderRadius: '12px',
                 fontWeight: '700',
                 cursor: 'pointer',
@@ -208,7 +208,7 @@ export default function Home({ initialFeaturedNotebooks }) {
             background: 'rgba(0, 0, 0, 0.4)',
             backdropFilter: 'blur(20px)', 
             border: '1px solid rgba(0, 255, 136, 0.2)', 
-            borderRadius: '20px', 
+            borderRadius: '20px',  
             padding: '2rem', 
             maxWidth: '800px', 
             margin: '0 auto', 
@@ -223,7 +223,7 @@ export default function Home({ initialFeaturedNotebooks }) {
               <div>
                 <div style={{ 
                   fontSize: '2.5rem', 
-                  fontWeight: '700',  
+                  fontWeight: '700',
                   color: '#00ff88',
                   fontFamily: 'monospace'
                 }}>
@@ -236,7 +236,7 @@ export default function Home({ initialFeaturedNotebooks }) {
               <div>
                 <div style={{ 
                   fontSize: '2.5rem', 
-                  fontWeight: '700',  
+                  fontWeight: '700',
                   color: '#00ff88',
                   fontFamily: 'monospace'
                 }}>
@@ -249,7 +249,7 @@ export default function Home({ initialFeaturedNotebooks }) {
               <div>
                 <div style={{ 
                   fontSize: '2.5rem', 
-                  fontWeight: '700',  
+                  fontWeight: '700',
                   color: '#00ff88',
                   fontFamily: 'monospace'
                 }}>
@@ -270,7 +270,7 @@ export default function Home({ initialFeaturedNotebooks }) {
         background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)',
         padding: '6rem 0',
         position: 'relative'
-      }}>
+      }}> 
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
           <h2 style={{ 
             fontSize: '2.5rem',
@@ -296,14 +296,14 @@ export default function Home({ initialFeaturedNotebooks }) {
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
             gap: '2rem', 
-            marginBottom: '4rem'
+            marginBottom: '4rem' 
           }}>
             {/* Feature 1 */}
             <div style={{
               background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)', 
               borderRadius: '16px',
               padding: '2rem', 
-              border: '1px solid rgba(0, 255, 136, 0.2)'
+              border: '1px solid rgba(0, 255, 136, 0.2)' 
             }}>
               <div style={{
                 fontSize: '2.5rem',
@@ -336,7 +336,7 @@ export default function Home({ initialFeaturedNotebooks }) {
               background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
               borderRadius: '16px', 
               padding: '2rem', 
-              border: '1px solid rgba(0, 255, 136, 0.2)'
+              border: '1px solid rgba(0, 255, 136, 0.2)' 
             }}>
               <div style={{
                 fontSize: '2.5rem',
@@ -369,7 +369,7 @@ export default function Home({ initialFeaturedNotebooks }) {
               background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
               borderRadius: '16px', 
               padding: '2rem', 
-              border: '1px solid rgba(0, 255, 136, 0.2)'
+              border: '1px solid rgba(0, 255, 136, 0.2)' 
             }}>
               <div style={{
                 fontSize: '2.5rem',
@@ -405,7 +405,7 @@ export default function Home({ initialFeaturedNotebooks }) {
         background: '#0a0a0a',
         padding: '6rem 0', 
         textAlign: 'center'
-      }}>
+      }}> 
         <div style={{ maxWidth: '800px', margin: '0 auto', padding: '0 2rem' }}>
           <div style={{
             fontSize: '3rem',
@@ -466,7 +466,7 @@ export default function Home({ initialFeaturedNotebooks }) {
         background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)',
         padding: '6rem 0', 
         textAlign: 'center'
-      }}>
+      }}> 
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
           <h2 style={{
             fontSize: '2.5rem',
@@ -495,7 +495,7 @@ export default function Home({ initialFeaturedNotebooks }) {
       <section style={{ 
         background: '#0a0a0a', 
         padding: '6rem 0' 
-      }}>
+      }}> 
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
           <h2 style={{
             fontSize: '2.5rem',
@@ -520,7 +520,7 @@ export default function Home({ initialFeaturedNotebooks }) {
           <div style={{
             display: 'flex',
             gap: '2rem'
-          }}> 
+          }}>  
             <div style={{
               background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
               borderRadius: '16px',
@@ -532,7 +532,7 @@ export default function Home({ initialFeaturedNotebooks }) {
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '1rem' 
-              }}>
+              }}> 
                 <div style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -548,7 +548,7 @@ export default function Home({ initialFeaturedNotebooks }) {
                     justifyContent: 'center',
                     color: '#00ff88',
                     fontSize: '0.8rem'
-                  }}>
+                  }}> 
                     1 
                   </div>
                   <div style={{ color: '#e2e8f0' }}>
@@ -571,7 +571,7 @@ export default function Home({ initialFeaturedNotebooks }) {
                     justifyContent: 'center',
                     color: '#00ff88',
                     fontSize: '0.8rem'
-                  }}>
+                  }}> 
                     2 
                   </div>
                   <div style={{ color: '#e2e8f0' }}>
@@ -594,7 +594,7 @@ export default function Home({ initialFeaturedNotebooks }) {
                     justifyContent: 'center',
                     color: '#00ff88',
                     fontSize: '0.8rem'
-                  }}>
+                  }}> 
                     3 
                   </div>
                   <div style={{ color: '#e2e8f0' }}>
@@ -608,7 +608,7 @@ export default function Home({ initialFeaturedNotebooks }) {
               flex: 1,
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center' 
+              justifyContent: 'center'  
             }}>
               <div style={{
                 width: '120px',
@@ -618,7 +618,7 @@ export default function Home({ initialFeaturedNotebooks }) {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: '3rem' 
+                fontSize: '3rem'  
               }}>
                 🚀
               </div>
@@ -632,7 +632,7 @@ export default function Home({ initialFeaturedNotebooks }) {
         background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
         padding: '4rem 0', 
         textAlign: 'center'
-      }}>
+      }}> 
         <div style={{ maxWidth: '800px', margin: '0 auto', padding: '0 2rem' }}>
           <h2 style={{ 
             fontSize: '2rem', 
@@ -660,7 +660,7 @@ export default function Home({ initialFeaturedNotebooks }) {
       <section style={{ 
         padding: '6rem 0',
         background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)' 
-      }}>
+      }}> 
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
           <h2 style={{ 
             fontSize: '2.5rem', 
@@ -677,7 +677,7 @@ export default function Home({ initialFeaturedNotebooks }) {
             justifyContent: 'center',
             gap: '1rem',
             marginBottom: '3rem',
-            flexWrap: 'wrap' 
+            flexWrap: 'wrap'  
           }}>
             <button style={{
               background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
@@ -723,7 +723,7 @@ export default function Home({ initialFeaturedNotebooks }) {
             fontSize: '1.5rem',
             fontWeight: '600',
             color: '#ffffff',
-            textAlign: 'center',
+            textAlign: 'center', 
             marginBottom: '2rem' 
           }}>
             Trending This Week
@@ -733,7 +733,7 @@ export default function Home({ initialFeaturedNotebooks }) {
             display: 'grid', 
             gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', 
             gap: '2rem',
-            marginBottom: '3rem' 
+            marginBottom: '3rem'  
           }}>
             {featuredNotebooks.slice(0, 6).map(notebook => (
               <ProjectCard key={notebook.id} notebook={notebook} />
@@ -746,14 +746,14 @@ export default function Home({ initialFeaturedNotebooks }) {
       <section style={{ 
         padding: '6rem 0',
         background: '#0a0a0a' 
-      }}>
+      }}> 
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
           <h2 style={{ 
             fontSize: '2.5rem', 
             textAlign: 'center', 
             margin: '0 0 3rem 0',
             color: '#ffffff',
-            fontWeight: '700' 
+            fontWeight: '700'  
           }}>
             Popular <span style={{ color: '#00ff88' }}>Notebooks</span>
           </h2>
@@ -765,7 +765,7 @@ export default function Home({ initialFeaturedNotebooks }) {
           ) : (
             <div style={{ 
               display: 'grid', 
-              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
+              gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', 
               gap: '2rem'
             }}>
               {featuredNotebooks.slice(0, 6).map(notebook => (
@@ -781,7 +781,7 @@ export default function Home({ initialFeaturedNotebooks }) {
                 background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
                 color: '#0a0a0a',
                 border: 'none',
-                padding: '1rem 2rem',
+                padding: '1rem 2rem', 
                 borderRadius: '12px',
                 fontWeight: '700',
                 cursor: 'pointer',
