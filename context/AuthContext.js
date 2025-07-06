@@ -27,8 +27,10 @@ export const AuthProvider = ({ children }) => {
     // Only run auth logic on the client side
     if (typeof window !== 'undefined') {
       const getInitialSession = async () => {
+        // Set loading to true initially
+        setLoading(true);
+        
         try {
-          setLoading(true); 
           
           // Get initial session
           const { data, error } = await supabase.auth.getSession();
@@ -53,7 +55,7 @@ export const AuthProvider = ({ children }) => {
       const { data: { subscription } } = supabase.auth.onAuthStateChange(
         async (event, session) => {
           if (event) {
-            console.log('Auth state changed:', event); 
+            // console.log('Auth state changed:', event);
           }
           setUser(session?.user || null);
           setLoading(false);
@@ -85,8 +87,8 @@ export const AuthProvider = ({ children }) => {
   const signIn = async (email, password) => {
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
-        email, 
-        password,
+        email: email,
+        password: password
       });
       if (error) throw error;
       return data;
@@ -99,8 +101,8 @@ export const AuthProvider = ({ children }) => {
   const signUp = async (email, password, metadata = {}) => {
     try {
       const { data, error } = await supabase.auth.signUp({
-        email, 
-        password,
+        email: email,
+        password: password,
         options: {
           data: metadata
         }
@@ -116,7 +118,7 @@ export const AuthProvider = ({ children }) => {
   const resetPassword = async (email) => {
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/reset-password` 
+        redirectTo: typeof window !== 'undefined' ? `${window.location.origin}/reset-password` : undefined
       });
       if (error) throw error;
     } catch (error) {

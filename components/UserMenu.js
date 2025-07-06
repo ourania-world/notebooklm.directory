@@ -1,37 +1,14 @@
 import { useState, useEffect } from 'react';
-import { useAuth } from '../context/AuthContext';
-import Link from 'next/link';
-
-export default function UserMenu() {
+export default function UserMenu({ user }) {
   const { user, signOut, loading } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [signOutLoading, setSignOutLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
-
-  // Set mounted state on client-side only
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // Don't render anything during SSR to prevent hydration mismatch
-  if (!mounted) {
-    return <div style={{ width: '32px', height: '32px' }}></div>;
-  }
-
-  // Show loading state
-  if (loading) {
-    return <div style={{ width: '32px', height: '32px' }}></div>;
-  }
-
-  // Don't render if no user (login button is in Layout)
-  if (!user) {
-    return null;
-  }
-
   const handleSignOut = async () => {
     try {
       setSignOutLoading(true);
-      await signOut();
+      const { supabase } = await import('../lib/supabase');
+      await supabase.auth.signOut();
       setIsOpen(false);
       window.location.href = '/';
     } catch (error) {
@@ -40,28 +17,6 @@ export default function UserMenu() {
       setSignOutLoading(false);
     }
   };
-
-  return (
-    <div style={{ position: 'relative' }}>
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        style={{
-          background: 'rgba(0, 255, 136, 0.1)',
-          border: '1px solid rgba(0, 255, 136, 0.3)',
-          color: '#ffffff',
-          padding: '0.5rem 1rem',
-          borderRadius: '12px', 
-          cursor: 'pointer',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.75rem',
-          transition: 'all 0.2s ease',
-          fontWeight: '500',
-          fontSize: '0.9rem'
-        }}
-        onMouseEnter={(e) => {
-          e.target.style.background = 'rgba(0, 255, 136, 0.2)'; 
-          e.target.style.borderColor = '#00ff88';
         }}
         onMouseLeave={(e) => {
           e.target.style.background = 'rgba(0, 255, 136, 0.1)';
@@ -88,17 +43,6 @@ export default function UserMenu() {
         <span style={{ fontSize: '0.7rem', opacity: 0.7 }}>▼</span>
       </button>
 
-      {isOpen && (
-        <>
-          <div
-            style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              right: 0, 
-              bottom: 0,
-              zIndex: 999
-            }}
             onClick={() => setIsOpen(false)}
           />
           <div style={{
@@ -238,11 +182,3 @@ export default function UserMenu() {
                 }}
               >
                 {signOutLoading ? '⏳ Signing Out...' : '🚪 Sign Out'}
-              </button>
-            </div>
-          </div>
-        </>
-      )}
-    </div>
-  );
-}

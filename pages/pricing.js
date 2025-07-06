@@ -10,14 +10,14 @@ export default function Pricing() {
 
   const plans = [
     {
-      id: 'free',
-      name: 'Explorer',
-      price: 0,
+      id: 'explorer',
+      name: 'Free',
+      price: '$0',
       period: 'forever',
       description: 'Perfect for getting started',
       features: [
-        'Access to all public notebooks',
-        'Browse curated notebook collection',
+        'Access to public notebooks',
+        'Browse curated collections',
         'Basic search features',
         'Community access',
         'Save up to 5 notebooks',
@@ -30,50 +30,51 @@ export default function Pricing() {
     {
       id: 'standard',
       name: 'Standard',
-      price: 9.99, 
-      period: '/month',
+      price: '$9.99', 
+      period: 'month',
       description: 'Great for regular users',
       features: [
-        'Everything in Explorer',
-        'Unlimited saved notebooks', 
+        'Everything in Free',
+        'Unlimited saved notebooks',
         'Submit unlimited notebooks',
-        'Advanced search features',
+        'Advanced search with filters',
         'Email notifications',
         'Basic analytics'
       ],
-      limits: { savedNotebooks: 25, submittedNotebooks: -1, premiumContent: false },
+      limits: { savedNotebooks: -1, submittedNotebooks: -1, premiumContent: false },
       cta: 'Upgrade to Standard',
       popular: true
     },
     {
       id: 'professional',
       name: 'Professional',
-      price: 19.99, 
-      period: '/month',
+      price: '$19.99', 
+      period: 'month',
       description: 'For power users and professionals',
       features: [
         'Everything in Standard',
+        'Unlimited saved notebooks',
         'Submit unlimited notebooks',
-        'Advanced search & AI recommendations',
-        'Performance optimization metrics',
+        'AI-powered search & recommendations',
+        'Performance metrics',
         'Priority support',
         'API access (1000 calls/month)',
         'Export & integration tools'
       ],
       limits: { savedNotebooks: -1, submittedNotebooks: -1, premiumContent: true },
-      cta: 'Upgrade to Professional',
+      cta: 'Upgrade to Pro',
       popular: false
     },
     {
       id: 'enterprise',
       name: 'Enterprise',
-      price: 99, 
-      period: '/user/month',
-      description: 'For teams & organizations - COMING SOON',
+      price: '$99', 
+      period: 'user/month',
+      description: 'For teams & organizations',
       features: [
         'Everything in Professional',
         'Team collaboration tools',
-        'Advanced analytics',
+        'Advanced analytics dashboard',
         'Custom reporting',
         'White-label options',
         'Dedicated account manager',
@@ -255,7 +256,7 @@ export default function Pricing() {
                     color: '#00ff88',
                     margin: '0 0 0.25rem 0'
                   }}>
-                    ${plan.price}
+                    {plan.price}
                     <span style={{
                       fontSize: '1rem',
                       color: '#e2e8f0',

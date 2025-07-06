@@ -468,6 +468,8 @@ export default function Home({ initialFeaturedNotebooks }) {
                   display: 'flex',
                   alignItems: 'center',
                   gap: '1rem'
+                }
+                }
             <h3 style={{ 
               color: '#ffffff', 
               textAlign: 'center',
@@ -554,6 +556,8 @@ export default function Home({ initialFeaturedNotebooks }) {
               borderRadius: '20px',
               fontWeight: '600',
               cursor: 'pointer',
+            }
+            }
 
       <NotebookModal 
         isOpen={isModalOpen}
