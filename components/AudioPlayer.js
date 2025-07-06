@@ -13,10 +13,10 @@ export default function AudioPlayer({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   
-  const audioRef = useRef(null); 
-  const progressRef = useRef(null); 
-  const waveformRef = useRef(null); 
-  const animationRef = useRef(null); 
+  const audioRef = useRef(null);  
+  const progressRef = useRef(null);  
+  const waveformRef = useRef(null);  
+  const animationRef = useRef(null);  
   const [mounted, setMounted] = useState(false);
   
   // Make sure we have a valid audio URL
@@ -26,7 +26,7 @@ export default function AudioPlayer({
     // Mark component as mounted to prevent hydration mismatch
     setMounted(true);
     
-    // Don't run audio logic during SSR
+    // Don't run audio logic during SSR 
     if (typeof window === 'undefined') return;
     
     // Check if audio is supported
@@ -38,7 +38,7 @@ export default function AudioPlayer({
     
     const audio = audioRef.current;
     if (!audio || !fullAudioUrl) return;
-    
+     
     const handleCanPlayThrough = () => {
       setLoading(false);
       setDuration(audio.duration);
@@ -56,7 +56,7 @@ export default function AudioPlayer({
     
     const handleError = (e) => {
       console.error('Audio error:', e);
-      console.error('Audio source:', fullAudioUrl);
+      console.error('Audio source:', fullAudioUrl); 
       setError(`Failed to load audio: ${e.target?.error?.message || 'Unknown error'}`);
       setLoading(false);
     };
@@ -79,7 +79,7 @@ export default function AudioPlayer({
   }, []);
   
   useEffect(() => {
-    // Don't run during SSR
+    // Don't run during SSR 
     if (typeof window === 'undefined' || !mounted || !audioRef.current) return;
     
     if (isPlaying) {
@@ -112,7 +112,7 @@ export default function AudioPlayer({
   
   const animateWaveform = () => {
     if (waveformRef.current && showWaveform) {
-      const bars = waveformRef.current.children;
+      const bars = waveformRef.current.children; 
       const numBars = bars.length;
       
       for (let i = 0; i < numBars; i++) {
@@ -127,10 +127,10 @@ export default function AudioPlayer({
   
   return (
     <div style={{
-      background: 'linear-gradient(135deg, rgba(26, 26, 46, 0.8) 0%, rgba(22, 33, 62, 0.8) 100%)',
-      borderRadius: '16px', 
+      background: 'linear-gradient(135deg, rgba(26, 26, 46, 0.8) 0%, rgba(22, 33, 62, 0.8) 100%)', 
+      borderRadius: '16px',  
       padding: compact ? '1rem' : '1.5rem',
-      border: '1px solid rgba(0, 255, 136, 0.2)', 
+      border: '1px solid rgba(0, 255, 136, 0.2)',  
       boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
       backdropFilter: 'blur(10px)',
       WebkitBackdropFilter: 'blur(10px)',
@@ -141,7 +141,7 @@ export default function AudioPlayer({
       <div style={{
         display: 'flex',
         alignItems: 'center',
-        gap: '1rem', 
+        gap: '1rem',  
         marginBottom: compact ? '0.75rem' : '1.5rem'
       }}>
         <button
@@ -151,7 +151,7 @@ export default function AudioPlayer({
             width: compact ? '40px' : '50px',
             height: compact ? '40px' : '50px', 
             borderRadius: '50%',
-            background: loading ? 'rgba(0, 255, 136, 0.2)' : 
+            background: loading ? 'rgba(0, 255, 136, 0.2)' :  
                       error ? 'rgba(255, 0, 0, 0.2)' : 
                       'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
             border: 'none',
@@ -164,7 +164,7 @@ export default function AudioPlayer({
             fontWeight: '700', 
             flexShrink: 0,
             transition: 'all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)',
-            boxShadow: '0 4px 12px rgba(0, 255, 136, 0.3)',
+            boxShadow: '0 4px 12px rgba(0, 255, 136, 0.3)', 
             className: 'button-glow'
           }}
           onMouseEnter={(e) => {
@@ -202,7 +202,7 @@ export default function AudioPlayer({
           <div style={{
             color: '#ffffff',
             fontWeight: '600', 
-            fontSize: compact ? '0.9rem' : '1rem',
+            fontSize: compact ? '0.9rem' : '1rem', 
             marginBottom: '0.25rem'
           }}>
             {title}
@@ -221,7 +221,7 @@ export default function AudioPlayer({
               <div style={{
                 flex: 1, 
                 height: '4px',
-                background: 'rgba(255, 255, 255, 0.1)',
+                background: 'rgba(255, 255, 255, 0.1)', 
                 borderRadius: '2px',
                 position: 'relative'
               }}>
@@ -251,7 +251,7 @@ export default function AudioPlayer({
                   position: 'absolute',
                   top: 0, 
                   left: 0,
-                  height: '100%',
+                  height: '100%', 
                   width: `${(currentTime / (duration || 1)) * 100}%`,
                   background: '#00ff88',
                   borderRadius: '2px',
@@ -273,7 +273,7 @@ export default function AudioPlayer({
           style={{ 
             display: 'flex', 
             alignItems: 'center',
-            gap: '2px',
+            gap: '2px', 
             height: '40px'
           }}
         >
@@ -284,7 +284,7 @@ export default function AudioPlayer({
                 width: '3px',
                 height: isPlaying ? `${Math.random() * 30 + 10}px` : '10px',
                 background: isPlaying ? '#00ff88' : 'rgba(0, 255, 136, 0.3)',
-                borderRadius: '1px',
+                borderRadius: '1px', 
                 transition: 'height 0.2s ease',
                 animationPlayState: isPlaying ? 'running' : 'paused'
               }}
@@ -301,7 +301,7 @@ export default function AudioPlayer({
         <div style={{ 
           color: '#ff6b6b',
           fontSize: '0.9rem',
-          textAlign: 'center',
+          textAlign: 'center', 
           padding: '0.5rem' 
         }}>
           {error} 

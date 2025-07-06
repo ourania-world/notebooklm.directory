@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 
-const AuthContext = createContext({
+const AuthContext = createContext({ 
   user: null,
   loading: true,
   error: null,
@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [mounted, setMounted] = useState(false);
+  const [mounted, setMounted] = useState(false); 
 
   // Initialize auth state
   useEffect(() => {
@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }) => {
     // Only run auth logic on the client side
     if (typeof window !== 'undefined') {
       const getInitialSession = async () => {
-        // Set loading to true initially
+        // Set loading to true initially 
         setLoading(true);
         
         try {
@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }) => {
           const { data, error } = await supabase.auth.getSession();
            
           if (error) {
-            console.warn('Error getting session:', error);
+            console.warn('Error getting session:', error); 
             setError(error);
           } else {
             setUser(data.session?.user || null);
@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }) => {
       };
 
       getInitialSession();
-      
+       
       // Listen for auth changes
       const { data: { subscription } } = supabase.auth.onAuthStateChange(
         async (event, session) => {
@@ -77,7 +77,7 @@ export const AuthProvider = ({ children }) => {
   const signOut = async () => {
     try {
       const { error } = await supabase.auth.signOut();
-      if (error) throw error; 
+      if (error) throw error;  
     } catch (error) {
       console.error('Error signing out:', error);
       throw error;
@@ -87,8 +87,8 @@ export const AuthProvider = ({ children }) => {
   const signIn = async (email, password) => {
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
-        email: email,
-        password: password
+        email,
+        password
       });
       if (error) throw error;
       return data;
@@ -101,8 +101,8 @@ export const AuthProvider = ({ children }) => {
   const signUp = async (email, password, metadata = {}) => {
     try {
       const { data, error } = await supabase.auth.signUp({
-        email: email,
-        password: password,
+        email,
+        password,
         options: {
           data: metadata
         }
@@ -118,7 +118,7 @@ export const AuthProvider = ({ children }) => {
   const resetPassword = async (email) => {
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: typeof window !== 'undefined' ? `${window.location.origin}/reset-password` : undefined
+        redirectTo: typeof window !== 'undefined' ? `${window.location.origin}/reset-password` : undefined 
       });
       if (error) throw error;
     } catch (error) {
@@ -131,7 +131,7 @@ export const AuthProvider = ({ children }) => {
     user,
     error,
     signOut,
-    signIn, 
+    signIn,  
     signUp,
     resetPassword,
     // Helper methods
@@ -142,7 +142,7 @@ export const AuthProvider = ({ children }) => {
   // During SSR, just return children without user data
   // This prevents hydration mismatches
   // Return the provider with the current value
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={value}>{mounted ? children : null}</AuthContext.Provider>;
 };
 
 export const useAuth = () => {
