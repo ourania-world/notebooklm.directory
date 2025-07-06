@@ -20,7 +20,6 @@ export default function SubscriptionBanner() {
         setSubscription({
           plan: { id: 'free' }
         });
-        });
       } catch (error) {
         console.error('Error fetching subscription:', error);
       } finally {
