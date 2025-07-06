@@ -28,7 +28,7 @@ export default function SubscriptionBanner() {
     fetchSubscription();
   }, [user]);
 
-  if (loading || !user || (subscription?.plan?.id === 'professional' || subscription?.plan?.id === 'enterprise')) {
+  if (loading || !user || (subscription?.plan?.id === 'professional' || subscription?.plan?.id === 'enterprise' || subscription?.plan?.id === 'standard')) {
     return null;
   }
 

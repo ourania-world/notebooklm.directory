@@ -105,11 +105,11 @@ export default function SubscriptionModal({ isOpen, onClose, currentPlan = 'free
           gap: '2rem',
           marginBottom: '2rem'
         }}>
-          {Object.values(SUBSCRIPTION_PLANS).map((plan) => (
+          {[SUBSCRIPTION_PLANS.FREE, SUBSCRIPTION_PLANS.STANDARD, SUBSCRIPTION_PLANS.PROFESSIONAL].map((plan) => (
             <div
               key={plan.id}
               style={{
-                background: plan.id === 'premium' ? 
+                background: plan.id === 'professional' ? 
                   'linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, rgba(0, 255, 136, 0.05) 100%)' :
                   'rgba(255, 255, 255, 0.05)',
                 border: plan.id === currentPlan ? 
@@ -133,7 +133,7 @@ export default function SubscriptionModal({ isOpen, onClose, currentPlan = 'free
                 }
               }}
             >
-              {plan.id === 'premium' && (
+              {plan.id === 'professional' && (
                 <div style={{
                   position: 'absolute',
                   top: '-10px',
