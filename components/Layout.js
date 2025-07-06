@@ -295,6 +295,12 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                   &bull; Submit your NotebookLM projects<br />
                   &bull; Discover innovative approaches<br />
                   &bull; Connect with other creators
+                </div>
+              </div>
+            </div>
+
+            <div style={{
+              display: 'flex',
               justifyContent: 'space-between', 
               alignItems: 'center',
               flexWrap: 'wrap',
