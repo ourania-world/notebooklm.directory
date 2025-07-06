@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { getAudioUrl, formatDuration, isAudioSupported } from '../lib/audio';
 
 export default function AudioPlayer({ 
-  audioUrl, 
+  audioUrl,
   title = 'Audio Overview',
   showWaveform = true,
   compact = false
@@ -17,6 +17,7 @@ export default function AudioPlayer({
   const progressRef = useRef(null);  
   const waveformRef = useRef(null);  
   const animationRef = useRef(null);  
+  const [mounted, setMounted] = useState(false);
   const [mounted, setMounted] = useState(false);
   
   // Make sure we have a valid audio URL
@@ -36,31 +37,39 @@ export default function AudioPlayer({
       return;
     }
     
+  // Make sure we have a valid audio URL
+  const fullAudioUrl = mounted ? getAudioUrl(audioUrl) : null;
+    if (!audio || !fullAudioUrl) return;
+     
+    // Mark component as mounted to prevent hydration mismatch
+    setMounted(true);
+    
+    // Don't run audio logic during SSR 
+    if (typeof window === 'undefined') return;
+    
     const audio = audioRef.current;
     if (!audio || !fullAudioUrl) return;
      
     const handleCanPlayThrough = () => {
       setLoading(false);
-      setDuration(audio.duration);
+      setDuration(audio.duration || 0);
     };
     
     const handleTimeUpdate = () => {
-      setCurrentTime(audio.currentTime);
+      setCurrentTime(audio.currentTime || 0);
     };
     
     const handleEnded = () => {
       setIsPlaying(false);
       setCurrentTime(0);
-      audio.currentTime = 0;
+      if (audio) audio.currentTime = 0;
     };
     
     const handleError = (e) => {
       console.error('Audio error:', e);
-      console.error('Audio source:', fullAudioUrl); 
+      setError(`Failed to load audio: ${e.target?.error?.message || 'Unknown error'}`);
       setError(`Failed to load audio: ${e.target?.error?.message || 'Unknown error'}`);
       setLoading(false);
-    };
-    
     audio.addEventListener('canplaythrough', handleCanPlayThrough);
     audio.addEventListener('timeupdate', handleTimeUpdate);
     audio.addEventListener('ended', handleEnded);
@@ -76,14 +85,21 @@ export default function AudioPlayer({
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, []);
+  }, [fullAudioUrl]);
   
   useEffect(() => {
     // Don't run during SSR 
     if (typeof window === 'undefined' || !mounted || !audioRef.current) return;
     
+    // Don't run during SSR 
+    if (typeof window === 'undefined' || !mounted || !audioRef.current) return;
+    
     if (isPlaying) {
       audioRef.current.play().catch(err => {
+        console.error('Error playing audio:', err);
+        setError(`Playback error: ${err.message}`);
+        setIsPlaying(false);
+      });
         console.error('Error playing audio:', err);
         setError(`Playback error: ${err.message}`);
         setIsPlaying(false);
@@ -96,6 +112,9 @@ export default function AudioPlayer({
       }
     } 
   }, [isPlaying]);
+  
+  // Don't render during SSR to prevent hydration mismatch
+  if (!mounted) return null;
   
   const togglePlayPause = () => {
     setIsPlaying(!isPlaying);
@@ -134,6 +153,9 @@ export default function AudioPlayer({
       boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
       backdropFilter: 'blur(10px)',
       WebkitBackdropFilter: 'blur(10px)',
+      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
+      backdropFilter: 'blur(10px)',
+      WebkitBackdropFilter: 'blur(10px)',
       width: '100%'
     }}> 
       {fullAudioUrl && <audio ref={audioRef} src={fullAudioUrl} preload="metadata" />}
@@ -166,6 +188,7 @@ export default function AudioPlayer({
             transition: 'all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)',
             boxShadow: '0 4px 12px rgba(0, 255, 136, 0.3)', 
             className: 'button-glow'
+            className: 'button-glow'
           }}
           onMouseEnter={(e) => {
             if (!loading && !error) {
@@ -178,7 +201,7 @@ export default function AudioPlayer({
               e.target.style.transform = 'scale(1)';
               e.target.style.boxShadow = '0 4px 12px rgba(0, 255, 136, 0.3)';
             }
-          }}
+          }} 
         >
           {loading ? (
             <div style={{
@@ -250,7 +273,7 @@ export default function AudioPlayer({
                 <div style={{
                   position: 'absolute',
                   top: 0, 
-                  left: 0,
+                  left: 0, 
                   height: '100%', 
                   width: `${(currentTime / (duration || 1)) * 100}%`,
                   background: '#00ff88',
@@ -287,6 +310,11 @@ export default function AudioPlayer({
                 borderRadius: '1px', 
                 transition: 'height 0.2s ease',
                 animationPlayState: isPlaying ? 'running' : 'paused'
+                height: isPlaying ? `${Math.random() * 30 + 10}px` : '10px',
+              className={isPlaying ? 'waveform-bar' : ''} 
+                borderRadius: '1px', 
+                transition: 'height 0.2s ease',
+                animationPlayState: isPlaying ? 'running' : 'paused'
               }}
               className={isPlaying ? 'waveform-bar' : ''} 
               style={{
@@ -308,6 +336,9 @@ export default function AudioPlayer({
           <div style={{ fontSize: '0.8rem', marginTop: '0.5rem', opacity: 0.7 }}>
             Try refreshing the page or check your audio file
           </div>
+          <div style={{ fontSize: '0.8rem', marginTop: '0.5rem', opacity: 0.7 }}>
+            Try refreshing the page or check your audio file
+          </div>
         </div>
       )}
       
@@ -317,7 +348,7 @@ export default function AudioPlayer({
           100% { transform: rotate(360deg); }
         }
         
-        input[type=range]::-webkit-slider-thumb {
+        input[type=range]::-webkit-slider-thumb { 
           -webkit-appearance: none;
           appearance: none;
           width: 12px;
@@ -333,7 +364,7 @@ export default function AudioPlayer({
           border-radius: 50%; 
           background: #00ff88;
           cursor: pointer;
-          border: none;
+          border: none; 
         }
       `}</style>
     </div>

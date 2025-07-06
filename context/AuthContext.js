@@ -12,10 +12,21 @@ const AuthContext = createContext({
   isAuthenticated: false,
   isLoading: true
 });
+  user: null,
+  loading: true,
+  error: null,
+  signOut: async () => {},
+  signIn: async () => {},
+  signUp: async () => {},
+  resetPassword: async () => {},
+  isAuthenticated: false,
+  isLoading: true
+});
 
-export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false); 
   const [loading, setLoading] = useState(true);
   const [mounted, setMounted] = useState(false); 
 
@@ -34,11 +45,25 @@ export const AuthProvider = ({ children }) => {
           
           // Get initial session
           const { data, error } = await supabase.auth.getSession();
+    // Mark component as mounted to prevent hydration mismatch
+    setMounted(true); 
+    
+    // Only run auth logic on the client side
+    if (typeof window !== 'undefined') {
+      const getInitialSession = async () => {
+        // Set loading to true initially 
+        setLoading(true);
+        
+        try {
+          
+          // Get initial session
+          const { data, error } = await supabase.auth.getSession();
            
           if (error) {
             console.warn('Error getting session:', error); 
             setError(error);
           } else {
+            setSession(data.session || null);
             setUser(data.session?.user || null);
           }
         } catch (error) {
@@ -57,6 +82,7 @@ export const AuthProvider = ({ children }) => {
           if (event) {
             // console.log('Auth state changed:', event);
           }
+          setSession(session || null);
           setUser(session?.user || null);
           setLoading(false);
         }
@@ -136,14 +162,13 @@ export const AuthProvider = ({ children }) => {
     resetPassword,
     // Helper methods
     isAuthenticated: !!user,
-    isLoading: loading
+    isLoading: loading,
+    session
   };
 
   // During SSR, just return children without user data
   // This prevents hydration mismatches
-  // Return the provider with the current value
   return <AuthContext.Provider value={value}>{mounted ? children : null}</AuthContext.Provider>;
-};
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -155,3 +180,4 @@ export const useAuth = () => {
 
 // Export the context for advanced usage
 export { AuthContext };
+  if (!context && typeof window !== 'undefined') {
