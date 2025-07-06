@@ -253,23 +253,6 @@ export default function SubscriptionModal({ isOpen, onClose, initialPlan = 'stan
                 >
                   Coming Soon
                 </button>
-              ) : plan.id === currentPlan ? (
-                <button
-                  disabled
-                  style={{
-                    width: '100%',
-                    background: 'rgba(255, 255, 255, 0.1)',
-                    color: '#ffffff',
-                    border: '1px solid rgba(255, 255, 255, 0.2)',
-                    padding: '1rem',
-                    borderRadius: '12px',
-                    fontSize: '1rem',
-                    fontWeight: '600',
-                    cursor: 'not-allowed'
-                  }}
-                >
-                  Current Plan
-                </button>
               ) : plan.id === 'free' ? (
                 <button
                   onClick={onClose}
