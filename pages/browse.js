@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import ProjectCard from '../components/ProjectCard';
 import NotebookModal from '../components/NotebookModal';
-import { getCurrentUser } from '../lib/auth';
+import { getCurrentUser } from '../lib/supabase';
 import { getNotebooks, getCategoryCounts } from '../lib/notebooks';
 
 export async function getServerSideProps(context) {
@@ -110,7 +110,7 @@ export default function Browse({
   return (
     <Layout title="Browse Projects - NotebookLM Directory">
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem' }}>
-        <h1 style={{ 
+        <div style={{
           fontSize: '2.5rem', 
           margin: '0 0 2rem 0',
           color: '#212529'
@@ -146,7 +146,7 @@ export default function Browse({
         </div>
         
         {/* Search and Filter */}
-        <div style={{ 
+        <div style={{
           display: 'flex', 
           gap: '1rem', 
           marginBottom: '2rem',
@@ -192,7 +192,7 @@ export default function Browse({
         </div>
         
         {/* Results Count */}
-        <p style={{ 
+        <p style={{
           color: '#6c757d', 
           margin: '0 0 2rem 0',
           fontSize: '1rem'
@@ -209,7 +209,7 @@ export default function Browse({
           <div style={{ textAlign: 'center', padding: '2rem', color: '#dc3545' }}>
             <p>{error}</p>
           </div>
-        ) : (
+        ) : notebooks.length > 0 ? (
           <div style={{ 
             display: 'grid', 
             gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', 
@@ -218,9 +218,9 @@ export default function Browse({
             {notebooks.map(notebook => (
               <ProjectCard key={notebook.id} notebook={notebook} />
             ))}
-          </div>
-        )}
-        
+          </div> 
+        ) : null}
+
         {!loading && !error && notebooks.length === 0 && (
           <div style={{ 
             textAlign: 'center', 

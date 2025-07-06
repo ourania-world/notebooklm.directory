@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Layout from '../components/Layout';
-import { getCurrentUser } from '../lib/auth';
+import { getCurrentUser } from '../lib/supabase';
 import { createNotebook } from '../lib/notebooks';
 
 export default function Submit() {
@@ -86,7 +86,7 @@ export default function Submit() {
   return (
     <Layout title="Submit Project - NotebookLM Directory">
       <div style={{ maxWidth: '800px', margin: '0 auto', padding: '2rem' }}>
-        <h1 style={{ 
+        <h1 style={{
           fontSize: '2.5rem', 
           margin: '0 0 1rem 0',
           color: '#ffffff'
@@ -94,7 +94,7 @@ export default function Submit() {
           Submit Your Project
         </h1>
         
-        <p style={{ 
+        <p style={{
           color: '#e2e8f0', 
           margin: '0 0 3rem 0',
           fontSize: '1.1rem',
@@ -104,7 +104,7 @@ export default function Submit() {
         </p>
         
         {submitStatus === 'success' && (
-          <div style={{
+          <div style={{ 
             background: 'rgba(0, 255, 136, 0.1)',
             color: '#00ff88',
             padding: '1rem',
@@ -117,7 +117,7 @@ export default function Submit() {
         )}
         
         {submitStatus === 'auth_required' && (
-          <div style={{
+          <div style={{ 
             background: 'rgba(255, 193, 7, 0.1)',
             color: '#ffc107',
             padding: '1rem',
@@ -130,7 +130,7 @@ export default function Submit() {
         )}
         
         {submitStatus === 'error' && (
-          <div style={{
+          <div style={{ 
             background: 'rgba(220, 53, 69, 0.1)',
             color: '#dc3545',
             padding: '1rem',
@@ -145,7 +145,7 @@ export default function Submit() {
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           <div>
             <label style={{ 
-              display: 'block', 
+              display: 'block',
               marginBottom: '0.5rem',
               fontWeight: '600',
               color: '#ffffff'
@@ -175,7 +175,7 @@ export default function Submit() {
           
           <div>
             <label style={{ 
-              display: 'block', 
+              display: 'block',
               marginBottom: '0.5rem',
               fontWeight: '600',
               color: '#ffffff'
@@ -207,7 +207,7 @@ export default function Submit() {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
             <div>
               <label style={{ 
-                display: 'block', 
+                display: 'block',
                 marginBottom: '0.5rem',
                 fontWeight: '600',
                 color: '#ffffff'
@@ -243,7 +243,7 @@ export default function Submit() {
             
             <div>
               <label style={{ 
-                display: 'block', 
+                display: 'block',
                 marginBottom: '0.5rem',
                 fontWeight: '600',
                 color: '#ffffff'
@@ -274,7 +274,7 @@ export default function Submit() {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
             <div>
               <label style={{ 
-                display: 'block', 
+                display: 'block',
                 marginBottom: '0.5rem',
                 fontWeight: '600',
                 color: '#ffffff'
@@ -304,7 +304,7 @@ export default function Submit() {
             
             <div>
               <label style={{ 
-                display: 'block', 
+                display: 'block',
                 marginBottom: '0.5rem',
                 fontWeight: '600',
                 color: '#ffffff'
@@ -334,7 +334,7 @@ export default function Submit() {
           
           <div>
             <label style={{ 
-              display: 'block', 
+              display: 'block',
               marginBottom: '0.5rem',
               fontWeight: '600',
               color: '#ffffff'
@@ -364,7 +364,7 @@ export default function Submit() {
           
           <div>
             <label style={{ 
-              display: 'block', 
+              display: 'block',
               marginBottom: '0.5rem',
               fontWeight: '600',
               color: '#ffffff'
