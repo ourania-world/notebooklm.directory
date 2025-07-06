@@ -78,14 +78,9 @@ export default function SubscriptionManager() {
         
         if (error) throw error;
         result = data;
-          query: { action: 'reactivate' },
-          body: {}
-        });
-        
-        if (error) throw error;
-        result = data;
       }
 
+      if (result.url) {
         window.location.href = result.url
       } else {
         setSuccess(result.message || 'Operation completed successfully')
@@ -239,42 +234,6 @@ export default function SubscriptionManager() {
                   opacity: actionLoading ? 0.7 : 1
                 }}
               >
-                {plan.id === 'enterprise' && (
-                  <div style={{
-                    position: 'absolute',
-                    top: '-8px',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    background: 'rgba(255, 255, 255, 0.2)',
-                    color: '#ffffff',
-                    padding: '0.25rem 0.75rem',
-                    borderRadius: '12px',
-                    fontSize: '0.7rem',
-                    fontWeight: '700',
-                    textTransform: 'uppercase'
-                  }}>
-                    Coming Soon
-                  </div>
-                )}
-
-                {plan.id === 'enterprise' && (
-                  <div style={{
-                    position: 'absolute',
-                    top: '-8px',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    background: 'rgba(255, 255, 255, 0.2)',
-                    color: '#ffffff',
-                    padding: '0.25rem 0.75rem',
-                    borderRadius: '12px',
-                    fontSize: '0.7rem',
-                    fontWeight: '700',
-                    textTransform: 'uppercase'
-                  }}>
-                    Coming Soon
-                  </div>
-                )}
-
                 {actionLoading ? 'Loading...' : 'Manage Billing'}
               </button>
 
