@@ -33,10 +33,12 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
         <header style={{ 
           position: 'sticky',
           top: 0,
-          zIndex: 50,
+          zIndex: 50, 
           background: 'rgba(10, 10, 10, 0.8)',
-          backdropFilter: 'blur(20px)',
-          borderBottom: '1px solid rgba(0, 255, 136, 0.1)',
+          backdropFilter: 'blur(20px)', 
+          WebkitBackdropFilter: 'blur(20px)',
+          borderBottom: '1px solid rgba(0, 255, 136, 0.1)', 
+          boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
           padding: '1rem 0'
         }}>
           <nav style={{ 
@@ -52,7 +54,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
               fontWeight: '700', 
               textDecoration: 'none', 
               color: '#ffffff',
-              display: 'flex',
+              display: 'flex', 
               alignItems: 'center',
               gap: '0.75rem',
               transition: 'all 0.3s ease'
@@ -61,7 +63,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                 background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
                 color: '#0a0a0a',
                 padding: '0.5rem 0.75rem',
-                borderRadius: '8px',
+                borderRadius: '8px', 
                 fontSize: '0.9rem',
                 fontWeight: '700',
                 letterSpacing: '1px',
@@ -165,7 +167,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
         <footer style={{ 
           background: 'linear-gradient(135deg, #1a1a2e 0%, #0a0a0a 100%)', 
           padding: '3rem 0', 
-          marginTop: '4rem',
+          marginTop: '4rem', 
           borderTop: '1px solid rgba(0, 255, 136, 0.1)'
         }}>
           <div style={{ 
@@ -176,7 +178,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
             <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-              gap: '2rem',
+              gap: '2rem', 
               marginBottom: '3rem'
             }}>
               <div>
@@ -228,11 +230,13 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
               <div>
                 <h4 style={{ color: '#ffffff', marginBottom: '1rem', fontSize: '1rem' }}>
                   Environmental Impact
-                </h4>
+                </h4> 
                 <div style={{ 
                   background: 'rgba(0, 255, 136, 0.1)',
                   border: '1px solid rgba(0, 255, 136, 0.2)',
-                  borderRadius: '8px',
+                  borderRadius: '12px', 
+                  backdropFilter: 'blur(10px)',
+                  WebkitBackdropFilter: 'blur(10px)',
                   padding: '1rem',
                   fontSize: '0.9rem'
                 }}>
@@ -252,7 +256,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
               borderTop: '1px solid rgba(0, 255, 136, 0.1)',
               paddingTop: '2rem',
               display: 'flex',
-              justifyContent: 'space-between',
+              justifyContent: 'space-between', 
               alignItems: 'center',
               flexWrap: 'wrap',
               gap: '1rem'

@@ -73,28 +73,18 @@ export default function ProjectCard({ notebook }) {
 
   return (
     <div 
-      style={{
+      className="card-hover"
+      style={{ 
         background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
         borderRadius: '16px',
         overflow: 'hidden',
         border: '1px solid rgba(0, 255, 136, 0.2)',
-        transition: 'all 0.3s ease',
         cursor: 'pointer',
         height: '100%',
         display: 'flex',
         flexDirection: 'column'
       }}
       onClick={handleCardClick}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.transform = 'translateY(-5px)';
-        e.currentTarget.style.boxShadow = '0 12px 30px rgba(0, 0, 0, 0.2)';
-        e.currentTarget.style.borderColor = '#00ff88';
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.transform = 'translateY(0)';
-        e.currentTarget.style.boxShadow = 'none';
-        e.currentTarget.style.borderColor = 'rgba(0, 255, 136, 0.2)';
-      }}
     >
       {/* Category Badge */}
       <div style={{
@@ -104,7 +94,7 @@ export default function ProjectCard({ notebook }) {
         background: 'rgba(0, 0, 0, 0.6)',
         backdropFilter: 'blur(4px)',
         padding: '0.25rem 0.75rem',
-        borderRadius: '20px',
+        borderRadius: '12px',
         fontSize: '0.7rem',
         color: '#00ff88',
         fontWeight: '600',
@@ -118,7 +108,7 @@ export default function ProjectCard({ notebook }) {
         onClick={handleSaveToggle}
         disabled={saving}
         style={{
-          position: 'absolute',
+          position: 'absolute', 
           top: '1rem',
           right: '1rem',
           background: 'rgba(0, 0, 0, 0.6)',
@@ -130,7 +120,7 @@ export default function ProjectCard({ notebook }) {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          cursor: saving ? 'wait' : 'pointer',
+          cursor: saving ? 'wait' : 'pointer', 
           zIndex: 1,
           color: isSaved ? '#00ff88' : '#ffffff',
           fontSize: '1.2rem',
@@ -155,7 +145,7 @@ export default function ProjectCard({ notebook }) {
       {/* Header Image or Gradient */}
       <div style={{
         height: '120px',
-        background: 'linear-gradient(135deg, rgba(0, 255, 136, 0.2) 0%, rgba(0, 230, 122, 0.1) 100%)',
+        background: 'linear-gradient(135deg, rgba(0, 255, 136, 0.15) 0%, rgba(0, 230, 122, 0.05) 100%)',
         position: 'relative'
       }}>
         {notebook.featured && (
@@ -166,7 +156,7 @@ export default function ProjectCard({ notebook }) {
             background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
             color: '#0a0a0a',
             padding: '0.25rem 0.5rem',
-            borderRadius: '4px',
+            borderRadius: '6px',
             fontSize: '0.7rem',
             fontWeight: '700',
             textTransform: 'uppercase',
@@ -184,7 +174,7 @@ export default function ProjectCard({ notebook }) {
             background: 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)',
             color: '#0a0a0a',
             padding: '0.25rem 0.5rem',
-            borderRadius: '4px',
+            borderRadius: '6px',
             fontSize: '0.7rem',
             fontWeight: '700',
             textTransform: 'uppercase',
@@ -198,7 +188,7 @@ export default function ProjectCard({ notebook }) {
       {/* Content */}
       <div style={{ 
         padding: '1.5rem',
-        flex: 1,
+        flex: 1, 
         display: 'flex',
         flexDirection: 'column'
       }}>
@@ -206,7 +196,7 @@ export default function ProjectCard({ notebook }) {
           fontSize: '1.3rem', 
           fontWeight: '700',
           color: '#ffffff',
-          margin: '0 0 0.75rem 0',
+          margin: '0 0 0.75rem 0', 
           lineHeight: '1.3'
         }}>
           {notebook.title}
@@ -216,7 +206,7 @@ export default function ProjectCard({ notebook }) {
           color: '#e2e8f0', 
           fontSize: '0.9rem',
           lineHeight: '1.5',
-          margin: '0 0 1rem 0',
+          margin: '0 0 1rem 0', 
           flex: 1,
           display: '-webkit-box',
           WebkitLineClamp: 3,
@@ -234,7 +224,7 @@ export default function ProjectCard({ notebook }) {
             flexWrap: 'wrap',
             gap: '0.5rem',
             marginBottom: '1rem'
-          }}>
+          }}> 
             {notebook.tags.slice(0, 3).map((tag, index) => (
               <span 
                 key={index}
@@ -242,7 +232,7 @@ export default function ProjectCard({ notebook }) {
                   background: 'rgba(0, 255, 136, 0.1)',
                   color: '#00ff88',
                   padding: '0.25rem 0.5rem',
-                  borderRadius: '4px',
+                  borderRadius: '6px',
                   fontSize: '0.7rem',
                   fontWeight: '600'
                 }}
@@ -268,7 +258,7 @@ export default function ProjectCard({ notebook }) {
           justifyContent: 'space-between',
           alignItems: 'center',
           marginTop: 'auto',
-          paddingTop: '1rem',
+          paddingTop: '1rem', 
           borderTop: '1px solid rgba(255, 255, 255, 0.1)'
         }}>
           <div>
@@ -321,7 +311,7 @@ export default function ProjectCard({ notebook }) {
           background: 'rgba(0, 0, 0, 0.6)',
           backdropFilter: 'blur(4px)',
           width: '32px',
-          height: '32px',
+          height: '32px', 
           borderRadius: '50%',
           display: 'flex',
           alignItems: 'center',

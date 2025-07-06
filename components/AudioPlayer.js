@@ -128,9 +128,12 @@ export default function AudioPlayer({
   return (
     <div style={{
       background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
-      borderRadius: '16px',
+      borderRadius: '16px', 
       padding: compact ? '1rem' : '1.5rem',
-      border: '1px solid rgba(0, 255, 136, 0.2)',
+      border: '1px solid rgba(0, 255, 136, 0.2)', 
+      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
+      backdropFilter: 'blur(10px)',
+      WebkitBackdropFilter: 'blur(10px)',
       width: '100%'
     }}> 
       {fullAudioUrl && <audio ref={audioRef} src={fullAudioUrl} preload="metadata" />}
@@ -151,17 +154,18 @@ export default function AudioPlayer({
             background: loading ? 'rgba(0, 255, 136, 0.2)' : 
                       error ? 'rgba(255, 0, 0, 0.2)' : 
                       'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
-            border: 'none', 
+            border: 'none',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             cursor: loading || error ? 'not-allowed' : 'pointer',
             color: '#0a0a0a',
             fontSize: compact ? '1rem' : '1.2rem',
-            fontWeight: '700',
+            fontWeight: '700', 
             flexShrink: 0,
             transition: 'all 0.2s ease',
-            boxShadow: '0 4px 12px rgba(0, 255, 136, 0.3)'
+            boxShadow: '0 4px 12px rgba(0, 255, 136, 0.3)',
+            className: 'button-glow'
           }}
           onMouseEnter={(e) => {
             if (!loading && !error) {
@@ -266,22 +270,27 @@ export default function AudioPlayer({
       {showWaveform && !compact && !error && (
         <div 
           ref={waveformRef}
-          style={{
+          style={{ 
             display: 'flex',
             alignItems: 'center',
             gap: '2px',
             height: '40px'
           }}
         >
-          {[...Array(50)].map((_, i) => (
+          {[...Array(50)].map((_, i) => ( 
             <div
               key={i}
               style={{
                 width: '3px',
-                height: `${Math.random() * 30 + 10}px`,
+                height: isPlaying ? `${Math.random() * 30 + 10}px` : '10px',
                 background: isPlaying ? '#00ff88' : 'rgba(0, 255, 136, 0.3)',
                 borderRadius: '1px',
-                transition: 'height 0.2s ease'
+                transition: 'height 0.2s ease',
+                animationPlayState: isPlaying ? 'running' : 'paused'
+              }}
+              className={isPlaying ? 'waveform-bar' : ''}
+              style={{
+                '--i': i
               }}
             />
           ))}
