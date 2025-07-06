@@ -130,7 +130,8 @@ export default function Pricing() {
     <Layout title="Pricing - NotebookLM Directory">
       <div style={{ 
         background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)',
-        minHeight: '100vh',
+        minHeight: '100vh', 
+        className: 'subtle-pattern',
         padding: '4rem 0'
       }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
@@ -138,12 +139,12 @@ export default function Pricing() {
           <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
             <h1 style={{ 
               fontSize: 'clamp(2.5rem, 6vw, 4rem)', 
-              fontWeight: '700',
+              fontWeight: '800', 
               color: '#ffffff',
               marginBottom: '1rem',
               lineHeight: '1.1'
             }}>
-              Simple, Transparent <span style={{ color: '#00ff88' }}>Pricing</span>
+              Simple, Transparent <span className="neon-text">Pricing</span>
             </h1>
             
             <p style={{ 
@@ -160,7 +161,7 @@ export default function Pricing() {
           {/* Pricing Cards */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', 
             gap: '2rem',
             marginBottom: '4rem'
           }}>
@@ -168,7 +169,7 @@ export default function Pricing() {
               <div
                 key={plan.id}
                 style={{
-                  background: plan.popular ? 
+                  background: plan.popular ?  
                     'linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, rgba(0, 255, 136, 0.05) 100%)' :
                     'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
                   borderRadius: '20px',
@@ -176,7 +177,9 @@ export default function Pricing() {
                   border: plan.popular ? 
                     '2px solid #00ff88' : 
                     '1px solid rgba(255, 255, 255, 0.1)',
-                  position: 'relative',
+                  position: 'relative', 
+                  backdropFilter: 'blur(10px)',
+                  WebkitBackdropFilter: 'blur(10px)',
                   transition: 'all 0.3s ease',
                   cursor: 'pointer'
                 }}
@@ -184,7 +187,7 @@ export default function Pricing() {
                 onMouseEnter={(e) => {
                   if (!plan.popular && !plan.comingSoon) {
                     e.target.style.borderColor = 'rgba(0, 255, 136, 0.5)';
-                    e.target.style.transform = 'translateY(-4px)';
+                    e.target.style.transform = 'translateY(-8px)';
                   }
                 }}
                 onMouseLeave={(e) => {
@@ -197,7 +200,7 @@ export default function Pricing() {
                 {plan.popular && (
                   <div style={{
                     position: 'absolute',
-                    top: '-12px',
+                    top: '-12px', 
                     left: '50%',
                     transform: 'translateX(-50%)',
                     background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
@@ -205,7 +208,8 @@ export default function Pricing() {
                     padding: '0.5rem 1.5rem',
                     borderRadius: '20px',
                     fontSize: '0.8rem',
-                    fontWeight: '700',
+                    fontWeight: '700', 
+                    boxShadow: '0 4px 12px rgba(0, 255, 136, 0.3)',
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px'
                   }}>
@@ -216,7 +220,7 @@ export default function Pricing() {
                 {plan.comingSoon && (
                   <div style={{
                     position: 'absolute',
-                    top: '-12px',
+                    top: '-12px', 
                     left: '50%',
                     transform: 'translateX(-50%)',
                     background: 'rgba(255, 255, 255, 0.2)',
@@ -224,7 +228,8 @@ export default function Pricing() {
                     padding: '0.5rem 1.5rem',
                     borderRadius: '20px',
                     fontSize: '0.8rem',
-                    fontWeight: '700',
+                    fontWeight: '700', 
+                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px'
                   }}>
@@ -232,7 +237,7 @@ export default function Pricing() {
                   </div>
                 )}
 
-                <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+                <div style={{ textAlign: 'center', marginBottom: '2rem' }}> 
                   <h3 style={{
                     fontSize: '1.5rem',
                     fontWeight: '700',
@@ -240,7 +245,7 @@ export default function Pricing() {
                     margin: '0 0 0.5rem 0'
                   }}>
                     {plan.name}
-                  </h3>
+                  </h3> 
                   
                   <div style={{
                     fontSize: '3rem',
@@ -248,7 +253,7 @@ export default function Pricing() {
                     color: '#00ff88',
                     margin: '0 0 0.25rem 0'
                   }}>
-                    ${plan.price}
+                    ${plan.price} 
                     {plan.period !== 'forever' && (
                       <span style={{
                         fontSize: '1rem',
@@ -256,7 +261,7 @@ export default function Pricing() {
                         fontWeight: '400'
                       }}>
                         /{plan.period}
-                      </span>
+                      </span> 
                     )}
                   </div>
                   
@@ -264,7 +269,7 @@ export default function Pricing() {
                     color: '#e2e8f0',
                     fontSize: '1rem',
                     margin: '0 0 1rem 0'
-                  }}>
+                  }}> 
                     {plan.description}
                   </p>
                 </div>
@@ -272,7 +277,7 @@ export default function Pricing() {
                 <ul style={{
                   listStyle: 'none',
                   padding: 0,
-                  margin: '0 0 2rem 0'
+                  margin: '0 0 2rem 0' 
                 }}>
                   {plan.features.map((feature, index) => (
                     <li key={index} style={{
@@ -280,7 +285,7 @@ export default function Pricing() {
                       alignItems: 'flex-start',
                       gap: '0.75rem',
                       marginBottom: '0.75rem',
-                      color: '#e2e8f0',
+                      color: '#e2e8f0', 
                       fontSize: '0.95rem'
                     }}>
                       <span style={{ color: '#00ff88', fontSize: '1.2rem', flexShrink: 0 }}>✓</span>
@@ -288,7 +293,7 @@ export default function Pricing() {
                     </li>
                   ))}
                 </ul>
-
+                
                 <button
                   onClick={() => handleUpgrade(plan.id)}
                   disabled={loading || plan.comingSoon}
@@ -296,7 +301,7 @@ export default function Pricing() {
                     width: '100%',
                     background: plan.comingSoon ? 'rgba(255, 255, 255, 0.1)' : (plan.popular ? 
                       'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)' :
-                      'transparent'),
+                      'transparent'), 
                     color: plan.comingSoon ? '#ffffff' : (plan.popular ? '#0a0a0a' : '#00ff88'),
                     border: plan.comingSoon || plan.popular ? 'none' : '1px solid rgba(0, 255, 136, 0.3)',
                     padding: '1rem',
@@ -304,7 +309,7 @@ export default function Pricing() {
                     fontSize: '1rem',
                     fontWeight: '700',
                     cursor: plan.comingSoon || loading ? 'not-allowed' : 'pointer',
-                    transition: 'all 0.2s ease',
+                    transition: 'all 0.2s ease', 
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px'
                   }}
@@ -312,7 +317,7 @@ export default function Pricing() {
                     if (!loading && !plan.comingSoon) {
                       if (plan.popular) {
                         e.target.style.transform = 'translateY(-2px)';
-                        e.target.style.boxShadow = '0 12px 32px rgba(0, 255, 136, 0.4)';
+                        e.target.style.boxShadow = '0 12px 32px rgba(0, 255, 136, 0.4)'; 
                       } else {
                         e.target.style.background = 'rgba(0, 255, 136, 0.1)';
                         e.target.style.borderColor = '#00ff88';
@@ -323,7 +328,7 @@ export default function Pricing() {
                     if (!loading && !plan.comingSoon) {
                       if (plan.popular) {
                         e.target.style.transform = 'translateY(0)';
-                        e.target.style.boxShadow = 'none';
+                        e.target.style.boxShadow = 'none'; 
                       } else {
                         e.target.style.background = 'transparent';
                         e.target.style.borderColor = 'rgba(0, 255, 136, 0.3)';
@@ -340,7 +345,7 @@ export default function Pricing() {
           {/* FAQ Section */}
           <div style={{
             background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
-            borderRadius: '20px',
+            borderRadius: '20px', 
             padding: '3rem',
             border: '1px solid rgba(0, 255, 136, 0.2)',
             marginBottom: '4rem'
@@ -348,7 +353,7 @@ export default function Pricing() {
             <h2 style={{
               fontSize: '2rem',
               fontWeight: '700',
-              color: '#ffffff',
+              color: '#ffffff', 
               textAlign: 'center',
               marginBottom: '2rem'
             }}>
@@ -357,7 +362,7 @@ export default function Pricing() {
 
             <div style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', 
               gap: '2rem'
             }}>
               <div>
@@ -365,7 +370,7 @@ export default function Pricing() {
                   Can I upgrade or downgrade anytime?
                 </h3>
                 <p style={{ color: '#e2e8f0', lineHeight: '1.6' }}>
-                  Yes! You can upgrade, downgrade, or cancel your subscription at any time. Changes take effect at your next billing cycle, and we'll prorate any differences. All plans include a 7-day free trial.
+                  Yes! You can upgrade, downgrade, or cancel your subscription at any time. Changes take effect at your next billing cycle, and we'll prorate any differences. All plans include a 7-day free trial. 
                 </p>
               </div>
 
@@ -374,7 +379,7 @@ export default function Pricing() {
                   What's included in the API access?
                 </h3>
                 <p style={{ color: '#e2e8f0', lineHeight: '1.6' }}>
-                  Professional plans include 1,000 API calls per month for integrating our notebook discovery into your workflows. Enterprise plans include unlimited API access plus custom integrations.
+                  Professional plans include 1,000 API calls per month for integrating our notebook discovery into your workflows. Enterprise plans include unlimited API access plus custom integrations. 
                 </p>
               </div>
 
@@ -383,7 +388,7 @@ export default function Pricing() {
                   Do you offer educational discounts?
                 </h3>
                 <p style={{ color: '#e2e8f0', lineHeight: '1.6' }}>
-                  Yes! We offer 50% discounts for students and educators. Contact us with your academic email for verification and discount codes.
+                  Yes! We offer 50% discounts for students and educators. Contact us with your academic email for verification and discount codes. 
                 </p>
               </div>
 
@@ -392,7 +397,7 @@ export default function Pricing() {
                   What payment methods do you accept?
                 </h3>
                 <p style={{ color: '#e2e8f0', lineHeight: '1.6' }}>
-                  We accept all major credit cards (Visa, Mastercard, American Express, Discover) through our secure payment processor, Stripe. For Enterprise plans, we also offer invoicing.
+                  We accept all major credit cards (Visa, Mastercard, American Express, Discover) through our secure payment processor, Stripe. For Enterprise plans, we also offer invoicing. 
                 </p>
               </div>
             </div>
@@ -401,7 +406,7 @@ export default function Pricing() {
           {/* Trust Signals */}
           <div style={{
             textAlign: 'center',
-            color: '#e2e8f0',
+            color: '#e2e8f0', 
             fontSize: '0.9rem'  
           }}> 
             <p style={{ margin: '0 0 1rem 0' }}>
