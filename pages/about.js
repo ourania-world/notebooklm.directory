@@ -6,13 +6,13 @@ export default function About() {
       <div style={{ 
         maxWidth: '800px', 
         margin: '0 auto', 
-        padding: '2rem',
+        padding: '2rem', 
         background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)',
         minHeight: '100vh'
       }}>
         <h1 style={{ 
           fontSize: '2.5rem',
-          margin: '0 0 2rem 0',
+          margin: '0 0 2rem 0', 
           color: '#ffffff',
           fontWeight: '700'
         }}>
@@ -27,7 +27,7 @@ export default function About() {
         
         <div style={{ 
           fontSize: '1.1rem', 
-          lineHeight: '1.7',
+          lineHeight: '1.7', 
           color: '#e2e8f0'
         }}>
           <p>
@@ -44,7 +44,7 @@ export default function About() {
           
           <h2 style={{ 
             fontSize: '1.8rem', 
-            margin: '2rem 0 1rem 0',
+            margin: '2rem 0 1rem 0', 
             color: '#ffffff',
             fontWeight: '600'
           }}>
@@ -59,7 +59,7 @@ export default function About() {
           
           <h2 style={{ 
             fontSize: '1.8rem', 
-            margin: '2rem 0 1rem 0',
+            margin: '2rem 0 1rem 0', 
             color: '#ffffff',
             fontWeight: '600'
           }}>
@@ -85,7 +85,7 @@ export default function About() {
           
           <h2 style={{ 
             fontSize: '1.8rem', 
-            margin: '2rem 0 1rem 0',
+            margin: '2rem 0 1rem 0', 
             color: '#ffffff',
             fontWeight: '600'
           }}>
@@ -102,7 +102,7 @@ export default function About() {
           
           <div style={{
             background: 'rgba(0, 255, 136, 0.1)',
-            border: '1px solid rgba(0, 255, 136, 0.3)',
+            border: '1px solid rgba(0, 255, 136, 0.3)', 
             borderRadius: '12px',
             padding: '1.5rem',
             margin: '2rem 0'
@@ -120,7 +120,7 @@ export default function About() {
           
           <h2 style={{ 
             fontSize: '1.8rem', 
-            margin: '2rem 0 1rem 0',
+            margin: '2rem 0 1rem 0', 
             color: '#ffffff',
             fontWeight: '600'
           }}>
@@ -144,7 +144,7 @@ export default function About() {
           
           <div style={{ 
             background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
-            padding: '2rem',
+            padding: '2rem', 
             borderRadius: '16px',
             margin: '2rem 0',
             border: '1px solid rgba(0, 255, 136, 0.2)'
@@ -152,7 +152,7 @@ export default function About() {
             <h3 style={{ 
               margin: '0 0 1rem 0',
               color: '#ffffff',
-              fontWeight: '600'
+              fontWeight: '600' 
             }}>
               🚀 Ready to get started?
             </h3>
@@ -163,7 +163,7 @@ export default function About() {
               <button style={{
                 background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
                 color: '#0a0a0a',
-                border: 'none',
+                border: 'none', 
                 padding: '1rem 2rem',
                 borderRadius: '12px',
                 fontWeight: '700',
@@ -177,7 +177,7 @@ export default function About() {
               <button style={{
                 background: 'transparent',
                 color: '#00ff88',
-                border: '1px solid rgba(0, 255, 136, 0.3)',
+                border: '1px solid rgba(0, 255, 136, 0.3)', 
                 padding: '1rem 2rem',
                 borderRadius: '12px',
                 fontWeight: '600',

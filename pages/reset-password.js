@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Layout from '../components/Layout';
 import { useAuth } from '../context/AuthContext';
+import Link from 'next/link';
 
 export default function ResetPassword() {
   const { resetPassword } = useAuth();
@@ -28,7 +29,7 @@ export default function ResetPassword() {
     <Layout title="Reset Password - NotebookLM Directory">
       <div style={{ 
         background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)',
-        minHeight: '100vh',
+        minHeight: '80vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -62,7 +63,7 @@ export default function ResetPassword() {
               marginBottom: '1.5rem',
               border: '1px solid rgba(220, 53, 69, 0.3)'
             }}>
-              {error}
+              </Link>
             </div>
           )}
 
@@ -81,8 +82,8 @@ export default function ResetPassword() {
               <p style={{ marginBottom: '1.5rem' }}>
                 We've sent a password reset link to {email}. Please check your inbox and follow the instructions.
               </p>
-              <button
-                onClick={() => window.location.href = '/login'}
+              <Link
+                href="/login"
                 style={{
                   background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
                   color: '#0a0a0a',
@@ -91,11 +92,13 @@ export default function ResetPassword() {
                   borderRadius: '8px',
                   fontSize: '1rem',
                   fontWeight: '600',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  textDecoration: 'none',
+                  display: 'inline-block'
                 }}
               >
                 Return to Login
-              </button>
+              </Link>
             </div>
           ) : (
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
