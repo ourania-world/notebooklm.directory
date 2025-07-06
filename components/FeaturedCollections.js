@@ -134,7 +134,7 @@ export default function FeaturedCollections() {
   return (
     <div>
       <h2 style={{ 
-        fontSize: '2.5rem', 
+        fontSize: '2.5rem',  
         textAlign: 'center', 
         margin: '0 0 3rem 0',
         color: '#ffffff',
@@ -142,6 +142,78 @@ export default function FeaturedCollections() {
       }}>
         Featured <span style={{ color: '#00ff88' }}>Collections</span>
       </h2>
+      
+      {/* Filter Tabs */}
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        gap: '1rem',
+        marginBottom: '3rem',
+        flexWrap: 'wrap'
+      }}>
+        <button 
+          onClick={() => setActiveFilter('trending')}
+          style={{
+            background: activeFilter === 'trending' ? 
+              'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)' : 
+              'transparent',
+            color: activeFilter === 'trending' ? '#0a0a0a' : '#e2e8f0',
+            border: activeFilter === 'trending' ? 
+              'none' : 
+              '1px solid rgba(255, 255, 255, 0.2)',
+            padding: '0.5rem 1rem',
+            borderRadius: '20px',
+            fontWeight: activeFilter === 'trending' ? '600' : '500',
+            cursor: 'pointer',
+            fontSize: '0.8rem',
+            transition: 'all 0.2s ease'
+          }}
+        >
+          Trending This Week
+        </button>
+        
+        <button
+          onClick={() => setActiveFilter('new')}
+          style={{
+            background: activeFilter === 'new' ? 
+              'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)' : 
+              'transparent',
+            color: activeFilter === 'new' ? '#0a0a0a' : '#e2e8f0',
+            border: activeFilter === 'new' ? 
+              'none' : 
+              '1px solid rgba(255, 255, 255, 0.2)',
+            padding: '0.5rem 1rem',
+            borderRadius: '20px',
+            fontWeight: activeFilter === 'new' ? '600' : '500',
+            cursor: 'pointer',
+            fontSize: '0.8rem',
+            transition: 'all 0.2s ease'
+          }}
+        >
+          Newest Additions
+        </button>
+        
+        <button
+          onClick={() => setActiveFilter('popular')}
+          style={{
+            background: activeFilter === 'popular' ? 
+              'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)' : 
+              'transparent',
+            color: activeFilter === 'popular' ? '#0a0a0a' : '#e2e8f0',
+            border: activeFilter === 'popular' ? 
+              'none' : 
+              '1px solid rgba(255, 255, 255, 0.2)',
+            padding: '0.5rem 1rem',
+            borderRadius: '20px',
+            fontWeight: activeFilter === 'popular' ? '600' : '500',
+            cursor: 'pointer',
+            fontSize: '0.8rem',
+            transition: 'all 0.2s ease'
+          }}
+        >
+          All-Time Popular
+        </button>
+      </div>
       
       <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
         {collections.map(collection => (
@@ -155,7 +227,7 @@ export default function FeaturedCollections() {
               <div>
                 <h3 style={{ 
                   fontSize: '1.8rem', 
-                  color: '#ffffff',
+                  color: '#ffffff', 
                   margin: '0 0 0.5rem 0',
                   fontWeight: '700'
                 }}>
@@ -163,7 +235,7 @@ export default function FeaturedCollections() {
                 </h3>
                 <p style={{ color: '#e2e8f0', margin: 0 }}>
                   {collection.description}
-                </p>
+                </p> 
               </div> 
               
               <Link
@@ -171,7 +243,7 @@ export default function FeaturedCollections() {
                 style={{
                   background: 'transparent',
                   color: '#00ff88',
-                  border: '1px solid rgba(0, 255, 136, 0.3)',
+                  border: '1px solid rgba(0, 255, 136, 0.3)', 
                   padding: '0.75rem 1.5rem',
                   borderRadius: '8px',
                   fontWeight: '600',
@@ -179,7 +251,7 @@ export default function FeaturedCollections() {
                   fontSize: '0.9rem',
                   transition: 'all 0.2s ease'
                 }}
-                onMouseEnter={(e) => {
+                onMouseEnter={(e) => { 
                   e.target.style.background = 'rgba(0, 255, 136, 0.1)';
                   e.target.style.borderColor = '#00ff88';
                 }}
@@ -194,7 +266,7 @@ export default function FeaturedCollections() {
             
             <div style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
               gap: '1.5rem'
             }}>
               {collection.notebooks.map(notebook => (

@@ -34,11 +34,11 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
           position: 'sticky',
           top: 0,
           zIndex: 50, 
-          background: 'rgba(10, 10, 10, 0.8)',
+          background: 'rgba(10, 10, 10, 0.7)', 
           backdropFilter: 'blur(20px)', 
           WebkitBackdropFilter: 'blur(20px)',
           borderBottom: '1px solid rgba(0, 255, 136, 0.1)', 
-          boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+          boxShadow: '0 4px 30px rgba(0, 0, 0, 0.2)',
           padding: '1rem 0'
         }}>
           <nav style={{ 
@@ -55,7 +55,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
               textDecoration: 'none', 
               color: '#ffffff',
               display: 'flex', 
-              alignItems: 'center',
+              alignItems: 'center', 
               gap: '0.75rem',
               transition: 'all 0.3s ease'
             }}>
@@ -63,7 +63,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                 background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
                 color: '#0a0a0a',
                 padding: '0.5rem 0.75rem',
-                borderRadius: '8px', 
+                borderRadius: '8px',  
                 fontSize: '0.9rem',
                 fontWeight: '700',
                 letterSpacing: '1px',
@@ -71,7 +71,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
               }}>NLM_D</span>
               notebooklm.directory
             </Link>
-            
+             
             <div style={{ 
               display: mobileMenuOpen ? 'flex' : 'flex',
               flexDirection: mobileMenuOpen ? 'column' : 'row',
@@ -86,7 +86,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
               zIndex: 40,
               borderBottom: mobileMenuOpen ? '1px solid rgba(0, 255, 136, 0.1)' : 'none'
             }}>
-              <Link href="/browse" style={{ 
+              <Link href="/browse" className="nav-link" style={{ 
                 color: router.pathname === '/browse' ? '#00ff88' : '#e2e8f0', 
                 textDecoration: 'none',
                 transition: 'color 0.2s ease',
@@ -94,7 +94,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
               }}>
                 Browse
               </Link>
-              <Link href="/submit" style={{ 
+              <Link href="/submit" className="nav-link" style={{ 
                 color: router.pathname === '/submit' ? '#00ff88' : '#e2e8f0', 
                 textDecoration: 'none',
                 transition: 'color 0.2s ease',
@@ -102,7 +102,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
               }}>
                 Submit
               </Link>
-              <Link href="/about" style={{ 
+              <Link href="/about" className="nav-link" style={{ 
                 color: router.pathname === '/about' ? '#00ff88' : '#e2e8f0', 
                 textDecoration: 'none',
                 transition: 'color 0.2s ease',
@@ -110,7 +110,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
               }}>
                 About
               </Link>
-              <Link href="/pricing" style={{ 
+              <Link href="/pricing" className="nav-link" style={{ 
                 color: router.pathname === '/pricing' ? '#00ff88' : '#e2e8f0', 
                 textDecoration: 'none',
                 transition: 'color 0.2s ease',
@@ -119,7 +119,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                 Pricing
               </Link>
               
-              <Link href="/payment" style={{ 
+              <Link href="/payment" className="nav-link" style={{ 
                 color: router.pathname === '/payment' ? '#00ff88' : '#e2e8f0', 
                 textDecoration: 'none',
                 transition: 'color 0.2s ease',
@@ -129,7 +129,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
               </Link>
               
               {!loading && user && (
-                <Link href="/analytics" style={{ 
+                <Link href="/analytics" className="nav-link" style={{ 
                   color: router.pathname === '/analytics' ? '#00ff88' : '#e2e8f0', 
                   textDecoration: 'none',
                   transition: 'color 0.2s ease',
@@ -163,7 +163,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
         <main>
           {children}
         </main>
-        
+         
         <footer style={{ 
           background: 'linear-gradient(135deg, #1a1a2e 0%, #0a0a0a 100%)', 
           padding: '3rem 0', 
@@ -171,7 +171,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
           borderTop: '1px solid rgba(0, 255, 136, 0.1)'
         }}>
           <div style={{ 
-            maxWidth: '1200px', 
+            maxWidth: '1200px',  
             margin: '0 auto', 
             padding: '0 2rem'
           }}>
@@ -179,7 +179,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
               gap: '2rem', 
-              marginBottom: '3rem'
+              marginBottom: '3rem' 
             }}>
               <div>
                 <h3 style={{ color: '#00ff88', marginBottom: '1rem', fontSize: '1.2rem' }}>
@@ -187,7 +187,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                 </h3>
                 <p style={{ color: '#e2e8f0', fontSize: '0.9rem', lineHeight: '1.6' }}>
                   Building the future of AI research through community collaboration and environmental responsibility.
-                </p>
+                </p> 
               </div>
               
               <div>
@@ -195,7 +195,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                   Quick Links
                 </h4>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                  <Link href="/browse" style={{ color: '#e2e8f0', textDecoration: 'none', fontSize: '0.9rem' }}>
+                  <Link href="/browse" className="footer-link" style={{ color: '#e2e8f0', textDecoration: 'none', fontSize: '0.9rem' }}>
                     Browse Projects
                   </Link>
                   <Link href="/submit" style={{ color: '#e2e8f0', textDecoration: 'none', fontSize: '0.9rem' }}>
@@ -215,7 +215,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                   <Link href="/pricing" style={{ color: '#e2e8f0', textDecoration: 'none', fontSize: '0.9rem' }}>
                     Support Us
                   </Link>
-                  <Link href="/analytics" style={{ color: '#e2e8f0', textDecoration: 'none', fontSize: '0.9rem' }}>
+                  <Link href="/analytics" className="footer-link" style={{ color: '#e2e8f0', textDecoration: 'none', fontSize: '0.9rem' }}>
                     Analytics
                   </Link>
                   <a 
@@ -233,7 +233,8 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                 </h4> 
                 <div style={{ 
                   background: 'rgba(0, 255, 136, 0.1)',
-                  border: '1px solid rgba(0, 255, 136, 0.2)',
+                  border: '1px solid rgba(0, 255, 136, 0.2)', 
+                  boxShadow: '0 4px 16px rgba(0, 255, 136, 0.1)',
                   borderRadius: '12px', 
                   backdropFilter: 'blur(10px)',
                   WebkitBackdropFilter: 'blur(10px)',
@@ -241,7 +242,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                   fontSize: '0.9rem'
                 }}>
                   <div style={{ color: '#00ff88', fontWeight: '600', marginBottom: '0.5rem' }}>
-                    Our Impact Today:
+                    Our Impact Today: 
                   </div>
                   <div style={{ color: '#e2e8f0', fontSize: '0.8rem', lineHeight: '1.6' }}>
                     • 47% reduction in redundant research<br />
@@ -256,7 +257,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
               borderTop: '1px solid rgba(0, 255, 136, 0.1)',
               paddingTop: '2rem',
               display: 'flex',
-              justifyContent: 'space-between', 
+              justifyContent: 'space-between',  
               alignItems: 'center',
               flexWrap: 'wrap',
               gap: '1rem'

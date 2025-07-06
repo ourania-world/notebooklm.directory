@@ -46,10 +46,11 @@ export default function SubscriptionBanner() {
   return (
     <div style={{
       background: 'linear-gradient(90deg, rgba(0, 255, 136, 0.1) 0%, rgba(0, 255, 136, 0.2) 100%)',
-      borderBottom: '1px solid rgba(0, 255, 136, 0.3)',
+      borderBottom: '1px solid rgba(0, 255, 136, 0.3)', 
       padding: '0.75rem 0', 
-      backdropFilter: 'blur(10px)',
-      WebkitBackdropFilter: 'blur(10px)',
+      backdropFilter: 'blur(12px)',
+      WebkitBackdropFilter: 'blur(12px)', 
+      boxShadow: '0 4px 20px rgba(0, 0, 0, 0.15)',
       position: 'relative',
       overflow: 'hidden'
     }}>
@@ -60,7 +61,7 @@ export default function SubscriptionBanner() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        flexWrap: 'wrap',
+        flexWrap: 'wrap', 
         gap: '1rem'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
@@ -68,7 +69,7 @@ export default function SubscriptionBanner() {
           <p style={{ margin: 0, color: '#ffffff', fontSize: '0.9rem' }}>
             Upgrade to <strong>Professional</strong> for unlimited saves and premium features
           </p>
-        </div>
+        </div> 
         
         <Link
           href="/pricing"
@@ -76,7 +77,7 @@ export default function SubscriptionBanner() {
             background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
             color: '#0a0a0a',
             border: 'none',
-            padding: '0.5rem 1rem', 
+            padding: '0.5rem 1.25rem',  
             borderRadius: '8px',
             fontSize: '0.8rem',
             fontWeight: '600',
