@@ -679,7 +679,7 @@ export default function Home({ initialFeaturedNotebooks }) {
             Hear our AI-generated overview of how NotebookLM is transforming research and creativity
           </p>
           <AudioPlayer 
-            audioUrl="/overview.mp3"
+            audioUrl="overview.mp3"
             title="Listen to the Vision"
           />
         </div>

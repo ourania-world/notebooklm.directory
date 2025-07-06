@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getCurrentUser } from '../lib/auth';
+import { getCurrentUser } from '../lib/supabase';
 import { toggleSavedNotebook } from '../lib/profiles';
 
 export default function ProjectCard({ notebook }) {
