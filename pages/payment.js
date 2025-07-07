@@ -248,7 +248,7 @@ export default function Payment() {
                     padding: 0,
                     margin: 0
                   }}>
-                    {selectedPlan.features.slice(0, 5).map((feature, index) => (
+                    {selectedPlan.features.map((feature, index) => (
                       <li key={index} style={{
                         display: 'flex',
                         alignItems: 'flex-start',
@@ -261,16 +261,6 @@ export default function Payment() {
                         {feature}
                       </li>
                     ))}
-                    {selectedPlan.features.length > 5 && (
-                      <li style={{
-                        color: '#00ff88',
-                        fontSize: '0.9rem',
-                        marginTop: '0.5rem',
-                        textAlign: 'center'
-                      }}>
-                        + {selectedPlan.features.length - 5} more features
-                      </li>
-                    )}
                   </ul>
                 </div>
               </div>
