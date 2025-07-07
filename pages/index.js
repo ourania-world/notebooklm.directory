@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import Link from 'next/link';
+import FeaturedCollections from '../components/FeaturedCollections';
+import PersonalizedRecommendations from '../components/PersonalizedRecommendations';
+import SearchBar from '../components/SearchBar';
+import AudioPlayer from '../components/AudioPlayer';
 import { getNotebooks } from '../lib/notebooks';
 
 export async function getServerSideProps() {
@@ -26,6 +30,13 @@ export async function getServerSideProps() {
 export default function Home({ initialFeaturedNotebooks }) {
   const [featuredNotebooks, setFeaturedNotebooks] = useState(initialFeaturedNotebooks);
   const [loading, setLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    // In a real implementation, this would navigate to search results
+    window.location.href = `/browse?search=${encodeURIComponent(query)}`;
+  };
 
   return (
     <Layout>
@@ -62,10 +73,7 @@ export default function Home({ initialFeaturedNotebooks }) {
             fontWeight: '800',  
             margin: '0 0 1rem 0', 
             lineHeight: '1',
-            background: 'linear-gradient(135deg, #ffffff 0%, #00ff88 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text'
+            color: '#ffffff'
           }}>
             The Premier NotebookLM<br />
             <span className="neon-text">Directory</span>
@@ -90,9 +98,13 @@ export default function Home({ initialFeaturedNotebooks }) {
             color: '#e2e8f0',
             lineHeight: '1.6'
           }}>
-            Help us build the premier platform for NotebookLM projects in these early stages. By <strong style={{ color: '#00ff88' }}>subscribing</strong> and sharing
-            notebooks, you support our growth and join our community of innovative researchers.
+            Discover innovative NotebookLM projects, share your own work, and connect with a community of researchers and creators. The premier platform for NotebookLM exploration.
           </p>
+          
+          {/* Search Bar */}
+          <div style={{ maxWidth: '700px', margin: '2rem auto' }}>
+            <SearchBar onSearch={handleSearch} />
+          </div>
           
           <div style={{ 
             display: 'flex', 
@@ -140,6 +152,57 @@ export default function Home({ initialFeaturedNotebooks }) {
         </div>
       </section>
       
+      {/* Audio Overview Section */}
+      <section style={{ 
+        background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)', 
+        padding: '2rem 0 4rem 0'
+      }}>
+        <div style={{ maxWidth: '800px', margin: '0 auto', padding: '0 2rem' }}>
+          <div style={{ 
+            textAlign: 'center', 
+            marginBottom: '2rem'
+          }}>
+            <h2 style={{ 
+              fontSize: '2rem', 
+              color: '#ffffff', 
+              margin: '0 0 1rem 0',
+              fontWeight: '700'
+            }}>
+              <span style={{ color: '#00ff88' }}>Vision</span> Overview
+            </h2>
+            <p style={{ color: '#e2e8f0' }}>
+              Listen to our audio overview of the NotebookLM Directory vision
+            </p>
+          </div>
+          
+          <AudioPlayer 
+            audioUrl="overview.mp3"
+            title="NotebookLM Directory Vision"
+            showWaveform={true}
+          />
+        </div>
+      </section>
+      
+      {/* Featured Collections */}
+      <section style={{ 
+        background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)', 
+        padding: '4rem 0'
+      }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
+          <FeaturedCollections />
+        </div>
+      </section>
+      
+      {/* Personalized Recommendations */}
+      <section style={{ 
+        background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)', 
+        padding: '4rem 0'
+      }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
+          <PersonalizedRecommendations />
+        </div>
+      </section>
+      
       {/* Features Section */}
       <section style={{ 
         background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)', 
@@ -157,15 +220,19 @@ export default function Home({ initialFeaturedNotebooks }) {
             Building the Future of <span style={{ color: '#00ff88' }}>AI Research</span>
           </h2>
           
-          <p style={{ 
-            fontSize: '1.1rem', 
-            color: '#e2e8f0',
+          <div style={{ 
             textAlign: 'center',
-            maxWidth: '800px',
-            margin: '0 auto 4rem auto'
+            marginBottom: '2rem'
           }}>
-            We're creating the world's most comprehensive AI research discovery platform
-          </p>
+            <p style={{ 
+              fontSize: '1.1rem', 
+              color: '#e2e8f0',
+              maxWidth: '800px',
+              margin: '0 auto'
+            }}>
+              <span style={{ color: '#00ff88', fontWeight: '600' }}>Subscribe & Support Our Growth!</span> We're creating the world's most comprehensive AI research discovery platform
+            </p>
+          </div>
           
           <div style={{
             display: 'grid',
@@ -274,90 +341,6 @@ export default function Home({ initialFeaturedNotebooks }) {
                 Discover, share, and collaborate with researchers worldwide. Build on existing work instead of starting from scratch. <a href="#" style={{ color: '#00ff88', textDecoration: 'none' }}>Learn more</a>
               </p>
             </div>
-          </div>
-        </div>
-      </section>
-      
-      {/* CTA Section */}
-      <section style={{ 
-        background: 'linear-gradient(135deg, rgba(10, 10, 10, 0.9) 0%, rgba(26, 26, 46, 0.9) 100%)', 
-        padding: '6rem 0', 
-        position: 'relative',
-        borderTop: '1px solid rgba(0, 255, 136, 0.1)',
-        borderBottom: '1px solid rgba(0, 255, 136, 0.1)',
-        textAlign: 'center'
-      }}>
-        <div style={{
-          position: 'absolute', 
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'rgba(0, 0, 0, 0.3)',
-          zIndex: 1
-        }}></div>
-        <div style={{ maxWidth: '800px', margin: '0 auto', padding: '0 2rem', position: 'relative', zIndex: 2 }}>
-          <div style={{
-            fontSize: '3rem',
-            marginBottom: '1.5rem',
-            color: '#ffffff',
-            position: 'relative',
-            zIndex: 2
-          }}>
-            <span className="float-animation" style={{ display: 'inline-block' }}>✨</span>
-          </div>
-          <h2 style={{ 
-            fontSize: '2.5rem', 
-            margin: '0 0 1.5rem 0',
-            color: '#ffffff',
-            fontWeight: '700',
-            position: 'relative',
-            zIndex: 2, 
-          }}> 
-            Ready to Get Started?
-          </h2>
-          <p style={{ 
-            fontSize: '1.1rem',
-            color: '#e2e8f0',
-            lineHeight: '1.6',
-            marginBottom: '2rem', 
-            position: 'relative',
-            zIndex: 2
-          }}> 
-            Share your NotebookLM projects, discover innovative approaches, and help build a community for the future of AI research.
-          </p>
-          
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap', position: 'relative', zIndex: 2 }}>
-            <Link href="/submit" className="gradient-button" style={{
-              background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%, #00ff88 200%)',
-              color: '#0a0a0a',
-              border: 'none',
-              padding: '0.75rem 1.5rem',
-              borderRadius: '8px',
-              fontWeight: '600',
-              cursor: 'pointer',
-              fontSize: '0.9rem',
-              textDecoration: 'none', 
-              display: 'inline-block',
-              className: 'gradient-button'
-            }}>
-              SUBMIT YOUR NOTEBOOK
-            </Link>
-            
-            <Link href="/browse" style={{
-              background: 'transparent',
-              color: '#e2e8f0',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
-              padding: '0.75rem 1.5rem',
-              borderRadius: '8px',
-              fontWeight: '500',
-              cursor: 'pointer', 
-              fontSize: '0.9rem',
-              textDecoration: 'none',
-              display: 'inline-block'
-            }}>
-              EXPLORE FIRST
-            </Link>
           </div>
         </div>
       </section>
