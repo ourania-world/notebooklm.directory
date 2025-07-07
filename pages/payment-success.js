@@ -1,41 +1,44 @@
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
-import Layout from '../../components/Layout'
-import { getCurrentUser } from '../../lib/supabase'
-import { getUserSubscription } from '../../lib/subscriptions'
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import Layout from '../components/Layout';
+import { getCurrentUser } from '../utils/yourHelpers';
 
-export default function SubscriptionSuccess() {
-  const router = useRouter()
-  const [loading, setLoading] = useState(true)
-  const [subscription, setSubscription] = useState(null)
+export default function PaymentSuccess() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
+  const [subscription, setSubscription] = useState(null);
 
   useEffect(() => {
-    async function checkSubscription() {
+    async function checkAuth() {
       try {
-        const user = await getCurrentUser()
-        if (!user) {
-          router.push('/')
-          return
+        const currentUser = await getCurrentUser();
+        if (!currentUser) {
+          router.push('/');
+          return;
         }
-
-        // Wait a moment for webhook to process
-        setTimeout(async () => {
-          const userSubscription = await getUserSubscription(user.id)
-          setSubscription(userSubscription)
-          setLoading(false)
-        }, 2000)
+        
+        setUser(currentUser);
+        
+        // Fetch subscription status
+        const response = await fetch('/api/subscription-status');
+        if (response.ok) {
+          const data = await response.json();
+          setSubscription(data);
+        }
       } catch (error) {
-        console.error('Error checking subscription:', error)
-        setLoading(false)
+        console.error('Error checking auth:', error);
+      } finally {
+        setLoading(false);
       }
     }
-
-    checkSubscription()
-  }, [router])
+    
+    checkAuth();
+  }, [router]);
 
   if (loading) {
     return (
-      <Layout title="Processing Subscription - NotebookLM Directory">
+      <Layout title="Payment Successful - NotebookLM Directory">
         <div style={{ 
           maxWidth: '600px', 
           margin: '0 auto', 
@@ -48,7 +51,7 @@ export default function SubscriptionSuccess() {
             color: '#ffffff',
             marginBottom: '1rem'
           }}>
-            Processing Your Subscription
+            Processing Your Payment
           </h1>
           <p style={{ color: '#e2e8f0', fontSize: '1.1rem' }}>
             Please wait while we activate your account...
@@ -70,30 +73,13 @@ export default function SubscriptionSuccess() {
               100% { transform: rotate(360deg); }
             }
           `}</style>
-          
-          <div style={{
-            width: '60px',
-            height: '60px',
-            border: '4px solid rgba(0, 255, 136, 0.3)',
-            borderTop: '4px solid #00ff88',
-            borderRadius: '50%',
-            animation: 'spin 1s linear infinite',
-            margin: '2rem auto'
-          }} />
-          
-          <style jsx>{`
-            @keyframes spin {
-              0% { transform: rotate(0deg); }
-              100% { transform: rotate(360deg); }
-            }
-          `}</style>
         </div>
       </Layout>
-    )
+    );
   }
 
   return (
-    <Layout title="Subscription Activated - NotebookLM Directory">
+    <Layout title="Payment Successful - NotebookLM Directory">
       <div style={{ 
         maxWidth: '600px', 
         margin: '0 auto', 
@@ -117,7 +103,7 @@ export default function SubscriptionSuccess() {
           lineHeight: '1.6',
           marginBottom: '2rem'
         }}>
-          Your subscription has been activated successfully. You now have access to all premium features!
+          Your payment was successful! You now have access to all premium features.
         </p>
 
         {subscription && (
@@ -134,7 +120,7 @@ export default function SubscriptionSuccess() {
               marginBottom: '1rem',
               fontWeight: '600'
             }}>
-              Your {subscription.subscription_plans?.name || 'Premium'} Plan Includes:
+              Your {subscription.plan?.name || 'Premium'} Plan Includes:
             </h3>
             <ul style={{
               listStyle: 'none',
@@ -187,5 +173,5 @@ export default function SubscriptionSuccess() {
         </div>
       </div>
     </Layout>
-  )
+  );
 }
