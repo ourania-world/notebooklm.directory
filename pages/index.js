@@ -90,8 +90,8 @@ export default function Home({ initialFeaturedNotebooks }) {
             color: '#e2e8f0',
             lineHeight: '1.6'
           }}>
-            Help us build a network of researchers in these early stages. By <strong>subscribing</strong> and sharing
-            notebooks, you support our growth and help create the premier platform for NotebookLM.
+            Help us build a network of researchers in these early stages. By <strong style={{ color: '#00ff88' }}>subscribing</strong> and sharing
+            notebooks, you support our growth and help create the premier platform for NotebookLM projects.
           </p>
           
           <div style={{ 
