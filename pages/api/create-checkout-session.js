@@ -25,6 +25,41 @@ export default async function handler(req, res) {
     // Simulate a checkout URL
     const checkoutUrl = successUrl || `${req.headers.origin}/subscription/success`;
 
+    // Log the checkout for debugging
+    console.log('Creating checkout session:', {
+      userId: session.user.id,
+      priceId,
+      successUrl: successUrl || `${req.headers.origin}/subscription/success`,
+      cancelUrl: cancelUrl || `${req.headers.origin}/subscription/cancel`
+    });
+
+    // Create a mock subscription in the database
+    const { error: subscriptionError } = await supabase
+      .from('subscriptions')
+      .insert({
+        user_id: session.user.id,
+        plan_id: priceId,
+        status: 'active',
+        current_period_start: new Date().toISOString(),
+        current_period_end: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString() // 30 days from now
+      });
+
+    if (subscriptionError) {
+      console.error('Error creating subscription:', subscriptionError);
+      // Continue anyway for demo purposes
+    }
+
+    // Update user's profile with subscription tier
+    const { error: profileError } = await supabase
+      .from('profiles')
+      .update({ subscription_tier: priceId })
+      .eq('id', session.user.id);
+
+    if (profileError) {
+      console.error('Error updating profile:', profileError);
+      // Continue anyway for demo purposes
+    }
+
     res.status(200).json({ url: checkoutUrl });
   } catch (error) {
     console.error('Error creating checkout session:', error);

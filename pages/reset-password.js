@@ -99,10 +99,12 @@ export default function ResetPassword() {
                   fontSize: '1rem',
                   fontWeight: '600',
                   cursor: 'pointer',
+                  textDecoration: 'none',
+                  display: 'inline-block'
                 }}
               >
                 Return to Login
-              </button>
+              </Link>
             </div>
           ) : (
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
