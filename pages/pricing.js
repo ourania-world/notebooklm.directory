@@ -1,366 +1,289 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Layout from '../components/Layout';
 import Link from 'next/link';
-import { getNotebooks } from '../lib/notebooks';
+import { SUBSCRIPTION_PLANS } from '../lib/subscriptions';
+import { getCurrentUser } from '../lib/supabase';
 
-export async function getServerSideProps() {
-  try {
-    // Fetch featured notebooks on server side
-    const featuredNotebooks = await getNotebooks({ featured: true, limit: 6 });
-    
-    return {
-      props: {
-        initialFeaturedNotebooks: featuredNotebooks || []
-      }
-    };
-  } catch (error) {
-    console.error('Error fetching featured notebooks:', error);
-    return {
-      props: {
-        initialFeaturedNotebooks: []
-      }
-    };
-  }
-}
-
-export default function Home({ initialFeaturedNotebooks }) {
-  const [featuredNotebooks, setFeaturedNotebooks] = useState(initialFeaturedNotebooks);
+export default function Pricing() {
+  const [selectedPlan, setSelectedPlan] = useState('standard');
   const [loading, setLoading] = useState(false);
 
-  return (
-    <Layout>
-      {/* Hero Section */}
-      <section style={{ 
-        background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%)', 
-        backgroundSize: '200% 200%',
-        className: 'morphing-bg subtle-pattern',
-        color: 'white', 
-        padding: '8rem 0',
-        textAlign: 'center',
-        position: 'relative',
-        overflow: 'hidden'
-      }}>
-        {/* Animated Background Pattern */}
-        <div style={{
-          position: 'absolute',
-          top: 0,  
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'rgba(0, 0, 0, 0.3)',
-          zIndex: 1
-        }}></div>
-        <div style={{ 
-          maxWidth: '1200px',  
-          margin: '0 auto', 
-          padding: '0 2rem',
-          position: 'relative',
-          zIndex: 2
-        }}>
-          <h1 style={{ 
-            fontSize: 'clamp(2.5rem, 8vw, 4.5rem)', 
-            fontWeight: '800',  
-            margin: '0 0 1rem 0', 
-            lineHeight: '1',
-            background: 'linear-gradient(135deg, #ffffff 0%, #00ff88 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text'
-          }}>
-            The Premier NotebookLM<br />
-            <span className="neon-text">Directory</span>
-          </h1>
-          
-          <h2 style={{ 
-            fontSize: '1.5rem', 
-            margin: '0 0 1.5rem 0', 
-            color: '#ffffff', 
-            fontWeight: '500',
-            letterSpacing: '0.5px'
-          }}> 
-            <span className="float-animation">Discover. Build. <span style={{ color: '#00ff88' }}>Accelerate.</span></span>
-          </h2>
-          
-          <p style={{ 
-            fontSize: '1.3rem', 
-            margin: '0 0 1rem 0',
-            opacity: 0.9,
-            maxWidth: '700px', 
-            margin: '0 auto 1rem auto',
-            color: '#e2e8f0',
-            lineHeight: '1.6'
-          }}>
-            Help us build the premier platform for NotebookLM projects in these early stages. By <strong style={{ color: '#00ff88' }}>subscribing</strong> and sharing
-            notebooks, you support our growth and join our community of innovative researchers.
-          </p>
-          
-          <div style={{ 
-            display: 'flex', 
-            gap: '1rem', 
-            justifyContent: 'center',  
-            flexWrap: 'wrap',
-            marginTop: '2rem'
-          }}>
-            <Link href="/browse" style={{
-              background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
-              color: '#0a0a0a',
-              border: 'none', 
-              padding: '1.25rem 2.5rem', 
-              borderRadius: '12px',
-              fontWeight: '700',
-              cursor: 'pointer',
-              fontSize: '1.1rem',
-              transition: 'all 0.3s ease',
-              boxShadow: '0 8px 32px rgba(0, 255, 136, 0.3)',
-              textTransform: 'uppercase',
-              letterSpacing: '1px', 
-              textDecoration: 'none', 
-              display: 'inline-block',
-              className: 'button-glow'
-            }}>
-              BROWSE PROJECTS
-            </Link>
-            
-            <Link href="/submit" style={{
-              background: 'transparent',
-              color: '#ffffff',
-              border: '1px solid rgba(255, 255, 255, 0.3)', 
-              padding: '1rem 2.5rem',
-              borderRadius: '12px',
-              fontWeight: '600',
-              cursor: 'pointer', 
-              fontSize: '1.1rem',
-              transition: 'all 0.3s ease',
-              textDecoration: 'none',
-              display: 'inline-block'
-            }}>
-              SUBMIT PROJECT
-            </Link>
-          </div>
-        </div>
-      </section>
+  const handleUpgrade = async (planId) => {
+    try {
+      setLoading(true);
       
-      {/* Features Section */}
-      <section style={{ 
-        background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)', 
-        padding: '6rem 0', 
-        position: 'relative'
+      // Redirect to payment page with selected plan
+      window.location.href = `/payment?plan=${planId}`;
+    } catch (error) {
+      console.error('Error initiating checkout:', error);
+      alert('Failed to start checkout process. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <Layout title="Pricing - NotebookLM Directory">
+      <div style={{ 
+        background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)',
+        minHeight: '80vh',
+        padding: '4rem 0'
       }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
-          <h2 style={{ 
-            fontSize: '2.5rem', 
-            fontWeight: '700', 
-            margin: '0 0 1.5rem 0', 
-            color: '#ffffff', 
+          <h1 style={{ 
+            fontSize: '3rem', 
+            fontWeight: '800',
+            color: '#ffffff',
+            marginBottom: '1rem',
             textAlign: 'center'
           }}>
-            Building the Future of <span style={{ color: '#00ff88' }}>AI Research</span>
-          </h2>
+            Simple, Transparent <span style={{ color: '#00ff88' }}>Pricing</span>
+          </h1>
           
           <p style={{ 
-            fontSize: '1.1rem', 
+            fontSize: '1.2rem', 
             color: '#e2e8f0',
             textAlign: 'center',
-            maxWidth: '800px',
-            margin: '0 auto 4rem auto'
+            maxWidth: '700px',
+            margin: '0 auto 3rem auto'
           }}>
-            We're creating the world's most comprehensive AI research discovery platform
+            <span style={{ color: '#00ff88', fontWeight: '600' }}>Subscribe & Support Our Growth!</span> Choose the plan that works best for you
           </p>
           
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
-            gap: '2rem', 
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+            gap: '2rem',
             marginBottom: '4rem'
           }}>
-            {/* Feature 1 */}
-            <div className="card-hover glass-card" style={{
-              background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
-              borderRadius: '16px',
-              padding: '2.5rem 2rem', 
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
-              border: '1px solid rgba(0, 255, 136, 0.2)'
-            }}>
-              <div style={{
-                fontSize: '2.5rem',
-                marginBottom: '1rem',
-                textAlign: 'center'
-              }}> 
-                <span className="float-animation" style={{ display: 'inline-block' }}>🔍</span>
+            {Object.values(SUBSCRIPTION_PLANS).map((plan) => (
+              <div
+                key={plan.id}
+                style={{
+                  background: plan.id === 'premium' ? 
+                    'linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, rgba(0, 255, 136, 0.05) 100%)' :
+                    'rgba(255, 255, 255, 0.05)',
+                  border: plan.id === selectedPlan ?  
+                    '2px solid #00ff88' : 
+                    '1px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '16px',
+                  padding: '2rem',
+                  position: 'relative',
+                  transition: 'all 0.3s ease',
+                  opacity: plan.id === 'enterprise' ? 0.7 : 1
+                }}
+                onMouseEnter={(e) => {
+                  if (plan.id !== selectedPlan && plan.id !== 'enterprise') {
+                    e.target.style.borderColor = 'rgba(0, 255, 136, 0.5)';
+                    e.target.style.transform = 'translateY(-4px)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (plan.id !== selectedPlan && plan.id !== 'enterprise') {
+                    e.target.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                    e.target.style.transform = 'translateY(0)';
+                  }
+                }}
+              >
+                {plan.limits?.popular && (
+                  <div style={{
+                    position: 'absolute',
+                    top: '-10px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
+                    color: '#0a0a0a',
+                    padding: '0.5rem 1rem',
+                    borderRadius: '20px', 
+                    fontSize: '0.8rem',
+                    fontWeight: '700',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.5px'
+                  }}>
+                    Most Popular
+                  </div>
+                )}
+                
+                {plan.id === 'enterprise' && (
+                  <div style={{
+                    position: 'absolute',
+                    top: '-10px',
+                    left: '50%',
+                    transform: 'translateX(-50%)', 
+                    background: 'rgba(255, 255, 255, 0.2)',
+                    color: '#ffffff',
+                    padding: '0.5rem 1rem',
+                    borderRadius: '20px',
+                    fontSize: '0.8rem',
+                    fontWeight: '700',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.5px'
+                  }}>
+                    Coming Soon
+                  </div>
+                )}
+
+                <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
+                  <h3 style={{
+                    fontSize: '1.5rem',
+                    fontWeight: '700',
+                    color: '#ffffff',
+                    margin: '0 0 0.5rem 0'
+                  }}>
+                    {plan.name}
+                  </h3>
+                  <div style={{
+                    fontSize: '2.5rem',
+                    fontWeight: '700',
+                    color: '#00ff88',
+                    margin: '0 0 0.25rem 0'
+                  }}>
+                    ${plan.price}
+                    {plan.interval && (
+                      <span style={{
+                        fontSize: '1rem',
+                        color: '#e2e8f0',
+                        fontWeight: '400'
+                      }}>
+                        /{plan.interval}
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                <ul style={{
+                  listStyle: 'none',
+                  padding: 0,
+                  margin: '0 0 2rem 0'
+                }}>
+                  {plan.features.map((feature, index) => (
+                    <li key={index} style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      marginBottom: '0.75rem',
+                      color: '#e2e8f0',
+                      fontSize: '0.9rem'
+                    }}>
+                      <span style={{ color: '#00ff88', fontSize: '1.2rem' }}>✓</span>
+                      {feature}
+                      {(feature.includes('API') || 
+                        feature.includes('analytics') || 
+                        feature.includes('metrics') || 
+                        feature.includes('recommendations') || 
+                        feature.includes('Email notifications')) && (
+                        <span style={{ 
+                          marginLeft: '0.25rem',
+                          fontSize: '0.7rem',
+                          color: '#ffc107',
+                          background: 'rgba(255, 193, 7, 0.1)',
+                          padding: '0.1rem 0.3rem',
+                          borderRadius: '4px'
+                        }}>
+                          Coming Soon
+                        </span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+
+                {plan.id === 'enterprise' ? (
+                  <button
+                    disabled
+                    style={{
+                      width: '100%',
+                      background: 'rgba(255, 255, 255, 0.1)',
+                      color: '#ffffff',
+                      border: '1px solid rgba(255, 255, 255, 0.2)',
+                      padding: '1rem',
+                      borderRadius: '12px',
+                      fontSize: '1rem',
+                      fontWeight: '600',
+                      cursor: 'not-allowed'
+                    }}
+                  >
+                    Coming Soon
+                  </button>
+                ) : plan.id === 'free' ? (
+                  <button
+                    onClick={() => setSelectedPlan('free')}
+                    style={{
+                      width: '100%',
+                      background: 'transparent',
+                      color: '#e2e8f0',
+                      border: '1px solid rgba(255, 255, 255, 0.2)',
+                      padding: '1rem',
+                      borderRadius: '12px',
+                      fontSize: '1rem',
+                      fontWeight: '600',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.borderColor = '#00ff88';
+                      e.target.style.color = '#00ff88';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                      e.target.style.color = '#e2e8f0';
+                    }}
+                  >
+                    Current Plan
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handleUpgrade(plan.id)} 
+                    disabled={loading}
+                    style={{
+                      width: '100%',
+                      background: loading ? 
+                        'rgba(255, 255, 255, 0.1)' : 
+                        'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
+                      color: loading ? '#ffffff' : '#0a0a0a',
+                      border: 'none',
+                      padding: '1rem',
+                      borderRadius: '12px',
+                      fontSize: '1rem',
+                      fontWeight: '700',
+                      cursor: loading ? 'not-allowed' : 'pointer',
+                      transition: 'all 0.2s ease',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px' 
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!loading) {
+                        e.target.style.transform = 'translateY(-2px)';
+                        e.target.style.boxShadow = '0 12px 32px rgba(0, 255, 136, 0.4)';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!loading) {
+                        e.target.style.transform = 'translateY(0)';
+                        e.target.style.boxShadow = 'none';
+                      }
+                    }}
+                  >
+                    {loading ? 'Processing...' : plan.id === 'professional' ? 'Upgrade to Pro' : `Upgrade to ${plan.name}`}
+                  </button>
+                )}
               </div>
-              <h3 style={{
-                fontSize: '1.3rem',
-                fontWeight: '600',
-                color: '#00ff88',
-                marginBottom: '1rem',
-                textAlign: 'center'
-              }}>
-                Curated Selection
-              </h3>
-              <p style={{
-                color: '#e2e8f0',
-                fontSize: '0.9rem',
-                lineHeight: '1.6',
-                textAlign: 'center'
-              }}>
-                Hand-picked collection of innovative NotebookLM projects across domains. Only the highest quality research makes it to the directory. <a href="#" style={{ color: '#00ff88', textDecoration: 'none' }}>Learn more</a>
-              </p>
-            </div>
-            
-            {/* Feature 2 */}
-            <div className="card-hover glass-card" style={{
-              background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
-              borderRadius: '16px',
-              padding: '2.5rem 2rem', 
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
-              border: '1px solid rgba(0, 255, 136, 0.2)'
-            }}>
-              <div style={{
-                fontSize: '2.5rem',
-                marginBottom: '1rem',
-                textAlign: 'center'
-              }}> 
-                <span className="float-animation" style={{ display: 'inline-block' }}>🧠</span>
-              </div>
-              <h3 style={{
-                fontSize: '1.3rem',
-                fontWeight: '600',
-                color: '#00ff88',
-                marginBottom: '1rem',
-                textAlign: 'center'
-              }}>
-                Personalized Discovery
-              </h3>
-              <p style={{
-                color: '#e2e8f0',
-                fontSize: '0.9rem',
-                lineHeight: '1.6',
-                textAlign: 'center'
-              }}>
-                AI-powered recommendations based on your interests and research history. Find exactly what you need for your next project. <a href="#" style={{ color: '#00ff88', textDecoration: 'none' }}>Learn more</a>
-              </p>
-            </div>
-            
-            {/* Feature 3 */}
-            <div className="card-hover glass-card" style={{
-              background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
-              borderRadius: '16px',
-              padding: '2.5rem 2rem', 
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
-              border: '1px solid rgba(0, 255, 136, 0.2)'
-            }}>
-              <div style={{
-                fontSize: '2.5rem',
-                marginBottom: '1rem',
-                textAlign: 'center'
-              }}> 
-                <span className="float-animation" style={{ display: 'inline-block' }}>🌍</span>
-              </div>
-              <h3 style={{
-                fontSize: '1.3rem',
-                fontWeight: '600',
-                color: '#00ff88',
-                marginBottom: '1rem',
-                textAlign: 'center'
-              }}>
-                Community Driven
-              </h3>
-              <p style={{
-                color: '#e2e8f0',
-                fontSize: '0.9rem',
-                lineHeight: '1.6',
-                textAlign: 'center'
-              }}>
-                Discover, share, and collaborate with researchers worldwide. Build on existing work instead of starting from scratch. <a href="#" style={{ color: '#00ff88', textDecoration: 'none' }}>Learn more</a>
-              </p>
-            </div>
+            ))}
           </div>
-        </div>
-      </section>
-      
-      {/* CTA Section */}
-      <section style={{ 
-        background: 'linear-gradient(135deg, rgba(10, 10, 10, 0.9) 0%, rgba(26, 26, 46, 0.9) 100%)', 
-        padding: '6rem 0', 
-        position: 'relative',
-        borderTop: '1px solid rgba(0, 255, 136, 0.1)',
-        borderBottom: '1px solid rgba(0, 255, 136, 0.1)',
-        textAlign: 'center'
-      }}>
-        <div style={{
-          position: 'absolute', 
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'rgba(0, 0, 0, 0.3)',
-          zIndex: 1
-        }}></div>
-        <div style={{ maxWidth: '800px', margin: '0 auto', padding: '0 2rem', position: 'relative', zIndex: 2 }}>
+
           <div style={{
-            fontSize: '3rem',
-            marginBottom: '1.5rem',
-            color: '#ffffff',
-            position: 'relative',
-            zIndex: 2
-          }}>
-            <span className="float-animation" style={{ display: 'inline-block' }}>✨</span>
-          </div>
-          <h2 style={{ 
-            fontSize: '2.5rem', 
-            margin: '0 0 1.5rem 0',
-            color: '#ffffff',
-            fontWeight: '700',
-            position: 'relative',
-            zIndex: 2, 
-          }}> 
-            Ready to Get Started?
-          </h2>
-          <p style={{ 
-            fontSize: '1.1rem',
+            textAlign: 'center',
             color: '#e2e8f0',
-            lineHeight: '1.6',
-            marginBottom: '2rem', 
-            position: 'relative',
-            zIndex: 2
-          }}> 
-            Share your NotebookLM projects, discover innovative approaches, and help build a community for the future of AI research.
-          </p>
-          
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap', position: 'relative', zIndex: 2 }}>
-            <Link href="/submit" className="gradient-button" style={{
-              background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%, #00ff88 200%)',
-              color: '#0a0a0a',
-              border: 'none',
-              padding: '0.75rem 1.5rem',
-              borderRadius: '8px',
-              fontWeight: '600',
-              cursor: 'pointer',
-              fontSize: '0.9rem',
-              textDecoration: 'none', 
-              display: 'inline-block',
-              className: 'gradient-button'
-            }}>
-              SUBMIT YOUR NOTEBOOK
-            </Link>
-            
-            <Link href="/browse" style={{
-              background: 'transparent',
-              color: '#e2e8f0',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
-              padding: '0.75rem 1.5rem',
-              borderRadius: '8px',
-              fontWeight: '500',
-              cursor: 'pointer', 
-              fontSize: '0.9rem',
-              textDecoration: 'none',
-              display: 'inline-block'
-            }}>
-              EXPLORE FIRST
-            </Link>
+            fontSize: '0.9rem'
+          }}>
+            <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.85rem' }}>
+              ✓ Cancel anytime • ✓ 30-day money-back guarantee • ✓ Secure payment with Stripe
+            </p>
+            <p style={{ margin: 0, opacity: 0.7, fontSize: '0.85rem' }}>
+              Questions? Contact us at support@notebooklm.directory
+            </p>
           </div>
         </div>
-      </section>
+      </div>
     </Layout>
   );
 }
