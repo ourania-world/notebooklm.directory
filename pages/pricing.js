@@ -186,7 +186,7 @@ export default function Pricing() {
               fontWeight: '700',
               marginBottom: '0.5rem'
             }}>
-              Subscribe & Support Our Growth!
+              Subscribe & Accelerate Our Growth!
             </h2>
             <p style={{ 
               color: '#e2e8f0', 
@@ -195,7 +195,7 @@ export default function Pricing() {
               margin: '0 auto'
             }}>
               Help us build the premier platform for NotebookLM projects in these early stages.
-              Your subscription directly supports our development and community.
+              Your subscription directly accelerates our development and community.
             </p>
           </div>
           
