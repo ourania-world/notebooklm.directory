@@ -286,32 +286,28 @@ export default function Pricing() {
                 <ul style={{
                   listStyle: 'none',
                   padding: 0,
-                  margin: '0 0 2rem 0',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '0.75rem'
+                  margin: '0 0 2rem 0'
                 }}>
                   {plan.features.map((feature, index) => (
                     <li key={index} style={{
                       display: 'flex',
                       alignItems: 'flex-start',
                       gap: '0.75rem',
-                      marginBottom: '0.75rem',
+                      marginBottom: '0.5rem',
                       color: '#e2e8f0',
                       fontSize: '0.95rem',
                       opacity: supportedFeatures[feature] ? 1 : 0.6
                     }}>
-                      <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                        <span style={{ color: '#00ff88', fontSize: '1.2rem', flexShrink: 0, marginRight: '0.75rem' }}>✓</span>
-                        <span style={{ flex: 1 }}>{feature}</span>
+                      <span style={{ color: '#00ff88', fontSize: '1.2rem', flexShrink: 0 }}>✓</span>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+                        <span>{feature}</span>
                         {!supportedFeatures[feature] && (
                           <span style={{ 
                             fontSize: '0.75rem',
                             color: '#ffc107',
                             background: 'rgba(255, 193, 7, 0.1)',
                             padding: '0.1rem 0.4rem',
-                            borderRadius: '4px',
-                            marginLeft: 'auto'
+                            borderRadius: '4px'
                           }}>
                             Coming Soon
                           </span>
