@@ -179,6 +179,26 @@ export default function Pricing() {
           </div>
 
           {/* Pricing Cards */}
+          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+            <h2 style={{ 
+              color: '#00ff88', 
+              fontSize: '1.8rem', 
+              fontWeight: '700',
+              marginBottom: '0.5rem'
+            }}>
+              Subscribe & Support Our Growth!
+            </h2>
+            <p style={{ 
+              color: '#e2e8f0', 
+              fontSize: '1.1rem',
+              maxWidth: '700px',
+              margin: '0 auto'
+            }}>
+              Help us build the premier platform for NotebookLM projects in these early stages.
+              Your subscription directly supports our development and community.
+            </p>
+          </div>
+          
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
@@ -299,7 +319,7 @@ export default function Pricing() {
                       <span style={{ color: '#00ff88', fontSize: '1.2rem', flexShrink: 0 }}>✓</span>
                       <div style={{ display: 'flex', alignItems: 'center', width: '100%', justifyContent: 'space-between' }}>
                         <span>{feature}</span>
-                        {!supportedFeatures[feature] && feature !== 'Everything in Standard' && (
+                        {!supportedFeatures[feature] && (
                           <span style={{ 
                             fontSize: '0.75rem',
                             color: '#ffc107',
