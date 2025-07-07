@@ -67,7 +67,7 @@ export default function SubscriptionBanner() {
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <span style={{ color: '#00ff88', fontSize: '1.2rem' }}>🚀</span>
           <p style={{ margin: 0, color: '#ffffff', fontSize: '0.95rem', fontWeight: '500', lineHeight: '1.4' }}>
-            Subscribe & Support! <span style={{ opacity: 0.8, fontWeight: 'normal', display: 'inline-block' }}>Help us grow in these early stages</span>
+            Subscribe & Support! <span style={{ opacity: 0.8, fontWeight: 'normal', display: 'inline-block' }}>Help us grow in our early stages</span>
           </p>
         </div> 
         

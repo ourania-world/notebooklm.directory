@@ -40,7 +40,7 @@ export default function Pricing() {
       id: 'free',
       name: 'Explorer',
       price: 0,
-      period: 'forever',
+      period: 'forever', 
       description: 'Perfect for getting started',
       features: [
         'Access to all public notebooks',
@@ -88,8 +88,6 @@ export default function Pricing() {
       description: 'For power users and professionals',
       features: [
         'Everything in Standard',
-        'Unlimited saved notebooks',
-        'Submit unlimited notebooks',
         'AI-powered search & recommendations',
         'Performance metrics',
         'Priority support',
@@ -301,7 +299,7 @@ export default function Pricing() {
                       <span style={{ color: '#00ff88', fontSize: '1.2rem', flexShrink: 0 }}>✓</span>
                       <div style={{ display: 'flex', alignItems: 'center', width: '100%', justifyContent: 'space-between' }}>
                         <span>{feature}</span>
-                        {!supportedFeatures[feature] && (
+                        {!supportedFeatures[feature] && feature !== 'Everything in Standard' && (
                           <span style={{ 
                             fontSize: '0.75rem',
                             color: '#ffc107',
