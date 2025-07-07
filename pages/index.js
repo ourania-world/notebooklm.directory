@@ -78,7 +78,7 @@ export default function Home({ initialFeaturedNotebooks }) {
             fontWeight: '500',
             letterSpacing: '0.5px'
           }}> 
-            <span className="float-animation">Discover. Build. <span style={{ color: '#00ff88' }}>Support.</span></span>
+            <span className="float-animation">Discover. Build. <span style={{ color: '#00ff88' }}>Accelerate.</span></span>
           </h2>
           
           <p style={{ 
