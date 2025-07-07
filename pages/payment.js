@@ -1,14 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Layout from '../components/Layout';
-import { getCurrentUser } from '../utils/yourHelpers';
-import { SUBSCRIPTION_PLANS } from '../utils/yourHelpers';
-import { loadStripe } from '@stripe/stripe-js';
-import { Elements } from '@stripe/react-stripe-js';
-import CheckoutForm from '../components/CheckoutForm';
-
-// Initialize Stripe (using a test publishable key)
-const stripePromise = loadStripe('pk_test_TYooMQauvdEDq54NiTphI7jx');
+import Link from 'next/link';
+import { getCurrentUser } from '../lib/supabase';
+import { SUBSCRIPTION_PLANS } from '../lib/subscriptions';
 
 export default function Payment() {
   const router = useRouter();
@@ -17,9 +12,11 @@ export default function Payment() {
   const [loading, setLoading] = useState(true);
   const [paymentLoading, setPaymentLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [clientSecret, setClientSecret] = useState('');
-  const [showStripe, setShowStripe] = useState(false);
-
+  const [cardNumber, setCardNumber] = useState('');
+  const [cardExpiry, setCardExpiry] = useState('');
+  const [cardCvc, setCardCvc] = useState('');
+  const [nameOnCard, setNameOnCard] = useState('');
+  
   useEffect(() => {
     async function checkAuth() {
       try {
@@ -29,23 +26,43 @@ export default function Payment() {
           return;
         }
         setUser(currentUser);
-        setLoading(false);
       } catch (error) {
         console.error('Error checking auth:', error);
         setError('Authentication error. Please try logging in again.');
+      } finally {
         setLoading(false);
       }
     }
+    
     checkAuth();
   }, [router]);
-
+  
   const selectedPlan = SUBSCRIPTION_PLANS[plan?.toUpperCase()] || SUBSCRIPTION_PLANS.STANDARD;
-
-  const handleInitiatePayment = async () => {
+  
+  const handlePayment = async (e) => {
+    e.preventDefault();
     setPaymentLoading(true);
     setError(null);
+    
     try {
-      // Create a checkout session
+      // Validate form
+      if (!cardNumber || !cardExpiry || !cardCvc || !nameOnCard) {
+        throw new Error('Please fill in all payment details');
+      }
+      
+      // Simple validation
+      if (cardNumber.replace(/\s/g, '').length !== 16) {
+        throw new Error('Please enter a valid 16-digit card number');
+      }
+      
+      if (!cardExpiry.match(/^\d{2}\/\d{2}$/)) {
+        throw new Error('Please enter expiry date in MM/YY format');
+      }
+      
+      if (cardCvc.length !== 3) {
+        throw new Error('Please enter a valid 3-digit CVC code');
+      }
+      
       const response = await fetch('/api/create-checkout-session', {
         method: 'POST',
         headers: {
@@ -57,27 +74,65 @@ export default function Payment() {
           cancelUrl: `${window.location.origin}/subscription/cancel`,
         }),
       });
-
+      
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to create checkout session');
+        throw new Error(errorData.error || 'Failed to process payment');
       }
-
+      
       const { url } = await response.json();
       window.location.href = url;
     } catch (error) {
       console.error('Payment error:', error);
       setError(error.message || 'Failed to process payment. Please try again.');
+    } finally {
       setPaymentLoading(false);
     }
   };
-
+  
+  const formatCardNumber = (value) => {
+    const v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+    const matches = v.match(/\d{4,16}/g);
+    const match = matches && matches[0] || '';
+    const parts = [];
+    
+    for (let i = 0, len = match.length; i < len; i += 4) {
+      parts.push(match.substring(i, i + 4));
+    }
+    
+    if (parts.length) {
+      return parts.join(' ');
+    } else {
+      return value;
+    }
+  };
+  
+  const handleCardNumberChange = (e) => {
+    const formattedValue = formatCardNumber(e.target.value);
+    setCardNumber(formattedValue);
+  };
+  
+  const formatExpiry = (value) => {
+    const v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+    
+    if (v.length >= 3) {
+      return `${v.substring(0, 2)}/${v.substring(2, 4)}`;
+    }
+    
+    return v;
+  };
+  
+  const handleExpiryChange = (e) => {
+    const formattedValue = formatExpiry(e.target.value);
+    setCardExpiry(formattedValue);
+  };
+  
   if (loading) {
     return (
-      <Layout title={`${selectedPlan.name} Plan - NotebookLM Directory`}>
-        <div style={{
-          maxWidth: '800px',
-          margin: '0 auto',
+      <Layout title="Payment - NotebookLM Directory">
+        <div style={{ 
+          maxWidth: '800px', 
+          margin: '0 auto', 
           padding: '4rem 2rem',
           textAlign: 'center'
         }}>
@@ -103,77 +158,423 @@ export default function Payment() {
       </Layout>
     );
   }
-
+  
   return (
     <Layout title={`${selectedPlan.name} Plan - NotebookLM Directory`}>
-      <div className="pricing-section-bg">
-        <div className="pricing-section-container">
-          <div className="pricing-flex">
-            {/* Left: Punchy Pricing/Features Card */}
-            <section className="pricing-section">
-              <h2 className="pricing-title">Unlock Everything</h2>
-              <p className="pricing-subtitle">
-                All the bells & whistles — no surprises, no hidden fees.<br />
-                <strong>One plan. All premium features.</strong>
+      <div style={{ 
+        background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)',
+        minHeight: '80vh',
+        padding: '4rem 0'
+      }}>
+        <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '0 2rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '2rem', flexWrap: 'wrap' }}>
+            {/* Left Column - Plan Details */}
+            <div style={{ flex: '1 1 400px' }}>
+              <h1 style={{ 
+                fontSize: '2.5rem', 
+                fontWeight: '700',
+                color: '#ffffff',
+                marginBottom: '1rem'
+              }}>
+                Complete Your Order
+              </h1>
+              
+              <p style={{ 
+                color: '#e2e8f0', 
+                fontSize: '1.1rem',
+                lineHeight: '1.6',
+                marginBottom: '2rem'
+              }}>
+                You're subscribing to the <span style={{ color: '#00ff88', fontWeight: '600' }}>{selectedPlan.name}</span> plan.
               </p>
-              <div className="pricing-amount">
-                <span className="currency">$</span>
-                <span className="price">{selectedPlan.price}</span>
-                <span className="interval">/{selectedPlan.interval || 'month'}</span>
-              </div>
-              <ul className="feature-list">
-                {selectedPlan.features.map((feature, i) => (
-                  <li key={i} className="feature-item">
-                    <span role="img" aria-label="check">✅</span> <strong>{feature}</strong>
-                  </li>
-                ))}
-              </ul>
-              <button
-                className="cta-btn"
-                onClick={handleInitiatePayment}
-                disabled={paymentLoading}
-              >
-                {paymentLoading ? 'Processing...' : 'Start your free trial'}
-              </button>
-              <p className="fine-print">
-                7-day free trial. Cancel anytime. No hidden fees, ever.
-              </p>
-            </section>
-            {/* Right: Payment Form */}
-            <div className="payment-card">
-              <h2 className="payment-title">Payment Details</h2>
-              {error && (
-                <div className="error-box">
-                  {error}
+              
+              <div style={{
+                background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
+                borderRadius: '20px',
+                padding: '2rem',
+                border: '1px solid rgba(0, 255, 136, 0.2)',
+                marginBottom: '2rem'
+              }}>
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'flex-start',
+                  marginBottom: '1.5rem'
+                }}>
+                  <div>
+                    <h2 style={{ 
+                      fontSize: '1.5rem', 
+                      fontWeight: '700',
+                      color: '#ffffff',
+                      margin: '0 0 0.5rem 0'
+                    }}>
+                      {selectedPlan.name} Plan
+                    </h2>
+                    <p style={{ color: '#e2e8f0', margin: 0, fontSize: '0.9rem' }}>
+                      {selectedPlan.description}
+                    </p>
+                  </div>
+                  
+                  <div style={{
+                    fontSize: '1.8rem',
+                    fontWeight: '700',
+                    color: '#00ff88',
+                    textAlign: 'right'
+                  }}>
+                    ${selectedPlan.price}
+                    <span style={{
+                      fontSize: '0.9rem',
+                      color: '#e2e8f0',
+                      fontWeight: '400',
+                      display: 'block'
+                    }}>
+                      per {selectedPlan.interval || 'forever'}
+                    </span>
+                  </div>
                 </div>
-              )}
-              {!showStripe ? (
-                <div>
+                
+                <div style={{ marginTop: '1.5rem' }}>
+                  <h3 style={{ 
+                    fontSize: '1rem', 
+                    fontWeight: '600',
+                    color: '#ffffff',
+                    marginBottom: '1rem'
+                  }}>
+                    What's Included:
+                  </h3>
+                  
+                  <ul style={{
+                    listStyle: 'none',
+                    padding: 0,
+                    margin: 0
+                  }}>
+                    {selectedPlan.features.slice(0, 5).map((feature, index) => (
+                      <li key={index} style={{
+                        display: 'flex',
+                        alignItems: 'flex-start',
+                        gap: '0.5rem',
+                        marginBottom: '0.5rem',
+                        color: '#e2e8f0',
+                        fontSize: '0.9rem'
+                      }}>
+                        <span style={{ color: '#00ff88', fontSize: '1.1rem', flexShrink: 0 }}>✓</span>
+                        {feature}
+                      </li>
+                    ))}
+                    {selectedPlan.features.length > 5 && (
+                      <li style={{
+                        color: '#00ff88',
+                        fontSize: '0.9rem',
+                        marginTop: '0.5rem',
+                        textAlign: 'center'
+                      }}>
+                        + {selectedPlan.features.length - 5} more features
+                      </li>
+                    )}
+                  </ul>
+                </div>
+              </div>
+              
+              <div style={{
+                background: 'rgba(0, 255, 136, 0.1)',
+                border: '1px solid rgba(0, 255, 136, 0.2)',
+                borderRadius: '12px',
+                padding: '1.5rem',
+                marginBottom: '2rem'
+              }}>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '1rem',
+                  marginBottom: '1rem'
+                }}>
+                  <div style={{
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '50%',
+                    background: 'rgba(0, 255, 136, 0.2)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '1.2rem',
+                    color: '#00ff88'
+                  }}>
+                    🔒
+                  </div>
+                  <div>
+                    <h3 style={{ 
+                      fontSize: '1.1rem', 
+                      fontWeight: '600',
+                      color: '#ffffff',
+                      margin: '0 0 0.25rem 0'
+                    }}>
+                      Secure Payment
+                    </h3>
+                    <p style={{ color: '#e2e8f0', margin: 0, fontSize: '0.9rem' }}>
+                      Your payment information is encrypted and secure
+                    </p>
+                  </div>
+                </div>
+                
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '1rem',
+                  marginTop: '1rem'
+                }}>
+                  <div style={{
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '50%',
+                    background: 'rgba(0, 255, 136, 0.2)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '1.2rem',
+                    color: '#00ff88'
+                  }}>
+                    ⚡
+                  </div>
+                  <div>
+                    <h3 style={{ 
+                      fontSize: '1.1rem', 
+                      fontWeight: '600',
+                      color: '#ffffff',
+                      margin: '0 0 0.25rem 0'
+                    }}>
+                      Instant Access
+                    </h3>
+                    <p style={{ color: '#e2e8f0', margin: 0, fontSize: '0.85rem' }}>
+                      Get immediate access to all available features. Coming soon features will be automatically enabled when ready.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Right Column - Payment Form */}
+            <div style={{ flex: '1 1 400px' }}>
+              <div style={{
+                background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
+                borderRadius: '20px',
+                padding: '2rem',
+                border: '1px solid rgba(0, 255, 136, 0.2)'
+              }}>
+                <h2 style={{ 
+                  fontSize: '1.5rem', 
+                  fontWeight: '700',
+                  color: '#ffffff',
+                  marginBottom: '1.5rem'
+                }}>
+                  Payment Details
+                </h2>
+                
+                {error && (
+                  <div style={{
+                    background: 'rgba(220, 53, 69, 0.1)',
+                    color: '#ff6b6b',
+                    padding: '1rem',
+                    borderRadius: '12px',
+                    marginBottom: '1.5rem',
+                    border: '1px solid rgba(220, 53, 69, 0.3)',
+                    fontSize: '0.9rem'
+                  }}>
+                    {error}
+                  </div>
+                )}
+                
+                <form onSubmit={handlePayment}>
+                  <div style={{ marginBottom: '1.5rem' }}>
+                    <label style={{
+                      display: 'block',
+                      marginBottom: '0.5rem',
+                      color: '#ffffff',
+                      fontSize: '0.9rem',
+                      fontWeight: '600'
+                    }}>
+                      Name on Card
+                    </label>
+                    <input
+                      type="text"
+                      value={nameOnCard}
+                      onChange={(e) => setNameOnCard(e.target.value)}
+                      placeholder="John Smith"
+                      required
+                      style={{
+                        width: '100%',
+                        padding: '1rem',
+                        borderRadius: '12px',
+                        border: '1px solid rgba(255, 255, 255, 0.2)',
+                        background: 'rgba(255, 255, 255, 0.05)',
+                        color: '#ffffff',
+                        fontSize: '1rem'
+                      }}
+                    />
+                  </div>
+                  
+                  <div style={{ marginBottom: '1.5rem' }}>
+                    <label style={{
+                      display: 'block',
+                      marginBottom: '0.5rem',
+                      color: '#ffffff',
+                      fontSize: '0.9rem',
+                      fontWeight: '600'
+                    }}>
+                      Card Number
+                    </label>
+                    <input
+                      type="text"
+                      value={cardNumber}
+                      onChange={handleCardNumberChange}
+                      placeholder="4242 4242 4242 4242"
+                      required
+                      maxLength="19"
+                      style={{
+                        width: '100%',
+                        padding: '1rem',
+                        borderRadius: '12px',
+                        border: '1px solid rgba(255, 255, 255, 0.2)',
+                        background: 'rgba(255, 255, 255, 0.05)',
+                        color: '#ffffff',
+                        fontSize: '1rem'
+                      }}
+                    />
+                  </div>
+                  
+                  <div style={{ 
+                    display: 'grid', 
+                    gridTemplateColumns: '1fr 1fr', 
+                    gap: '1rem',
+                    marginBottom: '1.5rem'
+                  }}>
+                    <div>
+                      <label style={{
+                        display: 'block',
+                        marginBottom: '0.5rem',
+                        color: '#ffffff',
+                        fontSize: '0.9rem',
+                        fontWeight: '600'
+                      }}>
+                        Expiry Date
+                      </label>
+                      <input
+                        type="text"
+                        value={cardExpiry}
+                        onChange={handleExpiryChange}
+                        placeholder="MM/YY"
+                        required
+                        maxLength="5"
+                        style={{
+                          width: '100%',
+                          padding: '1rem',
+                          borderRadius: '12px',
+                          border: '1px solid rgba(255, 255, 255, 0.2)',
+                          background: 'rgba(255, 255, 255, 0.05)',
+                          color: '#ffffff',
+                          fontSize: '1rem'
+                        }}
+                      />
+                    </div>
+                    
+                    <div>
+                      <label style={{
+                        display: 'block',
+                        marginBottom: '0.5rem',
+                        color: '#ffffff',
+                        fontSize: '0.9rem',
+                        fontWeight: '600'
+                      }}>
+                        CVC
+                      </label>
+                      <input
+                        type="text"
+                        value={cardCvc}
+                        onChange={(e) => setCardCvc(e.target.value.replace(/\D/g, '').slice(0, 3))}
+                        placeholder="123"
+                        required
+                        maxLength="3"
+                        style={{
+                          width: '100%',
+                          padding: '1rem',
+                          borderRadius: '12px',
+                          border: '1px solid rgba(255, 255, 255, 0.2)',
+                          background: 'rgba(255, 255, 255, 0.05)',
+                          color: '#ffffff',
+                          fontSize: '1rem'
+                        }}
+                      />
+                    </div>
+                  </div>
+                  
+                  <div style={{ marginBottom: '2rem' }}>
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      marginBottom: '0.75rem',
+                      fontSize: '0.9rem'
+                    }}>
+                      <input
+                        id="terms"
+                        type="checkbox"
+                        required
+                        style={{
+                          width: '18px',
+                          height: '18px',
+                          accentColor: '#00ff88'
+                        }}
+                      />
+                      <label htmlFor="terms">
+                        I agree to the <Link href="/terms" style={{ color: '#00ff88', textDecoration: 'none' }}>Terms of Service</Link> and <Link href="/privacy" style={{ color: '#00ff88', textDecoration: 'none' }}>Privacy Policy</Link>
+                      </label>
+                    </div>
+                  </div>
+                  
                   <button
-                    onClick={handleInitiatePayment}
+                    type="submit"
                     disabled={paymentLoading}
-                    className="cta-btn stripe-btn"
+                    style={{
+                      width: '100%',
+                      background: paymentLoading ? 
+                        'rgba(255, 255, 255, 0.1)' : 
+                        'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
+                      color: paymentLoading ? '#ffffff' : '#0a0a0a',
+                      border: 'none',
+                      padding: '1.25rem',
+                      borderRadius: '12px',
+                      fontSize: '1.1rem',
+                      fontWeight: '700',
+                      cursor: paymentLoading ? 'not-allowed' : 'pointer',
+                      transition: 'all 0.2s ease',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px'
+                    }}
                   >
-                    {paymentLoading
-                      ? 'Processing...'
-                      : `Pay $${selectedPlan.price}/${selectedPlan.interval || 'once'}`}
+                    {paymentLoading ? 'Processing...' : `Pay $${selectedPlan.price}/${selectedPlan.interval || 'once'}`}
                   </button>
-                  <div className="secure-note">
+                  
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '0.5rem',
+                    marginTop: '1.5rem',
+                    color: '#e2e8f0',
+                    fontSize: '0.9rem'
+                  }}>
                     <span style={{ fontSize: '1.2rem' }}>🔒</span>
                     Secure payment processed by Stripe
                   </div>
-                </div>
-              ) : (
-                <div>
-                  {clientSecret && (
-                    <Elements stripe={stripePromise} options={{ clientSecret }}>
-                      <CheckoutForm />
-                    </Elements>
-                  )}
-                </div>
-              )}
-              <div className="cancel-note">
-                <p>
+                </form>
+              </div>
+              
+              <div style={{
+                textAlign: 'center',
+                marginTop: '1.5rem',
+                color: '#e2e8f0',
+                fontSize: '0.9rem'
+              }}>
+                <p style={{ margin: '0 0 0.5rem 0' }}>
                   ✓ Cancel anytime • ✓ No hidden fees
                 </p>
                 <p style={{ margin: 0, opacity: 0.7 }}>
@@ -183,153 +584,6 @@ export default function Payment() {
             </div>
           </div>
         </div>
-        <style jsx>{`
-          .pricing-section-bg {
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
-            min-height: 80vh;
-            padding: 4rem 0;
-          }
-          .pricing-section-container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0 2rem;
-          }
-          .pricing-flex {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 2rem;
-            flex-wrap: wrap;
-          }
-          .pricing-section {
-            max-width: 420px;
-            margin: 0 auto 2rem auto;
-            padding: 2.5rem 1.25rem;
-            background: #fff;
-            border-radius: 1.5rem;
-            box-shadow: 0 4px 32px rgba(0,0,0,0.07);
-            text-align: center;
-            flex: 1 1 400px;
-          }
-          .pricing-title {
-            font-size: 2rem;
-            font-weight: 800;
-            margin-bottom: 0.25rem;
-            letter-spacing: -0.02em;
-          }
-          .pricing-subtitle {
-            color: #5a5a5a;
-            margin-bottom: 1.25rem;
-            font-size: 1.1rem;
-          }
-          .pricing-amount {
-            font-size: 2.1rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-          }
-          .currency {
-            font-size: 1.2rem;
-            vertical-align: super;
-          }
-          .price {
-            font-size: 2.2rem;
-            font-weight: 800;
-          }
-          .interval {
-            font-size: 1rem;
-            color: #999;
-            margin-left: 0.1em;
-          }
-          .feature-list {
-            list-style: none;
-            margin: 1.3em 0 1em 0;
-            padding: 0;
-            text-align: left;
-          }
-          .feature-item {
-            font-size: 1.08rem;
-            margin-bottom: 0.7em;
-            display: flex;
-            align-items: center;
-          }
-          .feature-item span[role="img"] {
-            margin-right: 0.65em;
-          }
-          .cta-btn {
-            background: linear-gradient(90deg,#5f59f7 0%,#aa4bfa 100%);
-            color: #fff;
-            font-weight: 700;
-            font-size: 1.13rem;
-            border: none;
-            border-radius: 0.7em;
-            padding: 0.85em 2em;
-            margin-top: 1em;
-            box-shadow: 0 4px 18px rgba(95,89,247,0.13);
-            cursor: pointer;
-            transition: background 0.2s;
-            width: 100%;
-          }
-          .cta-btn:hover {
-            background: linear-gradient(90deg,#aa4bfa 0%,#5f59f7 100%);
-          }
-          .fine-print {
-            color: #767676;
-            font-size: 0.95rem;
-            margin-top: 1em;
-          }
-          .payment-card {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            border-radius: 20px;
-            padding: 2rem;
-            border: 1px solid rgba(0, 255, 136, 0.2);
-            flex: 1 1 400px;
-            min-width: 320px;
-            max-width: 420px;
-            margin: 0 auto 2rem auto;
-          }
-          .payment-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 1.5rem;
-            text-align: center;
-          }
-          .error-box {
-            background: rgba(220, 53, 69, 0.1);
-            color: #ff6b6b;
-            padding: 1rem;
-            border-radius: 12px;
-            margin-bottom: 1.5rem;
-            border: 1px solid rgba(220, 53, 69, 0.3);
-            font-size: 0.9rem;
-            text-align: center;
-          }
-          .stripe-btn {
-            background: linear-gradient(135deg, #00ff88 0%, #00e67a 100%);
-            color: #0a0a0a;
-            margin-top: 0;
-          }
-          .stripe-btn:disabled {
-            background: rgba(255,255,255,0.12);
-            color: #fff;
-            cursor: not-allowed;
-          }
-          .secure-note {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            margin-top: 1.5rem;
-            color: #e2e8f0;
-            font-size: 0.9rem;
-          }
-          .cancel-note {
-            text-align: center;
-            margin-top: 1.5rem;
-            color: #e2e8f0;
-            font-size: 0.9rem;
-          }
-        `}</style>
       </div>
     </Layout>
   );
