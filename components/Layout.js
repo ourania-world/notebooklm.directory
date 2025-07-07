@@ -119,15 +119,6 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                 Pricing
               </Link>
               
-              <Link href="/payment" className="nav-link" style={{ 
-                color: router.pathname === '/payment' ? '#00ff88' : '#e2e8f0', 
-                textDecoration: 'none',
-                transition: 'color 0.2s ease',
-                fontWeight: '500'
-              }}>
-                Subscribe
-              </Link>
-              
               {!loading && user && (
                 <Link href="/analytics" className="nav-link" style={{ 
                   color: router.pathname === '/analytics' ? '#00ff88' : '#e2e8f0', 
