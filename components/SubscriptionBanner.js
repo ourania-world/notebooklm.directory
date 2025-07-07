@@ -57,7 +57,7 @@ export default function SubscriptionBanner() {
       <div style={{
         maxWidth: '1200px',
         margin: '0 auto',
-        padding: '0 2rem',
+        padding: '0 2rem', 
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -65,9 +65,9 @@ export default function SubscriptionBanner() {
         gap: '1rem'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <span style={{ color: '#00ff88', fontSize: '1.2rem' }}>✨</span>
-          <p style={{ margin: 0, color: '#ffffff', fontSize: '0.9rem' }}>
-            Upgrade to <strong>Professional</strong> for unlimited saves and upcoming premium features
+          <span style={{ color: '#00ff88', fontSize: '1.2rem' }}>🚀</span>
+          <p style={{ margin: 0, color: '#ffffff', fontSize: '0.95rem' }}>
+            Subscribe & Support! <span style={{ opacity: 0.8 }}>Help us grow in these early stages</span>
           </p>
         </div> 
         
@@ -85,8 +85,15 @@ export default function SubscriptionBanner() {
             textTransform: 'uppercase',
             letterSpacing: '0.5px',
             textDecoration: 'none'
-          }} 
-          className="button-glow"
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.transform = 'translateY(-2px)';
+            e.target.style.boxShadow = '0 8px 24px rgba(0, 255, 136, 0.4)';
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.transform = 'translateY(0)';
+            e.target.style.boxShadow = '0 8px 24px rgba(0, 255, 136, 0.3)';
+          }}
         >
           Upgrade Now
         </Link>

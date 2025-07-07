@@ -74,11 +74,11 @@ export default function Home({ initialFeaturedNotebooks }) {
           <h2 style={{ 
             fontSize: '1.5rem', 
             margin: '0 0 1.5rem 0', 
-            color: '#ffffff',
+            color: '#ffffff', 
             fontWeight: '500',
             letterSpacing: '0.5px'
           }}> 
-            <span className="float-animation">Discover. Build. Accelerate.</span>
+            <span className="float-animation">Discover. Build. <span style={{ color: '#00ff88' }}>Support.</span></span>
           </h2>
           
           <p style={{ 
@@ -89,10 +89,9 @@ export default function Home({ initialFeaturedNotebooks }) {
             margin: '0 auto 1rem auto',
             color: '#e2e8f0',
             lineHeight: '1.6'
-          }}> 
-            Help us build a network of researchers. By curating and sharing 
-            notebooks, we can prevent redundant work and reduce the massive 
-            computational footprint of AI research.
+          }}>
+            Help us build a network of researchers in these early stages. By subscribing and sharing
+            notebooks, you support our growth and help create the premier platform for NotebookLM projects.
           </p>
           
           <div style={{ 
