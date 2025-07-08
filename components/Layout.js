@@ -2,13 +2,9 @@ import { useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import AuthStatusDisplay from './AuthStatusDisplay';
-import SubscriptionBanner from './SubscriptionBanner';
-import { useAuth } from '../context/AuthContext';
 
 export default function Layout({ children, title = "NotebookLM Directory" }) {
   const router = useRouter();
-  const { user, loading } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -28,8 +24,6 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
         background: '#0a0a0a',
         color: '#ffffff'
       }}>
-        <SubscriptionBanner />
-        
         <header style={{ 
           position: 'sticky',
           top: 0,
@@ -86,7 +80,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
               zIndex: 40,
               borderBottom: mobileMenuOpen ? '1px solid rgba(0, 255, 136, 0.1)' : 'none'
             }}>
-              <Link href="/browse" className="nav-link" style={{ 
+              <Link href="/browse" style={{ 
                 color: router.pathname === '/browse' ? '#00ff88' : '#e2e8f0', 
                 textDecoration: 'none',
                 transition: 'color 0.2s ease',
@@ -94,23 +88,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
               }}>
                 Browse
               </Link>
-              <Link href="/submit" className="nav-link" style={{ 
-                color: router.pathname === '/submit' ? '#00ff88' : '#e2e8f0', 
-                textDecoration: 'none',
-                transition: 'color 0.2s ease',
-                fontWeight: '500'
-              }}>
-                Submit
-              </Link>
-              <Link href="/about" className="nav-link" style={{ 
-                color: router.pathname === '/about' ? '#00ff88' : '#e2e8f0', 
-                textDecoration: 'none',
-                transition: 'color 0.2s ease',
-                fontWeight: '500'
-              }}>
-                About
-              </Link>
-              <Link href="/pricing" className="nav-link" style={{ 
+              <Link href="/pricing" style={{ 
                 color: router.pathname === '/pricing' ? '#00ff88' : '#e2e8f0', 
                 textDecoration: 'none',
                 transition: 'color 0.2s ease',
@@ -118,19 +96,14 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
               }}>
                 Pricing
               </Link>
-              
-              {!loading && user && (
-                <Link href="/analytics" className="nav-link" style={{ 
-                  color: router.pathname === '/analytics' ? '#00ff88' : '#e2e8f0', 
-                  textDecoration: 'none',
-                  transition: 'color 0.2s ease',
-                  fontWeight: '500'
-                }}>
-                  Analytics
-                </Link>
-              )}
-              
-              <AuthStatusDisplay />
+              <Link href="/audio-test" style={{ 
+                color: router.pathname === '/audio-test' ? '#00ff88' : '#e2e8f0', 
+                textDecoration: 'none',
+                transition: 'color 0.2s ease',
+                fontWeight: '500'
+              }}>
+                Audio Test
+              </Link>
             </div>
             
             <button
@@ -186,60 +159,15 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                   Quick Links
                 </h4>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                  <Link href="/browse" className="footer-link" style={{ color: '#e2e8f0', textDecoration: 'none', fontSize: '0.9rem' }}>
+                  <Link href="/browse" style={{ color: '#e2e8f0', textDecoration: 'none', fontSize: '0.9rem' }}>
                     Browse Projects
                   </Link>
-                  <Link href="/submit" style={{ color: '#e2e8f0', textDecoration: 'none', fontSize: '0.9rem' }}>
-                    Submit Project
-                  </Link>
-                  <Link href="/about" style={{ color: '#e2e8f0', textDecoration: 'none', fontSize: '0.9rem' }}>
-                    About
-                  </Link>
-                </div>
-              </div>
-              
-              <div>
-                <h4 style={{ color: '#ffffff', marginBottom: '1rem', fontSize: '1rem' }}>
-                  Community
-                </h4>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                   <Link href="/pricing" style={{ color: '#e2e8f0', textDecoration: 'none', fontSize: '0.9rem' }}>
-                    Support Us
+                    Pricing
                   </Link>
-                  <Link href="/analytics" className="footer-link" style={{ color: '#e2e8f0', textDecoration: 'none', fontSize: '0.9rem' }}>
-                    Analytics
+                  <Link href="/audio-test" style={{ color: '#e2e8f0', textDecoration: 'none', fontSize: '0.9rem' }}>
+                    Audio Test
                   </Link>
-                  <a 
-                    href="mailto:support@notebooklm.directory" 
-                    style={{ color: '#e2e8f0', textDecoration: 'none', fontSize: '0.9rem' }}
-                  >
-                    Contact
-                  </a>
-                </div>
-              </div>
-              
-              <div>
-                <h4 style={{ color: '#ffffff', marginBottom: '1rem', fontSize: '1rem' }}>
-                  Environmental Impact
-                </h4> 
-                <div style={{ 
-                  background: 'rgba(0, 255, 136, 0.1)',
-                  border: '1px solid rgba(0, 255, 136, 0.2)', 
-                  boxShadow: '0 4px 16px rgba(0, 255, 136, 0.1)',
-                  borderRadius: '12px', 
-                  backdropFilter: 'blur(10px)',
-                  WebkitBackdropFilter: 'blur(10px)',
-                  padding: '1rem',
-                  fontSize: '0.9rem'
-                }}>
-                  <div style={{ color: '#00ff88', fontWeight: '600', marginBottom: '0.5rem' }}>
-                    Our Impact Today: 
-                  </div>
-                  <div style={{ color: '#e2e8f0', fontSize: '0.8rem', lineHeight: '1.6' }}>
-                    • 47% reduction in redundant research<br />
-                    • $3.2M in computational costs saved<br />
-                    • 156T CO₂ emissions prevented
-                  </div>
                 </div>
               </div>
             </div>
@@ -256,18 +184,6 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
               <p style={{ margin: 0, color: '#e2e8f0', fontSize: '0.9rem' }}>
                 © 2025 notebooklm.directory. Empowering sustainable AI research.
               </p>
-              
-              <div style={{ display: 'flex', gap: '1.5rem' }}>
-                <a href="#" style={{ color: '#e2e8f0', fontSize: '0.9rem', textDecoration: 'none' }}>
-                  Privacy
-                </a>
-                <a href="#" style={{ color: '#e2e8f0', fontSize: '0.9rem', textDecoration: 'none' }}>
-                  Terms
-                </a>
-                <a href="#" style={{ color: '#e2e8f0', fontSize: '0.9rem', textDecoration: 'none' }}>
-                  Cookies
-                </a>
-              </div>
             </div>
           </div>
         </footer>

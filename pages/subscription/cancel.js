@@ -55,7 +55,7 @@ export default function SubscriptionCancel() {
           }}>
             <li style={{ marginBottom: '0.5rem' }}>✓ Browse public notebooks</li>
             <li style={{ marginBottom: '0.5rem' }}>✓ Save up to 5 notebooks</li>
-            <li style={{ marginBottom: '0.5rem' }}>✓ Submit up to 2 notebooks</li>
+            <li style={{ marginBottom: '0.5rem' }}>✓ Submit unlimited notebooks</li>
             <li>✓ Community access</li>
           </ul>
         </div>
