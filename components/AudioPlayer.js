@@ -1,195 +1,383 @@
-// Audio utility functions for the NotebookLM Directory
+import { useState, useEffect, useRef } from 'react';
+import { getAudioSources, formatDuration, isAudioSupported, findWorkingAudioSource } from '../lib/audio';
 
-/**
- * Get the proper audio URL for playback
- * Handles both direct URLs and Supabase Storage paths
- */
-export function getAudioUrl(audioPath) {
-  if (!audioPath) return null;
+export default function AudioPlayer({ 
+  audioUrl,
+  title = 'Audio Overview',
+  showWaveform = true,
+  compact = false
+}) {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [duration, setDuration] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [mounted, setMounted] = useState(false);
+  const [audioSource, setAudioSource] = useState(null);
   
-  // If it's already a full URL, use it directly 
-  if (audioPath.startsWith('http')) {
-    return audioPath;
-  }
+  const audioRef = useRef(null);  
+  const progressRef = useRef(null);  
+  const waveformRef = useRef(null);  
+  const animationRef = useRef(null);  
   
-  // Try multiple sources in order of preference
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://ciwlmdnmnsymiwmschej.supabase.co';
-  
-  // First try direct storage URL
-  return `${supabaseUrl}/storage/v1/object/public/audio/${encodeURIComponent(audioPath)}`;
-}
-
-/**
- * Validate audio file format
- */
-export function isValidAudioFormat(filename) {
-  const validExtensions = ['.mp3', '.wav', '.ogg', '.m4a'];
-  const extension = filename.toLowerCase().substring(filename.lastIndexOf('.'));
-  return validExtensions.includes(extension);
-}
-
-/**
- * Format duration in seconds to MM:SS format
- */
-export function formatDuration(seconds) {
-  if (!seconds || !isFinite(seconds)) return '0:00';
-  
-  const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = Math.floor(seconds % 60);
-  return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
-}
-
-/**
- * Test if an audio URL is accessible
- */
-export async function testAudioUrl(url) {
-  try {
-    const response = await fetch(url, { method: 'HEAD' });
-    console.log('Audio URL test result:', url, response.status, response.ok);
-    return {
-      accessible: response.ok,
-      status: response.status,
-      contentType: response.headers.get('content-type')
-    };
-  } catch (error) {
-    console.error('Error testing audio URL:', url, error);
-    // Try a GET request as fallback for CORS issues with HEAD
-    try {
-      const response = await fetch(url);
-      console.log('GET fallback result:', url, response.status, response.ok);
-      return {
-        accessible: response.ok,
-        status: response.status,
-        contentType: response.headers.get('content-type')
-      };
-    } catch (secondError) {
-      console.error('Error with fallback GET request:', secondError);
-      return {
-        accessible: false,
-        error: secondError.message || error.message
-      };
+  // Set up audio sources to try
+  useEffect(() => {
+    // Mark component as mounted to prevent hydration mismatch
+    setMounted(true);
+    
+    // Don't run audio logic during SSR 
+    if (typeof window === 'undefined') return;
+    
+    // Check if audio is supported
+    if (!isAudioSupported()) {
+      setError('Audio not supported in this browser');
+      setLoading(false);
+      return;
     }
-  }
-}
-
-/**
- * Try multiple audio sources and return the first one that works
- */
-export async function findWorkingAudioSource(sources) {
-  for (const source of sources) {
-    try {
-      console.log('Testing source:', source);
-      const result = await testAudioUrl(source);
-      if (result.accessible) {
-        console.log('Found working source:', source);
-        return source;
+    
+    async function setupAudio() {
+      if (!audioUrl) {
+        setError('No audio URL provided');
+        setLoading(false);
+        return;
       }
-      console.log('Source not accessible:', source);
-    } catch (error) {
-      console.warn(`Source failed: ${source}`, error);
+      
+      try {
+        console.log('Setting up audio for:', audioUrl);
+        
+        // Get all possible sources to try
+        const sources = getAudioSources(audioUrl);
+        console.log('Audio sources to try:', sources);
+        
+        // Find the first working source
+        const workingSource = await findWorkingAudioSource(sources);
+        
+        if (workingSource) {
+          console.log('Found working audio source:', workingSource);
+          setAudioSource(workingSource);
+          setLoading(false);
+        } else {
+          // Try local file as last resort
+          console.log('Trying local file as last resort');
+          setAudioSource('/overview.mp3');
+          setError('Using local fallback audio');
+        }
+      } catch (err) {
+        console.error('Error setting up audio:', err);
+        setError(`Audio setup error: ${err.message}`);
+        setLoading(false);
+      }
     }
-  }
-  return null;
-}
-
-/**
- * Get all possible audio sources to try
- */
-export function getAudioSources(audioPath) {
-  if (!audioPath) return [];
-  
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://ciwlmdnmnsymiwmschej.supabase.co';
-  
-  const sources = [
-    // 1. Direct Supabase Storage URL
-    `${supabaseUrl}/storage/v1/object/public/audio/${encodeURIComponent(audioPath.replace(/^\//, ''))}`,
-    // 2. Local public folder
-    `/${audioPath}`,
-  ];
-  
-  // 3. Add original URL if it's a full URL
-  if (audioPath.startsWith('http')) {
-    sources.push(audioPath);
-  }
-  
-  // 4. Try Edge Function as last resort
-  sources.push(`${supabaseUrl}/functions/v1/serve-audio?path=${encodeURIComponent(audioPath.replace(/^\//, ''))}`);
-  
-  return sources;
-}
-
-/**
- * Create a blob URL from an audio file
- */
-export async function createAudioBlobUrl(url) {
-  try {
-    const response = await fetch(url);
-    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
     
-    const blob = await response.blob();
-    return URL.createObjectURL(blob);
-  } catch (error) {
-    console.error('Error creating blob URL:', error);
-    return {
-      accessible: false,
-      error: error.message
+    setupAudio();
+  }, [audioUrl]);
+  
+  // Set up audio event listeners
+  useEffect(() => {
+    // Don't run during SSR 
+    if (typeof window === 'undefined' || !mounted) return;
+    
+    const audio = audioRef.current;
+    if (!audio || !audioSource) return;
+     
+    const handleCanPlayThrough = () => {
+      setLoading(false);
+      setDuration(audio.duration || 0);
+      setError(null); // Clear any previous errors
     };
-  }
-}
-
-/**
- * Get audio file info from URL
- */
-export async function getAudioInfo(url) {
-  return new Promise((resolve, reject) => {
-    const audio = new Audio();
     
-    audio.addEventListener('loadedmetadata', () => {
-      resolve({
-        duration: audio.duration,
-        canPlay: true
-      });
-    });
+    const handleTimeUpdate = () => {
+      setCurrentTime(audio.currentTime || 0);
+    };
     
-    audio.addEventListener('error', (e) => {
-      reject(new Error(`Audio load error: ${e.target?.error?.message || 'Unknown error'}`));
-    });
+    const handleEnded = () => {
+      setIsPlaying(false);
+      setCurrentTime(0);
+      if (audio) audio.currentTime = 0;
+    };
     
-    audio.src = url;
-  });
-}
-
-/**
- * Check if audio is supported in the current browser
- */
-export function isAudioSupported() {
-  if (typeof window === 'undefined') return false;
-  try {
-    return typeof Audio !== 'undefined' && 'canPlayType' in HTMLAudioElement.prototype;
-  } catch (e) {
-    console.error('Audio not supported:', e);
-    return false;
-  }
-}
-
-/**
- * Debug audio issues
- */
-export function debugAudio(audioElement) {
-  if (typeof window === 'undefined') return null;
-  if (!audioElement) return null;
+    const handleError = (e) => {
+      console.error('Audio error:', e);
+      setError(`Failed to load audio: ${e.target?.error?.message || 'Unknown error'}`);
+      setLoading(false);
+    };
+    
+    audio.addEventListener('canplaythrough', handleCanPlayThrough);
+    audio.addEventListener('timeupdate', handleTimeUpdate);
+    audio.addEventListener('ended', handleEnded);
+    audio.addEventListener('error', handleError);
+    
+    // Set the audio source
+    audio.src = audioSource;
+    audio.load();
+    
+    return () => {
+      audio.removeEventListener('canplaythrough', handleCanPlayThrough);
+      audio.removeEventListener('timeupdate', handleTimeUpdate);
+      audio.removeEventListener('ended', handleEnded);
+      audio.removeEventListener('error', handleError);
+      
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, [audioSource, mounted]);
   
-  return {
-    src: audioElement.src,
-    currentTime: audioElement.currentTime,
-    duration: audioElement.duration,
-    paused: audioElement.paused,
-    ended: audioElement.ended,
-    readyState: audioElement.readyState,
-    networkState: audioElement.networkState,
-    error: audioElement.error ? {
-      code: audioElement.error.code,
-      message: audioElement.error.message
-    } : null
+  useEffect(() => {
+    // Don't run during SSR 
+    if (typeof window === 'undefined' || !mounted || !audioRef.current) return;
+    
+    if (isPlaying) {
+      audioRef.current.play().catch(err => {
+        console.error('Error playing audio:', err);
+        setError(`Playback error: ${err.message}`);
+        setIsPlaying(false);
+      });
+      animateWaveform();
+    } else {
+      audioRef.current.pause();
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    } 
+  }, [isPlaying, mounted]);
+  
+  // Don't render during SSR to prevent hydration mismatch
+  if (!mounted) return null;
+  
+  const togglePlayPause = () => {
+    setIsPlaying(!isPlaying);
   };
+  
+  const handleProgressChange = (e) => {
+    const newTime = e.target.value;
+    setCurrentTime(newTime);
+    if (audioRef.current) {
+      audioRef.current.currentTime = newTime;
+    }
+  };
+
+  const animateWaveform = () => {
+    if (waveformRef.current && showWaveform) {
+      const bars = waveformRef.current.children; 
+      const numBars = bars.length;
+      
+      for (let i = 0; i < numBars; i++) {
+        const bar = bars[i];
+        const height = Math.random() * 30 + 10;
+        bar.style.height = `${height}px`;
+      }
+    }
+    
+    animationRef.current = requestAnimationFrame(animateWaveform);
+  };
+  
+  return (
+    <div style={{
+      background: 'linear-gradient(135deg, rgba(26, 26, 46, 0.8) 0%, rgba(22, 33, 62, 0.8) 100%)', 
+      borderRadius: '16px',  
+      padding: compact ? '1rem' : '1.5rem',
+      border: '1px solid rgba(0, 255, 136, 0.2)',  
+      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
+      backdropFilter: 'blur(10px)',
+      WebkitBackdropFilter: 'blur(10px)',
+      width: '100%'
+    }}> 
+      <audio ref={audioRef} preload="metadata" />
+      
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '1rem',  
+        marginBottom: compact ? '0.75rem' : '1.5rem'
+      }}>
+        <button
+          onClick={togglePlayPause}
+          disabled={loading || error}
+          style={{
+            width: compact ? '40px' : '50px',
+            height: compact ? '40px' : '50px', 
+            borderRadius: '50%',
+            background: loading ? 'rgba(0, 255, 136, 0.2)' :  
+                      error ? 'rgba(255, 0, 0, 0.2)' : 
+                      'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
+            border: 'none',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: loading || error ? 'not-allowed' : 'pointer',
+            color: '#0a0a0a',
+            fontSize: compact ? '1rem' : '1.2rem',
+            fontWeight: '700', 
+            flexShrink: 0,
+            transition: 'all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)',
+            boxShadow: '0 4px 12px rgba(0, 255, 136, 0.3)'
+          }}
+          onMouseEnter={(e) => {
+            if (!loading && !error) {
+              e.target.style.transform = 'scale(1.1)';
+              e.target.style.boxShadow = '0 6px 16px rgba(0, 255, 136, 0.4)';
+            } 
+          }}
+          onMouseLeave={(e) => {
+            if (!loading && !error) {
+              e.target.style.transform = 'scale(1)';
+              e.target.style.boxShadow = '0 4px 12px rgba(0, 255, 136, 0.3)';
+            }
+          }} 
+        >
+          {loading ? (
+            <div style={{
+              width: '20px', 
+              height: '20px', 
+              border: '2px solid rgba(255, 255, 255, 0.3)',
+              borderTop: '2px solid #ffffff',
+              borderRadius: '50%',
+              animation: 'spin 1s linear infinite'
+            }} />
+          ) : error ? (
+            '⚠️'
+          ) : isPlaying ? (
+            '❚❚'
+          ) : (
+            '▶'
+          )}
+        </button>
+        
+        <div style={{ flex: 1 }}>
+          <div style={{
+            color: '#ffffff',
+            fontWeight: '600', 
+            fontSize: compact ? '0.9rem' : '1rem', 
+            marginBottom: '0.25rem'
+          }}>
+            {title}
+          </div>
+          
+          {!compact && (
+            <div style={{
+              display: 'flex',
+              alignItems: 'center', 
+              gap: '0.5rem'
+            }}>
+              <span style={{ color: '#e2e8f0', fontSize: '0.8rem' }}>
+                {formatDuration(currentTime)}
+              </span>
+              
+              <div style={{
+                flex: 1, 
+                height: '4px',
+                background: 'rgba(255, 255, 255, 0.1)', 
+                borderRadius: '2px',
+                position: 'relative'
+              }}>
+                <input
+                  ref={progressRef}
+                  type="range" 
+                  min="0"
+                  max={duration || 0}
+                  value={currentTime}
+                  onChange={handleProgressChange}
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0, 
+                    width: '100%',
+                    height: '100%',
+                    appearance: 'none',
+                    background: 'transparent',
+                    margin: 0,
+                    padding: 0,
+                    cursor: 'pointer',
+                    zIndex: 2
+                  }}
+                />
+                
+                <div style={{
+                  position: 'absolute',
+                  top: 0, 
+                  left: 0, 
+                  height: '100%', 
+                  width: `${(currentTime / (duration || 1)) * 100}%`,
+                  background: '#00ff88',
+                  borderRadius: '2px',
+                  pointerEvents: 'none'
+                }} />
+              </div>
+              
+              <span style={{ color: '#e2e8f0', fontSize: '0.8rem' }}>
+                {formatDuration(duration)}
+              </span>
+            </div>
+          )}
+        </div>
+      </div>
+      
+      {showWaveform && !compact && !error && (
+        <div 
+          ref={waveformRef}
+          style={{ 
+            display: 'flex', 
+            alignItems: 'center',
+            gap: '2px', 
+            height: '40px'
+          }}
+        >
+          {[...Array(50)].map((_, i) => ( 
+            <div
+              key={i}
+              style={{ 
+                width: '3px',
+                height: isPlaying ? `${Math.random() * 30 + 10}px` : '10px',
+                background: isPlaying ? '#00ff88' : 'rgba(0, 255, 136, 0.3)',
+                borderRadius: '1px', 
+                transition: 'height 0.2s ease',
+                animationPlayState: isPlaying ? 'running' : 'paused'
+              }}
+            />
+          ))}
+        </div>
+      )}
+      
+      {error && (
+        <div style={{ 
+          color: '#ff6b6b',
+          fontSize: '0.9rem',
+          textAlign: 'center', 
+          padding: '0.5rem' 
+        }}>
+          {error} 
+          <div style={{ fontSize: '0.8rem', marginTop: '0.5rem', opacity: 0.7 }}>
+            Try refreshing the page or check your audio file
+          </div>
+        </div>
+      )}
+      
+      <style jsx>{`
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        
+        input[type=range]::-webkit-slider-thumb { 
+          -webkit-appearance: none;
+          appearance: none;
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          background: #00ff88;
+          cursor: pointer;
+        }
+        
+        input[type=range]::-moz-range-thumb {
+          width: 12px;
+          height: 12px;
+          border-radius: 50%; 
+          background: #00ff88;
+          cursor: pointer;
+          border: none; 
+        }
+      `}</style>
+    </div>
+  );
 }
