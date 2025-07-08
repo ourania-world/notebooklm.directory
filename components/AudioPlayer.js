@@ -1,55 +1,38 @@
-import React, { useState, useRef, useEffect } from 'react';
+// components/AudioPlayer.js
+import { useState, useRef, useEffect } from 'react';
 
-/**
- * Get the proper audio URL for playback
- * Handles both direct URLs and Supabase Storage paths
- */
-function getAudioUrl(audioPath) {
-  if (!audioPath) return null;
-  
-  // If it's already a full URL, use it directly
-  if (audioPath.startsWith('http')) {
-    return audioPath;
-  }
-  
-  // For relative paths, use direct storage URL instead of Edge Function
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://ciwlmdnmnsymiwmschej.supabase.co';
-  
-  // Return direct storage URL
-  return `${supabaseUrl}/storage/v1/object/public/audio/${encodeURIComponent(audioPath)}`;
-}
-
-/**
- * Format duration in seconds to MM:SS format
- */
-function formatDuration(seconds) {
-  if (!seconds || !isFinite(seconds)) return '0:00';
-  
-  const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = Math.floor(seconds % 60);
-  return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
-}
-
-/**
- * AudioPlayer React Component
- */
-const AudioPlayer = ({ audioPath, title, className = '' }) => {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+export default function AudioPlayer({ 
+  audioUrl, 
+  title,
+  autoPlay = false,
+  onEnded = () => {},
+  onPlay = () => {},
+  onPause = () => {}
+}) {
   const audioRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [duration, setDuration] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const audioUrl = getAudioUrl(audioPath);
+  useEffect(() => {
+    // Reset states when audio URL changes
+    setIsPlaying(false);
+    setDuration(0);
+    setCurrentTime(0);
+    setLoading(true);
+    setError(null);
+  }, [audioUrl]);
 
   useEffect(() => {
     const audio = audioRef.current;
+    
     if (!audio) return;
 
     const handleLoadedMetadata = () => {
       setDuration(audio.duration);
-      setIsLoading(false);
+      setLoading(false);
     };
 
     const handleTimeUpdate = () => {
@@ -59,184 +42,172 @@ const AudioPlayer = ({ audioPath, title, className = '' }) => {
     const handleEnded = () => {
       setIsPlaying(false);
       setCurrentTime(0);
+      onEnded();
     };
 
     const handleError = (e) => {
-      setError('Failed to load audio');
-      setIsLoading(false);
-      console.error('Audio error:', e);
+      setLoading(false);
+      
+      let errorMessage = "Unknown audio error";
+      if (audio.error) {
+        switch (audio.error.code) {
+          case 1: errorMessage = "Audio loading aborted"; break;
+          case 2: errorMessage = "Network error while loading audio"; break;
+          case 3: errorMessage = "Audio decoding failed"; break;
+          case 4: errorMessage = "Audio source not supported"; break;
+        }
+      }
+      
+      setError(errorMessage);
+      console.error("Audio error:", e);
     };
 
-    const handleLoadStart = () => {
-      setIsLoading(true);
-      setError(null);
-    };
-
+    // Add event listeners
     audio.addEventListener('loadedmetadata', handleLoadedMetadata);
     audio.addEventListener('timeupdate', handleTimeUpdate);
     audio.addEventListener('ended', handleEnded);
     audio.addEventListener('error', handleError);
-    audio.addEventListener('loadstart', handleLoadStart);
 
+    // Clean up
     return () => {
       audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
       audio.removeEventListener('timeupdate', handleTimeUpdate);
       audio.removeEventListener('ended', handleEnded);
       audio.removeEventListener('error', handleError);
-      audio.removeEventListener('loadstart', handleLoadStart);
     };
-  }, [audioUrl]);
+  }, [audioRef, onEnded]);
 
   const togglePlayPause = () => {
     const audio = audioRef.current;
-    if (!audio) return;
-
+    
     if (isPlaying) {
       audio.pause();
+      setIsPlaying(false);
+      onPause();
     } else {
-      audio.play().catch(err => {
-        setError('Failed to play audio');
-        console.error('Play error:', err);
-      });
+      audio.play()
+        .then(() => {
+          setIsPlaying(true);
+          onPlay();
+        })
+        .catch(err => {
+          setError("Failed to play audio: " + err.message);
+          console.error("Play error:", err);
+        });
     }
-    setIsPlaying(!isPlaying);
+  };
+
+  const formatTime = (time) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   };
 
   const handleSeek = (e) => {
     const audio = audioRef.current;
-    if (!audio || !duration) return;
-
-    const rect = e.currentTarget.getBoundingClientRect();
-    const clickX = e.clientX - rect.left;
-    const newTime = (clickX / rect.width) * duration;
-    
-    audio.currentTime = newTime;
-    setCurrentTime(newTime);
+    const seekTime = (e.target.value / 100) * duration;
+    audio.currentTime = seekTime;
+    setCurrentTime(seekTime);
   };
 
-  if (!audioUrl) {
-    return (
-      <div className={`audio-player error ${className}`}>
-        <p>No audio file provided</p>
-      </div>
-    );
-  }
-
   return (
-    <div className={`audio-player ${className}`}>
+    <div className="audio-player">
       <audio ref={audioRef} src={audioUrl} preload="metadata" />
       
       {title && <div className="audio-title">{title}</div>}
-      }
       
       <div className="audio-controls">
         <button 
+          className={`play-button ${isPlaying ? 'playing' : ''}`} 
           onClick={togglePlayPause}
-          disabled={isLoading || error}
-          className="play-pause-btn"
+          disabled={loading || error}
         >
-          {isLoading ? '⏳' : isPlaying ? '⏸️' : '▶️'}
+          {loading ? 'Loading...' : isPlaying ? 'Pause' : 'Play'}
         </button>
         
         <div className="time-display">
-          {formatDuration(currentTime)} / {formatDuration(duration)}
-        </div>
-        
-        <div 
-          className="progress-bar"
-          onClick={handleSeek}
-        >
-          <div 
-            className="progress-fill"
-            style={{ width: duration ? `${(currentTime / duration) * 100}%` : '0%' }}
+          <span>{formatTime(currentTime)}</span>
+          <input
+            type="range"
+            className="seek-slider"
+            value={(currentTime / duration) * 100 || 0}
+            onChange={handleSeek}
+            disabled={loading || error}
           />
+          <span>{formatTime(duration)}</span>
         </div>
       </div>
       
       {error && <div className="audio-error">{error}</div>}
-      }
       
       <style jsx>{`
         .audio-player {
-          background: #f5f5f5;
+          width: 100%;
+          max-width: 500px;
+          padding: 15px;
           border-radius: 8px;
-          padding: 16px;
-          margin: 8px 0;
-          border: 1px solid #ddd;
-        }
-        
-        .audio-player.error {
-          background: #fee;
-          border-color: #fcc;
-          color: #c33;
+          background: #f5f5f5;
+          box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         
         .audio-title {
           font-weight: bold;
-          margin-bottom: 12px;
-          color: #333;
+          margin-bottom: 10px;
+          text-align: center;
         }
         
         .audio-controls {
           display: flex;
+          flex-direction: column;
           align-items: center;
-          gap: 12px;
+          gap: 10px;
         }
         
-        .play-pause-btn {
-          background: #007bff;
+        .play-button {
+          padding: 8px 16px;
+          border-radius: 20px;
+          background: #3498db;
           color: white;
           border: none;
-          border-radius: 50%;
-          width: 40px;
-          height: 40px;
           cursor: pointer;
-          font-size: 16px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
+          transition: background 0.2s;
         }
         
-        .play-pause-btn:hover:not(:disabled) {
-          background: #0056b3;
+        .play-button:hover {
+          background: #2980b9;
         }
         
-        .play-pause-btn:disabled {
-          background: #ccc;
+        .play-button:disabled {
+          background: #95a5a6;
           cursor: not-allowed;
         }
         
+        .play-button.playing {
+          background: #e74c3c;
+        }
+        
         .time-display {
-          font-family: monospace;
-          font-size: 14px;
-          color: #666;
-          min-width: 80px;
+          display: flex;
+          align-items: center;
+          width: 100%;
+          gap: 10px;
         }
         
-        .progress-bar {
-          flex: 1;
-          height: 6px;
-          background: #ddd;
-          border-radius: 3px;
-          cursor: pointer;
-          position: relative;
-        }
-        
-        .progress-fill {
-          height: 100%;
-          background: #007bff;
-          border-radius: 3px;
-          transition: width 0.1s ease;
+        .seek-slider {
+          flex-grow: 1;
+          height: 5px;
         }
         
         .audio-error {
-          color: #c33;
-          font-size: 14px;
-          margin-top: 8px;
+          margin-top: 10px;
+          color: #e74c3c;
+          text-align: center;
+          padding: 5px;
+          border: 1px solid #e74c3c;
+          border-radius: 4px;
+          background: rgba(231, 76, 60, 0.1);
         }
       `}</style>
     </div>
   );
-};
-
-export default AudioPlayer;
+}
