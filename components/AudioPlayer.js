@@ -1,119 +1,49 @@
-// Audio utility functions for the NotebookLM Directory
+import React from 'react';
+import { getAudioUrl } from '../utils/audio';
 
-/**
- * Get the proper audio URL for playback
- * Handles both direct URLs and Supabase Storage paths
- */
-export function getAudioUrl(audioPath) {
-  if (!audioPath) return null;
-  
-  // If it's already a full URL, use it directly 
-  if (audioPath.startsWith('http')) {
-    return audioPath;
-  }
-  
-  // If it's a relative path, use the Edge Function
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://ciwlmdnmnsymiwmschej.supabase.co';
-  
-  // For the Edge Function, we want to keep the path as is
-  const cleanPath = audioPath;
-  
-  // Return the edge function URL with proper encoding
-  return `${supabaseUrl}/functions/v1/serve-audio?path=${encodeURIComponent(cleanPath)}`;
-}
+// If you don't have getAudioUrl, uncomment below for a stub
+// export function getAudioUrl(url) { return url; }
 
-/**
- * Validate audio file format
- */
-export function isValidAudioFormat(filename) {
-  const validExtensions = ['.mp3', '.wav', '.ogg', '.m4a'];
-  const extension = filename.toLowerCase().substring(filename.lastIndexOf('.'));
-  return validExtensions.includes(extension);
-}
+const AudioPlayer = ({ audioUrl, title, showWaveform = false }) => {
+  const url = getAudioUrl(audioUrl);
+  return (
+    <div style={{
+      background: 'rgba(26, 26, 46, 0.8)',
+      borderRadius: '12px',
+      padding: '1.5rem',
+      marginBottom: '1rem'
+    }}>
+      <h3 style={{ color: '#ffffff', marginBottom: '1rem' }}>{title}</h3>
+      <audio controls src={url} style={{ width: '100%' }}>
+        Your browser does not support the audio element.
+      </audio>
+      {showWaveform && (
+        <div style={{
+          height: '40px',
+          background: 'rgba(0, 255, 136, 0.1)',
+          borderRadius: '8px',
+          marginTop: '1rem',
+          position: 'relative',
+          overflow: 'hidden'
+        }}>
+          <div style={{
+            position: 'absolute',
+            top: '0',
+            left: '0',
+            right: '0',
+            bottom: '0',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#00ff88',
+            fontSize: '0.8rem'
+          }}>
+            Waveform visualization (placeholder)
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
 
-/**
- * Format duration in seconds to MM:SS format
- */
-export function formatDuration(seconds) {
-  if (!seconds || !isFinite(seconds)) return '0:00';
-  
-  const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = Math.floor(seconds % 60);
-  return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
-}
-
-/**
- * Test if an audio URL is accessible
- */
-export async function testAudioUrl(url) {
-  try {
-    const response = await fetch(url, { method: 'HEAD' });
-    return {
-      accessible: response.ok,
-      status: response.status,
-      contentType: response.headers.get('content-type')
-    };
-  } catch (error) {
-    return {
-      accessible: false,
-      error: error.message
-    };
-  }
-}
-
-/**
- * Get audio file info from URL
- */
-export async function getAudioInfo(url) {
-  return new Promise((resolve, reject) => {
-    const audio = new Audio();
-    
-    audio.addEventListener('loadedmetadata', () => {
-      resolve({
-        duration: audio.duration,
-        canPlay: true
-      });
-    });
-    
-    audio.addEventListener('error', (e) => {
-      reject(new Error(`Audio load error: ${e.target?.error?.message || 'Unknown error'}`));
-    });
-    
-    audio.src = url;
-  });
-}
-
-/**
- * Check if audio is supported in the current browser
- */
-export function isAudioSupported() {
-  if (typeof window === 'undefined') return false;
-  try {
-    return typeof Audio !== 'undefined' && 'canPlayType' in HTMLAudioElement.prototype;
-  } catch (e) {
-    console.error('Audio not supported:', e);
-    return false;
-  }
-}
-
-/**
- * Debug audio issues
- */
-export function debugAudio(audioElement) {
-  if (typeof window === 'undefined') return null;
-  if (!audioElement) return null;
-  
-  return {
-    src: audioElement.src,
-    currentTime: audioElement.currentTime,
-    duration: audioElement.duration,
-    paused: audioElement.paused,
-    ended: audioElement.ended,
-    readyState: audioElement.readyState,
-    networkState: audioElement.networkState,
-    error: audioElement.error ? {
-      code: audioElement.error.code,
-      message: audioElement.error.message
-    } : null
-  };
-}
+export default AudioPlayer;
