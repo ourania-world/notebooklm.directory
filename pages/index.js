@@ -123,7 +123,7 @@ export default function Home({ initialFeaturedNotebooks }) {
               cursor: 'pointer',
               fontSize: '1.1rem',
               transition: 'all 0.3s ease',
-              boxShadow: '0 8px 32px rgba(0, 255, 136, 0.3)',
+              boxShadow: '0 8px 24px rgba(0, 255, 136, 0.3)',
               textTransform: 'uppercase',
               letterSpacing: '1px', 
               textDecoration: 'none', 
@@ -176,7 +176,7 @@ export default function Home({ initialFeaturedNotebooks }) {
           </div>
           
           <AudioPlayer 
-            audioUrl="/overview.mp3"
+            audioUrl="overview.mp3"
             title="NotebookLM Directory Vision"
             showWaveform={true}
           />
