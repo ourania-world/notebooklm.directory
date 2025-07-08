@@ -127,6 +127,7 @@ const AudioPlayer = ({ audioPath, title, className = '' }) => {
       <audio ref={audioRef} src={audioUrl} preload="metadata" />
       
       {title && <div className="audio-title">{title}</div>}
+      }
       
       <div className="audio-controls">
         <button 
@@ -153,6 +154,7 @@ const AudioPlayer = ({ audioPath, title, className = '' }) => {
       </div>
       
       {error && <div className="audio-error">{error}</div>}
+      }
       
       <style jsx>{`
         .audio-player {
