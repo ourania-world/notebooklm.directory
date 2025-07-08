@@ -1,193 +1,120 @@
-import { useState } from 'react';
-import Head from 'next/head';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
+// Audio utility functions for the NotebookLM Directory
 
-export default function Layout({ children, title = "NotebookLM Directory" }) {
-  const router = useRouter();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+/**
+ * Get the proper audio URL for playback
+ * Handles both direct URLs and Supabase Storage paths
+ */
+export function getAudioUrl(audioPath) {
+  if (!audioPath) return null;
+  
+  // If it's already a full URL, use it directly
+  if (audioPath.startsWith('http')) {
+    return audioPath;
+  }
+  
+  // For relative paths, use direct storage URL instead of Edge Function
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://ciwlmdnmnsymiwmschej.supabase.co';
+  
+  // Return direct storage URL
+  return `${supabaseUrl}/storage/v1/object/public/audio/${encodeURIComponent(audioPath)}`;
+}
 
-  return (
-    <>
-      <Head>
-        <title>{title}</title>
-        <meta name="description" content="Discover and share innovative NotebookLM projects across domains" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-      </Head>
-      
-      <div style={{ 
-        minHeight: '100vh', 
-        fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-        background: '#0a0a0a',
-        color: '#ffffff'
-      }}>
-        <header style={{ 
-          position: 'sticky',
-          top: 0,
-          zIndex: 50, 
-          background: 'rgba(10, 10, 10, 0.7)', 
-          backdropFilter: 'blur(20px)', 
-          WebkitBackdropFilter: 'blur(20px)',
-          borderBottom: '1px solid rgba(0, 255, 136, 0.1)', 
-          boxShadow: '0 4px 30px rgba(0, 0, 0, 0.2)',
-          padding: '1rem 0'
-        }}>
-          <nav style={{ 
-            maxWidth: '1200px', 
-            margin: '0 auto', 
-            padding: '0 2rem',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center'
-          }}>
-            <Link href="/" style={{ 
-              fontSize: '1.5rem', 
-              fontWeight: '700', 
-              textDecoration: 'none', 
-              color: '#ffffff',
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: '0.75rem',
-              transition: 'all 0.3s ease'
-            }}>
-              <span style={{ 
-                background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
-                color: '#0a0a0a',
-                padding: '0.5rem 0.75rem',
-                borderRadius: '8px',  
-                fontSize: '0.9rem',
-                fontWeight: '700',
-                letterSpacing: '1px',
-                fontFamily: 'monospace'
-              }}>NLM_D</span>
-              notebooklm.directory
-            </Link>
-             
-            <div style={{ 
-              display: mobileMenuOpen ? 'flex' : 'flex',
-              flexDirection: mobileMenuOpen ? 'column' : 'row',
-              position: mobileMenuOpen ? 'absolute' : 'static',
-              top: mobileMenuOpen ? '100%' : 'auto',
-              left: mobileMenuOpen ? '0' : 'auto',
-              right: mobileMenuOpen ? '0' : 'auto',
-              background: mobileMenuOpen ? 'rgba(10, 10, 10, 0.95)' : 'transparent',
-              padding: mobileMenuOpen ? '1rem 2rem' : '0',
-              gap: mobileMenuOpen ? '1rem' : '2rem',
-              alignItems: 'center',
-              zIndex: 40,
-              borderBottom: mobileMenuOpen ? '1px solid rgba(0, 255, 136, 0.1)' : 'none'
-            }}>
-              <Link href="/browse" style={{ 
-                color: router.pathname === '/browse' ? '#00ff88' : '#e2e8f0', 
-                textDecoration: 'none',
-                transition: 'color 0.2s ease',
-                fontWeight: '500'
-              }}>
-                Browse
-              </Link>
-              <Link href="/pricing" style={{ 
-                color: router.pathname === '/pricing' ? '#00ff88' : '#e2e8f0', 
-                textDecoration: 'none',
-                transition: 'color 0.2s ease',
-                fontWeight: '500'
-              }}>
-                Pricing
-              </Link>
-              <Link href="/audio-test" style={{ 
-                color: router.pathname === '/audio-test' ? '#00ff88' : '#e2e8f0', 
-                textDecoration: 'none',
-                transition: 'color 0.2s ease',
-                fontWeight: '500'
-              }}>
-                Audio Test
-              </Link>
-            </div>
-            
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              style={{
-                display: 'none', // Hide on desktop, show on mobile with media query
-                background: 'transparent',
-                border: '1px solid rgba(0, 255, 136, 0.3)',
-                color: '#00ff88',
-                padding: '0.5rem',
-                borderRadius: '8px',
-                cursor: 'pointer',
-                fontSize: '1.2rem'
-              }}
-            >
-              {mobileMenuOpen ? '×' : '☰'}
-            </button>
-          </nav>
-        </header>
-        
-        <main>
-          {children}
-        </main>
-         
-        <footer style={{ 
-          background: 'linear-gradient(135deg, #1a1a2e 0%, #0a0a0a 100%)', 
-          padding: '3rem 0', 
-          marginTop: '4rem', 
-          borderTop: '1px solid rgba(0, 255, 136, 0.1)'
-        }}>
-          <div style={{ 
-            maxWidth: '1200px',  
-            margin: '0 auto', 
-            padding: '0 2rem'
-          }}>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-              gap: '2rem', 
-              marginBottom: '3rem' 
-            }}>
-              <div>
-                <h3 style={{ color: '#00ff88', marginBottom: '1rem', fontSize: '1.2rem' }}>
-                  notebooklm.directory
-                </h3>
-                <p style={{ color: '#e2e8f0', fontSize: '0.9rem', lineHeight: '1.6' }}>
-                  Building the future of AI research through community collaboration and environmental responsibility.
-                </p> 
-              </div>
-              
-              <div>
-                <h4 style={{ color: '#ffffff', marginBottom: '1rem', fontSize: '1rem' }}>
-                  Quick Links
-                </h4>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                  <Link href="/browse" style={{ color: '#e2e8f0', textDecoration: 'none', fontSize: '0.9rem' }}>
-                    Browse Projects
-                  </Link>
-                  <Link href="/pricing" style={{ color: '#e2e8f0', textDecoration: 'none', fontSize: '0.9rem' }}>
-                    Pricing
-                  </Link>
-                  <Link href="/audio-test" style={{ color: '#e2e8f0', textDecoration: 'none', fontSize: '0.9rem' }}>
-                    Audio Test
-                  </Link>
-                </div>
-              </div>
-            </div>
-            
-            <div style={{
-              borderTop: '1px solid rgba(0, 255, 136, 0.1)',
-              paddingTop: '2rem',
-              display: 'flex',
-              justifyContent: 'space-between',  
-              alignItems: 'center',
-              flexWrap: 'wrap',
-              gap: '1rem'
-            }}>
-              <p style={{ margin: 0, color: '#e2e8f0', fontSize: '0.9rem' }}>
-                © 2025 notebooklm.directory. Empowering sustainable AI research.
-              </p>
-            </div>
-          </div>
-        </footer>
-      </div>
-    </>
-  );
+/**
+ * Validate audio file format
+ */
+export function isValidAudioFormat(filename) {
+  const validExtensions = ['.mp3', '.wav', '.ogg', '.m4a'];
+  const extension = filename.toLowerCase().substring(filename.lastIndexOf('.'));
+  return validExtensions.includes(extension);
+}
+
+/**
+ * Format duration in seconds to MM:SS format
+ */
+export function formatDuration(seconds) {
+  if (!seconds || !isFinite(seconds)) return '0:00';
+  
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = Math.floor(seconds % 60);
+  return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+}
+
+/**
+ * Test if an audio URL is accessible
+ */
+export async function testAudioUrl(url) {
+  try {
+    const response = await fetch(url, { method: 'HEAD' });
+    console.log('Audio URL test result:', url, response.status, response.ok);
+    return {
+      accessible: response.ok,
+      status: response.status,
+      contentType: response.headers.get('content-type')
+    };
+  } catch (error) {
+    console.error('Error testing audio URL:', url, error);
+    return {
+      accessible: false,
+      error: error.message
+    };
+  }
+}
+
+/**
+ * Get audio file info from URL
+ */
+export async function getAudioInfo(url) {
+  return new Promise((resolve, reject) => {
+    const audio = new Audio();
+    
+    audio.addEventListener('loadedmetadata', () => {
+      resolve({
+        duration: audio.duration,
+        canPlay: true
+      });
+    });
+    
+    audio.addEventListener('error', (e) => {
+      reject(new Error(`Audio load error: ${e.target?.error?.message || 'Unknown error'}`));
+    });
+    
+    audio.src = url;
+  });
+}
+
+/**
+ * Check if audio is supported in the current browser
+ */
+export function isAudioSupported() {
+  if (typeof window === 'undefined') return false;
+  try {
+    const result = typeof Audio !== 'undefined' && 'canPlayType' in HTMLAudioElement.prototype;
+    console.log('Audio supported:', result);
+    return result;
+  } catch (e) {
+    console.error('Audio not supported:', e);
+    return false;
+  }
+}
+
+/**
+ * Debug audio issues
+ */
+export function debugAudio(audioElement) {
+  if (typeof window === 'undefined') return null;
+  if (!audioElement) return null;
+  
+  return {
+    src: audioElement.src,
+    currentTime: audioElement.currentTime,
+    duration: audioElement.duration,
+    paused: audioElement.paused,
+    ended: audioElement.ended,
+    readyState: audioElement.readyState,
+    networkState: audioElement.networkState,
+    error: audioElement.error ? {
+      code: audioElement.error.code,
+      message: audioElement.error.message
+    } : null
+  };
 }

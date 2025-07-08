@@ -1,288 +1,120 @@
-import { useState } from 'react';
-import Layout from '../components/Layout';
-import Link from 'next/link';
-import AudioPlayer from '../components/AudioPlayer';
+// Audio utility functions for the NotebookLM Directory
 
-export default function Home() {
-  return (
-    <Layout>
-      {/* Hero Section */}
-      <section style={{ 
-        background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%)', 
-        backgroundSize: '200% 200%',
-        color: 'white', 
-        padding: '8rem 0',
-        textAlign: 'center',
-        position: 'relative',
-        overflow: 'hidden'
-      }}>
-        {/* Animated Background Pattern */}
-        <div style={{
-          position: 'absolute',
-          top: 0,  
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'rgba(0, 0, 0, 0.3)',
-          zIndex: 1
-        }}></div>
-        <div style={{ 
-          maxWidth: '1200px',  
-          margin: '0 auto', 
-          padding: '0 2rem',
-          position: 'relative',
-          zIndex: 2
-        }}>
-          <h1 style={{ 
-            fontSize: 'clamp(2.5rem, 8vw, 4.5rem)', 
-            fontWeight: '800',  
-            margin: '0 0 1rem 0', 
-            lineHeight: '1',
-            color: '#ffffff'
-          }}>
-            The Premier NotebookLM<br />
-            <span style={{ color: '#00ff88' }}>Directory</span>
-          </h1>
-          
-          <h2 style={{ 
-            fontSize: '1.5rem', 
-            margin: '0 0 1.5rem 0', 
-            color: '#ffffff', 
-            fontWeight: '500',
-            letterSpacing: '0.5px'
-          }}> 
-            <span>Discover. Build. <span style={{ color: '#00ff88' }}>Accelerate.</span></span>
-          </h2>
-          
-          <p style={{ 
-            fontSize: '1.3rem', 
-            margin: '0 0 1rem 0',
-            opacity: 0.9,
-            maxWidth: '700px', 
-            margin: '0 auto 1rem auto',
-            color: '#e2e8f0',
-            lineHeight: '1.6'
-          }}>
-            Discover innovative NotebookLM projects, share your own work, and connect with a community of researchers and creators. The premier platform for NotebookLM exploration.
-          </p>
-          
-          <div style={{ 
-            display: 'flex', 
-            gap: '1rem', 
-            justifyContent: 'center',  
-            flexWrap: 'wrap',
-            marginTop: '2rem'
-          }}>
-            <Link href="/pricing" style={{
-              background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
-              color: '#0a0a0a',
-              border: 'none', 
-              padding: '1.25rem 2.5rem', 
-              borderRadius: '12px',
-              fontWeight: '700',
-              cursor: 'pointer',
-              fontSize: '1.1rem',
-              transition: 'all 0.3s ease',
-              boxShadow: '0 8px 24px rgba(0, 255, 136, 0.3)',
-              textTransform: 'uppercase',
-              letterSpacing: '1px', 
-              textDecoration: 'none', 
-              display: 'inline-block'
-            }}>
-              UPGRADE NOW
-            </Link>
-            
-            <Link href="/audio-test" style={{
-              background: 'transparent',
-              color: '#ffffff',
-              border: '1px solid rgba(255, 255, 255, 0.3)', 
-              padding: '1rem 2.5rem',
-              borderRadius: '12px',
-              fontWeight: '600',
-              cursor: 'pointer', 
-              fontSize: '1.1rem',
-              transition: 'all 0.3s ease',
-              textDecoration: 'none',
-              display: 'inline-block'
-            }}>
-              TEST AUDIO
-            </Link>
-          </div>
-        </div>
-      </section>
-      
-      {/* Audio Overview Section */}
-      <section style={{ 
-        background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)', 
-        padding: '2rem 0 4rem 0'
-      }}>
-        <div style={{ maxWidth: '800px', margin: '0 auto', padding: '0 2rem' }}>
-          <div style={{ 
-            textAlign: 'center', 
-            marginBottom: '2rem'
-          }}>
-            <h2 style={{ 
-              fontSize: '2rem', 
-              color: '#ffffff', 
-              margin: '0 0 1rem 0',
-              fontWeight: '700'
-            }}>
-              <span style={{ color: '#00ff88' }}>Vision</span> Overview
-            </h2>
-            <p style={{ color: '#e2e8f0' }}>
-              Listen to our audio overview of the NotebookLM Directory vision
-            </p>
-          </div>
-          
-          <AudioPlayer 
-            audioUrl="overview.mp3"
-            title="NotebookLM Directory Vision"
-            showWaveform={true}
-          />
-        </div>
-      </section>
-      
-      {/* Features Section */}
-      <section style={{ 
-        background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)', 
-        padding: '6rem 0', 
-        position: 'relative'
-      }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
-          <h2 style={{ 
-            fontSize: '2.5rem', 
-            fontWeight: '700', 
-            margin: '0 0 1.5rem 0', 
-            color: '#ffffff', 
-            textAlign: 'center'
-          }}>
-            Building the Future of <span style={{ color: '#00ff88' }}>AI Research</span>
-          </h2>
-          
-          <div style={{ 
-            textAlign: 'center',
-            marginBottom: '2rem'
-          }}>
-            <p style={{ 
-              fontSize: '1.1rem', 
-              color: '#e2e8f0',
-              maxWidth: '800px',
-              margin: '0 auto'
-            }}>
-              <span style={{ color: '#00ff88', fontWeight: '600' }}>Subscribe & Support Our Growth!</span> We're creating the world's most comprehensive AI research discovery platform
-            </p>
-          </div>
-          
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
-            gap: '2rem', 
-            marginBottom: '4rem'
-          }}>
-            {/* Feature 1 */}
-            <div style={{
-              background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
-              borderRadius: '16px',
-              padding: '2.5rem 2rem', 
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
-              border: '1px solid rgba(0, 255, 136, 0.2)'
-            }}>
-              <div style={{
-                fontSize: '2.5rem',
-                marginBottom: '1rem',
-                textAlign: 'center'
-              }}> 
-                <span style={{ display: 'inline-block' }}>🔍</span>
-              </div>
-              <h3 style={{
-                fontSize: '1.3rem',
-                fontWeight: '600',
-                color: '#00ff88',
-                marginBottom: '1rem',
-                textAlign: 'center'
-              }}>
-                Curated Selection
-              </h3>
-              <p style={{
-                color: '#e2e8f0',
-                fontSize: '0.9rem',
-                lineHeight: '1.6',
-                textAlign: 'center'
-              }}>
-                Hand-picked collection of innovative NotebookLM projects across domains. Only the highest quality research makes it to the directory.
-              </p>
-            </div>
-            
-            {/* Feature 2 */}
-            <div style={{
-              background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
-              borderRadius: '16px',
-              padding: '2.5rem 2rem', 
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
-              border: '1px solid rgba(0, 255, 136, 0.2)'
-            }}>
-              <div style={{
-                fontSize: '2.5rem',
-                marginBottom: '1rem',
-                textAlign: 'center'
-              }}> 
-                <span style={{ display: 'inline-block' }}>🧠</span>
-              </div>
-              <h3 style={{
-                fontSize: '1.3rem',
-                fontWeight: '600',
-                color: '#00ff88',
-                marginBottom: '1rem',
-                textAlign: 'center'
-              }}>
-                Personalized Discovery
-              </h3>
-              <p style={{
-                color: '#e2e8f0',
-                fontSize: '0.9rem',
-                lineHeight: '1.6',
-                textAlign: 'center'
-              }}>
-                AI-powered recommendations based on your interests and research history. Find exactly what you need for your next project.
-              </p>
-            </div>
-            
-            {/* Feature 3 */}
-            <div style={{
-              background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
-              borderRadius: '16px',
-              padding: '2.5rem 2rem', 
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
-              border: '1px solid rgba(0, 255, 136, 0.2)'
-            }}>
-              <div style={{
-                fontSize: '2.5rem',
-                marginBottom: '1rem',
-                textAlign: 'center'
-              }}> 
-                <span style={{ display: 'inline-block' }}>🌍</span>
-              </div>
-              <h3 style={{
-                fontSize: '1.3rem',
-                fontWeight: '600',
-                color: '#00ff88',
-                marginBottom: '1rem',
-                textAlign: 'center'
-              }}>
-                Community Driven
-              </h3>
-              <p style={{
-                color: '#e2e8f0',
-                fontSize: '0.9rem',
-                lineHeight: '1.6',
-                textAlign: 'center'
-              }}>
-                Discover, share, and collaborate with researchers worldwide. Build on existing work instead of starting from scratch.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-    </Layout>
-  );
+/**
+ * Get the proper audio URL for playback
+ * Handles both direct URLs and Supabase Storage paths
+ */
+export function getAudioUrl(audioPath) {
+  if (!audioPath) return null;
+  
+  // If it's already a full URL, use it directly
+  if (audioPath.startsWith('http')) {
+    return audioPath;
+  }
+  
+  // For relative paths, use direct storage URL instead of Edge Function
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://ciwlmdnmnsymiwmschej.supabase.co';
+  
+  // Return direct storage URL
+  return `${supabaseUrl}/storage/v1/object/public/audio/${encodeURIComponent(audioPath)}`;
+}
+
+/**
+ * Validate audio file format
+ */
+export function isValidAudioFormat(filename) {
+  const validExtensions = ['.mp3', '.wav', '.ogg', '.m4a'];
+  const extension = filename.toLowerCase().substring(filename.lastIndexOf('.'));
+  return validExtensions.includes(extension);
+}
+
+/**
+ * Format duration in seconds to MM:SS format
+ */
+export function formatDuration(seconds) {
+  if (!seconds || !isFinite(seconds)) return '0:00';
+  
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = Math.floor(seconds % 60);
+  return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+}
+
+/**
+ * Test if an audio URL is accessible
+ */
+export async function testAudioUrl(url) {
+  try {
+    const response = await fetch(url, { method: 'HEAD' });
+    console.log('Audio URL test result:', url, response.status, response.ok);
+    return {
+      accessible: response.ok,
+      status: response.status,
+      contentType: response.headers.get('content-type')
+    };
+  } catch (error) {
+    console.error('Error testing audio URL:', url, error);
+    return {
+      accessible: false,
+      error: error.message
+    };
+  }
+}
+
+/**
+ * Get audio file info from URL
+ */
+export async function getAudioInfo(url) {
+  return new Promise((resolve, reject) => {
+    const audio = new Audio();
+    
+    audio.addEventListener('loadedmetadata', () => {
+      resolve({
+        duration: audio.duration,
+        canPlay: true
+      });
+    });
+    
+    audio.addEventListener('error', (e) => {
+      reject(new Error(`Audio load error: ${e.target?.error?.message || 'Unknown error'}`));
+    });
+    
+    audio.src = url;
+  });
+}
+
+/**
+ * Check if audio is supported in the current browser
+ */
+export function isAudioSupported() {
+  if (typeof window === 'undefined') return false;
+  try {
+    const result = typeof Audio !== 'undefined' && 'canPlayType' in HTMLAudioElement.prototype;
+    console.log('Audio supported:', result);
+    return result;
+  } catch (e) {
+    console.error('Audio not supported:', e);
+    return false;
+  }
+}
+
+/**
+ * Debug audio issues
+ */
+export function debugAudio(audioElement) {
+  if (typeof window === 'undefined') return null;
+  if (!audioElement) return null;
+  
+  return {
+    src: audioElement.src,
+    currentTime: audioElement.currentTime,
+    duration: audioElement.duration,
+    paused: audioElement.paused,
+    ended: audioElement.ended,
+    readyState: audioElement.readyState,
+    networkState: audioElement.networkState,
+    error: audioElement.error ? {
+      code: audioElement.error.code,
+      message: audioElement.error.message
+    } : null
+  };
 }

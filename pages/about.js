@@ -1,196 +1,191 @@
-import Layout from '../components/Layout';
+// Audio utility functions for the NotebookLM Directory
 
-export default function About() {
-  return (
-    <Layout title="About - NotebookLM Directory">
-      <div style={{ 
-        maxWidth: '800px', 
-        margin: '0 auto', 
-        padding: '2rem', 
-        background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)',
-        minHeight: '100vh'
-      }}>
-        <h1 style={{ 
-          fontSize: '2.5rem',
-          margin: '0 0 2rem 0', 
-          color: '#ffffff',
-          fontWeight: '700'
-        }}>
-          About <span style={{ 
-            fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-            fontWeight: '700'
-          }}>
-            notebooklm.
-            <span style={{ color: '#00ff88' }}>directory</span>
-          </span>
-        </h1>
-        
-        <div style={{ 
-          fontSize: '1.1rem', 
-          lineHeight: '1.7', 
-          color: '#e2e8f0'
-        }}>
-          <p>
-            <strong style={{ 
-              fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-              fontWeight: '700'
-            }}>
-              notebooklm.directory
-            </strong> launched in July 2025 with a revolutionary approach: proving that environmental 
-            sustainability and technical excellence are not just compatible, but mutually reinforcing. We've built 
-            the world's most efficient notebook discovery platform, where resource-conscious design delivers 
-            superior performance.
-          </p>
-          
-          <h2 style={{ 
-            fontSize: '1.8rem', 
-            margin: '2rem 0 1rem 0', 
-            color: '#ffffff',
-            fontWeight: '600'
-          }}>
-            What is NotebookLM?
-          </h2>
-          
-          <p>
-            NotebookLM is Google's experimental AI-powered research assistant that helps you understand complex topics 
-            by analyzing your uploaded documents. It can generate summaries, answer questions, create study guides, 
-            and even produce audio overviews of your research materials.
-          </p>
-          
-          <h2 style={{ 
-            fontSize: '1.8rem', 
-            margin: '2rem 0 1rem 0', 
-            color: '#ffffff',
-            fontWeight: '600'
-          }}>
-            Efficient by Design, Sustainable by Default
-          </h2>
-          
-          <p>
-            Our core positioning bridges technical credibility with environmental responsibility. We don't ask 
-            researchers to sacrifice performance for sustainability - our resource-efficient architecture IS 
-            why we deliver superior results:
-          </p>
-          
-          <ul style={{ 
-            margin: '1rem 0', 
-            paddingLeft: '2rem',
-            color: '#e2e8f0'
-          }}>
-            <li><strong>Performance through Efficiency:</strong> Our low energy consumption proves superior architecture</li>
-            <li><strong>Cost Reduction:</strong> Resource efficiency translates to direct financial savings</li>
-            <li><strong>Superior Engineering:</strong> Sustainable design principles create better MLOps</li>
-            <li><strong>Transparent Impact:</strong> Verifiable metrics build trust through radical honesty</li>
-          </ul>
-          
-          <h2 style={{ 
-            fontSize: '1.8rem', 
-            margin: '2rem 0 1rem 0', 
-            color: '#ffffff',
-            fontWeight: '600'
-          }}>
-            The Psychology of Sustainable Professional Values
-          </h2>
-          
-          <p>
-            Modern tech professionals are seeking to align their work with their values. For our audience - 
-            highly skilled data scientists and researchers - sustainability isn't a "feel-good" add-on; 
-            it's a marker of forward-thinking, well-managed, and ethically sound practice. We appeal to 
-            three key drivers: altruism (doing good), self-interest (better performance), and identity 
-            (using responsible tools).
-          </p>
-          
-          <div style={{
-            background: 'rgba(0, 255, 136, 0.1)',
-            border: '1px solid rgba(0, 255, 136, 0.3)', 
-            borderRadius: '12px',
-            padding: '1.5rem',
-            margin: '2rem 0'
-          }}>
-            <h4 style={{ color: '#00ff88', margin: '0 0 1rem 0' }}>
-              🌱 Resource Efficiency = Superior Performance
-            </h4>
-            <ul style={{ margin: 0, paddingLeft: '1.5rem', color: '#e2e8f0' }}>
-              <li><strong>Faster Results:</strong> Efficient architecture means your models train quicker</li>
-              <li><strong>Lower Costs:</strong> Resource optimization reduces monthly cloud computing bills</li>
-              <li><strong>Better Reliability:</strong> Sustainable systems are inherently more robust</li>
-              <li><strong>Professional Identity:</strong> Use tools that reflect your values and expertise</li>
-            </ul>
-          </div>
-          
-          <h2 style={{ 
-            fontSize: '1.8rem', 
-            margin: '2rem 0 1rem 0', 
-            color: '#ffffff',
-            fontWeight: '600'
-          }}>
-            Get Involved
-          </h2>
-          
-          <p>
-            Whether you're a researcher, educator, entrepreneur, or curious learner, we invite you to:
-          </p>
-          
-          <ul style={{ 
-            margin: '1rem 0', 
-            paddingLeft: '2rem',
-            color: '#e2e8f0'
-          }}>
-            <li>Browse our curated collection of projects for inspiration</li>
-            <li>Submit your own NotebookLM projects to share with the community</li>
-            <li>Learn from diverse approaches and methodologies</li>
-            <li>Connect with other innovators in AI-assisted research</li>
-          </ul>
-          
-          <div style={{ 
-            background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
-            padding: '2rem', 
-            borderRadius: '16px',
-            margin: '2rem 0',
-            border: '1px solid rgba(0, 255, 136, 0.2)'
-          }}>
-            <h3 style={{ 
-              margin: '0 0 1rem 0',
-              color: '#ffffff',
-              fontWeight: '600' 
-            }}>
-              🚀 Ready to get started?
-            </h3>
-            <p style={{ margin: '0 0 1rem 0' }}>
-              Explore our featured projects or submit your own innovative NotebookLM application.
-            </p>
-            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-              <button style={{
-                background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
-                color: '#0a0a0a',
-                border: 'none', 
-                padding: '1rem 2rem',
-                borderRadius: '12px',
-                fontWeight: '700',
-                cursor: 'pointer',
-                fontSize: '1rem',
-                transition: 'all 0.2s ease',
-                boxShadow: '0 8px 24px rgba(0, 255, 136, 0.3)'
-              }}>
-                Browse Projects
-              </button>
-              <button style={{
-                background: 'transparent',
-                color: '#00ff88',
-                border: '1px solid rgba(0, 255, 136, 0.3)', 
-                padding: '1rem 2rem',
-                borderRadius: '12px',
-                fontWeight: '600',
-                cursor: 'pointer',
-                fontSize: '1rem',
-                transition: 'all 0.2s ease'
-              }}>
-                Submit Project
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </Layout>
-  );
+/**
+ * Get the proper audio URL for playback
+ * Handles both direct URLs and Supabase Storage paths
+ */
+export function getAudioUrl(audioPath) {
+  if (!audioPath) return null;
+  
+  // If it's already a full URL, use it directly 
+  if (audioPath.startsWith('http')) {
+    return audioPath;
+  }
+  
+  // Try multiple sources in order of preference
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://ciwlmdnmnsymiwmschej.supabase.co';
+  
+  // First try direct storage URL
+  return `${supabaseUrl}/storage/v1/object/public/audio/${encodeURIComponent(audioPath)}`;
+}
+
+/**
+ * Validate audio file format
+ */
+export function isValidAudioFormat(filename) {
+  const validExtensions = ['.mp3', '.wav', '.ogg', '.m4a'];
+  const extension = filename.toLowerCase().substring(filename.lastIndexOf('.'));
+  return validExtensions.includes(extension);
+}
+
+/**
+ * Format duration in seconds to MM:SS format
+ */
+export function formatDuration(seconds) {
+  if (!seconds || !isFinite(seconds)) return '0:00';
+  
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = Math.floor(seconds % 60);
+  return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+}
+
+/**
+ * Test if an audio URL is accessible
+ */
+export async function testAudioUrl(url) {
+  try {
+    const response = await fetch(url, { method: 'HEAD' });
+    console.log('Audio URL test result:', url, response.status, response.ok, response.headers.get('content-type'));
+    return {
+      accessible: response.ok,
+      status: response.status,
+      contentType: response.headers.get('content-type')
+    };
+  } catch (error) {
+    console.error('Error testing audio URL:', url, error);
+    // Try a GET request as fallback for CORS issues with HEAD
+    try {
+      const response = await fetch(url);
+      return {
+        accessible: response.ok,
+        status: response.status,
+        contentType: response.headers.get('content-type')
+      };
+    } catch (secondError) {
+      console.error('Error with fallback GET request:', secondError);
+      return {
+        accessible: false,
+        error: error.message
+      };
+    }
+  }
+}
+
+/**
+ * Try multiple audio sources and return the first one that works
+ */
+export async function findWorkingAudioSource(sources) {
+  for (const source of sources) {
+    try {
+      const result = await testAudioUrl(source);
+      if (result.accessible) {
+        return source;
+      }
+    } catch (error) {
+      console.warn(`Source failed: ${source}`, error);
+    }
+  }
+  return null;
+}
+
+/**
+ * Get all possible audio sources to try
+ */
+export function getAudioSources(audioPath) {
+  if (!audioPath) return [];
+  
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://ciwlmdnmnsymiwmschej.supabase.co';
+  
+  const sources = [
+    // 1. Direct Supabase Storage URL
+    `${supabaseUrl}/storage/v1/object/public/audio/${encodeURIComponent(audioPath)}`,
+    // 2. Local public folder
+    `/${audioPath}`,
+  ];
+  
+  // 3. Add original URL if it's a full URL
+  if (audioPath.startsWith('http')) {
+    sources.push(audioPath);
+  }
+  
+  // 4. Try Edge Function as last resort
+  sources.push(`${supabaseUrl}/functions/v1/serve-audio?path=${encodeURIComponent(audioPath)}`);
+  
+  return sources;
+}
+
+/**
+ * Create a blob URL from an audio file
+ */
+export async function createAudioBlobUrl(url) {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    
+    const blob = await response.blob();
+    return URL.createObjectURL(blob);
+  } catch (error) {
+    console.error('Error creating blob URL:', error);
+    return {
+      accessible: false,
+      error: error.message
+    };
+  }
+}
+
+/**
+ * Get audio file info from URL
+ */
+export async function getAudioInfo(url) {
+  return new Promise((resolve, reject) => {
+    const audio = new Audio();
+    
+    audio.addEventListener('loadedmetadata', () => {
+      resolve({
+        duration: audio.duration,
+        canPlay: true
+      });
+    });
+    
+    audio.addEventListener('error', (e) => {
+      reject(new Error(`Audio load error: ${e.target?.error?.message || 'Unknown error'}`));
+    });
+    
+    audio.src = url;
+  });
+}
+
+/**
+ * Check if audio is supported in the current browser
+ */
+export function isAudioSupported() {
+  if (typeof window === 'undefined') return false;
+  try {
+    return typeof Audio !== 'undefined' && 'canPlayType' in HTMLAudioElement.prototype;
+  } catch (e) {
+    console.error('Audio not supported:', e);
+    return false;
+  }
+}
+
+/**
+ * Debug audio issues
+ */
+export function debugAudio(audioElement) {
+  if (typeof window === 'undefined') return null;
+  if (!audioElement) return null;
+  
+  return {
+    src: audioElement.src,
+    currentTime: audioElement.currentTime,
+    duration: audioElement.duration,
+    paused: audioElement.paused,
+    ended: audioElement.ended,
+    readyState: audioElement.readyState,
+    networkState: audioElement.networkState,
+    error: audioElement.error ? {
+      code: audioElement.error.code,
+      message: audioElement.error.message
+    } : null
+  };
 }
