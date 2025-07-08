@@ -176,7 +176,7 @@ export default function Home({ initialFeaturedNotebooks }) {
           </div>
           
           <AudioPlayer 
-            audioUrl="overview.mp3"
+            audioUrl="/overview.mp3"
             title="NotebookLM Directory Vision"
             showWaveform={true}
           />
