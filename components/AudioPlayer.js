@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react';
-import { getAudioUrl, formatDuration, isAudioSupported } from '../lib/audio';
 
 export default function AudioPlayer({ 
   audioUrl,
@@ -56,21 +55,19 @@ export default function AudioPlayer({
     
     const handleError = (e) => {
       console.error('Audio error:', e);
-      console.error('Audio URL:', fullAudioUrl);
-      console.error('Audio error code:', e.target?.error?.code);
-      console.error('Audio error message:', e.target?.error?.message);
+      let errorMessage = 'Failed to load audio';
       
-      let errorMessage = "Failed to load audio";
-      if (e.target?.error) {
+      if (e.target?.error?.code) {
         switch (e.target.error.code) {
-          case 1: errorMessage = "Audio loading aborted"; break;
-          case 2: errorMessage = "Network error while loading audio"; break;
-          case 3: errorMessage = "Audio decoding failed"; break;
-          case 4: errorMessage = "Audio source not supported"; break;
+          case 1: errorMessage = 'Audio loading aborted'; break;
+          case 2: errorMessage = 'Network error while loading audio'; break;
+          case 3: errorMessage = 'Audio decoding failed'; break;
+          case 4: errorMessage = 'Audio source not supported'; break;
+          default: errorMessage = `Error code: ${e.target.error.code}`;
         }
       }
       
-      setError(`${errorMessage}: ${e.target?.error?.message || 'Unknown error'}`);
+      setError(`${errorMessage}. URL: ${fullAudioUrl}`);
       setLoading(false);
     };
     
@@ -78,9 +75,6 @@ export default function AudioPlayer({
     audio.addEventListener('timeupdate', handleTimeUpdate);
     audio.addEventListener('ended', handleEnded);
     audio.addEventListener('error', handleError);
-    
-    // Try to load the audio
-    audio.load();
     
     return () => {
       audio.removeEventListener('canplaythrough', handleCanPlayThrough);
@@ -123,9 +117,7 @@ export default function AudioPlayer({
   const handleProgressChange = (e) => {
     const newTime = e.target.value;
     setCurrentTime(newTime);
-    if (audioRef.current) {
-      audioRef.current.currentTime = newTime;
-    }
+    audioRef.current.currentTime = newTime;
   };
 
   const animateWaveform = () => {
@@ -142,6 +134,38 @@ export default function AudioPlayer({
     
     animationRef.current = requestAnimationFrame(animateWaveform);
   };
+  
+  // Helper functions
+  function getAudioUrl(path) {
+    if (!path) return null;
+    
+    // If it's already a full URL, use it directly 
+    if (path.startsWith('http')) {
+      return path;
+    }
+    
+    // If it's a relative path, use the Supabase URL
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://ciwlmdnmnsymiwmschej.supabase.co';
+    return `${supabaseUrl}/storage/v1/object/public/audio/${path}`;
+  }
+  
+  function formatDuration(seconds) {
+    if (!seconds || !isFinite(seconds)) return '0:00';
+    
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.floor(seconds % 60);
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+  }
+  
+  function isAudioSupported() {
+    if (typeof window === 'undefined') return false;
+    try {
+      return typeof Audio !== 'undefined' && 'canPlayType' in HTMLAudioElement.prototype;
+    } catch (e) {
+      console.error('Audio not supported:', e);
+      return false;
+    }
+  }
   
   return (
     <div style={{
