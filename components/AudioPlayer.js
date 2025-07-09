@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { getAudioUrl, formatDuration, isAudioSupported } from '../lib/audio';
+import { formatDuration, isAudioSupported } from '../lib/audio';
 
 export default function AudioPlayer({
   audioUrl,
@@ -20,7 +20,7 @@ export default function AudioPlayer({
   const waveformRef = useRef(null);
   const animationRef = useRef(null);
 
-  const fullAudioUrl = mounted ? getAudioUrl(audioUrl) : null;
+  const fullAudioUrl = mounted ? audioUrl : null;
 
   useEffect(() => {
     setMounted(true);

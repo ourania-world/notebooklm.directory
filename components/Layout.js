@@ -68,8 +68,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                 fontWeight: '700',
                 letterSpacing: '1px',
                 fontFamily: 'monospace'
-              }}>NLM_D</span>
-              notebooklm.directory
+              }}>NLM_D</span> notebooklm.<span style={{ color: '#00ff88' }}>directory</span>
             </Link>
              
             <div style={{ 
