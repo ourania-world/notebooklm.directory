@@ -10,6 +10,8 @@ export default function SubscriptionManager() {
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(null) 
   const [paymentHistory, setPaymentHistory] = useState([])
+
+  useEffect(() => {
     async function loadSubscriptionData() {
       try {
         const currentUser = await getCurrentUser()
@@ -20,7 +22,12 @@ export default function SubscriptionManager() {
         }
 
         // Fetch payment history
-        )
+        const response = await fetch('/api/subscription/data', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
 
         if (!response.ok) {
           throw new Error('Failed to fetch subscription data')
@@ -171,6 +178,11 @@ export default function SubscriptionManager() {
                 <div style={{ color: '#e2e8f0', fontSize: '0.9rem' }}>
                   ${subscription.subscription_plans?.price || 0}
                   {subscription.subscription_plans?.interval ? `/${subscription.subscription_plans?.interval}` : '/month'}
+                </div>
+              </div>
+              <div style={{
+                background: subscription.status === 'active' ? 'rgba(0, 255, 136, 0.1)' : 'rgba(220, 53, 69, 0.1)',
+                color: subscription.status === 'active' ? '#00ff88' : '#dc3545',
                 padding: '0.5rem 1rem',
                 borderRadius: '20px',
                 fontSize: '0.8rem',
