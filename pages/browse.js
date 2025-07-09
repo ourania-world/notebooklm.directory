@@ -70,8 +70,8 @@ export default function Browse({
     getCurrentUser()
       .then(setUser)
       .catch(error => {
-        console.warn('Failed to get user:', error)
-        setUser(null)
+        console.warn('Failed to get user:', error);
+        setUser(null);
       });
   }, []);
 
@@ -107,6 +107,16 @@ export default function Browse({
     setNotebooks(prev => [newNotebook, ...prev]);
     // Optionally refresh category counts
     getCategoryCounts().then(setCategoryCounts);
+  };
+
+  // Sort notebooks when sort option changes
+  const handleSortChange = (newSortBy) => {
+    setSortBy(newSortBy);
+  };
+
+  // Toggle view mode between grid and list
+  const toggleViewMode = () => {
+    setViewMode(viewMode === 'grid' ? 'list' : 'grid');
   };
 
   return (
@@ -170,16 +180,6 @@ export default function Browse({
             }}
           />
           
-          // Sort notebooks based on sortBy
-          let sortedNotebooks = [...notebooksData];
-          if (sortBy === 'popular') {
-            sortedNotebooks.sort((a, b) => (b.view_count || 0) - (a.view_count || 0));
-          } else if (sortBy === 'saves') {
-            sortedNotebooks.sort((a, b) => (b.save_count || 0) - (a.save_count || 0));
-          } else if (sortBy === 'recent') {
-            sortedNotebooks.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-          }
-          
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
@@ -191,7 +191,6 @@ export default function Browse({
               background: 'white'
             }}
           >
-  }, [selectedCategory, searchTerm, initialCategory, initialSearch, sortBy]);
             {categories.map(category => {
               const count = categoryCounts[category.name] || 0;
               return (
@@ -200,15 +199,6 @@ export default function Browse({
                 </option>
               );
             })}
-  // Sort notebooks when sort option changes
-  const handleSortChange = (newSortBy) => {
-    setSortBy(newSortBy);
-  };
-
-  // Toggle view mode between grid and list
-  const toggleViewMode = () => {
-    setViewMode(viewMode === 'grid' ? 'list' : 'grid');
-  };
           </select>
         </div>
         
@@ -228,12 +218,10 @@ export default function Browse({
               style={{
                 background: sortBy === 'recent' ? 'rgba(0, 255, 136, 0.2)' : 'transparent',
                 color: sortBy === 'recent' ? '#00ff88' : '#e2e8f0',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
                 padding: '0.5rem 1rem',
                 borderRadius: '8px',
                 fontSize: '0.9rem',
-              background: 'rgba(255, 255, 255, 0.05)',
-              color: '#ffffff',
                 cursor: 'pointer'
               }}
             >
@@ -243,39 +231,21 @@ export default function Browse({
               onClick={() => handleSortChange('popular')}
               style={{
                 background: sortBy === 'popular' ? 'rgba(0, 255, 136, 0.2)' : 'transparent',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
                 border: '1px solid rgba(255, 255, 255, 0.2)',
                 padding: '0.5rem 1rem',
-              background: 'rgba(255, 255, 255, 0.05)',
-              color: '#ffffff'
+                borderRadius: '8px',
                 fontSize: '0.9rem',
                 cursor: 'pointer'
               }}
             >
               Most Viewed
             </button>
-                <option key={category.name} value={category.name} style={{ background: '#1a1a2e', color: '#ffffff' }}>
+            <button
               onClick={() => handleSortChange('saves')}
               style={{
                 background: sortBy === 'saves' ? 'rgba(0, 255, 136, 0.2)' : 'transparent',
                 color: sortBy === 'saves' ? '#00ff88' : '#e2e8f0',
                 border: '1px solid rgba(255, 255, 255, 0.2)',
-          
-          {/* View Mode Toggle */}
-          <button
-            onClick={toggleViewMode}
-            style={{
-              background: 'transparent',
-              color: '#e2e8f0',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
-              padding: '0.75rem',
-              borderRadius: '8px',
-              cursor: 'pointer',
-              fontSize: '1rem'
-            }}
-          >
-            {viewMode === 'grid' ? '📋 List View' : '📊 Grid View'}
-          </button>
                 padding: '0.5rem 1rem',
                 borderRadius: '8px',
                 fontSize: '0.9rem',
@@ -284,11 +254,27 @@ export default function Browse({
             >
               Most Saved
             </button>
+            
+            {/* View Mode Toggle */}
+            <button
+              onClick={toggleViewMode}
+              style={{
+                background: 'transparent',
+                color: '#e2e8f0',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                padding: '0.75rem',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                fontSize: '1rem'
+              }}
+            >
+              {viewMode === 'grid' ? '📋 List View' : '📊 Grid View'}
+            </button>
           </div>
         </p>
         
         {/* Projects Grid */}
-              background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
+        {loading ? (
           <div style={{ textAlign: 'center', padding: '2rem' }}>
             <p style={{ color: '#e2e8f0' }}>Loading notebooks...</p>
           </div>
