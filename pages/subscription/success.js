@@ -8,6 +8,7 @@ export default function SubscriptionSuccess() {
   const router = useRouter()
   const [loading, setLoading] = useState(true)
   const [subscription, setSubscription] = useState(null)
+  const [user, setUser] = useState(null)
 
   useEffect(() => {
     async function checkSubscription() {
@@ -17,6 +18,8 @@ export default function SubscriptionSuccess() {
           router.push('/')
           return
         }
+        
+        setUser(user)
 
         // Wait a moment for webhook to process
         setTimeout(async () => {
@@ -100,7 +103,9 @@ export default function SubscriptionSuccess() {
           lineHeight: '1.6',
           marginBottom: '2rem'
         }}>
-          Your subscription has been activated successfully. You now have access to all premium features!
+          Your subscription has been activated successfully. 
+          {user?.email && <span> Thank you for your support, <strong>{user.email}</strong>!</span>}
+          You now have access to all premium features!
         </p>
 
         {subscription && (

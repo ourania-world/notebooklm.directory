@@ -5,14 +5,17 @@ import { getCrawlerStats } from '../lib/crawler-system'
 export default function CrawlerDashboard() {
   const [stats, setStats] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [crawlerActive, setCrawlerActive] = useState(true)
 
   useEffect(() => {
     async function loadStats() {
       try {
         const crawlerStats = await getCrawlerStats()
         setStats(crawlerStats)
+        setCrawlerActive(true)
       } catch (error) {
         console.error('Error loading crawler stats:', error)
+        setCrawlerActive(false)
       } finally {
         setLoading(false)
       }

@@ -53,6 +53,8 @@ export default function Browse({
   const [error, setError] = useState(null);
   const [categoryCounts, setCategoryCounts] = useState(initialCategoryCounts);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [sortBy, setSortBy] = useState('recent');
+  const [viewMode, setViewMode] = useState('grid');
 
   const categories = [
     { name: "Academic", description: "Research papers, thesis work, academic analysis" },
@@ -168,6 +170,16 @@ export default function Browse({
             }}
           />
           
+          // Sort notebooks based on sortBy
+          let sortedNotebooks = [...notebooksData];
+          if (sortBy === 'popular') {
+            sortedNotebooks.sort((a, b) => (b.view_count || 0) - (a.view_count || 0));
+          } else if (sortBy === 'saves') {
+            sortedNotebooks.sort((a, b) => (b.save_count || 0) - (a.save_count || 0));
+          } else if (sortBy === 'recent') {
+            sortedNotebooks.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+          }
+          
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
@@ -179,7 +191,7 @@ export default function Browse({
               background: 'white'
             }}
           >
-            <option value="All">All Categories</option>
+  }, [selectedCategory, searchTerm, initialCategory, initialSearch, sortBy]);
             {categories.map(category => {
               const count = categoryCounts[category.name] || 0;
               return (
@@ -188,6 +200,15 @@ export default function Browse({
                 </option>
               );
             })}
+  // Sort notebooks when sort option changes
+  const handleSortChange = (newSortBy) => {
+    setSortBy(newSortBy);
+  };
+
+  // Toggle view mode between grid and list
+  const toggleViewMode = () => {
+    setViewMode(viewMode === 'grid' ? 'list' : 'grid');
+  };
           </select>
         </div>
         
@@ -197,11 +218,77 @@ export default function Browse({
           margin: '0 0 2rem 0',
           fontSize: '1rem'
         }}>
-          Showing {notebooks.length} project{notebooks.length !== 1 ? 's' : ''}
+          <div style={{
+            display: 'flex',
+            gap: '1rem',
+            alignItems: 'center'
+          }}>
+            <button
+              onClick={() => handleSortChange('recent')}
+              style={{
+                background: sortBy === 'recent' ? 'rgba(0, 255, 136, 0.2)' : 'transparent',
+                color: sortBy === 'recent' ? '#00ff88' : '#e2e8f0',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+                padding: '0.5rem 1rem',
+                borderRadius: '8px',
+                fontSize: '0.9rem',
+              background: 'rgba(255, 255, 255, 0.05)',
+              color: '#ffffff',
+                cursor: 'pointer'
+              }}
+            >
+              Recent
+            </button>
+            <button
+              onClick={() => handleSortChange('popular')}
+              style={{
+                background: sortBy === 'popular' ? 'rgba(0, 255, 136, 0.2)' : 'transparent',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                padding: '0.5rem 1rem',
+              background: 'rgba(255, 255, 255, 0.05)',
+              color: '#ffffff'
+                fontSize: '0.9rem',
+                cursor: 'pointer'
+              }}
+            >
+              Most Viewed
+            </button>
+                <option key={category.name} value={category.name} style={{ background: '#1a1a2e', color: '#ffffff' }}>
+              onClick={() => handleSortChange('saves')}
+              style={{
+                background: sortBy === 'saves' ? 'rgba(0, 255, 136, 0.2)' : 'transparent',
+                color: sortBy === 'saves' ? '#00ff88' : '#e2e8f0',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+          
+          {/* View Mode Toggle */}
+          <button
+            onClick={toggleViewMode}
+            style={{
+              background: 'transparent',
+              color: '#e2e8f0',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              padding: '0.75rem',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              fontSize: '1rem'
+            }}
+          >
+            {viewMode === 'grid' ? '📋 List View' : '📊 Grid View'}
+          </button>
+                padding: '0.5rem 1rem',
+                borderRadius: '8px',
+                fontSize: '0.9rem',
+                cursor: 'pointer'
+              }}
+            >
+              Most Saved
+            </button>
+          </div>
         </p>
         
         {/* Projects Grid */}
-        {loading ? (
+              background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
           <div style={{ textAlign: 'center', padding: '2rem' }}>
             <p style={{ color: '#e2e8f0' }}>Loading notebooks...</p>
           </div>
@@ -210,16 +297,179 @@ export default function Browse({
             <p>{error}</p>
           </div>
         ) : notebooks.length > 0 ? (
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', 
-            gap: '2rem',
-            className: 'glass-card'
-          }}>
-            {notebooks.map(notebook => (
-              <ProjectCard key={notebook.id} notebook={notebook} />
-            ))}
-          </div> 
+          viewMode === 'grid' ? (
+            <div style={{ 
+              display: 'grid', 
+              gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', 
+              gap: '2rem',
+              className: 'glass-card'
+            }}>
+              {notebooks.map(notebook => (
+                <ProjectCard key={notebook.id} notebook={notebook} />
+              ))}
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              {notebooks.map(notebook => (
+                <div 
+                  key={notebook.id}
+                  className="card-hover"
+                  style={{ 
+                    background: 'linear-gradient(135deg, rgba(26, 26, 46, 0.8) 0%, rgba(22, 33, 62, 0.8) 100%)',
+                    borderRadius: '16px', 
+                    overflow: 'hidden',
+                    border: '1px solid rgba(0, 255, 136, 0.2)',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    backdropFilter: 'blur(10px)',
+                    WebkitBackdropFilter: 'blur(10px)',
+                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
+                    padding: '1.5rem'
+                  }}
+                  onClick={() => window.location.href = `/notebook/${notebook.id}`}
+                >
+                  <div style={{ flex: 1 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                      <span style={{
+                        background: 'rgba(0, 0, 0, 0.7)', 
+                        backdropFilter: 'blur(8px)',
+                        WebkitBackdropFilter: 'blur(8px)',
+                        padding: '0.25rem 0.75rem',
+                        borderRadius: '12px',
+                        fontSize: '0.7rem',
+                        color: '#00ff88',
+                        fontWeight: '600'
+                      }}>
+                        {notebook.category}
+                      </span>
+                      {notebook.featured && (
+                        <span style={{
+                          background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',  
+                          boxShadow: '0 2px 8px rgba(0, 255, 136, 0.3)',
+                          color: '#0a0a0a',
+                          padding: '0.25rem 0.5rem',
+                          borderRadius: '6px',
+                          fontSize: '0.7rem',
+                          fontWeight: '700',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.5px'
+                        }}>
+                          Featured
+                        </span>
+                      )}
+                    </div>
+                    
+                    <h3 style={{ 
+                      fontSize: '1.3rem', 
+                      fontWeight: '700',
+                      color: '#ffffff', 
+                      margin: '0 0 0.75rem 0', 
+                      lineHeight: '1.3'
+                    }}>
+                      {notebook.title}
+                    </h3>
+                    
+                    <p style={{ 
+                      color: 'rgba(226, 232, 240, 0.9)', 
+                      fontSize: '0.9rem',
+                      lineHeight: '1.5',
+                      margin: '0 0 1rem 0'
+                    }}>
+                      {notebook.description.length > 200 
+                        ? `${notebook.description.substring(0, 200)}...` 
+                        : notebook.description}
+                    </p>
+                    
+                    {notebook.tags && notebook.tags.length > 0 && (
+                      <div style={{
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                        gap: '0.5rem', 
+                        marginBottom: '1rem'
+                      }}> 
+                        {notebook.tags.slice(0, 3).map((tag, index) => (
+                          <span 
+                            key={index}
+                            style={{
+                              background: 'rgba(0, 255, 136, 0.1)',
+                              color: '#00ff88',
+                              padding: '0.25rem 0.75rem', 
+                              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+                              borderRadius: '6px',
+                              fontSize: '0.7rem',
+                              fontWeight: '600'
+                            }}
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                        {notebook.tags.length > 3 && (
+                          <span style={{
+                            color: '#e2e8f0',
+                            fontSize: '0.7rem',
+                            padding: '0.25rem 0'
+                          }}>
+                            +{notebook.tags.length - 3} more
+                          </span>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div style={{ 
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    justifyContent: 'space-between',
+                    alignItems: 'flex-end',
+                    minWidth: '200px'
+                  }}>
+                    <div style={{ 
+                      color: '#ffffff', 
+                      fontWeight: '600', 
+                      fontSize: '0.9rem',
+                      textAlign: 'right'
+                    }}>
+                      {notebook.author}
+                      {notebook.institution && ( 
+                        <div style={{ color: '#e2e8f0', fontSize: '0.8rem' }}>
+                          {notebook.institution}
+                        </div>
+                      )}
+                    </div>
+                    
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '1rem',
+                      marginTop: '1rem'
+                    }}>
+                      <div style={{ 
+                        display: 'flex',  
+                        alignItems: 'center', 
+                        gap: '0.25rem',
+                        color: '#e2e8f0',
+                        fontSize: '0.8rem'
+                      }}>
+                        <span style={{ fontSize: '0.9rem' }}>👁️</span>
+                        <span>{notebook.view_count || 0}</span>
+                      </div>
+                      
+                      <div style={{ 
+                        display: 'flex',  
+                        alignItems: 'center', 
+                        gap: '0.25rem',
+                        color: '#e2e8f0',
+                        fontSize: '0.8rem'
+                      }}>
+                        <span style={{ fontSize: '0.9rem' }}>❤️</span>
+                        <span>{notebook.save_count || 0}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )
         ) : null}
 
         {!loading && !error && notebooks.length === 0 && (

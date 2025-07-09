@@ -60,6 +60,21 @@ export default async function handler(req, res) {
       // Continue anyway for demo purposes
     }
 
+    // Create a mock payment record
+    const { error: paymentError } = await supabase
+      .from('payments')
+      .insert({
+        user_id: session.user.id,
+        amount: priceId === 'standard' ? 999 : priceId === 'professional' ? 1999 : 9900,
+        currency: 'usd',
+        status: 'succeeded',
+        description: `Subscription to ${priceId} plan`
+      });
+
+    if (paymentError) {
+      console.error('Error creating payment record:', paymentError);
+      // Continue anyway for demo purposes
+    }
     res.status(200).json({ url: checkoutUrl });
   } catch (error) {
     console.error('Error creating checkout session:', error);
