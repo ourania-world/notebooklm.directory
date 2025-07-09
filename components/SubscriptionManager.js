@@ -9,8 +9,7 @@ export default function SubscriptionManager() {
   const [actionLoading, setActionLoading] = useState(false)
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(null) 
-
-  useEffect(() => {
+  const [paymentHistory, setPaymentHistory] = useState([])
     async function loadSubscriptionData() {
       try {
         const currentUser = await getCurrentUser()
@@ -21,18 +20,6 @@ export default function SubscriptionManager() {
         }
 
         // Fetch payment history
-        setUser(currentUser)
-
-        // Fetch subscription data
-        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-        const response = await fetch(
-          `${supabaseUrl}/functions/v1/manage-subscription?action=get`,
-          {
-            headers: {
-              'Authorization': `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`,
-              'Content-Type': 'application/json'
-            }
-          }
         )
 
         if (!response.ok) {
@@ -183,12 +170,7 @@ export default function SubscriptionManager() {
                 </div>
                 <div style={{ color: '#e2e8f0', fontSize: '0.9rem' }}>
                   ${subscription.subscription_plans?.price || 0}
-                </div>
-              </div>
-              <div style={{
-                background: subscription.status === 'active' ? 
-                  'rgba(0, 255, 136, 0.1)' : 'rgba(255, 193, 7, 0.1)',
-                color: subscription.status === 'active' ? '#00ff88' : '#ffc107',
+                  {subscription.subscription_plans?.interval ? `/${subscription.subscription_plans?.interval}` : '/month'}
                 padding: '0.5rem 1rem',
                 borderRadius: '20px',
                 fontSize: '0.8rem',

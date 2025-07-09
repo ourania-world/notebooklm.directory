@@ -262,8 +262,8 @@ export default function Pricing() {
                         e.target.style.boxShadow = 'none';
                       }
                     }}
-                  >
-                    {loading ? 'Processing...' : plan.id === 'professional' ? 'Upgrade to Pro' : `Upgrade to ${plan.name}`}
+                  > 
+                    {loading ? 'Processing...' : `Upgrade to ${plan.name}`}
                   </button>
                 )}
               </div>
@@ -277,7 +277,7 @@ export default function Pricing() {
           }}>
             <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.85rem' }}>
               ✓ Cancel anytime • ✓ 30-day money-back guarantee • ✓ Secure payment with Stripe
-                  {loading ? 'Processing...' : `Upgrade to ${plan.name}`}
+            </p>
             <p style={{ margin: 0, opacity: 0.7, fontSize: '0.85rem' }}>
               Questions? Contact us at support@notebooklm.directory
             </p>

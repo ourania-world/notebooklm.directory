@@ -312,7 +312,7 @@ export default function SubscriptionModal({ isOpen, onClose, initialPlan = 'stan
                     }
                   }}
                 >
-                  {loading ? 'Processing...' : plan.id === 'professional' ? 'Upgrade to Pro' : `Upgrade to ${plan.name}`}
+                  {loading ? 'Processing...' : `Upgrade to ${plan.name}`}
                 </button>
               )}
             </div>
