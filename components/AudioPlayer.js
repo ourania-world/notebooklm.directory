@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { getAudioSources, findWorkingAudioSource, formatDuration, isAudioSupported } from '../lib/audio';
+import { getAudioUrl, formatDuration, isAudioSupported } from '../lib/audio';
 
 export default function AudioPlayer({ 
   audioUrl,
@@ -13,67 +13,26 @@ export default function AudioPlayer({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [mounted, setMounted] = useState(false);
-  const [workingAudioUrl, setWorkingAudioUrl] = useState(null);
   
   const audioRef = useRef(null);  
   const progressRef = useRef(null);  
   const waveformRef = useRef(null);  
   const animationRef = useRef(null);  
   
-  // Find a working audio URL
+  const fullAudioUrl = mounted ? getAudioUrl(audioUrl) : null;
+  
   useEffect(() => {
-    // Mark component as mounted to prevent hydration mismatch
     setMounted(true);
-    
-    // Don't run audio logic during SSR 
     if (typeof window === 'undefined') return;
     
-    async function findAudio() {
-      setLoading(true);
-      setError(null);
-      
-      try {
-        // Check if audio is supported
-        if (!isAudioSupported()) {
-          setError('Audio not supported in this browser');
-          setLoading(false);
-          return;
-        }
-        
-        // Get all possible sources to try
-        const sources = getAudioSources(audioUrl);
-        console.log('Trying audio sources:', sources);
-        
-        // Try to find a working source
-        const workingSource = await findWorkingAudioSource(sources);
-        
-        if (workingSource) {
-          console.log('Found working audio source:', workingSource);
-          setWorkingAudioUrl(workingSource);
-          setLoading(false);
-        } else {
-          // Try local fallback as last resort
-          console.log('Trying local fallback...');
-          setWorkingAudioUrl('/overview.mp3');
-          setLoading(false);
-        }
-      } catch (err) {
-        console.error('Error finding audio source:', err);
-        setError(`Failed to load audio: ${err.message}`);
-        setLoading(false);
-      }
+    if (!isAudioSupported()) {
+      setError('Audio not supported in this browser');
+      setLoading(false);
+      return;
     }
     
-    findAudio();
-  }, [audioUrl]);
-  
-  // Set up audio event listeners
-  useEffect(() => {
-    // Don't run during SSR
-    if (typeof window === 'undefined' || !mounted) return;
-    
     const audio = audioRef.current;
-    if (!audio || !workingAudioUrl) return;
+    if (!audio || !fullAudioUrl) return;
      
     const handleCanPlayThrough = () => {
       setLoading(false);
@@ -111,11 +70,9 @@ export default function AudioPlayer({
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [workingAudioUrl, mounted]);
+  }, [fullAudioUrl]);
   
-  // Handle play/pause
   useEffect(() => {
-    // Don't run during SSR 
     if (typeof window === 'undefined' || !mounted || !audioRef.current) return;
     
     if (isPlaying) {
@@ -131,9 +88,8 @@ export default function AudioPlayer({
         cancelAnimationFrame(animationRef.current);
       }
     } 
-  }, [isPlaying, mounted]);
+  }, [isPlaying]);
   
-  // Don't render during SSR to prevent hydration mismatch
   if (!mounted) return null;
   
   const togglePlayPause = () => {
@@ -143,9 +99,7 @@ export default function AudioPlayer({
   const handleProgressChange = (e) => {
     const newTime = e.target.value;
     setCurrentTime(newTime);
-    if (audioRef.current) {
-      audioRef.current.currentTime = newTime;
-    }
+    audioRef.current.currentTime = newTime;
   };
 
   const animateWaveform = () => {
@@ -174,7 +128,7 @@ export default function AudioPlayer({
       WebkitBackdropFilter: 'blur(10px)',
       width: '100%'
     }}> 
-      {workingAudioUrl && <audio ref={audioRef} src={workingAudioUrl} preload="metadata" />}
+      {fullAudioUrl && <audio ref={audioRef} src={fullAudioUrl} preload="metadata" />}
       
       <div style={{
         display: 'flex',
@@ -204,18 +158,6 @@ export default function AudioPlayer({
             transition: 'all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)',
             boxShadow: '0 4px 12px rgba(0, 255, 136, 0.3)'
           }}
-          onMouseEnter={(e) => {
-            if (!loading && !error) {
-              e.target.style.transform = 'scale(1.1)';
-              e.target.style.boxShadow = '0 6px 16px rgba(0, 255, 136, 0.4)';
-            } 
-          }}
-          onMouseLeave={(e) => {
-            if (!loading && !error) {
-              e.target.style.transform = 'scale(1)';
-              e.target.style.boxShadow = '0 4px 12px rgba(0, 255, 136, 0.3)';
-            }
-          }} 
         >
           {loading ? (
             <div style={{
@@ -311,14 +253,16 @@ export default function AudioPlayer({
             display: 'flex', 
             alignItems: 'center',
             gap: '2px', 
-            height: '40px'
+            height: '40px',
+            width: '100%',
+            overflow: 'hidden'
           }}
         >
           {[...Array(50)].map((_, i) => ( 
             <div
               key={i}
               style={{ 
-                width: '3px',
+                flex: 1,
                 height: isPlaying ? `${Math.random() * 30 + 10}px` : '10px',
                 background: isPlaying ? '#00ff88' : 'rgba(0, 255, 136, 0.3)',
                 borderRadius: '1px', 
