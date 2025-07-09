@@ -10,7 +10,6 @@ export default function SubscriptionManager() {
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(null)
   const [paymentHistory, setPaymentHistory] = useState([])
-  const [paymentHistory, setPaymentHistory] = useState([])
 
   useEffect(() => {
     async function loadSubscriptionData() {
@@ -20,18 +19,6 @@ export default function SubscriptionManager() {
           setError('Authentication required')
           setLoading(false)
           return
-        }
-
-        // Fetch payment history
-        const { data: payments, error: paymentsError } = await supabase
-          .from('payments')
-          .select('*')
-          .eq('user_id', currentUser.id)
-          .order('created_at', { ascending: false })
-          .limit(5);
-
-        if (!paymentsError) {
-          setPaymentHistory(payments || []);
         }
 
         // Fetch payment history
@@ -211,9 +198,6 @@ export default function SubscriptionManager() {
                   {subscription.subscription_plans?.interval ? 
                     `/${subscription.subscription_plans?.interval}` : 
                     '/month'}
-                  {subscription.subscription_plans?.interval ? 
-                    `/${subscription.subscription_plans?.interval}` : 
-                    '/month'}
                 </div>
               </div>
               <div style={{
@@ -383,59 +367,6 @@ export default function SubscriptionManager() {
         </div>
       )}
 
-      {/* Payment History */}
-      {paymentHistory.length > 0 && (
-        <div style={{
-          background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
-          borderRadius: '16px',
-          padding: '2rem',
-          border: '1px solid rgba(0, 255, 136, 0.2)',
-          marginBottom: '2rem'
-        }}>
-          <h3 style={{ 
-            color: '#ffffff', 
-            fontSize: '1.3rem', 
-            margin: '0 0 1.5rem 0',
-            fontWeight: '600'
-          }}>
-            Payment History
-          </h3>
-          
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            {paymentHistory.map((payment) => (
-              <div 
-                key={payment.id}
-                style={{
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  borderRadius: '8px',
-                  padding: '1rem',
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center'
-                }}
-              >
-                <div>
-                  <div style={{ color: '#ffffff', fontWeight: '500' }}>
-                    {payment.description || 'Subscription payment'}
-                  </div>
-                  <div style={{ color: '#e2e8f0', fontSize: '0.8rem' }}>
-                    {new Date(payment.created_at).toLocaleDateString()} • 
-                    {payment.status === 'succeeded' ? ' Successful' : 
-                     payment.status === 'failed' ? ' Failed' : ' Pending'}
-                  </div>
-                </div>
-                <div style={{ 
-                  color: '#00ff88', 
-                  fontWeight: '600',
-                  fontSize: '1.1rem'
-                }}>
-                  ${(payment.amount / 100).toFixed(2)} {payment.currency.toUpperCase()}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
       {/* Available Plans */}
       <div style={{
         background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
