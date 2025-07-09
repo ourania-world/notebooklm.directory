@@ -9,7 +9,6 @@ export default function ScrapingDashboard() {
   const [query, setQuery] = useState('')
   const [selectedSource, setSelectedSource] = useState('GITHUB')
   const [scrapingActive, setScrapingActive] = useState(true)
-  const [scrapingActive, setScrapingActive] = useState(true)
 
   useEffect(() => {
     loadStats()
@@ -20,10 +19,8 @@ export default function ScrapingDashboard() {
       const scrapingStats = await getScrapingStats()
       setStats(scrapingStats)
       setScrapingActive(true)
-      setScrapingActive(true)
     } catch (error) {
       console.error('Error loading stats:', error)
-      setScrapingActive(false)
       setScrapingActive(false)
     }
   }
@@ -39,7 +36,6 @@ export default function ScrapingDashboard() {
       
       // Monitor operation progress
       monitorOperation(operation.operationId)
-      setScrapingActive(true)
       setScrapingActive(true)
     } catch (error) {
       console.error('Error starting scrape:', error)
@@ -67,7 +63,6 @@ export default function ScrapingDashboard() {
           monitorOperation(op.operation.operationId)
         }
       })
-      setScrapingActive(true)
       setScrapingActive(true)
     } catch (error) {
       console.error('Error starting massive scrape:', error)
@@ -340,55 +335,6 @@ export default function ScrapingDashboard() {
                 ))}
               </div>
             )}
-          </div>
-
-          {/* System Status */}
-          <div style={{
-            background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
-            borderRadius: '16px',
-            padding: '2rem',
-            border: '1px solid rgba(0, 255, 136, 0.2)',
-            marginTop: '3rem',
-            textAlign: 'center'
-          }}>
-            <h2 style={{ color: '#ffffff', marginBottom: '1.5rem' }}>
-              System Status
-            </h2>
-            
-            <div style={{
-              display: 'inline-block',
-              background: scrapingActive ? 'rgba(0, 255, 136, 0.1)' : 'rgba(255, 107, 107, 0.1)',
-              borderRadius: '12px',
-              padding: '1rem 2rem',
-              border: `1px solid ${scrapingActive ? 'rgba(0, 255, 136, 0.3)' : 'rgba(255, 107, 107, 0.3)'}`,
-            }}>
-              <div style={{ 
-                display: 'flex',
-                alignItems: 'center',
-                gap: '1rem',
-                color: scrapingActive ? '#00ff88' : '#ff6b6b',
-                fontWeight: '600',
-                fontSize: '1.2rem'
-              }}>
-                <div style={{
-                  width: '16px',
-                  height: '16px',
-                  borderRadius: '50%',
-                  background: scrapingActive ? '#00ff88' : '#ff6b6b',
-                  animation: 'pulse 2s infinite'
-                }} />
-                Spider-Scrapers System: {scrapingActive ? 'ACTIVE' : 'INACTIVE'}
-              </div>
-              <p style={{ 
-                color: '#e2e8f0', 
-                marginTop: '0.5rem',
-                fontSize: '0.9rem'
-              }}>
-                {scrapingActive 
-                  ? 'The spider-scrapers system is active and discovering new NotebookLM projects.' 
-                  : 'The spider-scrapers system is currently inactive. Please check the logs or contact support.'}
-              </p>
-            </div>
           </div>
 
           {/* System Status */}
