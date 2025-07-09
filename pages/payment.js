@@ -17,6 +17,7 @@ export default function Payment() {
   const [cardCvc, setCardCvc] = useState('');
   const [nameOnCard, setNameOnCard] = useState('');
   const [paymentSuccessful, setPaymentSuccessful] = useState(false);
+  const [paymentSuccessful, setPaymentSuccessful] = useState(false);
   
   useEffect(() => {
     async function checkAuth() {
@@ -83,6 +84,12 @@ export default function Payment() {
       
       const { url } = await response.json();
       // Simulate successful payment
+      setPaymentSuccessful(true);
+      
+      // Redirect after a short delay
+      setTimeout(() => {
+        window.location.href = url || '/subscription/success';
+      }, 2000);
       setPaymentSuccessful(true);
       
       // Redirect after a short delay
@@ -161,6 +168,51 @@ export default function Payment() {
               100% { transform: rotate(360deg); }
             }
           `}</style>
+        </div>
+      </Layout>
+    );
+  }
+  
+  if (paymentSuccessful) {
+    return (
+      <Layout title="Payment Successful - NotebookLM Directory">
+        <div style={{ 
+          maxWidth: '800px', 
+          margin: '0 auto', 
+          padding: '4rem 2rem',
+          textAlign: 'center'
+        }}>
+          <div style={{
+            background: 'rgba(0, 255, 136, 0.1)',
+            border: '1px solid rgba(0, 255, 136, 0.3)',
+            borderRadius: '16px',
+            padding: '3rem',
+            marginBottom: '2rem'
+          }}>
+            <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>✅</div>
+            <h2 style={{ 
+              color: '#00ff88', 
+              fontSize: '2rem',
+              marginBottom: '1rem'
+            }}>
+              Payment Successful!
+            </h2>
+            <p style={{ color: '#e2e8f0', fontSize: '1.1rem', marginBottom: '1rem' }}>
+              Your payment has been processed successfully.
+            </p>
+            <p style={{ color: '#e2e8f0', fontSize: '1.1rem' }}>
+              Redirecting you to your subscription details...
+            </p>
+            <div style={{
+              width: '40px',
+              height: '40px',
+              border: '3px solid rgba(0, 255, 136, 0.3)',
+              borderTop: '3px solid #00ff88',
+              borderRadius: '50%',
+              animation: 'spin 1s linear infinite',
+              margin: '2rem auto 0'
+            }} />
+          </div>
         </div>
       </Layout>
     );

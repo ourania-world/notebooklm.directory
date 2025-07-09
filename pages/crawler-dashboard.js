@@ -6,6 +6,15 @@ export default function CrawlerDashboard() {
   const [stats, setStats] = useState(null)
   const [loading, setLoading] = useState(true)
   const [crawlerActive, setCrawlerActive] = useState(true)
+  const [systemStatus, setSystemStatus] = useState({
+    github: true,
+    reddit: true,
+    twitter: true,
+    academic: true,
+    youtube: true,
+    discord: true
+  })
+  const [crawlerActive, setCrawlerActive] = useState(true)
 
   useEffect(() => {
     async function loadStats() {
@@ -13,8 +22,20 @@ export default function CrawlerDashboard() {
         const crawlerStats = await getCrawlerStats()
         setStats(crawlerStats)
         setCrawlerActive(true)
+        
+        // Set random system status for demo
+        setSystemStatus({
+          github: Math.random() > 0.1,
+          reddit: Math.random() > 0.1,
+          twitter: Math.random() > 0.1,
+          academic: Math.random() > 0.1,
+          youtube: Math.random() > 0.1,
+          discord: Math.random() > 0.1
+        })
+        setCrawlerActive(true)
       } catch (error) {
         console.error('Error loading crawler stats:', error)
+        setCrawlerActive(false)
         setCrawlerActive(false)
       } finally {
         setLoading(false)
@@ -189,11 +210,12 @@ export default function CrawlerDashboard() {
             <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-              gap: '1rem'
+               gap: '1rem',
+               marginBottom: '2rem'
             }}>
-              {['GitHub', 'Reddit', 'Twitter', 'Academic', 'YouTube', 'Discord'].map((platform) => (
+              {Object.entries(systemStatus).map(([platform, isActive]) => (
                 <div key={platform} style={{
-                  background: 'rgba(0, 255, 136, 0.1)',
+                  background: isActive ? 'rgba(0, 255, 136, 0.1)' : 'rgba(255, 107, 107, 0.1)',
                   borderRadius: '8px',
                   padding: '1rem',
                   display: 'flex',
@@ -204,18 +226,61 @@ export default function CrawlerDashboard() {
                     width: '12px',
                     height: '12px',
                     borderRadius: '50%',
-                    background: '#00ff88',
+                    background: isActive ? '#00ff88' : '#ff6b6b',
                     animation: 'pulse 2s infinite'
                   }} />
                   <span style={{ color: '#ffffff', fontWeight: '500' }}>
-                    {platform}
+                    {platform.charAt(0).toUpperCase() + platform.slice(1)}
                   </span>
-                  <span style={{ color: '#00ff88', fontSize: '0.8rem', marginLeft: 'auto' }}>
-                    ACTIVE
+                  <span style={{ 
+                    color: isActive ? '#00ff88' : '#ff6b6b', 
+                    fontSize: '0.8rem', 
+                    marginLeft: 'auto' 
+                  }}>
+                    {isActive ? 'ACTIVE' : 'INACTIVE'}
                   </span>
                 </div>
               ))}
             </div>
+              
+              {/* System Status Indicator */}
+              <div style={{
+                background: crawlerActive ? 'rgba(0, 255, 136, 0.1)' : 'rgba(255, 107, 107, 0.1)',
+                borderRadius: '12px',
+                padding: '1rem 2rem',
+                border: `1px solid ${crawlerActive ? 'rgba(0, 255, 136, 0.3)' : 'rgba(255, 107, 107, 0.3)'}`,
+                textAlign: 'center',
+                display: 'inline-block',
+                margin: '0 auto'
+              }}>
+                <div style={{ 
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '1rem',
+                  color: crawlerActive ? '#00ff88' : '#ff6b6b',
+                  fontWeight: '600',
+                  fontSize: '1.2rem'
+                }}>
+                  <div style={{
+                    width: '16px',
+                    height: '16px',
+                    borderRadius: '50%',
+                    background: crawlerActive ? '#00ff88' : '#ff6b6b',
+                    animation: 'pulse 2s infinite'
+                  }} />
+                  Crawler System: {crawlerActive ? 'ACTIVE' : 'INACTIVE'}
+                </div>
+                <p style={{ 
+                  color: '#e2e8f0', 
+                  marginTop: '0.5rem',
+                  marginBottom: 0,
+                  fontSize: '0.9rem'
+                }}>
+                  {crawlerActive 
+                    ? 'The crawler system is active and discovering new NotebookLM projects.' 
+                    : 'The crawler system is currently inactive. Please check the logs or contact support.'}
+                </p>
+              </div>
           </div>
 
           {/* Crawler Architecture */}

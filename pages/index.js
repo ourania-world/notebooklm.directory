@@ -75,7 +75,7 @@ export default function Home({ initialFeaturedNotebooks }) {
             lineHeight: '1',
             color: '#ffffff'
           }}>
-            The Premier NotebookLM<br />
+            The Premier NotebookLM Directory<br />
             <span className="neon-text">Directory</span>
           </h1>
           
