@@ -358,4 +358,4 @@ If you encounter any issues:
 - [ ] Audio playback working
 - [ ] Ready to share with the world!
 
-**Your vision is now reality. Time to launch! 🎉**
+**Your vision is now reality. Time to launch!  🎉**
