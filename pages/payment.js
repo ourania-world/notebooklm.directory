@@ -64,30 +64,16 @@ export default function Payment() {
         throw new Error('Please enter a valid 3-digit CVC code');
       }
       
-      const response = await fetch('/api/create-checkout-session', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          priceId: selectedPlan.id,
-          successUrl: `${window.location.origin}/subscription/success`,
-          cancelUrl: `${window.location.origin}/subscription/cancel`,
-        }),
-      });
+      // For demo purposes, we'll simulate a successful payment
+      // In a real implementation, this would call the Stripe API
+      await new Promise(resolve => setTimeout(resolve, 2000));
       
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to process payment');
-      }
-      
-      const { url } = await response.json();
       // Simulate successful payment
       setPaymentSuccessful(true);
       
       // Redirect after a short delay
       setTimeout(() => {
-        window.location.href = url || '/subscription/success';
+        window.location.href = '/subscription/success';
       }, 2000);
     } catch (error) {
       console.error('Payment error:', error);
@@ -280,7 +266,7 @@ export default function Payment() {
                       fontWeight: '400',
                       display: 'block'
                     }}>
-                      per {selectedPlan.interval || 'forever'}
+                      per {selectedPlan.interval || 'month'}
                     </span>
                   </div>
                 </div>
@@ -592,7 +578,7 @@ export default function Payment() {
                       letterSpacing: '0.5px'
                     }}
                   >
-                    {paymentLoading ? 'Processing...' : `Pay $${selectedPlan.price}/${selectedPlan.interval || 'once'}`}
+                    {paymentLoading ? 'Processing...' : `Pay $${selectedPlan.price}/${selectedPlan.interval || 'month'}`}
                   </button>
                   
                   <div style={{

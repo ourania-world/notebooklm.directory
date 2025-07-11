@@ -9,7 +9,6 @@ export default function SubscriptionManager() {
   const [actionLoading, setActionLoading] = useState(false)
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(null) 
-  const [paymentHistory, setPaymentHistory] = useState([])
 
   useEffect(() => {
     async function loadSubscriptionData() {
@@ -21,21 +20,49 @@ export default function SubscriptionManager() {
           return
         }
 
-        // Fetch payment history
-        const response = await fetch('/api/subscription/data', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
+        // In a real implementation, we would fetch subscription data from the API
+        // For now, we'll just simulate a subscription
+        setTimeout(() => {
+          setSubscription({
+            subscription_plans: {
+              id: 'standard',
+              name: 'Standard',
+              price: 9.99,
+              interval: 'month',
+              description: 'Great for regular users'
+            },
+            status: 'active',
+            current_period_end: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
+          })
+          
+          setAvailablePlans([
+            {
+              id: 'free',
+              name: 'Explorer',
+              price: 0,
+              description: 'Perfect for getting started',
+              features: ['Access to public notebooks', 'Save up to 5 notebooks', 'Submit unlimited notebooks']
+            },
+            {
+              id: 'standard',
+              name: 'Standard',
+              price: 9.99,
+              interval: 'month',
+              description: 'Great for regular users',
+              features: ['Everything in Explorer', 'Unlimited saved notebooks', 'Advanced search features']
+            },
+            {
+              id: 'professional',
+              name: 'Professional',
+              price: 19.99,
+              interval: 'month',
+              description: 'For power users and professionals',
+              features: ['Everything in Standard', 'Premium content access', 'Advanced analytics']
+            }
+          ])
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch subscription data')
-        }
-
-        const data = await response.json()
-        setSubscription(data.subscription)
-        setAvailablePlans(data.availablePlans)
+          setLoading(false)
+        }, 1000)
       } catch (err) {
         console.error('Error loading subscription:', err)
         setError(err.message)
@@ -52,35 +79,28 @@ export default function SubscriptionManager() {
     setError(null)
     setSuccess(null)
 
-    try {
-      const response = await fetch(`/api/subscription/${action}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: { 
-          action 
-        }
-      })
-
-      const data = await response.json()
-      if (error) {
-        throw error
+    // Simulate API call
+    setTimeout(() => {
+      if (action === 'portal') {
+        // Redirect to pricing page for now
+        window.location.href = '/pricing'
+      } else if (action === 'cancel') {
+        setSuccess('Your subscription has been canceled and will end at the end of the current billing period.')
+        setSubscription({
+          ...subscription,
+          canceled_at: new Date().toISOString(),
+          status: 'canceled'
+        })
+      } else if (action === 'reactivate') {
+        setSuccess('Your subscription has been reactivated successfully.')
+        setSubscription({
+          ...subscription,
+          canceled_at: null,
+          status: 'active'
+        })
       }
-      if (action === 'portal' && data.url) {
-        // Redirect to Stripe customer portal
-        window.location.href = data.url
-      } else {
-        setSuccess(data.message || 'Action completed successfully')
-        // Refresh subscription data
-        window.location.reload()
-      }
-    } catch (err) {
-      console.error('Error processing action:', err)
-      setError(err.message)
-    } finally {
       setActionLoading(false)
-    }
+    }, 1500)
   }
 
   if (loading) {
@@ -291,8 +311,7 @@ export default function SubscriptionManager() {
           </div>
         )}
       </div>
-
-      {/* Payment History */}
+      
       {/* Available Plans */}
       <div style={{
         background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
@@ -347,12 +366,7 @@ export default function SubscriptionManager() {
 
               <h4 style={{ color: '#ffffff', margin: '0 0 0.5rem 0' }}>
                 {plan.name}
-              </h4>
-              <div style={{ color: '#00ff88', fontSize: '1.5rem', fontWeight: '700', marginBottom: '1rem' }}>
-                ${plan.price}
-                {plan.interval && (
-                  <span style={{ fontSize: '0.8rem', color: '#e2e8f0' }}>
-                    /{plan.interval}
+                    Next billing: {new Date(subscription.current_period_end).toLocaleDateString()}
                   </span>
                 )}
               </div>

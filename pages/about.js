@@ -20,8 +20,7 @@ export default function About() {
             fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
             fontWeight: '700'
           }}>
-            notebooklm.
-            <span style={{ color: '#00ff88' }}>directory</span>
+            notebooklm<span style={{ color: '#00ff88' }}>.directory</span>
           </span>
         </h1>
         

@@ -2,28 +2,36 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Layout from '../../components/Layout'
 import { getCurrentUser } from '../../lib/supabase'
-import { getUserSubscription } from '../../lib/subscriptions'
 
 export default function SubscriptionSuccess() {
   const router = useRouter()
   const [loading, setLoading] = useState(true)
-  const [subscription, setSubscription] = useState(null)
-
+  const [subscription, setSubscription] = useState({
+    plan: {
+      name: 'Premium',
+      features: [
+        'Unlimited saved notebooks',
+        'Unlimited notebook submissions',
+        'Access to premium content',
+        'Advanced analytics dashboard',
+        'Priority support'
+      ]
+    }
+  })
   useEffect(() => {
     async function checkSubscription() {
       try {
-        const user = await getCurrentUser()
-        if (!user) {
+        const currentUser = await getCurrentUser()
+        if (!currentUser) {
           router.push('/')
           return
         }
         
-        // Wait a moment for webhook to process
-        setTimeout(async () => {
-          const userSubscription = await getUserSubscription(user.id)
-          setSubscription(userSubscription)
+        // In a real implementation, we would fetch the subscription from the database
+        // For now, we'll just simulate a successful subscription
+        setTimeout(() => {
           setLoading(false)
-        }, 2000)
+        }, 1000)
       } catch (error) {
         console.error('Error checking subscription:', error)
         setLoading(false)

@@ -8,8 +8,8 @@ export default function ScrapingDashboard() {
   const [loading, setLoading] = useState(false)
   const [query, setQuery] = useState('')
   const [selectedSource, setSelectedSource] = useState('GITHUB')
-  const [crawlerActive, setCrawlerActive] = useState(true)
-  const [scrapingActive, setScrapingActive] = useState(true)
+  const [crawlerActive, setCrawlerActive] = useState(false)
+  const [scrapingActive, setScrapingActive] = useState(false)
 
   useEffect(() => {
     loadStats()

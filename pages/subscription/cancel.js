@@ -3,6 +3,14 @@ import Layout from '../../components/Layout'
 
 export default function SubscriptionCancel() {
   const router = useRouter()
+  
+  const handleContinueBrowsing = () => {
+    router.push('/browse')
+  }
+  
+  const handleBackToHome = () => {
+    router.push('/')
+  }
 
   return (
     <Layout title="Subscription Cancelled - NotebookLM Directory">
@@ -62,7 +70,7 @@ export default function SubscriptionCancel() {
 
         <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
           <button
-            onClick={() => router.push('/browse')}
+            onClick={handleContinueBrowsing}
             style={{
               background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
               color: '#0a0a0a',
@@ -79,7 +87,7 @@ export default function SubscriptionCancel() {
           </button>
           
           <button
-            onClick={() => router.push('/')}
+            onClick={handleBackToHome}
             style={{
               background: 'transparent',
               color: '#e2e8f0',

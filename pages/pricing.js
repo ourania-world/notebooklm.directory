@@ -263,7 +263,7 @@ export default function Pricing() {
                       }
                     }}
                   > 
-                    {loading ? 'Processing...' : `Upgrade to ${plan.name}`}
+                    {loading ? 'Processing...' : `Upgrade to ${plan.name} Plan`}
                   </button>
                 )}
               </div>
