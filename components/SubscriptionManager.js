@@ -366,10 +366,7 @@ export default function SubscriptionManager() {
 
               <h4 style={{ color: '#ffffff', margin: '0 0 0.5rem 0' }}>
                 {plan.name}
-                    Next billing: {new Date(subscription.current_period_end).toLocaleDateString()}
-                  </span>
-                )}
-              </div>
+              </h4>
               <p style={{ color: '#e2e8f0', fontSize: '0.9rem', marginBottom: '1rem' }}>
                 {plan.description}
               </p>
