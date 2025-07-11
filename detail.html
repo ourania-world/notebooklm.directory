@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>notebooklm.directory</title>
+  <title>Notebook Detail - notebooklm.directory</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -29,10 +29,10 @@
   </script>
   <link rel="stylesheet" href="styles.css">
   <meta name="description" content="Discover innovative NotebookLM projects, share your own work, and connect with a community of researchers and creators.">
-  <meta property="og:title" content="notebooklm.directory">
+  <meta property="og:title" content="Notebook Detail - notebooklm.directory">
   <meta property="og:description" content="The premier platform for NotebookLM exploration.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://notebooklm.directory">
+  <meta property="og:url" content="https://notebooklm.directory/detail.html">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
 <body class="bg-dark-900 text-white font-sans">
@@ -46,7 +46,7 @@
       
       <div class="hidden md:flex items-center gap-6">
         <a href="index.html" class="text-gray-200 hover:text-primary transition-colors">Home</a>
-        <a href="#" class="text-gray-200 hover:text-primary transition-colors" id="browseLink">Browse</a>
+        <a href="index.html#notebooks" class="text-gray-200 hover:text-primary transition-colors">Browse</a>
         <a href="#" class="text-gray-200 hover:text-primary transition-colors">About</a>
         <button id="submitBtn" class="bg-gradient-to-r from-primary to-primary/80 text-dark-900 font-bold py-2 px-4 rounded-lg hover:shadow-lg hover:shadow-primary/30 transition-all transform hover:-translate-y-1">Submit Notebook</button>
       </div>
@@ -58,7 +58,7 @@
     <div id="mobileMenu" class="hidden md:hidden bg-dark-800/95 backdrop-blur-xl w-full border-b border-primary/10 shadow-lg">
       <div class="flex flex-col p-4 gap-4">
         <a href="index.html" class="text-gray-200 hover:text-primary transition-colors py-2">Home</a>
-        <a href="#" class="text-gray-200 hover:text-primary transition-colors py-2" id="mobileBrowseLink">Browse</a>
+        <a href="index.html#notebooks" class="text-gray-200 hover:text-primary transition-colors py-2">Browse</a>
         <a href="#" class="text-gray-200 hover:text-primary transition-colors py-2">About</a>
         <button id="mobileSubmitBtn" class="bg-gradient-to-r from-primary to-primary/80 text-dark-900 font-bold py-2 px-4 rounded-lg">Submit Notebook</button>
       </div>
@@ -67,82 +67,83 @@
 
   <!-- Main Content -->
   <main>
-    <!-- Hero Section -->
-    <section id="heroSection" class="gradient-bg py-20 text-center">
-      <div class="max-w-4xl mx-auto px-4">
-        <h1 class="text-5xl md:text-6xl font-extrabold mb-4">
-          The Premier NotebookLM<span class="text-primary">.Directory</span>
-        </h1>
-        <h2 class="text-2xl font-medium mb-6">
-          Discover. Build. <span class="text-primary">Accelerate.</span>
-        </h2>
-        <p class="text-xl text-gray-200 mb-8 max-w-2xl mx-auto">
-          Discover innovative NotebookLM projects, share your own work, and connect with a community of researchers and creators.
-        </p>
+    <!-- Loading State -->
+    <div id="loading" class="py-20 text-center">
+      <div class="spinner"></div>
+      <p class="mt-4 text-gray-300">Loading notebook details...</p>
+    </div>
+    
+    <!-- Error State -->
+    <div id="error" class="hidden py-20 text-center max-w-4xl mx-auto px-4">
+      <div class="text-4xl mb-4">⚠️</div>
+      <h3 class="text-2xl font-semibold mb-2">Something went wrong</h3>
+      <p class="text-gray-300 mb-6" id="errorMessage">Failed to load notebook details.</p>
+      <a href="index.html" class="bg-gradient-to-r from-primary to-primary/80 text-dark-900 font-bold py-2 px-6 rounded-lg inline-block">Back to Home</a>
+    </div>
+    
+    <!-- Notebook Detail -->
+    <section id="notebookDetail" class="hidden py-16 max-w-4xl mx-auto px-4">
+      <div class="card p-8">
+        <div class="flex flex-wrap gap-2 mb-4">
+          <span class="category-badge" id="detailCategory">Category</span>
+          <span class="featured-badge hidden" id="detailFeatured">Featured</span>
+        </div>
         
-        <!-- Search Bar -->
-        <div class="max-w-xl mx-auto relative mb-12">
-          <div class="flex items-center bg-white/5 border border-primary/20 rounded-2xl p-3">
-            <span class="text-primary text-xl mx-3">🔍</span>
-            <input 
-              type="text" 
-              id="searchInput"
-              placeholder="Search notebooks, topics, or authors..." 
-              class="flex-1 bg-transparent border-none outline-none text-white"
-            >
-            <button id="searchBtn" class="bg-primary text-dark-900 px-4 py-2 rounded-lg font-semibold">Search</button>
+        <h1 class="text-3xl md:text-4xl font-bold text-white mb-6" id="detailTitle">Notebook Title</h1>
+        
+        <p class="text-gray-200 mb-8 leading-relaxed" id="detailDescription">Description loading...</p>
+        
+        <div class="flex flex-wrap gap-2 mb-8" id="detailTags">
+          <!-- Tags will be inserted here -->
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          <div class="bg-white/5 rounded-xl p-6 border border-white/10">
+            <h3 class="text-lg font-semibold mb-4 text-primary">Author Information</h3>
+            <div class="mb-2">
+              <span class="text-gray-400 text-sm">Author:</span>
+              <span class="text-white font-medium" id="detailAuthor">Author Name</span>
+            </div>
+            <div class="mb-2">
+              <span class="text-gray-400 text-sm">Institution:</span>
+              <span class="text-white" id="detailInstitution">Institution Name</span>
+            </div>
+            <div class="mb-2">
+              <span class="text-gray-400 text-sm">Date Added:</span>
+              <span class="text-white" id="detailDate">Date</span>
+            </div>
+          </div>
+          
+          <div class="bg-white/5 rounded-xl p-6 border border-white/10">
+            <h3 class="text-lg font-semibold mb-4 text-primary">Engagement</h3>
+            <div class="flex justify-between">
+              <div>
+                <div class="text-3xl font-bold text-white mb-1" id="detailViews">0</div>
+                <div class="text-gray-400 text-sm">Views</div>
+              </div>
+              <div>
+                <div class="text-3xl font-bold text-white mb-1" id="detailSaves">0</div>
+                <div class="text-gray-400 text-sm">Saves</div>
+              </div>
+            </div>
           </div>
         </div>
         
-        <div class="flex gap-4 justify-center flex-wrap">
-          <a href="#notebooks" class="bg-gradient-to-r from-primary to-primary/80 text-dark-900 font-bold py-3 px-6 rounded-xl uppercase tracking-wider hover:shadow-lg hover:shadow-primary/30 transition-all transform hover:-translate-y-1">Browse Projects</a>
-          <button id="heroSubmitBtn" class="bg-transparent text-white border border-white/30 py-3 px-6 rounded-xl uppercase tracking-wider hover:border-primary hover:text-primary transition-colors">Submit Project</button>
+        <div class="flex flex-col md:flex-row gap-4">
+          <a id="detailLink" href="#" target="_blank" class="bg-gradient-to-r from-primary to-primary/80 text-dark-900 px-6 py-3 rounded-xl font-bold text-center flex-1 hover:shadow-lg hover:shadow-primary/30 transition-all transform hover:-translate-y-1">
+            Open Notebook
+          </a>
+          <a href="index.html" class="bg-transparent text-gray-300 border border-white/20 px-6 py-3 rounded-xl font-medium text-center hover:border-primary hover:text-primary transition-colors">
+            Back to Home
+          </a>
         </div>
       </div>
-    </section>
-
-    <!-- Notebooks Section -->
-    <section id="notebooks" class="py-16">
-      <div class="max-w-7xl mx-auto px-4">
-        <h2 class="text-4xl font-bold mb-8 text-center">
-          Featured <span class="text-primary">Notebooks</span>
-        </h2>
-        
-        <!-- Filter Tabs -->
-        <div class="flex justify-center gap-4 mb-12 flex-wrap">
-          <button class="filter-tab active" data-filter="all">All</button>
-          <button class="filter-tab" data-filter="Academic">Academic</button>
-          <button class="filter-tab" data-filter="Business">Business</button>
-          <button class="filter-tab" data-filter="Creative">Creative</button>
-          <button class="filter-tab" data-filter="Research">Research</button>
-          <button class="filter-tab" data-filter="Education">Education</button>
-          <button class="filter-tab" data-filter="Personal">Personal</button>
-        </div>
-        
-        <!-- Loading State -->
-        <div id="loading" class="py-12 text-center">
-          <div class="spinner"></div>
-          <p class="mt-4 text-gray-300">Loading notebooks...</p>
-        </div>
-        
-        <!-- Error State -->
-        <div id="error" class="hidden py-12 text-center">
-          <div class="text-4xl mb-4">⚠️</div>
-          <h3 class="text-2xl font-semibold mb-2">Something went wrong</h3>
-          <p class="text-gray-300 mb-6" id="errorMessage">Failed to load notebooks.</p>
-          <button id="retryBtn" class="bg-gradient-to-r from-primary to-primary/80 text-dark-900 font-bold py-2 px-6 rounded-lg">Try Again</button>
-        </div>
-        
-        <!-- Notebooks Grid -->
-        <div id="notebooksGrid" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <!-- Notebooks will be inserted here by JavaScript -->
-        </div>
-        
-        <!-- No Results -->
-        <div id="noResults" class="hidden py-12 text-center">
-          <div class="text-4xl mb-4">🔍</div>
-          <h3 class="text-2xl font-semibold mb-2">No notebooks found</h3>
-          <p class="text-gray-300 mb-6">Try adjusting your search or filter criteria.</p>
+      
+      <!-- Related Notebooks -->
+      <div class="mt-12">
+        <h2 class="text-2xl font-bold mb-6">Related Notebooks</h2>
+        <div id="relatedNotebooks" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Related notebooks will be inserted here -->
         </div>
       </div>
     </section>
@@ -269,57 +270,6 @@
     </div>
   </div>
 
-  <!-- Notebook Detail Modal -->
-  <div id="detailModal" class="modal">
-    <div class="modal-content max-w-4xl">
-      <div class="flex justify-between items-center mb-6">
-        <h2 class="text-2xl font-bold text-white" id="detailTitle">Notebook Title</h2>
-        <button id="closeDetailModal" class="text-2xl text-gray-300 hover:text-primary hover:bg-white/10 p-2 rounded-lg transition-colors">×</button>
-      </div>
-      
-      <div class="mb-6">
-        <div class="flex flex-wrap gap-2 mb-4">
-          <span class="category-badge" id="detailCategory">Category</span>
-          <span class="featured-badge hidden" id="detailFeatured">Featured</span>
-        </div>
-        
-        <p class="text-gray-200 mb-6" id="detailDescription">Description loading...</p>
-        
-        <div class="flex flex-wrap gap-2 mb-6" id="detailTags">
-          <!-- Tags will be inserted here -->
-        </div>
-        
-        <div class="flex justify-between items-start border-t border-white/10 pt-4">
-          <div>
-            <div class="text-white font-semibold" id="detailAuthor">Author</div>
-            <div class="text-gray-300 text-sm" id="detailInstitution">Institution</div>
-          </div>
-          
-          <div class="flex items-center gap-4">
-            <div class="flex items-center gap-1 text-gray-300 text-sm">
-              <span>👁️</span>
-              <span id="detailViews">0</span>
-            </div>
-            
-            <div class="flex items-center gap-1 text-gray-300 text-sm">
-              <span>❤️</span>
-              <span id="detailSaves">0</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="flex justify-between gap-4">
-        <a id="detailLink" href="#" target="_blank" class="bg-gradient-to-r from-primary to-primary/80 text-dark-900 px-6 py-3 rounded-xl font-bold text-center flex-1 hover:shadow-lg hover:shadow-primary/30 transition-all transform hover:-translate-y-1">
-          Open Notebook
-        </a>
-        <button id="closeDetailBtn" class="bg-transparent text-gray-300 border border-white/20 px-6 py-3 rounded-xl font-medium hover:border-primary hover:text-primary transition-colors">
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
-
   <!-- Footer -->
   <footer class="gradient-bg py-12 mt-16 border-t border-primary/10">
     <div class="max-w-7xl mx-auto px-4">
@@ -334,8 +284,8 @@
         <div>
           <h4 class="text-white mb-4 font-medium">Quick Links</h4>
           <div class="flex flex-col gap-3">
-            <a href="#" class="text-gray-300 text-sm hover:text-primary transition-colors">Browse Projects</a>
-            <a href="#" class="text-gray-300 text-sm hover:text-primary transition-colors">Submit Project</a>
+            <a href="index.html#notebooks" class="text-gray-300 text-sm hover:text-primary transition-colors">Browse Projects</a>
+            <a href="#" id="footerSubmitBtn" class="text-gray-300 text-sm hover:text-primary transition-colors">Submit Project</a>
             <a href="#" class="text-gray-300 text-sm hover:text-primary transition-colors">About</a>
           </div>
         </div>
@@ -385,13 +335,12 @@
     const loadingEl = document.getElementById('loading');
     const errorEl = document.getElementById('error');
     const errorMessageEl = document.getElementById('errorMessage');
-    const notebooksGridEl = document.getElementById('notebooksGrid');
-    const noResultsEl = document.getElementById('noResults');
-    const retryBtn = document.getElementById('retryBtn');
+    const notebookDetailEl = document.getElementById('notebookDetail');
+    const relatedNotebooksEl = document.getElementById('relatedNotebooks');
     const submitBtns = [
       document.getElementById('submitBtn'), 
       document.getElementById('mobileSubmitBtn'),
-      document.getElementById('heroSubmitBtn')
+      document.getElementById('footerSubmitBtn')
     ];
     const submitModal = document.getElementById('submitModal');
     const closeModalBtn = document.getElementById('closeModal');
@@ -399,27 +348,17 @@
     const submitForm = document.getElementById('submitForm');
     const submitErrorEl = document.getElementById('submitError');
     const submitSuccessEl = document.getElementById('submitSuccess');
-    const searchInput = document.getElementById('searchInput');
-    const searchBtn = document.getElementById('searchBtn');
-    const filterTabs = document.querySelectorAll('.filter-tab');
     const mobileMenuBtn = document.getElementById('mobileMenuBtn');
     const mobileMenu = document.getElementById('mobileMenu');
-    const detailModal = document.getElementById('detailModal');
-    const closeDetailModalBtn = document.getElementById('closeDetailModal');
-    const closeDetailBtn = document.getElementById('closeDetailBtn');
-    
-    // Current filter
-    let currentFilter = 'all';
-    let allNotebooks = [];
     
     // Sample data as fallback
     const sampleNotebooks = [
       {
         id: '1',
         title: 'Climate Research Analysis with NotebookLM',
-        description: 'Comprehensive analysis of 50+ climate research papers using NotebookLM to identify key trends and research gaps in climate science.',
+        description: 'Comprehensive analysis of 50+ climate research papers using NotebookLM to identify key trends and research gaps in climate science. This notebook demonstrates how NotebookLM can be used to process and synthesize large volumes of scientific literature, extracting key insights and identifying patterns that might be missed through manual review. The analysis focuses on climate change impacts, mitigation strategies, and adaptation approaches, providing a comprehensive overview of the current state of climate research. The notebook includes visualizations of research trends, citation networks, and thematic analysis to help researchers quickly understand the landscape of climate science literature.',
         category: 'Academic',
-        tags: ['Climate Science', 'Research', 'Environmental'],
+        tags: ['Climate Science', 'Research', 'Environmental', 'Literature Review', 'Data Visualization'],
         author: 'Dr. Sarah Chen',
         institution: 'Stanford University',
         notebook_url: 'https://notebooklm.google.com/notebook/example1',
@@ -456,57 +395,28 @@
         created_at: '2025-01-13T09:15:00Z',
         view_count: 634,
         save_count: 45
-      },
-      {
-        id: '4',
-        title: 'Creative Writing Workshop Analysis',
-        description: 'Using NotebookLM to analyze award-winning short stories and extract narrative techniques.',
-        category: 'Creative',
-        tags: ['Creative Writing', 'Literature', 'Storytelling'],
-        author: 'James Wilson',
-        institution: 'Independent Writer',
-        notebook_url: 'https://notebooklm.google.com/notebook/example4',
-        featured: false,
-        created_at: '2025-01-12T14:20:00Z',
-        view_count: 423,
-        save_count: 32
-      },
-      {
-        id: '5',
-        title: 'Educational Curriculum Design',
-        description: 'Designing computer science curriculum for high schools using NotebookLM to analyze effective learning materials.',
-        category: 'Education',
-        tags: ['Education', 'Curriculum', 'Computer Science'],
-        author: 'Dr. Lisa Park',
-        institution: 'UC Berkeley',
-        notebook_url: 'https://notebooklm.google.com/notebook/example5',
-        featured: false,
-        created_at: '2025-01-11T11:45:00Z',
-        view_count: 567,
-        save_count: 41
-      },
-      {
-        id: '6',
-        title: 'Personal Finance Optimization',
-        description: 'Using NotebookLM to analyze personal spending patterns and create customized financial planning recommendations.',
-        category: 'Personal',
-        tags: ['Personal Finance', 'Investment', 'Budgeting'],
-        author: 'Alex Kim',
-        institution: 'Personal Project',
-        notebook_url: 'https://notebooklm.google.com/notebook/example6',
-        featured: false,
-        created_at: '2025-01-10T16:30:00Z',
-        view_count: 789,
-        save_count: 56
       }
     ];
     
-    // Fetch notebooks from Supabase
-    async function fetchNotebooks() {
+    // Get notebook ID from URL
+    function getNotebookIdFromUrl() {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get('id');
+    }
+    
+    // Fetch notebook details
+    async function fetchNotebookDetails() {
+      const notebookId = getNotebookIdFromUrl();
+      
+      if (!notebookId) {
+        showError('No notebook ID provided');
+        return;
+      }
+      
       showLoading();
       
       try {
-        const response = await fetch(`${SUPABASE_URL}/rest/v1/notebooks?select=*&order=created_at.desc`, {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/notebooks?id=eq.${notebookId}&select=*`, {
           headers: {
             'apikey': SUPABASE_ANON_KEY,
             'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
@@ -514,117 +424,100 @@
         });
         
         if (!response.ok) {
-          throw new Error(`Failed to fetch notebooks: ${response.status} ${response.statusText}`);
+          throw new Error(`Failed to fetch notebook: ${response.status} ${response.statusText}`);
         }
         
         const notebooks = await response.json();
         
         if (notebooks && notebooks.length > 0) {
-          allNotebooks = notebooks;
-          filterAndDisplayNotebooks();
+          displayNotebookDetails(notebooks[0]);
+          fetchRelatedNotebooks(notebooks[0].category, notebooks[0].id);
         } else {
-          // Fallback to sample data if no notebooks found
-          allNotebooks = sampleNotebooks;
-          filterAndDisplayNotebooks();
+          // Try to find in sample data
+          const sampleNotebook = sampleNotebooks.find(n => n.id === notebookId);
+          
+          if (sampleNotebook) {
+            displayNotebookDetails(sampleNotebook);
+            displayRelatedNotebooks(
+              sampleNotebooks
+                .filter(n => n.id !== notebookId)
+                .slice(0, 3)
+            );
+          } else {
+            throw new Error('Notebook not found');
+          }
         }
       } catch (error) {
-        console.error('Error fetching notebooks:', error);
-        // Fallback to sample data on error
-        allNotebooks = sampleNotebooks;
-        filterAndDisplayNotebooks();
+        console.error('Error fetching notebook details:', error);
+        showError(error.message);
       }
     }
     
-    // Filter and display notebooks
-    function filterAndDisplayNotebooks() {
-      let filteredNotebooks = [...allNotebooks];
-      
-      // Apply category filter
-      if (currentFilter !== 'all') {
-        filteredNotebooks = filteredNotebooks.filter(notebook => notebook.category === currentFilter);
-      }
-      
-      // Check if we have results
-      if (filteredNotebooks.length === 0) {
-        showNoResults();
-        return;
-      }
-      
-      // Display filtered notebooks
-      displayNotebooks(filteredNotebooks);
-    }
-    
-    // Display notebooks in the grid
-    function displayNotebooks(notebooks) {
-      notebooksGridEl.innerHTML = '';
-      
-      notebooks.forEach(notebook => {
-        const notebookEl = document.createElement('div');
-        notebookEl.className = 'card p-6 flex flex-col h-full cursor-pointer';
-        
-        // Format tags for display
-        const tagsHtml = notebook.tags && notebook.tags.length > 0 
-          ? `<div class="flex flex-wrap gap-2 mb-4">
-              ${notebook.tags.slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join('')}
-              ${notebook.tags.length > 3 ? `<span class="text-gray-300 text-xs py-1">+${notebook.tags.length - 3} more</span>` : ''}
-            </div>`
-          : '';
-        
-        notebookEl.innerHTML = `
-          <div class="relative">
-            <span class="category-badge absolute top-0 left-0">${notebook.category}</span>
-            ${notebook.featured ? '<span class="featured-badge absolute top-0 right-0">Featured</span>' : ''}
-          </div>
-          
-          <div class="mt-8">
-            <h3 class="text-xl font-bold text-white mb-3 leading-tight">${notebook.title}</h3>
-            <p class="text-gray-300 text-sm mb-4 line-clamp-3">${notebook.description}</p>
-            ${tagsHtml}
-          </div>
-          
-          <div class="mt-auto pt-4 border-t border-white/10 flex justify-between items-center">
-            <div>
-              <div class="text-white font-semibold text-sm">${notebook.author}</div>
-              ${notebook.institution ? `<div class="text-gray-300 text-xs">${notebook.institution}</div>` : ''}
-            </div>
-            
-            <div class="flex items-center gap-3">
-              <div class="flex items-center gap-1 text-gray-300 text-xs">
-                <span>👁️</span>
-                <span>${notebook.view_count || 0}</span>
-              </div>
-              
-              <div class="flex items-center gap-1 text-gray-300 text-xs">
-                <span>❤️</span>
-                <span>${notebook.save_count || 0}</span>
-              </div>
-            </div>
-          </div>
-        `;
-        
-        notebookEl.addEventListener('click', () => {
-          showNotebookDetail(notebook);
+    // Fetch related notebooks
+    async function fetchRelatedNotebooks(category, currentId) {
+      try {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/notebooks?category=eq.${category}&id=neq.${currentId}&select=*&limit=3`, {
+          headers: {
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+          }
         });
         
-        notebooksGridEl.appendChild(notebookEl);
-      });
-      
-      hideLoading();
-      notebooksGridEl.classList.remove('hidden');
-      noResultsEl.classList.add('hidden');
+        if (!response.ok) {
+          throw new Error(`Failed to fetch related notebooks: ${response.status} ${response.statusText}`);
+        }
+        
+        const notebooks = await response.json();
+        
+        if (notebooks && notebooks.length > 0) {
+          displayRelatedNotebooks(notebooks);
+        } else {
+          // Fallback to sample data
+          displayRelatedNotebooks(
+            sampleNotebooks
+              .filter(n => n.category === category && n.id !== currentId)
+              .slice(0, 3)
+          );
+        }
+      } catch (error) {
+        console.error('Error fetching related notebooks:', error);
+        // Fallback to sample data
+        displayRelatedNotebooks(
+          sampleNotebooks
+            .filter(n => n.category === category && n.id !== currentId)
+            .slice(0, 3)
+        );
+      }
     }
     
-    // Show notebook detail
-    function showNotebookDetail(notebook) {
+    // Display notebook details
+    function displayNotebookDetails(notebook) {
+      // Update page title
+      document.title = `${notebook.title} - notebooklm.directory`;
+      
+      // Update meta description
+      const metaDescription = document.querySelector('meta[name="description"]');
+      if (metaDescription) {
+        metaDescription.content = notebook.description.substring(0, 160);
+      }
+      
       // Set detail content
       document.getElementById('detailTitle').textContent = notebook.title;
       document.getElementById('detailCategory').textContent = notebook.category;
       document.getElementById('detailDescription').textContent = notebook.description;
       document.getElementById('detailAuthor').textContent = notebook.author;
-      document.getElementById('detailInstitution').textContent = notebook.institution || '';
+      document.getElementById('detailInstitution').textContent = notebook.institution || 'Independent';
       document.getElementById('detailViews').textContent = notebook.view_count || 0;
       document.getElementById('detailSaves').textContent = notebook.save_count || 0;
       document.getElementById('detailLink').href = notebook.notebook_url;
+      
+      // Format date
+      const date = new Date(notebook.created_at);
+      document.getElementById('detailDate').textContent = date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
       
       // Handle featured badge
       const featuredBadge = document.getElementById('detailFeatured');
@@ -647,25 +540,48 @@
         });
       }
       
-      // Update URL with query parameter
-      const url = new URL(window.location);
-      url.searchParams.set('id', notebook.id);
-      window.history.pushState({}, '', url);
-      
-      // Show modal
-      detailModal.classList.add('active');
-      document.body.style.overflow = 'hidden';
+      // Show detail section
+      hideLoading();
+      notebookDetailEl.classList.remove('hidden');
       
       // Track view (in a real app, this would call the Supabase API)
       console.log(`Viewed notebook: ${notebook.id}`);
+    }
+    
+    // Display related notebooks
+    function displayRelatedNotebooks(notebooks) {
+      relatedNotebooksEl.innerHTML = '';
+      
+      if (notebooks.length === 0) {
+        relatedNotebooksEl.innerHTML = '<p class="text-gray-400 text-center py-4">No related notebooks found</p>';
+        return;
+      }
+      
+      notebooks.forEach(notebook => {
+        const notebookEl = document.createElement('div');
+        notebookEl.className = 'card p-4 flex flex-col h-full cursor-pointer';
+        
+        notebookEl.innerHTML = `
+          <h3 class="text-lg font-bold text-white mb-2 line-clamp-2">${notebook.title}</h3>
+          <p class="text-gray-300 text-sm mb-3 line-clamp-2">${notebook.description}</p>
+          <div class="mt-auto pt-2 border-t border-white/10">
+            <div class="text-white text-sm">${notebook.author}</div>
+          </div>
+        `;
+        
+        notebookEl.addEventListener('click', () => {
+          window.location.href = `detail.html?id=${notebook.id}`;
+        });
+        
+        relatedNotebooksEl.appendChild(notebookEl);
+      });
     }
     
     // Show loading state
     function showLoading() {
       loadingEl.classList.remove('hidden');
       errorEl.classList.add('hidden');
-      notebooksGridEl.classList.add('hidden');
-      noResultsEl.classList.add('hidden');
+      notebookDetailEl.classList.add('hidden');
     }
     
     // Hide loading state
@@ -677,17 +593,8 @@
     function showError(message) {
       errorEl.classList.remove('hidden');
       loadingEl.classList.add('hidden');
-      notebooksGridEl.classList.add('hidden');
-      noResultsEl.classList.add('hidden');
-      errorMessageEl.textContent = message || 'Failed to load notebooks.';
-    }
-    
-    // Show no results state
-    function showNoResults() {
-      noResultsEl.classList.remove('hidden');
-      loadingEl.classList.add('hidden');
-      errorEl.classList.add('hidden');
-      notebooksGridEl.classList.add('hidden');
+      notebookDetailEl.classList.add('hidden');
+      errorMessageEl.textContent = message || 'Failed to load notebook details.';
     }
     
     // Modal functions
@@ -704,59 +611,13 @@
       submitForm.reset();
     }
     
-    function closeDetailModal() {
-      detailModal.classList.remove('active');
-      document.body.style.overflow = '';
-      
-      // Remove id from URL
-      const url = new URL(window.location);
-      url.searchParams.delete('id');
-      window.history.pushState({}, '', url);
-    }
-    
     // Toggle mobile menu
     function toggleMobileMenu() {
       mobileMenu.classList.toggle('hidden');
     }
     
-    // Check for notebook ID in URL on page load
-    function checkUrlForNotebookId() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const notebookId = urlParams.get('id');
-      
-      if (notebookId) {
-        // Find notebook by ID
-        const notebook = allNotebooks.find(n => n.id === notebookId);
-        
-        if (notebook) {
-          showNotebookDetail(notebook);
-        }
-      }
-    }
-    
     // Event listeners
-    document.addEventListener('DOMContentLoaded', () => {
-      fetchNotebooks();
-      
-      // Set up filter tabs
-      filterTabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-          // Remove active class from all tabs
-          filterTabs.forEach(t => t.classList.remove('active'));
-          
-          // Add active class to clicked tab
-          tab.classList.add('active');
-          
-          // Update current filter
-          currentFilter = tab.dataset.filter;
-          
-          // Apply filter
-          filterAndDisplayNotebooks();
-        });
-      });
-    });
-    
-    retryBtn.addEventListener('click', fetchNotebooks);
+    document.addEventListener('DOMContentLoaded', fetchNotebookDetails);
     
     submitBtns.forEach(btn => {
       if (btn) btn.addEventListener('click', openSubmitModal);
@@ -764,9 +625,6 @@
     
     closeModalBtn.addEventListener('click', closeSubmitModal);
     cancelSubmitBtn.addEventListener('click', closeSubmitModal);
-    
-    closeDetailModalBtn.addEventListener('click', closeDetailModal);
-    closeDetailBtn.addEventListener('click', closeDetailModal);
     
     mobileMenuBtn.addEventListener('click', toggleMobileMenu);
     
@@ -804,72 +662,21 @@
           throw new Error(`Failed to submit notebook: ${response.status} ${response.statusText}`);
         }
         
-        const newNotebook = await response.json();
-        
         // Show success message
         submitSuccessEl.classList.remove('hidden');
         
-        // Add the new notebook to our data
-        allNotebooks = [newNotebook[0], ...allNotebooks];
+        // Reset form
+        submitForm.reset();
         
-        // Refresh the display
+        // Close modal after a delay
         setTimeout(() => {
-          filterAndDisplayNotebooks();
-          submitForm.reset();
-          
-          // Close modal after a delay
-          setTimeout(() => {
-            closeSubmitModal();
-          }, 1500);
-        }, 1000);
+          closeSubmitModal();
+        }, 2000);
       } catch (error) {
         console.error('Error submitting notebook:', error);
         submitErrorEl.textContent = `Error: ${error.message}`;
         submitErrorEl.classList.remove('hidden');
       }
-    });
-    
-    searchBtn.addEventListener('click', () => {
-      const query = searchInput.value.trim().toLowerCase();
-      if (query) {
-        // Filter notebooks by search query
-        const searchResults = allNotebooks.filter(notebook => 
-          notebook.title.toLowerCase().includes(query) ||
-          notebook.description.toLowerCase().includes(query) ||
-          notebook.author.toLowerCase().includes(query) ||
-          (notebook.tags && notebook.tags.some(tag => tag.toLowerCase().includes(query)))
-        );
-        
-        if (searchResults.length > 0) {
-          displayNotebooks(searchResults);
-        } else {
-          showNoResults();
-        }
-      } else {
-        // If search is empty, show all notebooks
-        filterAndDisplayNotebooks();
-      }
-    });
-    
-    searchInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        searchBtn.click();
-      }
-    });
-    
-    // Handle browser back button
-    window.addEventListener('popstate', () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const notebookId = urlParams.get('id');
-      
-      if (!notebookId) {
-        closeDetailModal();
-      }
-    });
-    
-    // Check for notebook ID in URL on page load
-    window.addEventListener('load', () => {
-      setTimeout(checkUrlForNotebookId, 1000); // Delay to ensure notebooks are loaded
     });
   </script>
 </body>

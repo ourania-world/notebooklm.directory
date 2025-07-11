@@ -1,53 +1,77 @@
 #!/bin/bash
 
-echo "🚀 Preparing NotebookLM Directory for deployment..."
+echo "🚀 Deploying notebooklm.directory to production"
 
-# Check if .env.local exists and copy to .env for Vercel
-if [ -f .env.local ]; then
-  echo "📋 Copying .env.local to .env for Vercel deployment"
-  cp .env.local .env
+# Check if Vercel CLI is installed
+if ! command -v vercel &> /dev/null; then
+    echo "Vercel CLI not found. Installing..."
+    npm install -g vercel
 fi
 
-# Ensure environment variables are set
-if [ -z "$NEXT_PUBLIC_SUPABASE_URL" ] || [ -z "$NEXT_PUBLIC_SUPABASE_ANON_KEY" ]; then
-  echo "⚠️ Warning: Supabase environment variables not set in current shell"
-  echo "   Make sure they are set in your Vercel deployment settings"
+# Check if Netlify CLI is installed
+if ! command -v netlify &> /dev/null; then
+    echo "Netlify CLI not found. Installing..."
+    npm install -g netlify-cli
 fi
 
-# Create vercel.json if it doesn't exist
-if [ ! -f vercel.json ]; then
-  echo "📝 Creating vercel.json configuration"
-  cat > vercel.json << EOF
-{
-  "framework": "nextjs",
-  "buildCommand": "npm run build",
-  "outputDirectory": ".next",
-  "env": {
-    "NEXT_PUBLIC_SUPABASE_URL": "https://ciwlmdnmnsymiwmschej.supabase.co",
-    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNpd2xtZG5tbnN5bWl3bXNjaGVqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE2OTQzNjMsImV4cCI6MjA2NzI3MDM2M30.Ri_L-EBOOIvTY3WnMd91oegjauObj76pS4JmVIr4yjw"
-  }
-}
-EOF
-fi
+# Ask which platform to deploy to
+echo "📦 Where would you like to deploy?"
+echo "1) Vercel"
+echo "2) Netlify"
+echo "3) GitHub Pages"
+read -p "Enter your choice (1-3): " choice
 
-# Create .env file for Vercel if it doesn't exist
-if [ ! -f .env ]; then
-  echo "📝 Creating .env file for Vercel deployment"
-  cat > .env << EOF
-NEXT_PUBLIC_SUPABASE_URL=https://ciwlmdnmnsymiwmschej.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNpd2xtZG5tbnN5bWl3bXNjaGVqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE2OTQzNjMsImV4cCI6MjA2NzI3MDM2M30.Ri_L-EBOOIvTY3WnMd91oegjauObj76pS4JmVIr4yjw
-EOF
-fi
+case $choice in
+    1)
+        echo "🚀 Deploying to Vercel..."
+        vercel --prod
+        ;;
+    2)
+        echo "🚀 Deploying to Netlify..."
+        netlify deploy --prod
+        ;;
+    3)
+        echo "🚀 Deploying to GitHub Pages..."
+        
+        # Check if gh-pages branch exists
+        if git rev-parse --verify gh-pages &>/dev/null; then
+            echo "gh-pages branch exists, updating..."
+        else
+            echo "Creating gh-pages branch..."
+            git checkout --orphan gh-pages
+            git rm -rf .
+            echo "# NotebookLM Directory" > README.md
+            git add README.md
+            git commit -m "Initial gh-pages commit"
+            git push origin gh-pages
+            git checkout main
+        fi
+        
+        # Create a temporary directory for the build
+        mkdir -p dist
+        cp index.html dist/
+        cp detail.html dist/
+        cp styles.css dist/
+        cp favicon.ico dist/ 2>/dev/null || echo "No favicon found, skipping..."
+        
+        # Switch to gh-pages branch and update
+        git checkout gh-pages
+        cp -r dist/* .
+        rm -rf dist
+        
+        git add .
+        git commit -m "Update GitHub Pages site"
+        git push origin gh-pages
+        
+        # Switch back to main branch
+        git checkout main
+        
+        echo "✅ Deployed to GitHub Pages"
+        ;;
+    *)
+        echo "❌ Invalid choice. Exiting."
+        exit 1
+        ;;
+esac
 
-# Create a .trigger-redeploy file to force Vercel to redeploy
-echo " " > .trigger-redeploy
-
-echo "✅ Deployment preparation complete!"
-echo ""
-echo "🔍 Next steps:"
-echo "1. Apply database migrations in Supabase SQL Editor"
-echo "2. Create audio bucket in Supabase Storage"
-echo "3. Deploy serve-audio Edge Function"
-echo "4. Push to GitHub and deploy on Vercel"
-echo ""
-echo "🚀 Ready for deployment!"
+echo "✅ Deployment complete!"
