@@ -88,7 +88,7 @@ CREATE POLICY "Authenticated users can insert notebooks"
 - Comments and social features
 - Analytics dashboard for notebook authors
 
-## Contributing
+## Contributing 
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
