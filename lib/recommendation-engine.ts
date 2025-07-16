@@ -1,400 +1,489 @@
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from './supabase';
 
-export interface Recommendation {
+export interface UserInteraction {
+  id: string;
+  user_id: string;
+  content_id: string;
+  interaction_type: 'view' | 'like' | 'share' | 'bookmark' | 'download';
+  created_at: string;
+  metadata?: Record<string, any>;
+}
+
+export interface RecommendationItem {
   id: string;
   title: string;
   description: string;
+  category: string;
+  source: string;
   score: number;
   reason: string;
-  type: 'content-based' | 'collaborative' | 'serendipitous';
-}
-
-export interface RecommendationStatus {
-  supabase: 'connected' | 'error' | 'demo';
-  recommendations: 'available' | 'unavailable' | 'demo';
-}
-
-interface UserInteraction {
-  notebook_id: string;
-  interaction_type: string;
+  tags: string[];
   created_at: string;
 }
 
-export class RecommendationEngine {
-  private supabase: any = null;
-  private status: RecommendationStatus = {
-    supabase: 'demo',
-    recommendations: 'demo'
-  };
+export interface UserProfile {
+  id: string;
+  preferences: string[];
+  interests: string[];
+  activity_level: 'low' | 'medium' | 'high';
+  last_active: string;
+}
+
+export interface RecommendationOptions {
+  limit?: number;
+  categories?: string[];
+  exclude_viewed?: boolean;
+  include_trending?: boolean;
+  personalization_weight?: number;
+}
+
+class RecommendationEngine {
+  private isConnected: boolean = false;
 
   constructor() {
-    this.initializeServices();
+    this.checkConnection();
   }
 
-  private initializeServices() {
+  private async checkConnection() {
     try {
-      if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
-        this.supabase = createClient(
-          process.env.NEXT_PUBLIC_SUPABASE_URL,
-          process.env.SUPABASE_SERVICE_ROLE_KEY
+      const { data, error } = await supabase.from('notebooks').select('count').limit(1);
+      this.isConnected = !error;
+    } catch (error) {
+      this.isConnected = false;
+      console.warn('Recommendation Engine: Running in demo mode');
+    }
+  }
+
+  public getStatus() {
+    return {
+      supabase: this.isConnected ? 'connected' : 'demo',
+      recommendations: this.isConnected ? 'functional' : 'demo',
+      personalization: this.isConnected ? 'active' : 'demo'
+    };
+  }
+
+  // Get personalized recommendations for a user
+  public async getPersonalizedRecommendations(
+    userId: string, 
+    limit: number = 10, 
+    options: RecommendationOptions = {}
+  ): Promise<RecommendationItem[]> {
+    if (!this.isConnected) {
+      return this.demoRecommendations(limit);
+    }
+
+    try {
+      const { 
+        categories = [], 
+        exclude_viewed = true, 
+        include_trending = true,
+        personalization_weight = 0.7 
+      } = options;
+
+      // Get user profile and interactions
+      const userProfile = await this.getUserProfile(userId);
+      const userInteractions = await this.getUserInteractions(userId);
+      const viewedContentIds = userInteractions
+        .filter(interaction => interaction.interaction_type === 'view')
+        .map(interaction => interaction.content_id);
+
+      // Build recommendation query
+      let query = supabase
+        .from('notebooks')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(limit * 2); // Get more to filter
+
+      // Apply category filter if specified
+      if (categories.length > 0) {
+        query = query.in('category', categories);
+      }
+
+      // Exclude viewed content if requested
+      if (exclude_viewed && viewedContentIds.length > 0) {
+        query = query.not('id', 'in', `(${viewedContentIds.join(',')})`);
+      }
+
+      const { data: content, error } = await query;
+
+      if (error) throw error;
+
+      // Score and rank recommendations
+      const scoredContent = (content || []).map(item => {
+        const score = this.calculateRecommendationScore(
+          item, 
+          userProfile, 
+          userInteractions, 
+          personalization_weight
         );
-        this.status.supabase = 'connected';
-        this.status.recommendations = 'available';
-        console.log('✅ RecommendationEngine: Supabase connected');
-      } else {
-        console.warn('⚠️ RecommendationEngine: Supabase credentials missing, using demo mode');
-        this.status.supabase = 'demo';
-        this.status.recommendations = 'demo';
-      }
+
+        return {
+          ...item,
+          score,
+          reason: this.getRecommendationReason(item, userProfile, userInteractions),
+          tags: this.extractTags(item.title + ' ' + (item.description || ''))
+        };
+      });
+
+      // Sort by score and return top results
+      return scoredContent
+        .sort((a, b) => b.score - a.score)
+        .slice(0, limit);
+
     } catch (error) {
-      console.error('❌ RecommendationEngine: Supabase initialization failed:', error);
-      this.status.supabase = 'error';
-      this.status.recommendations = 'demo';
+      console.error('Recommendations error:', error);
+      return this.demoRecommendations(limit);
     }
   }
 
-  getStatus(): RecommendationStatus {
-    return { ...this.status };
-  }
-
-  private getMockRecommendations(limit: number): Recommendation[] {
-    const mockRecommendations: Recommendation[] = [
-      {
-        id: 'rec-1',
-        title: 'Advanced Machine Learning Techniques',
-        description: 'Deep dive into cutting-edge ML algorithms and implementations',
-        score: 0.95,
-        reason: 'Based on your interest in AI research',
-        type: 'content-based'
-      },
-      {
-        id: 'rec-2',
-        title: 'Data Visualization Masterclass',
-        description: 'Comprehensive guide to creating stunning data visualizations',
-        score: 0.88,
-        reason: 'Popular among similar users',
-        type: 'collaborative'
-      },
-      {
-        id: 'rec-3',
-        title: 'Natural Language Processing Workshop',
-        description: 'Hands-on workshop for NLP and text analysis',
-        score: 0.82,
-        reason: 'Similar to your recent searches',
-        type: 'content-based'
-      },
-      {
-        id: 'rec-4',
-        title: 'Business Analytics Framework',
-        description: 'Complete framework for business intelligence and analytics',
-        score: 0.79,
-        reason: 'Trending in your field',
-        type: 'serendipitous'
-      },
-      {
-        id: 'rec-5',
-        title: 'Creative AI Applications',
-        description: 'Innovative applications of AI in creative fields',
-        score: 0.76,
-        reason: 'Discovering new content for you',
-        type: 'serendipitous'
-      },
-      {
-        id: 'rec-6',
-        title: 'Research Methodology Guide',
-        description: 'Comprehensive guide to academic research methods',
-        score: 0.73,
-        reason: 'Based on your academic interests',
-        type: 'content-based'
-      },
-      {
-        id: 'rec-7',
-        title: 'Statistical Analysis Techniques',
-        description: 'Advanced statistical methods for data analysis',
-        score: 0.70,
-        reason: 'Popular among researchers',
-        type: 'collaborative'
-      },
-      {
-        id: 'rec-8',
-        title: 'Interactive Dashboard Design',
-        description: 'Best practices for creating interactive data dashboards',
-        score: 0.67,
-        reason: 'Complementary to your skills',
-        type: 'serendipitous'
-      }
-    ];
-
-    return mockRecommendations
-      .sort((a, b) => b.score - a.score)
-      .slice(0, limit)
-      .map(rec => ({
-        ...rec,
-        score: rec.score * (0.8 + Math.random() * 0.2) // Add some randomness
-      }));
-  }
-
-  async generateRecommendations(userId: string, limit = 20): Promise<Recommendation[]> {
-    console.log(`🎯 Generating recommendations for user ${userId}...`);
-    
-    try {
-      if (this.supabase && this.status.recommendations === 'available') {
-        // Get all recommendation types
-        const contentBased = await this.getContentBasedRecommendations(userId, 10);
-        const collaborative = await this.getCollaborativeRecommendations(userId, 5);
-        const serendipitous = await this.getSerendipitousRecommendations(userId, 5);
-
-        // Combine and sort by score
-        const allRecommendations = [...contentBased, ...collaborative, ...serendipitous]
-          .sort((a, b) => b.score - a.score)
-          .slice(0, limit);
-
-        // Remove duplicates
-        const uniqueRecommendations = this.removeDuplicates(allRecommendations);
-
-        console.log(`✅ Generated ${uniqueRecommendations.length} recommendations`);
-        return uniqueRecommendations;
-      } else {
-        console.log('🎭 Using mock recommendations (demo mode)');
-        return this.getMockRecommendations(limit);
-      }
-    } catch (error) {
-      console.error('❌ Error generating recommendations, using mock:', error);
-      return this.getMockRecommendations(limit);
+  // Track user interaction
+  public async trackInteraction(interaction: Omit<UserInteraction, 'id' | 'created_at'>): Promise<boolean> {
+    if (!this.isConnected) {
+      console.log('Demo mode: Interaction tracking simulated');
+      return true;
     }
-  }
 
-  private async getContentBasedRecommendations(userId: string, limit: number): Promise<Recommendation[]> {
     try {
-      // Get user's interaction history
-      const { data: userInteractions } = await this.supabase
+      const { error } = await supabase
         .from('user_interactions')
-        .select('notebook_id, interaction_type, created_at')
+        .insert({
+          ...interaction,
+          created_at: new Date().toISOString()
+        });
+
+      if (error) throw error;
+      return true;
+    } catch (error) {
+      console.error('Interaction tracking error:', error);
+      return false;
+    }
+  }
+
+  // Get trending content
+  public async getTrendingContent(limit: number = 10): Promise<RecommendationItem[]> {
+    if (!this.isConnected) {
+      return this.demoTrendingContent(limit);
+    }
+
+    try {
+      // Get content with most interactions in the last 7 days
+      const sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+      const { data, error } = await supabase
+        .from('notebooks')
+        .select(`
+          *,
+          user_interactions!inner(
+            interaction_type,
+            created_at
+          )
+        `)
+        .gte('user_interactions.created_at', sevenDaysAgo.toISOString())
+        .order('created_at', { ascending: false })
+        .limit(limit);
+
+      if (error) throw error;
+
+      return (data || []).map(item => ({
+        ...item,
+        score: this.calculateTrendingScore(item),
+        reason: 'Trending content',
+        tags: this.extractTags(item.title + ' ' + (item.description || ''))
+      }));
+
+    } catch (error) {
+      console.error('Trending content error:', error);
+      return this.demoTrendingContent(limit);
+    }
+  }
+
+  // Get similar content based on a reference item
+  public async getSimilarContent(
+    contentId: string, 
+    limit: number = 10
+  ): Promise<RecommendationItem[]> {
+    if (!this.isConnected) {
+      return this.demoSimilarContent(limit);
+    }
+
+    try {
+      // Get the reference content
+      const { data: referenceContent, error: refError } = await supabase
+        .from('notebooks')
+        .select('*')
+        .eq('id', contentId)
+        .single();
+
+      if (refError) throw refError;
+
+      // Find similar content based on category and tags
+      const { data, error } = await supabase
+        .from('notebooks')
+        .select('*')
+        .neq('id', contentId)
+        .eq('category', referenceContent.category)
+        .order('created_at', { ascending: false })
+        .limit(limit);
+
+      if (error) throw error;
+
+      return (data || []).map(item => ({
+        ...item,
+        score: this.calculateSimilarityScore(item, referenceContent),
+        reason: `Similar to "${referenceContent.title}"`,
+        tags: this.extractTags(item.title + ' ' + (item.description || ''))
+      }));
+
+    } catch (error) {
+      console.error('Similar content error:', error);
+      return this.demoSimilarContent(limit);
+    }
+  }
+
+  // Get user profile
+  private async getUserProfile(userId: string): Promise<UserProfile> {
+    try {
+      const { data, error } = await supabase
+        .from('user_profiles')
+        .select('*')
+        .eq('id', userId)
+        .single();
+
+      if (error) throw error;
+
+      return data;
+    } catch (error) {
+      // Return default profile if not found
+      return {
+        id: userId,
+        preferences: ['ai', 'webdev', 'data'],
+        interests: ['Machine Learning', 'React', 'Python'],
+        activity_level: 'medium',
+        last_active: new Date().toISOString()
+      };
+    }
+  }
+
+  // Get user interactions
+  private async getUserInteractions(userId: string): Promise<UserInteraction[]> {
+    try {
+      const { data, error } = await supabase
+        .from('user_interactions')
+        .select('*')
         .eq('user_id', userId)
         .order('created_at', { ascending: false })
-        .limit(20);
+        .limit(100);
 
-      if (!userInteractions || userInteractions.length === 0) {
-        return [];
-      }
-
-      // Get notebooks the user has interacted with
-      const notebookIds = userInteractions.map((interaction: UserInteraction) => interaction.notebook_id);
-      
-      // Find similar notebooks using vector similarity
-      const { data: similarNotebooks } = await this.supabase
-        .from('notebooks')
-        .select('id, title, description, embedding')
-        .in('id', notebookIds);
-
-      if (!similarNotebooks || similarNotebooks.length === 0) {
-        return [];
-      }
-
-      // Use vector similarity to find related content
-      const recommendations: Recommendation[] = [];
-      
-      for (const notebook of similarNotebooks) {
-        if (notebook.embedding) {
-          const { data: similar } = await this.supabase.rpc('hybrid_search', {
-            search_query: notebook.title,
-            query_embedding: notebook.embedding,
-            match_threshold: 0.7,
-            match_count: 5
-          });
-
-          if (similar) {
-            for (const item of similar) {
-              if (!notebookIds.includes(item.id)) {
-                recommendations.push({
-                  id: item.id,
-                  title: item.title,
-                  description: item.description,
-                  score: item.similarity * 0.8, // Content-based weight
-                  reason: `Similar to "${notebook.title}"`,
-                  type: 'content-based'
-                });
-              }
-            }
-          }
-        }
-      }
-
-      return recommendations.slice(0, limit);
+      if (error) throw error;
+      return data || [];
     } catch (error) {
-      console.error('❌ Error getting content-based recommendations:', error);
+      console.error('Get user interactions error:', error);
       return [];
     }
   }
 
-  private async getCollaborativeRecommendations(userId: string, limit: number): Promise<Recommendation[]> {
-    try {
-      // Find users with similar preferences
-      const { data: similarUsers } = await this.supabase
-        .from('user_interactions')
-        .select('user_id, notebook_id')
-        .neq('user_id', userId);
+  // Calculate recommendation score
+  private calculateRecommendationScore(
+    content: any,
+    userProfile: UserProfile,
+    userInteractions: UserInteraction[],
+    personalizationWeight: number
+  ): number {
+    let score = 0.5; // Base score
 
-      if (!similarUsers || similarUsers.length === 0) {
-        return [];
-      }
-
-      // Get current user's interactions
-      const { data: userInteractions } = await this.supabase
-        .from('user_interactions')
-        .select('notebook_id')
-        .eq('user_id', userId);
-
-      if (!userInteractions) {
-        return [];
-      }
-
-      const userNotebookIds = userInteractions.map((i: UserInteraction) => i.notebook_id);
-
-      // Find notebooks that similar users liked but current user hasn't seen
-      const recommendations: Recommendation[] = [];
-      const notebookScores: { [key: string]: number } = {};
-
-      for (const interaction of similarUsers) {
-        if (!userNotebookIds.includes(interaction.notebook_id)) {
-          notebookScores[interaction.notebook_id] = (notebookScores[interaction.notebook_id] || 0) + 1;
-        }
-      }
-
-      // Get top collaborative recommendations
-      const topNotebookIds = Object.entries(notebookScores)
-        .sort(([,a], [,b]) => b - a)
-        .slice(0, limit)
-        .map(([id]) => id);
-
-      if (topNotebookIds.length > 0) {
-        const { data: notebooks } = await this.supabase
-          .from('notebooks')
-          .select('id, title, description')
-          .in('id', topNotebookIds);
-
-        if (notebooks) {
-          for (const notebook of notebooks) {
-            recommendations.push({
-              id: notebook.id,
-              title: notebook.title,
-              description: notebook.description,
-              score: (notebookScores[notebook.id] || 0) * 0.6, // Collaborative weight
-              reason: `Popular among similar users`,
-              type: 'collaborative'
-            });
-          }
-        }
-      }
-
-      return recommendations;
-    } catch (error) {
-      console.error('❌ Error getting collaborative recommendations:', error);
-      return [];
+    // Category preference bonus
+    if (userProfile.preferences.includes(content.category)) {
+      score += 0.2;
     }
+
+    // Interest matching bonus
+    const contentText = (content.title + ' ' + (content.description || '')).toLowerCase();
+    const interestMatches = userProfile.interests.filter(interest =>
+      contentText.includes(interest.toLowerCase())
+    ).length;
+    score += interestMatches * 0.1;
+
+    // Recency bonus
+    const daysSinceCreation = (Date.now() - new Date(content.created_at).getTime()) / (1000 * 60 * 60 * 24);
+    if (daysSinceCreation < 7) score += 0.1;
+    if (daysSinceCreation < 30) score += 0.05;
+
+    // Interaction-based bonus
+    const contentInteractions = userInteractions.filter(
+      interaction => interaction.content_id === content.id
+    );
+    score += contentInteractions.length * 0.05;
+
+    return Math.min(score, 1.0);
   }
 
-  private async getSerendipitousRecommendations(userId: string, limit: number): Promise<Recommendation[]> {
-    try {
-      // Get random high-quality notebooks
-      const { data: randomNotebooks } = await this.supabase
-        .from('notebooks')
-        .select('id, title, description, quality_score, view_count')
-        .gte('quality_score', 0.7)
-        .gte('view_count', 10)
-        .order('RANDOM()')
-        .limit(limit * 2);
+  // Calculate trending score
+  private calculateTrendingScore(content: any): number {
+    let score = 0.5;
 
-      if (!randomNotebooks) {
-        return [];
-      }
+    // Recency bonus
+    const daysSinceCreation = (Date.now() - new Date(content.created_at).getTime()) / (1000 * 60 * 60 * 24);
+    if (daysSinceCreation < 3) score += 0.3;
+    else if (daysSinceCreation < 7) score += 0.2;
+    else if (daysSinceCreation < 30) score += 0.1;
 
-      // Get user's seen notebooks
-      const { data: userInteractions } = await this.supabase
-        .from('user_interactions')
-        .select('notebook_id')
-        .eq('user_id', userId);
+    // Interaction count bonus
+    const interactionCount = content.user_interactions?.length || 0;
+    score += Math.min(interactionCount * 0.05, 0.3);
 
-      const seenNotebookIds = userInteractions?.map((i: UserInteraction) => i.notebook_id) || [];
+    return Math.min(score, 1.0);
+  }
 
-      // Filter out seen notebooks and calculate serendipity scores
-      const recommendations: Recommendation[] = [];
+  // Calculate similarity score
+  private calculateSimilarityScore(content: any, referenceContent: any): number {
+    let score = 0.5;
 
-      for (const notebook of randomNotebooks) {
-        if (!seenNotebookIds.includes(notebook.id)) {
-          const serendipityScore = this.calculateSerendipityScore(notebook);
-          
-          recommendations.push({
-            id: notebook.id,
-            title: notebook.title,
-            description: notebook.description,
-            score: serendipityScore,
-            reason: 'Discovering new content for you',
-            type: 'serendipitous'
-          });
-        }
-      }
-
-      return recommendations.slice(0, limit);
-    } catch (error) {
-      console.error('❌ Error getting serendipitous recommendations:', error);
-      return [];
+    // Category match
+    if (content.category === referenceContent.category) {
+      score += 0.3;
     }
+
+    // Tag overlap
+    const contentTags = this.extractTags(content.title + ' ' + (content.description || ''));
+    const referenceTags = this.extractTags(referenceContent.title + ' ' + (referenceContent.description || ''));
+    const tagOverlap = contentTags.filter(tag => referenceTags.includes(tag)).length;
+    score += tagOverlap * 0.1;
+
+    return Math.min(score, 1.0);
   }
 
-  private calculateSerendipityScore(notebook: any): number {
-    const qualityScore = notebook.quality_score || 0.5;
-    const viewCount = notebook.view_count || 0;
-    const popularityFactor = Math.min(viewCount / 100, 1); // Normalize to 0-1
-    
-    // Serendipity favors high quality but not overly popular content
-    return qualityScore * (0.7 + 0.3 * (1 - popularityFactor));
-  }
-
-  private removeDuplicates(recommendations: Recommendation[]): Recommendation[] {
-    const seen = new Set();
-    return recommendations.filter(rec => {
-      const key = rec.id;
-      if (seen.has(key)) {
-        return false;
-      }
-      seen.add(key);
-      return true;
-    });
-  }
-
-  async updateUserPreferences(userId: string, notebookId: string, interactionType: string): Promise<void> {
-    try {
-      if (this.supabase && this.status.supabase === 'connected') {
-        await this.supabase
-          .from('user_interactions')
-          .insert({
-            user_id: userId,
-            notebook_id: notebookId,
-            interaction_type: interactionType,
-            created_at: new Date().toISOString()
-          });
-      } else {
-        console.log('🎭 Mock user preference update (demo mode)');
-      }
-    } catch (error) {
-      console.error('❌ Error updating user preferences:', error);
+  // Get recommendation reason
+  private getRecommendationReason(
+    content: any,
+    userProfile: UserProfile,
+    userInteractions: UserInteraction[]
+  ): string {
+    if (userProfile.preferences.includes(content.category)) {
+      return `Based on your interest in ${content.category}`;
     }
-  }
 
-  // Demo mode utilities
-  isDemoMode(): boolean {
-    return this.status.recommendations === 'demo';
-  }
+    const contentText = (content.title + ' ' + (content.description || '')).toLowerCase();
+    const matchingInterest = userProfile.interests.find(interest =>
+      contentText.includes(interest.toLowerCase())
+    );
 
-  getConnectionStatus(): string {
-    if (this.status.recommendations === 'available') {
-      return '🟢 Recommendations available';
-    } else {
-      return '🔴 Demo mode - check Supabase connection';
+    if (matchingInterest) {
+      return `Matches your interest in ${matchingInterest}`;
     }
+
+    return 'Recommended for you';
+  }
+
+  // Extract tags from content
+  private extractTags(text: string): string[] {
+    const commonTags = [
+      'AI', 'Machine Learning', 'React', 'JavaScript', 'Python', 'Data Science',
+      'Web Development', 'Design', 'Productivity', 'Business', 'Tutorials',
+      'Frontend', 'Backend', 'Database', 'API', 'Cloud', 'DevOps'
+    ];
+
+    const foundTags = commonTags.filter(tag => 
+      text.toLowerCase().includes(tag.toLowerCase())
+    );
+
+    return foundTags.slice(0, 5);
+  }
+
+  // Demo recommendations
+  private demoRecommendations(limit: number): RecommendationItem[] {
+    return [
+      {
+        id: 'rec1',
+        title: 'Advanced React Patterns for 2024',
+        description: 'Discover cutting-edge React patterns and best practices for building scalable applications',
+        category: 'webdev',
+        source: 'Medium',
+        score: 0.95,
+        reason: 'Based on your interest in webdev',
+        tags: ['React', 'JavaScript', 'Frontend'],
+        created_at: new Date().toISOString()
+      },
+      {
+        id: 'rec2',
+        title: 'Building AI-Powered Search with Vector Embeddings',
+        description: 'Learn how to implement semantic search using vector databases and embeddings',
+        category: 'ai',
+        source: 'Dev.to',
+        score: 0.92,
+        reason: 'Matches your interest in AI',
+        tags: ['AI', 'Vector Search', 'Machine Learning'],
+        created_at: new Date().toISOString()
+      },
+      {
+        id: 'rec3',
+        title: 'Optimizing Database Performance at Scale',
+        description: 'Advanced techniques for database optimization in high-traffic applications',
+        category: 'data',
+        source: 'Engineering Blog',
+        score: 0.88,
+        reason: 'Based on your interest in data',
+        tags: ['Database', 'Performance', 'Scalability'],
+        created_at: new Date().toISOString()
+      }
+    ].slice(0, limit);
+  }
+
+  // Demo trending content
+  private demoTrendingContent(limit: number): RecommendationItem[] {
+    return [
+      {
+        id: 'trend1',
+        title: 'The Future of Content Discovery',
+        description: 'Exploring next-generation content recommendation systems',
+        category: 'ai',
+        source: 'TechCrunch',
+        score: 0.98,
+        reason: 'Trending content',
+        tags: ['AI', 'Recommendations', 'Discovery'],
+        created_at: new Date().toISOString()
+      },
+      {
+        id: 'trend2',
+        title: 'Modern CSS Techniques for 2024',
+        description: 'Explore the latest CSS features and techniques for modern web development',
+        category: 'webdev',
+        source: 'CSS Tricks',
+        score: 0.95,
+        reason: 'Trending content',
+        tags: ['CSS', 'Frontend', 'Design'],
+        created_at: new Date().toISOString()
+      }
+    ].slice(0, limit);
+  }
+
+  // Demo similar content
+  private demoSimilarContent(limit: number): RecommendationItem[] {
+    return [
+      {
+        id: 'similar1',
+        title: 'React Performance Optimization Guide',
+        description: 'Comprehensive guide to optimizing React application performance',
+        category: 'webdev',
+        source: 'React Blog',
+        score: 0.85,
+        reason: 'Similar to "Advanced React Patterns for 2024"',
+        tags: ['React', 'Performance', 'Frontend'],
+        created_at: new Date().toISOString()
+      },
+      {
+        id: 'similar2',
+        title: 'State Management in React Applications',
+        description: 'Best practices for managing state in complex React applications',
+        category: 'webdev',
+        source: 'Medium',
+        score: 0.82,
+        reason: 'Similar to "Advanced React Patterns for 2024"',
+        tags: ['React', 'State Management', 'Frontend'],
+        created_at: new Date().toISOString()
+      }
+    ].slice(0, limit);
   }
 }
 
-// Export singleton instance
 export const recommendationEngine = new RecommendationEngine(); 
