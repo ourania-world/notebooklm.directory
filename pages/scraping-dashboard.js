@@ -8,6 +8,8 @@ export default function ScrapingDashboard() {
   const [loading, setLoading] = useState(false)
   const [query, setQuery] = useState('')
   const [selectedSource, setSelectedSource] = useState('GITHUB')
+  const [crawlerActive, setCrawlerActive] = useState(false)
+  const [scrapingActive, setScrapingActive] = useState(false)
 
   useEffect(() => {
     loadStats()
@@ -17,8 +19,12 @@ export default function ScrapingDashboard() {
     try {
       const scrapingStats = await getScrapingStats()
       setStats(scrapingStats)
+      setScrapingActive(true)
+      setCrawlerActive(true)
     } catch (error) {
       console.error('Error loading stats:', error)
+      setScrapingActive(false)
+      setCrawlerActive(false)
     }
   }
 

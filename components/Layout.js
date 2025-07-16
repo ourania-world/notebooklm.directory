@@ -65,8 +65,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                 fontWeight: '700',
                 letterSpacing: '1px',
                 fontFamily: 'monospace'
-              }}>NLM_D</span>
-              notebooklm.directory
+              }}>NLM_D</span> notebooklm<span style={{ color: '#00ff88' }}>.directory</span>
             </Link>
              
             <div style={{ 
@@ -114,15 +113,6 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
                 fontWeight: '500'
               }}>
                 Pricing
-              </Link>
-              
-              <Link href="/payment" className="nav-link" style={{ 
-                color: router.pathname === '/payment' ? '#00ff88' : '#e2e8f0', 
-                textDecoration: 'none',
-                transition: 'color 0.2s ease',
-                fontWeight: '500'
-              }}>
-                Subscribe
               </Link>
               
               {!loading && user && (

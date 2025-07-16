@@ -1,245 +1,121 @@
-import { useState } from 'react'
-import Layout from '../components/Layout'
-import { useAuth } from '../context/AuthContext'
+import { useState } from 'react';
+import Layout from '../components/Layout';
+import Link from 'next/link';
+import { SUBSCRIPTION_PLANS } from '../lib/subscriptions';
+import { getCurrentUser } from '../lib/supabase';
 
 export default function Pricing() {
-  const { user } = useAuth()
-  const [loading, setLoading] = useState(false)
-  const [selectedPlan, setSelectedPlan] = useState('standard')
-
-  const supportedFeatures = {
-    'Access to public notebooks': true,
-    'Browse curated collections': true,
-    'Basic search features': true,
-    'Community access': true,
-    'Save up to 5 notebooks': true,
-    'Submit unlimited notebooks': true,
-    'Everything in Free': true,
-    'Everything in Explorer': true,
-    'Unlimited saved notebooks': true,
-    'Advanced search with filters': true,
-    'Email notifications': false,
-    'Basic analytics': false,
-    'Everything in Standard': true,
-    'AI-powered search & recommendations': false,
-    'Performance metrics': false,
-    'Priority support': false,
-    'API access (1000 calls/month)': false,
-    'Export & integration tools': false,
-    'Team collaboration tools': false,
-    'Advanced analytics dashboard': false,
-    'Custom reporting': false,
-    'White-label options': false,
-    'Dedicated account manager': false,
-    'API access (10,000 calls/month)': false,
-    'Custom integrations': false
-  }
-
-  const plans = [
-    {
-      id: 'free',
-      name: 'Explorer',
-      price: 0,
-      period: 'forever',
-      description: 'Perfect for getting started',
-      features: [
-        'Access to all public notebooks',
-        'Browse curated collections',
-        'Basic search features',
-        'Community access',
-        'Save up to 5 notebooks',
-        'Submit unlimited notebooks'
-      ],
-      limits: {
-        savedNotebooks: 5,
-        submittedNotebooks: -1,
-        premiumContent: false
-      },
-      cta: 'Start Free',
-      popular: false
-    },
-    {
-      id: 'standard',
-      name: 'Standard',
-      price: 9.99,
-      period: 'month',
-      description: 'Great for regular users',
-      features: [
-        'Everything in Explorer',
-        'Unlimited saved notebooks',
-        'Submit unlimited notebooks',
-        'Advanced search with filters',
-        'Email notifications',
-        'Basic analytics'
-      ],
-      limits: {
-        savedNotebooks: -1,
-        submittedNotebooks: -1,
-        premiumContent: false
-      },
-      cta: 'Upgrade to Standard',
-      popular: true
-    },
-    {
-      id: 'professional',
-      name: 'Professional',
-      price: 19.99,
-      period: 'month',
-      description: 'For power users and professionals',
-      features: [
-        'Everything in Standard',
-        'Unlimited saved notebooks',
-        'Submit unlimited notebooks',
-        'AI-powered search & recommendations',
-        'Performance metrics',
-        'Priority support',
-        'API access (1000 calls/month)',
-        'Export & integration tools'
-      ],
-      limits: {
-        savedNotebooks: -1,
-        submittedNotebooks: -1,
-        premiumContent: true
-      },
-      cta: 'Upgrade to Pro',
-      popular: false
-    },
-    {
-      id: 'enterprise',
-      name: 'Enterprise',
-      price: 99,
-      period: 'user/month',
-      description: 'For teams & organizations',
-      features: [
-        'Everything in Professional',
-        'Team collaboration tools',
-        'Advanced analytics dashboard',
-        'Custom reporting',
-        'White-label options',
-        'Dedicated account manager',
-        'API access (10,000 calls/month)',
-        'Custom integrations'
-      ],
-      limits: {
-        savedNotebooks: -1,
-        submittedNotebooks: -1,
-        premiumContent: true
-      },
-      cta: 'Contact Sales',
-      popular: false,
-      comingSoon: true
-    }
-  ]
+  const [selectedPlan, setSelectedPlan] = useState('standard');
+  const [loading, setLoading] = useState(false);
 
   const handleUpgrade = async (planId) => {
-    if (planId === 'free') {
-      window.location.href = user ? '/browse' : '/'
-      return
+    try {
+      setLoading(true);
+      
+      // Redirect to payment page with selected plan
+      window.location.href = `/payment?plan=${planId}`;
+    } catch (error) {
+      console.error('Error initiating checkout:', error);
+      alert('Failed to start checkout process. Please try again.');
+    } finally {
+      setLoading(false);
     }
-
-    if (planId === 'enterprise') {
-      window.location.href = 'mailto:sales@notebooklm.directory?subject=Enterprise Plan Inquiry'
-      return
-    }
-
-    if (!user) {
-      alert('Please sign up for a free account first, then upgrade')
-      return
-    }
-
-    window.location.href = `/payment?plan=${planId}`
-  }
+  };
 
   return (
     <Layout title="Pricing - NotebookLM Directory">
-      <div style={{
+      <div style={{ 
         background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)',
-        minHeight: '100vh',
+        minHeight: '80vh',
         padding: '4rem 0'
       }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
-          {/* Hero */}
-          <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-            <h1 style={{
-              fontSize: 'clamp(2.5rem, 6vw, 4rem)',
-              fontWeight: '800',
-              color: '#ffffff',
-              marginBottom: '1rem',
-              lineHeight: '1.1'
-            }}>
-              Simple, Transparent <span className="neon-text">Pricing</span>
-            </h1>
-            <p style={{
-              color: '#e2e8f0',
-              fontSize: '1.1rem',
-              lineHeight: '1.6',
-              maxWidth: '600px',
-              margin: '0 auto 2rem auto'
-            }}>
-              Choose the plan that's right for you. All plans include unlimited notebook submissions.
-            </p>
-          </div>
-
-          {/* Pricing Cards */}
+          <h1 style={{ 
+            fontSize: '3rem', 
+            fontWeight: '800',
+            color: '#ffffff',
+            marginBottom: '1rem',
+            textAlign: 'center'
+          }}>
+            Simple, Transparent <span style={{ color: '#00ff88' }}>Pricing</span>
+          </h1>
+          
+          <p style={{ 
+            fontSize: '1.2rem', 
+            color: '#e2e8f0',
+            textAlign: 'center',
+            maxWidth: '700px',
+            margin: '0 auto 3rem auto'
+          }}>
+            <span style={{ color: '#00ff88', fontWeight: '600' }}>Subscribe & Support Our Growth!</span> Choose the plan that works best for you
+          </p>
+          
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
             gap: '2rem',
             marginBottom: '4rem'
           }}>
-            {plans.map((plan) => (
+            {Object.values(SUBSCRIPTION_PLANS).map((plan) => (
               <div
                 key={plan.id}
                 style={{
-                  background: plan.popular
-                    ? 'linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, rgba(0, 255, 136, 0.05) 100%)'
-                    : 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
-                  borderRadius: '20px',
-                  padding: '2.5rem',
-                  border: plan.popular
-                    ? '2px solid #00ff88'
-                    : '1px solid rgba(255, 255, 255, 0.1)',
+                  background: plan.id === 'premium' ? 
+                    'linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, rgba(0, 255, 136, 0.05) 100%)' :
+                    'rgba(255, 255, 255, 0.05)',
+                  border: plan.id === selectedPlan ?  
+                    '2px solid #00ff88' : 
+                    '1px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '16px',
+                  padding: '2rem',
                   position: 'relative',
-                  backdropFilter: 'blur(10px)',
-                  WebkitBackdropFilter: 'blur(10px)',
                   transition: 'all 0.3s ease',
-                  cursor: 'pointer'
+                  opacity: plan.id === 'enterprise' ? 0.7 : 1
                 }}
-                onClick={() => setSelectedPlan(plan.id)}
+                onMouseEnter={(e) => {
+                  if (plan.id !== selectedPlan && plan.id !== 'enterprise') {
+                    e.target.style.borderColor = 'rgba(0, 255, 136, 0.5)';
+                    e.target.style.transform = 'translateY(-4px)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (plan.id !== selectedPlan && plan.id !== 'enterprise') {
+                    e.target.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                    e.target.style.transform = 'translateY(0)';
+                  }
+                }}
               >
-                {plan.popular && (
+                {plan.limits?.popular && (
                   <div style={{
                     position: 'absolute',
-                    top: '-12px',
+                    top: '-10px',
                     left: '50%',
                     transform: 'translateX(-50%)',
                     background: 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
                     color: '#0a0a0a',
-                    padding: '0.5rem 1.5rem',
-                    borderRadius: '20px',
+                    padding: '0.5rem 1rem',
+                    borderRadius: '20px', 
                     fontSize: '0.8rem',
                     fontWeight: '700',
-                    boxShadow: '0 4px 12px rgba(0, 255, 136, 0.3)',
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px'
                   }}>
                     Most Popular
                   </div>
                 )}
-
-                {plan.comingSoon && (
+                
+                {plan.id === 'enterprise' && (
                   <div style={{
                     position: 'absolute',
-                    top: '-12px',
+                    top: '-10px',
                     left: '50%',
-                    transform: 'translateX(-50%)',
+                    transform: 'translateX(-50%)', 
                     background: 'rgba(255, 255, 255, 0.2)',
                     color: '#ffffff',
-                    padding: '0.5rem 1.5rem',
+                    padding: '0.5rem 1rem',
                     borderRadius: '20px',
                     fontSize: '0.8rem',
                     fontWeight: '700',
-                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px'
                   }}>
@@ -247,7 +123,7 @@ export default function Pricing() {
                   </div>
                 )}
 
-                <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+                <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
                   <h3 style={{
                     fontSize: '1.5rem',
                     fontWeight: '700',
@@ -256,31 +132,23 @@ export default function Pricing() {
                   }}>
                     {plan.name}
                   </h3>
-
                   <div style={{
-                    fontSize: '3rem',
+                    fontSize: '2.5rem',
                     fontWeight: '700',
                     color: '#00ff88',
                     margin: '0 0 0.25rem 0'
                   }}>
                     ${plan.price}
-                    {plan.period !== 'forever' && (
+                    {plan.interval && (
                       <span style={{
                         fontSize: '1rem',
                         color: '#e2e8f0',
                         fontWeight: '400'
                       }}>
-                        /{plan.period}
+                        /{plan.interval}
                       </span>
                     )}
                   </div>
-
-                  <p style={{
-                    color: '#e2e8f0',
-                    margin: '0 0 1rem 0'
-                  }}>
-                    {plan.description}
-                  </p>
                 </div>
 
                 <ul style={{
@@ -291,22 +159,25 @@ export default function Pricing() {
                   {plan.features.map((feature, index) => (
                     <li key={index} style={{
                       display: 'flex',
-                      alignItems: 'flex-start',
-                      gap: '0.75rem',
+                      alignItems: 'center',
+                      gap: '0.5rem',
                       marginBottom: '0.75rem',
                       color: '#e2e8f0',
-                      fontSize: '0.95rem',
-                      opacity: supportedFeatures[feature] ? 1 : 0.6
+                      fontSize: '0.9rem'
                     }}>
                       <span style={{ color: '#00ff88', fontSize: '1.2rem' }}>✓</span>
                       {feature}
-                      {!supportedFeatures[feature] && (
-                        <span style={{
-                          marginLeft: '0.5rem',
-                          fontSize: '0.75rem',
+                      {(feature.includes('API') || 
+                        feature.includes('analytics') || 
+                        feature.includes('metrics') || 
+                        feature.includes('recommendations') || 
+                        feature.includes('Email notifications')) && (
+                        <span style={{ 
+                          marginLeft: '0.25rem',
+                          fontSize: '0.7rem',
                           color: '#ffc107',
                           background: 'rgba(255, 193, 7, 0.1)',
-                          padding: '0.1rem 0.4rem',
+                          padding: '0.1rem 0.3rem',
                           borderRadius: '4px'
                         }}>
                           Coming Soon
@@ -316,41 +187,103 @@ export default function Pricing() {
                   ))}
                 </ul>
 
-                <button
-                  onClick={() => handleUpgrade(plan.id)}
-                  disabled={loading || plan.comingSoon}
-                  style={{
-                    width: '100%',
-                    background: plan.comingSoon
-                      ? 'rgba(255, 255, 255, 0.1)'
-                      : (plan.popular
-                        ? 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)'
-                        : 'transparent'),
-                    color: plan.comingSoon
-                      ? '#ffffff'
-                      : (plan.popular ? '#0a0a0a' : '#00ff88'),
-                    border: plan.comingSoon || plan.popular
-                      ? 'none'
-                      : '1px solid rgba(0, 255, 136, 0.3)',
-                    padding: '1rem',
-                    borderRadius: '12px',
-                    fontSize: '1rem',
-                    fontWeight: '700',
-                    cursor: plan.comingSoon || loading ? 'not-allowed' : 'pointer',
-                    transition: 'all 0.2s ease',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.5px'
-                  }}
-                >
-                  {loading ? 'Processing...' : (plan.comingSoon ? 'Coming Soon' : plan.cta)}
-                </button>
+                {plan.id === 'enterprise' ? (
+                  <button
+                    disabled
+                    style={{
+                      width: '100%',
+                      background: 'rgba(255, 255, 255, 0.1)',
+                      color: '#ffffff',
+                      border: '1px solid rgba(255, 255, 255, 0.2)',
+                      padding: '1rem',
+                      borderRadius: '12px',
+                      fontSize: '1rem',
+                      fontWeight: '600',
+                      cursor: 'not-allowed'
+                    }}
+                  >
+                    Coming Soon
+                  </button>
+                ) : plan.id === 'free' ? (
+                  <button
+                    onClick={() => setSelectedPlan('free')}
+                    style={{
+                      width: '100%',
+                      background: 'transparent',
+                      color: '#e2e8f0',
+                      border: '1px solid rgba(255, 255, 255, 0.2)',
+                      padding: '1rem',
+                      borderRadius: '12px',
+                      fontSize: '1rem',
+                      fontWeight: '600',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.borderColor = '#00ff88';
+                      e.target.style.color = '#00ff88';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                      e.target.style.color = '#e2e8f0';
+                    }}
+                  >
+                    Current Plan
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handleUpgrade(plan.id)} 
+                    disabled={loading}
+                    style={{
+                      width: '100%',
+                      background: loading ? 
+                        'rgba(255, 255, 255, 0.1)' : 
+                        'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
+                      color: loading ? '#ffffff' : '#0a0a0a',
+                      border: 'none',
+                      padding: '1rem',
+                      borderRadius: '12px',
+                      fontSize: '1rem',
+                      fontWeight: '700',
+                      cursor: loading ? 'not-allowed' : 'pointer',
+                      transition: 'all 0.2s ease',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px' 
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!loading) {
+                        e.target.style.transform = 'translateY(-2px)';
+                        e.target.style.boxShadow = '0 12px 32px rgba(0, 255, 136, 0.4)';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!loading) {
+                        e.target.style.transform = 'translateY(0)';
+                        e.target.style.boxShadow = 'none';
+                      }
+                    }}
+                  > 
+                    {loading ? 'Processing...' : `Upgrade to ${plan.name} Plan`}
+                  </button>
+                )}
               </div>
             ))}
           </div>
 
-          {/* You can continue the rest of the component below this line with your FAQ + Trust signals if needed */}
+          <div style={{
+            textAlign: 'center',
+            color: '#e2e8f0',
+            fontSize: '0.9rem'
+          }}>
+            <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.85rem' }}>
+              ✓ Cancel anytime • ✓ 30-day money-back guarantee • ✓ Secure payment with Stripe
+            </p>
+            <p style={{ margin: 0, opacity: 0.7, fontSize: '0.85rem' }}>
+              Questions? Contact us at support@notebooklm.directory
+            </p>
+          </div>
         </div>
       </div>
     </Layout>
-  )
+  );
 }

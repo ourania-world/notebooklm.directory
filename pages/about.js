@@ -20,8 +20,7 @@ export default function About() {
             fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
             fontWeight: '700'
           }}>
-            notebooklm.
-            <span style={{ color: '#00ff88' }}>directory</span>
+            notebooklm<span style={{ color: '#00ff88' }}>.directory</span>
           </span>
         </h1>
         
@@ -36,10 +35,7 @@ export default function About() {
               fontWeight: '700'
             }}>
               notebooklm.directory
-            </strong> launched in July 2025 with a revolutionary approach: proving that environmental 
-            sustainability and technical excellence are not just compatible, but mutually reinforcing. We've built 
-            the world's most efficient notebook discovery platform, where resource-conscious design delivers 
-            superior performance.
+            </strong> launched in July 2025 with a revolutionary $10 trillion vision: to become the operating system for human knowledge discovery. We're not just building a directory - we're creating the infrastructure that will prevent billions in wasted AI computational resources while accelerating global research progress.
           </p>
           
           <h2 style={{ 
@@ -48,40 +44,16 @@ export default function About() {
             color: '#ffffff',
             fontWeight: '600'
           }}>
-            What is NotebookLM?
+            The $10 Trillion Vision
           </h2>
           
           <p>
-            NotebookLM is Google's experimental AI-powered research assistant that helps you understand complex topics 
-            by analyzing your uploaded documents. It can generate summaries, answer questions, create study guides, 
-            and even produce audio overviews of your research materials.
+            By 2030, when someone starts any AI research project, their first step will be opening NotebookLM Directory. We're building a platform as essential to research as Google is to search, as fundamental as the internet itself.
           </p>
-          
-          <h2 style={{ 
-            fontSize: '1.8rem', 
-            margin: '2rem 0 1rem 0', 
-            color: '#ffffff',
-            fontWeight: '600'
-          }}>
-            Efficient by Design, Sustainable by Default
-          </h2>
           
           <p>
-            Our core positioning bridges technical credibility with environmental responsibility. We don't ask 
-            researchers to sacrifice performance for sustainability - our resource-efficient architecture IS 
-            why we deliver superior results:
+            Our core positioning bridges technical credibility with environmental responsibility. We don't ask researchers to sacrifice performance for sustainability - our resource-efficient architecture IS why we deliver superior results.
           </p>
-          
-          <ul style={{ 
-            margin: '1rem 0', 
-            paddingLeft: '2rem',
-            color: '#e2e8f0'
-          }}>
-            <li><strong>Performance through Efficiency:</strong> Our low energy consumption proves superior architecture</li>
-            <li><strong>Cost Reduction:</strong> Resource efficiency translates to direct financial savings</li>
-            <li><strong>Superior Engineering:</strong> Sustainable design principles create better MLOps</li>
-            <li><strong>Transparent Impact:</strong> Verifiable metrics build trust through radical honesty</li>
-          </ul>
           
           <h2 style={{ 
             fontSize: '1.8rem', 
@@ -93,11 +65,7 @@ export default function About() {
           </h2>
           
           <p>
-            Modern tech professionals are seeking to align their work with their values. For our audience - 
-            highly skilled data scientists and researchers - sustainability isn't a "feel-good" add-on; 
-            it's a marker of forward-thinking, well-managed, and ethically sound practice. We appeal to 
-            three key drivers: altruism (doing good), self-interest (better performance), and identity 
-            (using responsible tools).
+            Modern tech professionals are seeking to align their work with their values. For our audience - highly skilled data scientists and researchers - sustainability isn't a "feel-good" add-on; it's a marker of forward-thinking, well-managed, and ethically sound practice. We appeal to three key drivers: altruism (doing good), self-interest (better performance), and identity (using responsible tools).
           </p>
           
           <div style={{
@@ -108,15 +76,40 @@ export default function About() {
             margin: '2rem 0'
           }}>
             <h4 style={{ color: '#00ff88', margin: '0 0 1rem 0' }}>
-              🌱 Resource Efficiency = Superior Performance
+              🌱 The $10 Trillion Endgame
             </h4>
             <ul style={{ margin: 0, paddingLeft: '1.5rem', color: '#e2e8f0' }}>
-              <li><strong>Faster Results:</strong> Efficient architecture means your models train quicker</li>
-              <li><strong>Lower Costs:</strong> Resource optimization reduces monthly cloud computing bills</li>
-              <li><strong>Better Reliability:</strong> Sustainable systems are inherently more robust</li>
-              <li><strong>Professional Identity:</strong> Use tools that reflect your values and expertise</li>
+              <li><strong>Universal Standard:</strong> Every AI researcher uses our platform daily</li>
+              <li><strong>Knowledge Infrastructure:</strong> We become the foundational layer for all AI research</li>
+              <li><strong>Global Coordination:</strong> Prevent duplicate work across all research institutions worldwide</li>
+              <li><strong>Environmental Leadership:</strong> Measurably reduce global AI computational waste</li>
             </ul>
           </div>
+          
+          <h2 style={{ 
+            fontSize: '1.8rem', 
+            margin: '2rem 0 1rem 0', 
+            color: '#ffffff',
+            fontWeight: '600'
+          }}>
+            The Network Effect Flywheel
+          </h2>
+          
+          <p>
+            Our growth strategy is built on a powerful network effect:
+          </p>
+          
+          <ol style={{ 
+            margin: '1rem 0', 
+            paddingLeft: '2rem',
+            color: '#e2e8f0'
+          }}>
+            <li><strong>More Notebooks</strong> → Better Discovery → More Users</li>
+            <li><strong>More Users</strong> → More Content → Better Quality</li>
+            <li><strong>Better Quality</strong> → Higher Value → Premium Pricing</li>
+            <li><strong>Premium Revenue</strong> → Better Tools → More Attraction</li>
+            <li><strong>Global Scale</strong> → Environmental Impact → Mission Fulfillment</li>
+          </ol>
           
           <h2 style={{ 
             fontSize: '1.8rem', 
@@ -154,7 +147,7 @@ export default function About() {
               color: '#ffffff',
               fontWeight: '600' 
             }}>
-              🚀 Ready to get started?
+              🚀 Ready to join the $10 trillion future?
             </h3>
             <p style={{ margin: '0 0 1rem 0' }}>
               Explore our featured projects or submit your own innovative NotebookLM application.

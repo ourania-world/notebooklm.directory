@@ -44,7 +44,7 @@ Deno.serve(async (req) => {
 
     // Fetch audio file from Supabase Storage using the public URL
     // Since the bucket is public, we don't need authentication
-    const publicUrl = `${supabaseUrl}/storage/v1/object/public/audio/${audioPath}`
+    const publicUrl = `${supabaseUrl}/storage/v1/object/public/audio/${encodeURIComponent(audioPath)}`
     
     console.log('Fetching audio from:', publicUrl)
     

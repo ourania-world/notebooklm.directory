@@ -297,7 +297,7 @@ export default function SubscriptionModal({ isOpen, onClose, initialPlan = 'stan
                     cursor: loading ? 'not-allowed' : 'pointer',
                     transition: 'all 0.2s ease',
                     textTransform: 'uppercase',
-                    letterSpacing: '0.5px'
+                    letterSpacing: '0.5px' 
                   }}
                   onMouseEnter={(e) => {
                     if (!loading) {
@@ -312,7 +312,7 @@ export default function SubscriptionModal({ isOpen, onClose, initialPlan = 'stan
                     }
                   }}
                 >
-                  {loading ? 'Processing...' : plan.id === 'professional' ? 'Upgrade to Pro' : `Upgrade to ${plan.name}`}
+                  {loading ? 'Processing...' : `Upgrade to ${plan.name}`}
                 </button>
               )}
             </div>

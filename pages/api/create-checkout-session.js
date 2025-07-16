@@ -1,4 +1,6 @@
-import { supabase } from '../../lib/supabase';
+import Stripe from 'stripe';
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -6,28 +8,28 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Get user from session
-    const { data: { session } } = await supabase.auth.getSession();
-    
-    if (!session?.user) {
-      return res.status(401).json({ error: 'Unauthorized' });
-    }
-
-    const { priceId, successUrl, cancelUrl } = req.body;
+    const { priceId } = req.body;
 
     if (!priceId) {
-      return res.status(400).json({ error: 'Price ID is required. Please select a plan.' });
+      return res.status(400).json({ error: 'Missing priceId' });
     }
 
-    // In a real implementation, this would create a Stripe checkout session
-    // For now, we'll just simulate success
-    
-    // Simulate a checkout URL
-    const checkoutUrl = successUrl || `${req.headers.origin}/subscription/success`;
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      mode: 'subscription',
+      line_items: [
+        {
+          price: priceId,
+          quantity: 1,
+        },
+      ],
+      success_url: `${req.headers.origin}/subscription/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${req.headers.origin}/subscription/cancel`,
+    });
 
-    res.status(200).json({ url: checkoutUrl });
-  } catch (error) {
-    console.error('Error creating checkout session:', error);
-    res.status(500).json({ error: error.message });
+    return res.status(200).json({ sessionId: session.id });
+  } catch (err) {
+    console.error('Checkout Session Error:', err);
+    return res.status(500).json({ error: 'Internal server error' });
   }
 }

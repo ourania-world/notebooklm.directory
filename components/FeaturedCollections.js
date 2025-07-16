@@ -11,84 +11,11 @@ export default function FeaturedCollections() {
   useEffect(() => {
     async function loadCollections() {
       try {
-          margin: '0 0 2rem 0',
         const [academicNotebooks, businessNotebooks, researchNotebooks] = await Promise.all([
           getNotebooks({ category: 'Academic', limit: 3 }),
           getNotebooks({ category: 'Business', limit: 3 }),
           getNotebooks({ category: 'Research', limit: 3 })
         ]);
-        
-        {/* Filter Tabs */}
-        <div style={{
-          display: 'flex',
-          justifyContent: 'center',
-          gap: '1rem',
-          marginBottom: '3rem',
-          flexWrap: 'wrap'
-        }}>
-          <button 
-            onClick={() => setActiveFilter('trending')}
-            style={{
-              background: activeFilter === 'trending' ? 
-                'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)' : 
-                'transparent',
-              color: activeFilter === 'trending' ? '#0a0a0a' : '#e2e8f0',
-              border: activeFilter === 'trending' ? 
-                'none' : 
-                '1px solid rgba(255, 255, 255, 0.2)',
-              padding: '0.5rem 1rem',
-              borderRadius: '20px',
-              fontWeight: activeFilter === 'trending' ? '600' : '500',
-              cursor: 'pointer',
-              fontSize: '0.8rem',
-              transition: 'all 0.2s ease'
-            }}
-          >
-            Trending This Week
-          </button>
-          
-          <button
-            onClick={() => setActiveFilter('new')}
-            style={{
-              background: activeFilter === 'new' ? 
-                'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)' : 
-                'transparent',
-              color: activeFilter === 'new' ? '#0a0a0a' : '#e2e8f0',
-              border: activeFilter === 'new' ? 
-                'none' : 
-                '1px solid rgba(255, 255, 255, 0.2)',
-              padding: '0.5rem 1rem',
-              borderRadius: '20px',
-              fontWeight: activeFilter === 'new' ? '600' : '500',
-              cursor: 'pointer',
-              fontSize: '0.8rem',
-              transition: 'all 0.2s ease'
-            }}
-          >
-            Newest Additions
-          </button>
-          
-          <button
-            onClick={() => setActiveFilter('popular')}
-            style={{
-              background: activeFilter === 'popular' ? 
-                'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)' : 
-                'transparent',
-              color: activeFilter === 'popular' ? '#0a0a0a' : '#e2e8f0',
-              border: activeFilter === 'popular' ? 
-                'none' : 
-                '1px solid rgba(255, 255, 255, 0.2)',
-              padding: '0.5rem 1rem',
-              borderRadius: '20px',
-              fontWeight: activeFilter === 'popular' ? '600' : '500',
-              cursor: 'pointer',
-              fontSize: '0.8rem',
-              transition: 'all 0.2s ease'
-            }}
-          >
-            All-Time Popular
-          </button>
-        </div>
         
         setCollections([
           {
