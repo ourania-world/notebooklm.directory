@@ -14,6 +14,12 @@ export interface RecommendationStatus {
   recommendations: 'available' | 'unavailable' | 'demo';
 }
 
+interface UserInteraction {
+  notebook_id: string;
+  interaction_type: string;
+  created_at: string;
+}
+
 export class RecommendationEngine {
   private supabase: any = null;
   private status: RecommendationStatus = {
@@ -173,7 +179,7 @@ export class RecommendationEngine {
       }
 
       // Get notebooks the user has interacted with
-      const notebookIds = userInteractions.map(interaction => interaction.notebook_id);
+      const notebookIds = userInteractions.map((interaction: UserInteraction) => interaction.notebook_id);
       
       // Find similar notebooks using vector similarity
       const { data: similarNotebooks } = await this.supabase
@@ -243,7 +249,7 @@ export class RecommendationEngine {
         return [];
       }
 
-      const userNotebookIds = userInteractions.map(i => i.notebook_id);
+      const userNotebookIds = userInteractions.map((i: UserInteraction) => i.notebook_id);
 
       // Find notebooks that similar users liked but current user hasn't seen
       const recommendations: Recommendation[] = [];
@@ -309,7 +315,7 @@ export class RecommendationEngine {
         .select('notebook_id')
         .eq('user_id', userId);
 
-      const seenNotebookIds = userInteractions?.map(i => i.notebook_id) || [];
+      const seenNotebookIds = userInteractions?.map((i: UserInteraction) => i.notebook_id) || [];
 
       // Filter out seen notebooks and calculate serendipity scores
       const recommendations: Recommendation[] = [];
