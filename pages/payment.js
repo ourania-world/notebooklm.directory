@@ -1,14 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-<<<<<<< HEAD
-import { useEffect, useState } from 'react';
-import Layout from '../components/Layout'; // adjust path if needed
-=======
 import Layout from '../components/Layout';
 import Link from 'next/link';
 import { getCurrentUser } from '../lib/supabase';
 import { SUBSCRIPTION_PLANS } from '../lib/subscriptions';
->>>>>>> 2ee290e3fb9d6ab97c3fb7e3b7cbef22332742c5
 
 export default function Payment() {
   const router = useRouter();
@@ -26,22 +21,12 @@ export default function Payment() {
   useEffect(() => {
     async function checkAuth() {
       try {
-<<<<<<< HEAD
-        // Removed: const currentUser = await getCurrentUser();
-        // Removed: if (!currentUser) {
-        // Removed:   router.push('/login?redirect=/payment');
-        // Removed:   return;
-        // Removed: }
-        // Removed: setUser(currentUser);
-        setLoading(false);
-=======
         const currentUser = await getCurrentUser();
         if (!currentUser) {
           router.push('/login?redirect=/payment');
           return;
         }
         setUser(currentUser);
->>>>>>> 2ee290e3fb9d6ab97c3fb7e3b7cbef22332742c5
       } catch (error) {
         console.error('Error checking auth:', error);
         setError('Authentication error. Please try logging in again.');
@@ -52,47 +37,18 @@ export default function Payment() {
     
     checkAuth();
   }, [router]);
-<<<<<<< HEAD
-
-  const selectedPlan =
-    // Removed: SUBSCRIPTION_PLANS[plan?.toUpperCase()] || SUBSCRIPTION_PLANS.STANDARD;
-    null; // Placeholder as SUBSCRIPTION_PLANS is removed
-
-  const handleInitiatePayment = async () => {
-=======
   
   const selectedPlan = SUBSCRIPTION_PLANS[plan?.toUpperCase()] || SUBSCRIPTION_PLANS.STANDARD;
   
   const handlePayment = async (e) => {
     e.preventDefault();
->>>>>>> 2ee290e3fb9d6ab97c3fb7e3b7cbef22332742c5
     setPaymentLoading(true);
     setError(null);
     
     try {
-<<<<<<< HEAD
-      // Create a payment intent
-      const response = await fetch('/api/create-payment-intent', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          amount: selectedPlan?.price * 100, // Convert to cents
-          currency: 'usd',
-          description: `Subscription to ${selectedPlan?.name || 'plan'}`,
-          planId: selectedPlan?.id,
-        }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to create payment intent');
-=======
       // Validate form
       if (!cardNumber || !cardExpiry || !cardCvc || !nameOnCard) {
         throw new Error('Please fill in all payment details');
->>>>>>> 2ee290e3fb9d6ab97c3fb7e3b7cbef22332742c5
       }
       
       // Simple validation
@@ -248,449 +204,180 @@ export default function Payment() {
         minHeight: '80vh',
         padding: '4rem 0'
       }}>
-        <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '0 2rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '2rem', flexWrap: 'wrap' }}>
-            {/* Left Column - Plan Details */}
-            <div style={{ flex: '1 1 400px' }}>
+        <div style={{ 
+          maxWidth: '800px', 
+          margin: '0 auto', 
+          padding: '0 2rem'
+        }}>
+          <div style={{
+            background: 'rgba(255, 255, 255, 0.05)',
+            borderRadius: '16px',
+            padding: '3rem',
+            border: '1px solid rgba(255, 255, 255, 0.1)'
+          }}>
+            <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
               <h1 style={{ 
-                fontSize: '2.5rem', 
-                fontWeight: '700',
-                color: '#ffffff',
+                color: '#00ff88', 
+                fontSize: '2.5rem',
                 marginBottom: '1rem'
               }}>
-                Complete Your Order
+                Complete Your Subscription
               </h1>
-              
-              <p style={{ 
-                color: '#e2e8f0', 
-                fontSize: '1.1rem',
-                lineHeight: '1.6',
-                marginBottom: '2rem'
-              }}>
-                You're subscribing to the <span style={{ color: '#00ff88', fontWeight: '600' }}>{selectedPlan.name}</span> plan.
+              <p style={{ color: '#e2e8f0', fontSize: '1.1rem' }}>
+                You're subscribing to the {selectedPlan.name} plan for ${selectedPlan.price}/month
               </p>
-              
-              <div style={{
-                background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
-                borderRadius: '20px',
-                padding: '2rem',
-                border: '1px solid rgba(0, 255, 136, 0.2)',
-                marginBottom: '2rem'
-              }}>
-                <div style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'flex-start',
-                  marginBottom: '1.5rem'
-                }}>
-                  <div>
-                    <h2 style={{ 
-                      fontSize: '1.5rem', 
-                      fontWeight: '700',
-                      color: '#ffffff',
-                      margin: '0 0 0.5rem 0'
-                    }}>
-                      {selectedPlan.name} Plan
-                    </h2>
-                    <p style={{ color: '#e2e8f0', margin: 0, fontSize: '0.9rem' }}>
-                      {selectedPlan.description}
-                    </p>
-                  </div>
-                  
-                  <div style={{
-                    fontSize: '1.8rem',
-                    fontWeight: '700',
-                    color: '#00ff88',
-                    textAlign: 'right'
-                  }}>
-                    ${selectedPlan.price}
-                    <span style={{
-                      fontSize: '0.9rem',
-                      color: '#e2e8f0',
-                      fontWeight: '400',
-                      display: 'block'
-                    }}>
-                      per {selectedPlan.interval || 'month'}
-                    </span>
-                  </div>
-                </div>
-                
-                <div style={{ marginTop: '1.5rem' }}>
-                  <h3 style={{ 
-                    fontSize: '1rem', 
-                    fontWeight: '600',
-                    color: '#ffffff',
-                    marginBottom: '1rem'
-                  }}>
-                    What's Included:
-                  </h3>
-                  
-                  <ul style={{
-                    listStyle: 'none',
-                    padding: 0,
-                    margin: 0
-                  }}>
-                    {selectedPlan.features.map((feature, index) => (
-                      <li key={index} style={{
-                        display: 'flex',
-                        alignItems: 'flex-start',
-                        gap: '0.5rem',
-                        marginBottom: '0.5rem',
-                        color: '#e2e8f0',
-                        fontSize: '0.9rem'
-                      }}>
-                        <span style={{ color: '#00ff88', fontSize: '1.1rem', flexShrink: 0 }}>✓</span>
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-              
-              <div style={{
-                background: 'rgba(0, 255, 136, 0.1)',
-                border: '1px solid rgba(0, 255, 136, 0.2)',
-                borderRadius: '12px',
-                padding: '1.5rem',
-                marginBottom: '2rem'
-              }}>
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '1rem',
-                  marginBottom: '1rem'
-                }}>
-                  <div style={{
-                    width: '40px',
-                    height: '40px',
-                    borderRadius: '50%',
-                    background: 'rgba(0, 255, 136, 0.2)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '1.2rem',
-                    color: '#00ff88'
-                  }}>
-                    🔒
-                  </div>
-                  <div>
-                    <h3 style={{ 
-                      fontSize: '1.1rem', 
-                      fontWeight: '600',
-                      color: '#ffffff',
-                      margin: '0 0 0.25rem 0'
-                    }}>
-                      Secure Payment
-                    </h3>
-                    <p style={{ color: '#e2e8f0', margin: 0, fontSize: '0.9rem' }}>
-                      Your payment information is encrypted and secure
-                    </p>
-                  </div>
-                </div>
-                
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '1rem',
-                  marginTop: '1rem'
-                }}>
-                  <div style={{
-                    width: '40px',
-                    height: '40px',
-                    borderRadius: '50%',
-                    background: 'rgba(0, 255, 136, 0.2)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '1.2rem',
-                    color: '#00ff88'
-                  }}>
-                    ⚡
-                  </div>
-                  <div>
-                    <h3 style={{ 
-                      fontSize: '1.1rem', 
-                      fontWeight: '600',
-                      color: '#ffffff',
-                      margin: '0 0 0.25rem 0'
-                    }}>
-                      Instant Access
-                    </h3>
-                    <p style={{ color: '#e2e8f0', margin: 0, fontSize: '0.85rem' }}>
-                      Get immediate access to all available features. Coming soon features will be automatically enabled when ready.
-                    </p>
-                  </div>
-                </div>
-              </div>
             </div>
-            
-            {/* Right Column - Payment Form */}
-            <div style={{ flex: '1 1 400px' }}>
-              <div style={{
-                background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
-                borderRadius: '20px',
-                padding: '2rem',
-                border: '1px solid rgba(0, 255, 136, 0.2)'
-              }}>
-                <h2 style={{ 
-                  fontSize: '1.5rem', 
-                  fontWeight: '700',
-                  color: '#ffffff',
-                  marginBottom: '1.5rem'
-                }}>
-                  Payment Details
-                </h2>
-                
-                {error && (
-                  <div style={{
-                    background: 'rgba(220, 53, 69, 0.1)',
-                    color: '#ff6b6b',
-                    padding: '1rem',
-                    borderRadius: '12px',
-                    marginBottom: '1.5rem',
-                    border: '1px solid rgba(220, 53, 69, 0.3)',
-<<<<<<< HEAD
-                    fontSize: '0.9rem',
-                  }}
-                >
-                  {error}
-                </div>
-              )}
 
+            {error && (
+              <div style={{
+                background: 'rgba(255, 0, 0, 0.1)',
+                border: '1px solid rgba(255, 0, 0, 0.3)',
+                borderRadius: '8px',
+                padding: '1rem',
+                marginBottom: '2rem',
+                color: '#ff6b6b'
+              }}>
+                {error}
+              </div>
+            )}
+
+            <form onSubmit={handlePayment} style={{ marginBottom: '2rem' }}>
               <div style={{ marginBottom: '2rem' }}>
-                <button
-                  onClick={handleInitiatePayment}
-                  disabled={paymentLoading}
+                <label style={{ 
+                  display: 'block', 
+                  color: '#e2e8f0', 
+                  marginBottom: '0.5rem',
+                  fontSize: '1rem'
+                }}>
+                  Card Number
+                </label>
+                <input
+                  type="text"
+                  value={cardNumber}
+                  onChange={handleCardNumberChange}
+                  placeholder="1234 5678 9012 3456"
+                  maxLength="19"
                   style={{
                     width: '100%',
-                    background: paymentLoading
-                      ? 'rgba(255, 255, 255, 0.1)'
-                      : 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
-                    color: paymentLoading ? '#ffffff' : '#0a0a0a',
-                    border: 'none',
-                    padding: '1.25rem',
-                    borderRadius: '12px',
-                    fontSize: '1.1rem',
-                    fontWeight: '700',
-                    cursor: paymentLoading ? 'not-allowed' : 'pointer',
-                    transition: 'all 0.2s ease',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.5px',
+                    padding: '1rem',
+                    borderRadius: '8px',
+                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    background: 'rgba(255, 255, 255, 0.05)',
+                    color: '#e2e8f0',
+                    fontSize: '1rem'
                   }}
-                >
-                  {paymentLoading
-                    ? 'Processing...'
-                    : `Pay $${selectedPlan?.price}/${selectedPlan?.interval || 'once'}`}
-                </button>
+                />
+              </div>
 
-                <div
-                  style={{
-=======
-                    fontSize: '0.9rem'
+              <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem' }}>
+                <div style={{ flex: 1 }}>
+                  <label style={{ 
+                    display: 'block', 
+                    color: '#e2e8f0', 
+                    marginBottom: '0.5rem',
+                    fontSize: '1rem'
                   }}>
-                    {error}
-                  </div>
-                )}
-                
-                <form onSubmit={handlePayment}>
-                  <div style={{ marginBottom: '1.5rem' }}>
-                    <label style={{
-                      display: 'block',
-                      marginBottom: '0.5rem',
-                      color: '#ffffff',
-                      fontSize: '0.9rem',
-                      fontWeight: '600'
-                    }}>
-                      Name on Card
-                    </label>
-                    <input
-                      type="text"
-                      value={nameOnCard}
-                      onChange={(e) => setNameOnCard(e.target.value)}
-                      placeholder="John Smith"
-                      required
-                      style={{
-                        width: '100%',
-                        padding: '1rem',
-                        borderRadius: '12px',
-                        border: '1px solid rgba(255, 255, 255, 0.2)',
-                        background: 'rgba(255, 255, 255, 0.05)',
-                        color: '#ffffff',
-                        fontSize: '1rem'
-                      }}
-                    />
-                  </div>
-                  
-                  <div style={{ marginBottom: '1.5rem' }}>
-                    <label style={{
-                      display: 'block',
-                      marginBottom: '0.5rem',
-                      color: '#ffffff',
-                      fontSize: '0.9rem',
-                      fontWeight: '600'
-                    }}>
-                      Card Number
-                    </label>
-                    <input
-                      type="text"
-                      value={cardNumber}
-                      onChange={handleCardNumberChange}
-                      placeholder="4242 4242 4242 4242"
-                      required
-                      maxLength="19"
-                      style={{
-                        width: '100%',
-                        padding: '1rem',
-                        borderRadius: '12px',
-                        border: '1px solid rgba(255, 255, 255, 0.2)',
-                        background: 'rgba(255, 255, 255, 0.05)',
-                        color: '#ffffff',
-                        fontSize: '1rem'
-                      }}
-                    />
-                  </div>
-                  
-                  <div style={{ 
-                    display: 'grid', 
-                    gridTemplateColumns: '1fr 1fr', 
-                    gap: '1rem',
-                    marginBottom: '1.5rem'
-                  }}>
-                    <div>
-                      <label style={{
-                        display: 'block',
-                        marginBottom: '0.5rem',
-                        color: '#ffffff',
-                        fontSize: '0.9rem',
-                        fontWeight: '600'
-                      }}>
-                        Expiry Date
-                      </label>
-                      <input
-                        type="text"
-                        value={cardExpiry}
-                        onChange={handleExpiryChange}
-                        placeholder="MM/YY"
-                        required
-                        maxLength="5"
-                        style={{
-                          width: '100%',
-                          padding: '1rem',
-                          borderRadius: '12px',
-                          border: '1px solid rgba(255, 255, 255, 0.2)',
-                          background: 'rgba(255, 255, 255, 0.05)',
-                          color: '#ffffff',
-                          fontSize: '1rem'
-                        }}
-                      />
-                    </div>
-                    
-                    <div>
-                      <label style={{
-                        display: 'block',
-                        marginBottom: '0.5rem',
-                        color: '#ffffff',
-                        fontSize: '0.9rem',
-                        fontWeight: '600'
-                      }}>
-                        CVC
-                      </label>
-                      <input
-                        type="text"
-                        value={cardCvc}
-                        onChange={(e) => setCardCvc(e.target.value.replace(/\D/g, '').slice(0, 3))}
-                        placeholder="123"
-                        required
-                        maxLength="3"
-                        style={{
-                          width: '100%',
-                          padding: '1rem',
-                          borderRadius: '12px',
-                          border: '1px solid rgba(255, 255, 255, 0.2)',
-                          background: 'rgba(255, 255, 255, 0.05)',
-                          color: '#ffffff',
-                          fontSize: '1rem'
-                        }}
-                      />
-                    </div>
-                  </div>
-                  
-                  <div style={{ marginBottom: '2rem' }}>
-                    <div style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '0.5rem',
-                      marginBottom: '0.75rem',
-                      fontSize: '0.9rem'
-                    }}>
-                      <input
-                        id="terms"
-                        type="checkbox"
-                        required
-                        style={{
-                          width: '18px',
-                          height: '18px',
-                          accentColor: '#00ff88'
-                        }}
-                      />
-                      <label htmlFor="terms" style={{ color: '#e2e8f0' }}>
-                        I agree to the <Link href="/terms" style={{ color: '#00ff88', textDecoration: 'none' }}>Terms of Service</Link> and <Link href="/privacy" style={{ color: '#00ff88', textDecoration: 'none' }}>Privacy Policy</Link>
-                      </label>
-                    </div>
-                  </div>
-                  
-                  <button
-                    type="submit"
-                    disabled={paymentLoading}
+                    Expiry Date
+                  </label>
+                  <input
+                    type="text"
+                    value={cardExpiry}
+                    onChange={handleExpiryChange}
+                    placeholder="MM/YY"
+                    maxLength="5"
                     style={{
                       width: '100%',
-                      background: paymentLoading ? 
-                        'rgba(255, 255, 255, 0.1)' : 
-                        'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
-                      color: paymentLoading ? '#ffffff' : '#0a0a0a',
-                      border: 'none',
-                      padding: '1.25rem',
-                      borderRadius: '12px',
-                      fontSize: '1.1rem',
-                      fontWeight: '700',
-                      cursor: paymentLoading ? 'not-allowed' : 'pointer',
-                      transition: 'all 0.2s ease',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.5px'
+                      padding: '1rem',
+                      borderRadius: '8px',
+                      border: '1px solid rgba(255, 255, 255, 0.2)',
+                      background: 'rgba(255, 255, 255, 0.05)',
+                      color: '#e2e8f0',
+                      fontSize: '1rem'
                     }}
-                  >
-                    {paymentLoading ? 'Processing...' : `Pay $${selectedPlan.price}/${selectedPlan.interval || 'month'}`}
-                  </button>
-                  
-                  <div style={{
->>>>>>> 2ee290e3fb9d6ab97c3fb7e3b7cbef22332742c5
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '0.5rem',
-                    marginTop: '1.5rem',
-                    color: '#e2e8f0',
-                    fontSize: '0.9rem'
+                  />
+                </div>
+                <div style={{ flex: 1 }}>
+                  <label style={{ 
+                    display: 'block', 
+                    color: '#e2e8f0', 
+                    marginBottom: '0.5rem',
+                    fontSize: '1rem'
                   }}>
-                    <span style={{ fontSize: '1.2rem' }}>🔒</span>
-                    Secure payment processed by Stripe
-                  </div>
-                </form>
+                    CVC
+                  </label>
+                  <input
+                    type="text"
+                    value={cardCvc}
+                    onChange={(e) => setCardCvc(e.target.value.replace(/\D/g, '').slice(0, 3))}
+                    placeholder="123"
+                    maxLength="3"
+                    style={{
+                      width: '100%',
+                      padding: '1rem',
+                      borderRadius: '8px',
+                      border: '1px solid rgba(255, 255, 255, 0.2)',
+                      background: 'rgba(255, 255, 255, 0.05)',
+                      color: '#e2e8f0',
+                      fontSize: '1rem'
+                    }}
+                  />
+                </div>
               </div>
-              
-              <div style={{
-                textAlign: 'center',
-                marginTop: '1.5rem',
-                color: '#e2e8f0',
-                fontSize: '0.9rem'
+
+              <div style={{ marginBottom: '2rem' }}>
+                <label style={{ 
+                  display: 'block', 
+                  color: '#e2e8f0', 
+                  marginBottom: '0.5rem',
+                  fontSize: '1rem'
+                }}>
+                  Name on Card
+                </label>
+                <input
+                  type="text"
+                  value={nameOnCard}
+                  onChange={(e) => setNameOnCard(e.target.value)}
+                  placeholder="John Doe"
+                  style={{
+                    width: '100%',
+                    padding: '1rem',
+                    borderRadius: '8px',
+                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    background: 'rgba(255, 255, 255, 0.05)',
+                    color: '#e2e8f0',
+                    fontSize: '1rem'
+                  }}
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={paymentLoading}
+                style={{
+                  width: '100%',
+                  padding: '1rem 2rem',
+                  background: paymentLoading ? 'rgba(0, 255, 136, 0.5)' : '#00ff88',
+                  color: '#000',
+                  border: 'none',
+                  borderRadius: '8px',
+                  fontSize: '1.1rem',
+                  fontWeight: 'bold',
+                  cursor: paymentLoading ? 'not-allowed' : 'pointer',
+                  transition: 'all 0.3s ease'
+                }}
+              >
+                {paymentLoading ? 'Processing...' : `Pay $${selectedPlan.price}`}
+              </button>
+            </form>
+
+            <div style={{ textAlign: 'center' }}>
+              <Link href="/pricing" style={{
+                color: '#00ff88',
+                textDecoration: 'none',
+                fontSize: '1rem'
               }}>
-                <p style={{ margin: '0 0 0.5rem 0' }}>
-                  ✓ Cancel anytime • ✓ No hidden fees
-                </p>
-                <p style={{ margin: 0, opacity: 0.7 }}>
-                  Questions? Contact us at support@notebooklm.directory
-                </p>
-              </div>
+                ← Back to Pricing
+              </Link>
             </div>
           </div>
         </div>
