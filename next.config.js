@@ -2,7 +2,9 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-<<<<<<< HEAD
+  images: {
+    domains: ['images.pexels.com', 'ciwlmdnmnsymiwmschej.supabase.co'],
+  },
   async headers() {
     return [
       {
@@ -39,13 +41,6 @@ const nextConfig = {
       }
     ]
   }
-}
-=======
-  images: {
-    domains: ['images.pexels.com', 'ciwlmdnmnsymiwmschej.supabase.co'],
-  },
-  // NOTE: 'api' key removed. Configure bodyParser/externalResolver IN each API route file.
 };
->>>>>>> 2ee290e3fb9d6ab97c3fb7e3b7cbef22332742c5
 
 module.exports = nextConfig;
