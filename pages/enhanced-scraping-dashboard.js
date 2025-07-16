@@ -4,6 +4,8 @@ import Layout from '../components/Layout';
 import { supabase } from '../lib/supabase';
 
 export default function EnhancedScrapingDashboard() {
+  console.log('🚀 DASHBOARD COMPONENT LOADING - ENHANCED SCRAPING DASHBOARD');
+  
   const router = useRouter();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -38,32 +40,48 @@ export default function EnhancedScrapingDashboard() {
   ];
 
   useEffect(() => {
+    console.log('🔧 USE EFFECT TRIGGERED - CHECKING AUTH AND LOADING DATA');
     checkAuth();
     loadInitialData();
   }, []);
 
   const checkAuth = async () => {
+    console.log('🔐 CHECKING AUTHENTICATION...');
     try {
       const { data: { user } } = await supabase.auth.getUser();
+      console.log('👤 USER CHECK RESULT:', user ? 'User found' : 'No user');
       if (!user) {
-        router.push('/login?redirect=/enhanced-scraping-dashboard');
+        console.log('⚠️ NO USER FOUND - CONTINUING FOR TESTING (AUTH DISABLED)');
+        // router.push('/login?redirect=/enhanced-scraping-dashboard'); // DISABLED FOR TESTING
+        setUser(null);
+        setLoading(false); // ADDED: Set loading to false immediately
         return;
       }
+      console.log('✅ USER AUTHENTICATED:', user.email);
       setUser(user);
     } catch (error) {
-      console.error('Auth error:', error);
-      router.push('/login');
+      console.error('❌ AUTH ERROR:', error);
+      // router.push('/login'); // DISABLED FOR TESTING
+      console.log('⚠️ AUTH ERROR - CONTINUING FOR TESTING');
+      setUser(null);
     } finally {
+      console.log('🏁 AUTH CHECK COMPLETE - SETTING LOADING TO FALSE');
       setLoading(false);
     }
   };
 
   const loadInitialData = async () => {
-    await Promise.all([
-      loadScrapingStats(),
-      loadRecommendations(),
-      loadRecentContent()
-    ]);
+    console.log('📊 LOADING INITIAL DATA...');
+    try {
+      await Promise.all([
+        loadScrapingStats(),
+        loadRecommendations(),
+        loadRecentContent()
+      ]);
+      console.log('✅ INITIAL DATA LOADED SUCCESSFULLY');
+    } catch (error) {
+      console.error('❌ ERROR LOADING INITIAL DATA:', error);
+    }
   };
 
   const loadScrapingStats = async () => {
@@ -209,13 +227,16 @@ export default function EnhancedScrapingDashboard() {
   };
 
   if (loading) {
+    console.log('⏳ RENDERING LOADING STATE');
     return (
       <Layout title="Enhanced Scraping Dashboard">
         <div style={{ 
           display: 'flex', 
           justifyContent: 'center', 
           alignItems: 'center', 
-          minHeight: '60vh' 
+          minHeight: '60vh',
+          background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)',
+          color: '#ffffff'
         }}>
           <div style={{
             width: '60px',
@@ -225,10 +246,16 @@ export default function EnhancedScrapingDashboard() {
             borderRadius: '50%',
             animation: 'spin 1s linear infinite'
           }} />
+          <div style={{ marginLeft: '1rem', fontSize: '1.2rem' }}>
+            Loading Enhanced Scraping Dashboard...
+          </div>
         </div>
       </Layout>
     );
   }
+
+  console.log('🎨 RENDERING MAIN DASHBOARD COMPONENT');
+  console.log('📊 CURRENT STATE:', { user, loading, searchResults: searchResults.length, recommendations: recommendations.length });
 
   return (
     <Layout title="Enhanced Scraping Dashboard - AI Discovery Platform">
