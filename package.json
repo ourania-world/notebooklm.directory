@@ -5,7 +5,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test:discovery": "node --loader ts-node/esm src/test/discovery-engine.test.ts",
+    "test:cost-protection": "node --loader ts-node/esm src/test/cost-protection.test.ts",
+    "test:bulk-correction": "node --loader ts-node/esm src/test/bulk-correction.test.ts"
   },
   "dependencies": {
     "@stripe/react-stripe-js": "^3.7.0",
@@ -16,12 +19,22 @@
     "next": "^13.5.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "stripe": "^14.25.0"
+    "stripe": "^14.25.0",
+    "openai": "^4.28.0",
+    "crawlee": "^3.6.0",
+    "playwright": "^1.40.0",
+    "youtube-transcript": "^1.0.6",
+    "@octokit/graphql": "^5.0.5",
+    "axios": "^1.6.0",
+    "cheerio": "^1.0.0-rc.12",
+    "ioredis": "^5.3.2"
   },
   "devDependencies": {
     "@types/node": "^20.9.0",
     "@types/react": "^18.2.37",
+    "@types/ioredis": "^5.0.0",
     "eslint": "^8.53.0",
-    "eslint-config-next": "^13.5.6"
+    "eslint-config-next": "^13.5.6",
+    "typescript": "^5.3.0"
   }
 }
