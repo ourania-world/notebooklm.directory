@@ -626,6 +626,4 @@ export default function EnhancedScrapingDashboard() {
       </div>
     </Layout>
   );
-} }  
- }  
- 
+}
