@@ -12,40 +12,29 @@
     "test:bulk-correction": "node --loader ts-node/esm src/test/bulk-correction.test.ts"
   },
   "dependencies": {
+    "@octokit/graphql": "^9.0.1",
     "@stripe/react-stripe-js": "^3.7.0",
     "@stripe/stripe-js": "^7.4.0",
     "@supabase/supabase-js": "^2.38.0",
+    "axios": "^1.6.0",
+    "cheerio": "^1.0.0-rc.12",
+    "crawlee": "^3.6.0",
+    "ioredis": "^5.3.2",
     "micro": "^10.0.1",
-<<<<<<< HEAD
-    "next": "^13.5.6",
+    "next": "^15.4.1",
+    "openai": "^4.28.0",
+    "playwright": "^1.40.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "stripe": "^14.25.0",
-    "openai": "^4.28.0",
-    "crawlee": "^3.6.0",
-    "playwright": "^1.40.0",
-    "youtube-transcript": "^1.0.6",
-    "@octokit/graphql": "^5.0.5",
-    "axios": "^1.6.0",
-    "cheerio": "^1.0.0-rc.12",
-    "ioredis": "^5.3.2"
+    "youtube-transcript": "^1.0.6"
   },
   "devDependencies": {
+    "@types/ioredis": "^5.0.0",
     "@types/node": "^20.9.0",
     "@types/react": "^18.2.37",
-    "@types/ioredis": "^5.0.0",
     "eslint": "^8.53.0",
     "eslint-config-next": "^13.5.6",
     "typescript": "^5.3.0"
-=======
-    "next": "^14.0.0",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "stripe": "^14.0.0"
-  },
-  "devDependencies": {
-    "eslint": "^8.0.0",
-    "eslint-config-next": "^14.0.0"
->>>>>>> 2ee290e3fb9d6ab97c3fb7e3b7cbef22332742c5
   }
 }
