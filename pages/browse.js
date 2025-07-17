@@ -70,7 +70,7 @@ export default function Browse({
     getCurrentUser()
       .then(setUser)
       .catch(error => {
-        console.warn('Failed to get user:', error);
+        console.log('No user session (browsing as guest):', error.message);
         setUser(null);
       });
   }, []);
