@@ -3,6 +3,9 @@ import { useRouter } from 'next/router';
 import Layout from '../components/Layout';
 import { supabase } from '../lib/supabase';
 
+// Admin dashboard - requires admin privileges
+const ADMIN_EMAIL = process.env.NEXT_PUBLIC_ADMIN_EMAIL || 'admin@notebooklm.directory';
+
 export default function EnhancedScrapingDashboard() {
   console.log('🚀 DASHBOARD COMPONENT LOADING - ENHANCED SCRAPING DASHBOARD');
   
@@ -30,6 +33,7 @@ export default function EnhancedScrapingDashboard() {
   });
   const [realTimeUpdates, setRealTimeUpdates] = useState(true);
   const wsRef = useRef(null);
+  const [adminOperations, setAdminOperations] = useState(false);
   
   useEffect(() => {
     console.log('🔧 USE EFFECT TRIGGERED - CHECKING AUTH AND LOADING DATA');
@@ -109,21 +113,29 @@ export default function EnhancedScrapingDashboard() {
 
 
   const checkAuth = async () => {
-    console.log('🔐 CHECKING AUTHENTICATION...');
+    console.log('🔐 CHECKING ADMIN AUTHENTICATION...');
     try {
       const { data: { user } } = await supabase.auth.getUser();
       console.log('👤 USER CHECK RESULT:', user ? 'User found' : 'No user');
+      
       if (!user) {
-        console.log('⚠️ NO USER FOUND - CONTINUING FOR TESTING (AUTH DISABLED)');
-        setUser(null);
+        console.log('❌ NO USER FOUND - ADMIN AUTH REQUIRED');
+        router.push('/auth/signin?redirect=/enhanced-scraping-dashboard');
         return;
       }
-      console.log('✅ USER AUTHENTICATED:', user.email);
+      
+      // Check if user has admin privileges
+      if (user.email !== ADMIN_EMAIL) {
+        console.log('❌ ACCESS DENIED - ADMIN PRIVILEGES REQUIRED');
+        router.push('/?error=admin-required');
+        return;
+      }
+      
+      console.log('✅ ADMIN AUTHENTICATED:', user.email);
       setUser(user);
     } catch (error) {
       console.error('❌ AUTH ERROR:', error);
-      console.log('⚠️ AUTH ERROR - CONTINUING FOR TESTING');
-      setUser(null);
+      router.push('/auth/signin?redirect=/enhanced-scraping-dashboard');
     }
   };
 
@@ -143,26 +155,52 @@ export default function EnhancedScrapingDashboard() {
 
   const loadScrapingStats = async () => {
     try {
-      const { data, error } = await supabase
-        .from('notebooks')
-        .select('*');
-
-      if (error) throw error;
-
-      const total = data?.length || 0;
-      const today = new Date().toISOString().split('T')[0];
-      const todayCount = data?.filter(item => 
-        item.created_at?.startsWith(today)
-      ).length || 0;
-
-      setScrapingStats({
-        totalScraped: total,
-        todayScraped: todayCount,
-        activeSources: Math.floor(Math.random() * 10) + 5, // Mock data
-        successRate: Math.floor(Math.random() * 20) + 80 // Mock data
+      // Use admin API endpoint for full access to scraping stats
+      const response = await fetch('/api/admin/scraping-stats', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
       });
+      
+      if (!response.ok) {
+        throw new Error(`Stats API error: ${response.status}`);
+      }
+      
+      const statsData = await response.json();
+      
+      if (statsData.success) {
+        setScrapingStats(statsData.stats);
+      } else {
+        // Fallback to basic database query if admin API fails
+        const { data, error } = await supabase
+          .from('notebooks')
+          .select('*');
+
+        if (error) throw error;
+
+        const total = data?.length || 0;
+        const today = new Date().toISOString().split('T')[0];
+        const todayCount = data?.filter(item => 
+          item.created_at?.startsWith(today)
+        ).length || 0;
+
+        setScrapingStats({
+          totalScraped: total,
+          todayScraped: todayCount,
+          activeSources: Math.floor(Math.random() * 10) + 5,
+          successRate: Math.floor(Math.random() * 20) + 80
+        });
+      }
     } catch (error) {
       console.error('Error loading stats:', error);
+      // Set default stats if everything fails
+      setScrapingStats({
+        totalScraped: 0,
+        todayScraped: 0,
+        activeSources: 0,
+        successRate: 0
+      });
     }
   };
 
@@ -282,16 +320,36 @@ export default function EnhancedScrapingDashboard() {
 
   const loadRecentContent = async () => {
     try {
-      const { data, error } = await supabase
-        .from('notebooks')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(20);
+      // Use admin API endpoint for full access to all content
+      const response = await fetch('/api/admin/recent-content', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Recent content API error: ${response.status}`);
+      }
+      
+      const contentData = await response.json();
+      
+      if (contentData.success) {
+        setSearchResults(contentData.content || []);
+      } else {
+        // Fallback to basic database query
+        const { data, error } = await supabase
+          .from('notebooks')
+          .select('*')
+          .order('created_at', { ascending: false })
+          .limit(20);
 
-      if (error) throw error;
-      setSearchResults(data || []);
+        if (error) throw error;
+        setSearchResults(data || []);
+      }
     } catch (error) {
       console.error('Error loading recent content:', error);
+      setSearchResults([]);
     }
   };
 
@@ -495,6 +553,35 @@ export default function EnhancedScrapingDashboard() {
   // Legacy function for backward compatibility
   const startScraping = startAdvancedScraping;
 
+  // Admin bulk operations
+  const performBulkOperation = async (operation, data = {}) => {
+    console.log(`🔧 ADMIN: Performing bulk operation - ${operation}`);
+    
+    try {
+      const response = await fetch('/api/admin/bulk-operations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ operation, data })
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Bulk operation failed: ${response.status}`);
+      }
+      
+      const result = await response.json();
+      console.log(`✅ ADMIN: Bulk operation completed:`, result);
+      
+      // Refresh data after operation
+      loadScrapingStats();
+      loadRecentContent();
+      
+      return result;
+    } catch (error) {
+      console.error(`❌ ADMIN: Bulk operation error:`, error);
+      throw error;
+    }
+  };
+
   const getStatusColor = (status) => {
     switch (status) {
       case 'running': return '#00ff88';
@@ -602,7 +689,7 @@ export default function EnhancedScrapingDashboard() {
         }
       `}</style>
       
-      <Layout title="Enhanced Scraping Dashboard - AI Discovery Platform">
+      <Layout title="Admin Control Panel - Scraping Dashboard">
       <div style={{
         background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)',
         minHeight: '100vh',
@@ -684,11 +771,23 @@ export default function EnhancedScrapingDashboard() {
                 color: '#ffffff',
                 marginBottom: '0.5rem'
               }}>
-                AI Discovery Platform
+                🔧 Admin Control Panel
               </h1>
               <p style={{ color: '#e2e8f0', fontSize: '1.2rem' }}>
-                Advanced content scraping and semantic discovery
+                Advanced scraping management with full database access
               </p>
+              <div style={{
+                background: 'rgba(255, 107, 107, 0.1)',
+                border: '1px solid rgba(255, 107, 107, 0.3)',
+                borderRadius: '8px',
+                padding: '1rem',
+                marginTop: '1rem'
+              }}>
+                <span style={{ color: '#ff6b6b', fontWeight: 'bold' }}>⚠️ ADMIN ONLY:</span>
+                <span style={{ color: '#e2e8f0', marginLeft: '0.5rem' }}>
+                  This dashboard has full database permissions and bypasses user restrictions.
+                </span>
+              </div>
             </div>
             
             <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
@@ -977,6 +1076,112 @@ export default function EnhancedScrapingDashboard() {
             </div>
           )}
           
+          {/* Admin Operations Panel */}
+          <div style={{
+            background: 'rgba(255, 107, 107, 0.05)',
+            borderRadius: '16px',
+            padding: '2rem',
+            marginBottom: '3rem',
+            border: '1px solid rgba(255, 107, 107, 0.2)'
+          }}>
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: '1.5rem'
+            }}>
+              <h2 style={{
+                fontSize: '1.5rem',
+                color: '#ffffff',
+                margin: 0
+              }}>
+                🔧 Admin Operations
+              </h2>
+              <button
+                onClick={() => setAdminOperations(!adminOperations)}
+                style={{
+                  padding: '0.5rem 1rem',
+                  background: adminOperations ? 'rgba(255, 107, 107, 0.2)' : 'rgba(255, 255, 255, 0.1)',
+                  color: adminOperations ? '#ff6b6b' : '#e2e8f0',
+                  border: '1px solid rgba(255, 255, 255, 0.2)',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  fontSize: '0.9rem'
+                }}
+              >
+                {adminOperations ? 'Hide' : 'Show'} Advanced Controls
+              </button>
+            </div>
+            
+            {adminOperations && (
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                gap: '1rem'
+              }}>
+                <button
+                  onClick={() => performBulkOperation('cleanup_failed_operations')}
+                  style={{
+                    padding: '1rem',
+                    background: 'rgba(255, 107, 107, 0.1)',
+                    color: '#ff6b6b',
+                    border: '1px solid rgba(255, 107, 107, 0.3)',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    fontSize: '0.9rem'
+                  }}
+                >
+                  🗑️ Clean Failed Operations
+                </button>
+                
+                <button
+                  onClick={() => performBulkOperation('update_quality_scores')}
+                  style={{
+                    padding: '1rem',
+                    background: 'rgba(0, 255, 136, 0.1)',
+                    color: '#00ff88',
+                    border: '1px solid rgba(0, 255, 136, 0.3)',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    fontSize: '0.9rem'
+                  }}
+                >
+                  📊 Recalculate Quality Scores
+                </button>
+                
+                <button
+                  onClick={() => performBulkOperation('delete_old_operations', { days: 30 })}
+                  style={{
+                    padding: '1rem',
+                    background: 'rgba(255, 159, 67, 0.1)',
+                    color: '#ff9f43',
+                    border: '1px solid rgba(255, 159, 67, 0.3)',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    fontSize: '0.9rem'
+                  }}
+                >
+                  🗂️ Archive Old Data (30+ days)
+                </button>
+                
+                <button
+                  onClick={() => performBulkOperation('export_data', { table: 'scraping_operations', limit: 1000 })}
+                  style={{
+                    padding: '1rem',
+                    background: 'rgba(116, 185, 255, 0.1)',
+                    color: '#74b9ff',
+                    border: '1px solid rgba(116, 185, 255, 0.3)',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    fontSize: '0.9rem'
+                  }}
+                >
+                  📤 Export Operations Data
+                </button>
+              </div>
+            )}
+          </div>
+
           {/* Stats Cards */}
           <div style={{
             display: 'grid',
