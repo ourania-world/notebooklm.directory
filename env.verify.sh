@@ -1,32 +1,16 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-echo ""
-echo "🔍 Verifying Environment Variables for NotebookLM Directory..."
-echo "--------------------------------------------------------------"
+echo "🔐 STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}"
+echo "🧬 SUPABASE_URL=${SUPABASE_URL}"
+echo "🔑 SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}"
+echo "🔐 SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}"
+echo "🪪 SUPABASE_JWT_SECRET=${SUPABASE_JWT_SECRET}"
 
-VARS=(
-  STRIPE_SECRET_KEY
-  SUPABASE_URL
-  SUPABASE_ANON_KEY
-  SUPABASE_SERVICE_ROLE_KEY
-  SUPABASE_JWT_SECRET
-  NEXT_PUBLIC_SUPABASE_URL
-  NEXT_PUBLIC_SUPABASE_ANON_KEY
-  POSTGRES_PRISMA_URL
-  POSTGRES_URL_NON_POOLING
-  SITE_NAME
-  ENVIRONMENT
-)
+echo "🌐 NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}"
+echo "🔓 NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}"
 
-for VAR in "${VARS[@]}"; do
-  VALUE="${!VAR}"
-  if [[ -z "$VALUE" ]]; then
-    echo "❌ $VAR is NOT set"
-  else
-    echo "✅ $VAR is set"
-  fi
-done
+echo "🧪 POSTGRES_PRISMA_URL=${POSTGRES_PRISMA_URL}"
+echo "🧪 POSTGRES_URL_NON_POOLING=${POSTGRES_URL_NON_POOLING}"
 
-echo "--------------------------------------------------------------"
-echo "🧪 Verification complete."
-echo ""
+echo "🏷️ SITE_NAME=${SITE_NAME}"
+echo "🌍 ENVIRONMENT=${ENVIRONMENT}"

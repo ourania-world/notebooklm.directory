@@ -33,17 +33,34 @@ export default function EnhancedScrapingDashboard() {
   
   useEffect(() => {
     console.log('🔧 USE EFFECT TRIGGERED - CHECKING AUTH AND LOADING DATA');
-    checkAuth();
-    loadInitialData();
-    loadActiveScrapeJobs();
     
-    // Initialize WebSocket for real-time updates
-    if (realTimeUpdates) {
-      initializeWebSocket();
-    }
+    // Set a maximum loading timeout to prevent infinite loading
+    const loadingTimeout = setTimeout(() => {
+      console.warn('⚠️ LOADING TIMEOUT - Force completing after 10 seconds');
+      setLoading(false);
+    }, 10000);
+    
+    const initialize = async () => {
+      try {
+        await checkAuth();
+        await loadInitialData();
+        await loadActiveScrapeJobs();
+        
+        // Initialize WebSocket for real-time updates
+        if (realTimeUpdates) {
+          initializeWebSocket();
+        }
+      } catch (error) {
+        console.error('❌ Initialization error:', error);
+        setLoading(false);
+      }
+    };
+    
+    initialize();
     
     // Cleanup on unmount
     return () => {
+      clearTimeout(loadingTimeout);
       if (wsRef.current) {
         wsRef.current.close();
       }
@@ -284,90 +301,91 @@ export default function EnhancedScrapingDashboard() {
     }
 
     try {
-      // Enhanced hybrid search combining semantic and keyword matching
-      const searchTerm = query.toLowerCase();
-      
-      // First try database search
-      const { data: dbResults, error } = await supabase
-        .from('notebooks')
-        .select('*')
-        .or(`title.ilike.%${query}%,description.ilike.%${query}%`)
-        .order('created_at', { ascending: false });
-
-      if (error) {
-        console.warn('Database search error:', error);
-      }
-      
-      // Simulate semantic search with AI recommendations
-      const semanticResults = recommendations.filter(item => 
-        item.title.toLowerCase().includes(searchTerm) ||
-        item.description.toLowerCase().includes(searchTerm) ||
-        item.tags.some(tag => tag.toLowerCase().includes(searchTerm))
-      ).map(item => ({
-        ...item,
-        id: `rec-${item.id}`,
-        title: item.title,
-        description: item.description,
-        created_at: item.discoveredAt,
-        source_type: item.source.toLowerCase(),
-        quality_score: item.qualityScore,
-        embedding_score: item.embeddingScore,
-        content_type: item.contentType,
-        tags: item.tags,
-        expertise_level: item.expertise
-      }));
-      
-      // Combine and rank results
-      const combinedResults = [
-        ...semanticResults,
-        ...(dbResults || [])
-      ].sort((a, b) => {
-        // Prioritize by quality score and embedding similarity
-        const scoreA = (a.quality_score || 0.5) * (a.embedding_score || 0.5);
-        const scoreB = (b.quality_score || 0.5) * (b.embedding_score || 0.5);
-        return scoreB - scoreA;
+      // Use the new enhanced search API
+      const response = await fetch('/api/enhanced-search', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          query: query,
+          limit: 20,
+          category: selectedCategory === 'all' ? null : selectedCategory
+        })
       });
+
+      if (!response.ok) {
+        throw new Error(`Search API error: ${response.status}`);
+      }
+
+      const data = await response.json();
       
-      setSearchResults(combinedResults);
-      console.log(`✅ Found ${combinedResults.length} results for "${query}"`);
+      if (data.success) {
+        // Combine API results with AI recommendations for enhanced display
+        const searchTerm = query.toLowerCase();
+        const semanticResults = recommendations.filter(item => 
+          item.title.toLowerCase().includes(searchTerm) ||
+          item.description.toLowerCase().includes(searchTerm) ||
+          item.tags.some(tag => tag.toLowerCase().includes(searchTerm))
+        ).map(item => ({
+          ...item,
+          id: `rec-${item.id}`,
+          title: item.title,
+          description: item.description,
+          created_at: item.discoveredAt,
+          source_type: item.source.toLowerCase(),
+          quality_score: item.qualityScore,
+          embedding_score: item.embeddingScore,
+          content_type: item.contentType,
+          tags: item.tags,
+          expertise_level: item.expertise
+        }));
+        
+        // Combine results
+        const combinedResults = [
+          ...semanticResults,
+          ...data.results
+        ].sort((a, b) => {
+          const scoreA = (a.quality_score || 0.5) * (a.embedding_score || 0.5);
+          const scoreB = (b.quality_score || 0.5) * (b.embedding_score || 0.5);
+          return scoreB - scoreA;
+        });
+        
+        setSearchResults(combinedResults);
+        console.log(`✅ Found ${combinedResults.length} results for "${query}"`);
+      } else {
+        throw new Error(data.error || 'Search failed');
+      }
       
     } catch (error) {
       console.error('❌ Enhanced search error:', error);
-      // Fallback to basic search
-      setSearchResults([]);
+      // Fallback to basic database search
+      try {
+        const { data: dbResults, error: dbError } = await supabase
+          .from('notebooks')
+          .select('*')
+          .or(`title.ilike.%${query}%,description.ilike.%${query}%`)
+          .order('created_at', { ascending: false })
+          .limit(10);
+
+        if (dbError) {
+          console.warn('Fallback search error:', dbError);
+          setSearchResults([]);
+        } else {
+          setSearchResults(dbResults || []);
+        }
+      } catch (fallbackError) {
+        console.error('❌ Fallback search failed:', fallbackError);
+        setSearchResults([]);
+      }
     }
   };
 
   // Initialize WebSocket for real-time updates
   const initializeWebSocket = () => {
-    console.log('🔌 INITIALIZING WEBSOCKET CONNECTION');
-    try {
-      // Create WebSocket connection for real-time scraping updates
-      wsRef.current = new WebSocket('ws://localhost:3003/scraping-updates');
-      
-      wsRef.current.onopen = () => {
-        console.log('✅ WebSocket connected for real-time updates');
-      };
-      
-      wsRef.current.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        handleRealTimeUpdate(data);
-      };
-      
-      wsRef.current.onerror = (error) => {
-        console.warn('⚠️ WebSocket error:', error);
-      };
-      
-      wsRef.current.onclose = () => {
-        console.log('🔌 WebSocket connection closed');
-        // Attempt to reconnect after 5 seconds
-        if (realTimeUpdates) {
-          setTimeout(() => initializeWebSocket(), 5000);
-        }
-      };
-    } catch (error) {
-      console.warn('⚠️ Failed to initialize WebSocket:', error);
-    }
+    console.log('🔌 WEBSOCKET DISABLED FOR TESTING');
+    // WebSocket disabled to prevent connection issues during testing
+    // TODO: Re-enable when WebSocket server is available
   };
   
   // Handle real-time updates from WebSocket
@@ -495,28 +513,38 @@ export default function EnhancedScrapingDashboard() {
   if (loading) {
     console.log('⏳ RENDERING LOADING STATE');
     return (
-      <Layout title="Enhanced Scraping Dashboard">
-        <div style={{ 
-          display: 'flex', 
-          justifyContent: 'center', 
-          alignItems: 'center', 
-          minHeight: '60vh',
-          background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)',
-          color: '#ffffff'
-        }}>
-          <div style={{
-            width: '60px',
-            height: '60px',
-            border: '4px solid rgba(0, 255, 136, 0.3)',
-            borderTop: '4px solid #00ff88',
-            borderRadius: '50%',
-            animation: 'spin 1s linear infinite'
-          }} />
-          <div style={{ marginLeft: '1rem', fontSize: '1.2rem' }}>
-            Loading Enhanced Scraping Dashboard...
-          </div>
+      <div style={{ 
+        display: 'flex', 
+        flexDirection: 'column',
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        minHeight: '100vh',
+        background: '#0a0a0a',
+        color: '#ffffff',
+        fontFamily: 'system-ui'
+      }}>
+        <div style={{
+          width: '60px',
+          height: '60px',
+          border: '4px solid rgba(0, 255, 136, 0.3)',
+          borderTop: '4px solid #00ff88',
+          borderRadius: '50%',
+          animation: 'spin 1s linear infinite',
+          marginBottom: '1rem'
+        }} />
+        <div style={{ fontSize: '1.2rem', marginBottom: '0.5rem' }}>
+          Loading Enhanced Scraping Dashboard...
         </div>
-      </Layout>
+        <div style={{ fontSize: '0.9rem', color: '#e2e8f0' }}>
+          Debug: Loading state active
+        </div>
+        <style jsx>{`
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        `}</style>
+      </div>
     );
   }
 
