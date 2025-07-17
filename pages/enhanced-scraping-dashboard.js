@@ -65,7 +65,7 @@ export default function EnhancedScrapingDashboard() {
         wsRef.current.close();
       }
     };
-  }, [realTimeUpdates]);
+  }, []); // Empty dependency array - run only once on mount
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [viewMode, setViewMode] = useState('grid'); // grid, list, timeline
   const [filters, setFilters] = useState({
