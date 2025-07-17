@@ -39,7 +39,8 @@ NEXT_PUBLIC_ADMIN_EMAIL=admin@notebooklm.directory
 - **Real-time Monitoring**: Live scraping status and stats
 
 ### 🌐 Admin Dashboard URL:
-**LIVE:** `https://notebooklm-directory.vercel.app/enhanced-scraping-dashboard`
+**NEW SAFE URL:** `https://notebook-discovery-admin.vercel.app/enhanced-scraping-dashboard`
+~~OLD URL (Security Warning):~~ ~~`https://notebooklm-directory.vercel.app/enhanced-scraping-dashboard`~~
 
 ### ✅ DEPLOYMENT STATUS:
 - [x] **Code Deployed**: Latest admin dashboard pushed to main
@@ -49,7 +50,8 @@ NEXT_PUBLIC_ADMIN_EMAIL=admin@notebooklm.directory
 - [ ] **Real Data Collection**: Ready to start once env vars are set
 
 ### 🚨 Security Notes:
-- Admin dashboard requires authentication
+- **Domain Name Important**: Avoid names similar to Google services (Chrome blocks as phishing)
+- Admin dashboard requires authentication  
 - Service role key grants full database access
 - Only use in trusted admin environment
 - All operations logged for audit trail
