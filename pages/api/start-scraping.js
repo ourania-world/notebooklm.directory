@@ -1,4 +1,52 @@
 // Enhanced scraping API with real Reddit integration
+import { supabaseAdmin } from '../../lib/supabase-admin'
+
+// Helper function to store scraped data in public notebooks table
+async function storeInPublicNotebooks(results, source) {
+  console.log(`📚 Storing ${results.length} items in public notebooks table...`)
+  
+  const notebooksToInsert = results.map(item => ({
+    title: item.title,
+    description: item.description,
+    url: item.url,
+    author: item.author || 'Unknown',
+    category: source === 'reddit' ? 'AI' : 
+              source === 'github' ? 'Tools' : 
+              source === 'arxiv' ? 'Research' :
+              source === 'notebooklm' ? 'AI' : 'General',
+    tags: item.metadata?.topics || item.metadata?.language ? [item.metadata.language] : ['AI'],
+    featured: item.quality_score > 0.9,
+    status: 'published',
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    popularity_score: Math.floor((item.quality_score || 0.7) * 100),
+    source_platform: source,
+    extraction_data: {
+      originalMetadata: item.metadata,
+      qualityScore: item.quality_score,
+      extractedAt: new Date().toISOString()
+    }
+  }))
+  
+  try {
+    const { data, error } = await supabaseAdmin
+      .from('notebooks')
+      .insert(notebooksToInsert)
+      .select()
+    
+    if (error) {
+      console.error('Error storing in notebooks table:', error.message)
+      return { success: false, error }
+    }
+    
+    console.log(`✅ Successfully stored ${data.length} notebooks in public table`)
+    return { success: true, data }
+  } catch (error) {
+    console.error('Unexpected error storing notebooks:', error.message)
+    return { success: false, error }
+  }
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
@@ -62,6 +110,17 @@ export default async function handler(req, res) {
 
     console.log(`📊 Scraped ${results.length} items from ${sourceName}`)
 
+    // Store scraped data in public notebooks table for browse page
+    if (results.length > 0) {
+      console.log('🔄 Storing scraped data in public notebooks table...')
+      const storeResult = await storeInPublicNotebooks(results, source)
+      if (storeResult.success) {
+        console.log(`✅ ${results.length} items now available in public browse page`)
+      } else {
+        console.warn('⚠️ Failed to store in public table, but scraping was successful')
+      }
+    }
+
     // Simulate processing time
     await new Promise(resolve => setTimeout(resolve, 100))
 
@@ -72,7 +131,8 @@ export default async function handler(req, res) {
       message: `Successfully scraped ${sourceName}`,
       itemsFound: results.length,
       results: results,
-      source: sourceName
+      source: sourceName,
+      publiclyAvailable: results.length > 0
     })
 
   } catch (error) {
