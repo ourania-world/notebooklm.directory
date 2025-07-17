@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import ProjectCard from '../components/ProjectCard';
 import NotebookModal from '../components/NotebookModal';
+import ParticleBackground from '../components/ParticleBackground';
 import { getCurrentUser } from '../lib/supabase';
 import { getNotebooks, getCategoryCounts } from '../lib/notebooks';
 
@@ -121,13 +122,31 @@ export default function Browse({
 
   return (
     <Layout title="Browse Projects - NotebookLM Directory">
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem' }}>
+      <ParticleBackground />
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem', position: 'relative', zIndex: 1 }}>
         <h1 style={{
           fontSize: '2.5rem', 
           margin: '0 0 2rem 0',
-          color: '#ffffff'
+          background: 'linear-gradient(135deg, #ffffff 0%, #00ff88 40%, #ffffff 100%)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          backgroundClip: 'text',
+          textAlign: 'center',
+          textShadow: '0 0 30px rgba(0, 255, 136, 0.3)',
+          position: 'relative'
         }}>
           Browse Projects
+          <div style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '120%',
+            height: '120%',
+            background: 'radial-gradient(ellipse, rgba(0, 255, 136, 0.1) 0%, transparent 70%)',
+            zIndex: -1,
+            filter: 'blur(20px)'
+          }} />
         </h1>
         
         <div style={{ 
@@ -140,17 +159,29 @@ export default function Browse({
           <button
             onClick={() => setIsModalOpen(true)}
             style={{
-              background: '#667eea',
-              color: 'white',
-              border: 'none',
+              background: 'linear-gradient(135deg, rgba(0, 255, 136, 0.9) 0%, rgba(0, 230, 122, 0.9) 50%, rgba(0, 200, 100, 0.9) 100%)',
+              color: '#000000',
+              border: '1px solid rgba(0, 255, 136, 0.3)',
               padding: '0.75rem 1.5rem',
-              borderRadius: '8px',
+              borderRadius: '12px',
               fontSize: '1rem',
-              fontWeight: '500',
+              fontWeight: '600',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
-              gap: '0.5rem'
+              gap: '0.5rem',
+              boxShadow: '0 8px 25px rgba(0, 255, 136, 0.25), 0 0 20px rgba(0, 255, 136, 0.1)',
+              transition: 'all 0.3s ease',
+              position: 'relative',
+              overflow: 'hidden'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.transform = 'translateY(-2px) scale(1.02)';
+              e.target.style.boxShadow = '0 12px 35px rgba(0, 255, 136, 0.35), 0 0 30px rgba(0, 255, 136, 0.2)';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.transform = 'translateY(0) scale(1)';
+              e.target.style.boxShadow = '0 8px 25px rgba(0, 255, 136, 0.25), 0 0 20px rgba(0, 255, 136, 0.1)';
             }}
           >
             + Connect New Notebook
@@ -171,12 +202,26 @@ export default function Browse({
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             style={{
-              padding: '0.75rem',
-              border: '1px solid #dee2e6',
-              borderRadius: '8px',
+              padding: '0.75rem 1rem',
+              background: 'rgba(255, 255, 255, 0.05)',
+              border: '1px solid rgba(0, 255, 136, 0.2)',
+              borderRadius: '12px',
               fontSize: '1rem',
               minWidth: '300px',
-              flex: 1
+              flex: 1,
+              color: '#ffffff',
+              backdropFilter: 'blur(10px)',
+              WebkitBackdropFilter: 'blur(10px)',
+              boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+              transition: 'all 0.3s ease'
+            }}
+            onFocus={(e) => {
+              e.target.style.border = '1px solid rgba(0, 255, 136, 0.5)';
+              e.target.style.boxShadow = '0 4px 20px rgba(0, 255, 136, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1)';
+            }}
+            onBlur={(e) => {
+              e.target.style.border = '1px solid rgba(0, 255, 136, 0.2)';
+              e.target.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1)';
             }}
           />
           
@@ -184,11 +229,17 @@ export default function Browse({
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
             style={{
-              padding: '0.75rem',
-              border: '1px solid #dee2e6',
-              borderRadius: '8px',
+              padding: '0.75rem 1rem',
+              background: 'rgba(255, 255, 255, 0.05)',
+              border: '1px solid rgba(0, 255, 136, 0.2)',
+              borderRadius: '12px',
               fontSize: '1rem',
-              background: 'white'
+              color: '#ffffff',
+              backdropFilter: 'blur(10px)',
+              WebkitBackdropFilter: 'blur(10px)',
+              boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease'
             }}
           >
             {categories.map(category => {

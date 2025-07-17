@@ -18,7 +18,11 @@
       "Bash(rm:*)",
       "Bash(gh repo view:*)",
       "WebFetch(domain:notebooklm-directory.vercel.app)",
-      "WebFetch(domain:notebook-discovery-admin.vercel.app)"
+      "WebFetch(domain:notebook-discovery-admin.vercel.app)",
+      "Bash(pkill:*)",
+      "Bash(mv:*)",
+      "Bash(mkdir:*)",
+      "Bash(del nul)"
     ],
     "deny": []
   }

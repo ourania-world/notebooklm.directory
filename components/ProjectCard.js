@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { getCurrentUser } from '../lib/supabase';
 import { toggleSavedNotebook } from '../lib/profiles';
 
@@ -6,6 +6,22 @@ export default function ProjectCard({ notebook }) {
   const [isSaved, setIsSaved] = useState(false);
   const [user, setUser] = useState(null);
   const [saving, setSaving] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+
+  // Add keyframes for pulse animation
+  React.useEffect(() => {
+    if (typeof document !== 'undefined') {
+      const style = document.createElement('style');
+      style.textContent = `
+        @keyframes pulse {
+          0%, 100% { opacity: 0.6; transform: scale(1); }
+          50% { opacity: 0.8; transform: scale(1.02); }
+        }
+      `;
+      document.head.appendChild(style);
+      return () => document.head.removeChild(style);
+    }
+  }, []);
 
   useEffect(() => {
     async function checkSavedStatus() {
@@ -73,39 +89,93 @@ export default function ProjectCard({ notebook }) {
 
   return (
     <div 
-      className="card-hover premium-card"
+      className="premium-card"
       style={{ 
-        background: 'linear-gradient(135deg, rgba(26, 26, 46, 0.8) 0%, rgba(22, 33, 62, 0.8) 100%)',
-        borderRadius: '16px', 
+        background: isHovered 
+          ? 'linear-gradient(135deg, rgba(26, 26, 46, 0.95) 0%, rgba(22, 33, 62, 0.95) 50%, rgba(0, 255, 136, 0.08) 100%)'
+          : 'linear-gradient(135deg, rgba(26, 26, 46, 0.8) 0%, rgba(22, 33, 62, 0.8) 100%)',
+        borderRadius: '20px', 
         overflow: 'hidden',
-        border: '1px solid rgba(0, 255, 136, 0.2)',
+        border: isHovered 
+          ? '1px solid rgba(0, 255, 136, 0.4)' 
+          : '1px solid rgba(0, 255, 136, 0.2)',
         cursor: 'pointer',
         height: '100%',
         display: 'flex', 
-        backdropFilter: 'blur(10px)',
-        WebkitBackdropFilter: 'blur(10px)',
-        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
-        flexDirection: 'column'
+        backdropFilter: 'blur(15px)',
+        WebkitBackdropFilter: 'blur(15px)',
+        boxShadow: isHovered 
+          ? '0 20px 60px rgba(0, 255, 136, 0.15), 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+          : '0 8px 32px rgba(0, 0, 0, 0.2)',
+        flexDirection: 'column',
+        transform: isHovered ? 'translateY(-8px) scale(1.02)' : 'translateY(0) scale(1)',
+        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+        position: 'relative'
       }}
       onClick={handleCardClick}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Category Badge */}
+      {/* Premium Glow Effect */}
+      {isHovered && (
+        <div style={{
+          position: 'absolute',
+          top: '-2px',
+          left: '-2px',
+          right: '-2px',
+          bottom: '-2px',
+          background: 'linear-gradient(135deg, rgba(0, 255, 136, 0.3) 0%, transparent 50%, rgba(0, 255, 136, 0.1) 100%)',
+          borderRadius: '22px',
+          zIndex: -1,
+          filter: 'blur(8px)',
+          animation: 'pulse 2s infinite ease-in-out'
+        }} />
+      )}
+      {/* Premium Category Badge */}
       <div style={{
         position: 'absolute',
         top: '1.2rem',
         left: '1.2rem',
-        background: 'rgba(0, 0, 0, 0.7)', 
-        backdropFilter: 'blur(8px)',
-        WebkitBackdropFilter: 'blur(8px)',
-        padding: '0.25rem 0.75rem',
-        borderRadius: '12px',
+        background: isHovered 
+          ? 'linear-gradient(135deg, rgba(0, 255, 136, 0.2) 0%, rgba(0, 0, 0, 0.8) 100%)'
+          : 'rgba(0, 0, 0, 0.7)', 
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
+        padding: '0.3rem 0.8rem',
+        borderRadius: '14px',
         fontSize: '0.7rem',
-        color: '#00ff88',
-        fontWeight: '600',
-        zIndex: 1
+        color: isHovered ? '#ffffff' : '#00ff88',
+        fontWeight: '700',
+        textTransform: 'uppercase',
+        letterSpacing: '0.5px',
+        zIndex: 1,
+        border: isHovered ? '1px solid rgba(0, 255, 136, 0.3)' : '1px solid transparent',
+        transition: 'all 0.3s ease',
+        boxShadow: isHovered ? '0 4px 12px rgba(0, 255, 136, 0.2)' : 'none'
       }}>
         {notebook.category}
       </div>
+
+      {/* Premium Quality Score Badge */}
+      {(notebook.extraction_data?.qualityScore || notebook.quality_score) && (
+        <div style={{
+          position: 'absolute',
+          bottom: '1.2rem',
+          left: '1.2rem',
+          background: 'linear-gradient(135deg, rgba(0, 255, 136, 0.9) 0%, rgba(0, 230, 122, 0.9) 100%)',
+          padding: '0.3rem 0.6rem',
+          borderRadius: '12px',
+          fontSize: '0.7rem',
+          color: '#000000',
+          fontWeight: '800',
+          zIndex: 1,
+          boxShadow: '0 4px 12px rgba(0, 255, 136, 0.3)',
+          transform: isHovered ? 'scale(1.05)' : 'scale(1)',
+          transition: 'transform 0.3s ease'
+        }}>
+          {Math.round((notebook.extraction_data?.qualityScore || notebook.quality_score || 0.85) * 100)}% Quality
+        </div>
+      )}
       
       {/* Save Button */}
       <button

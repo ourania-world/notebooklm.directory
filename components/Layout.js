@@ -1,15 +1,102 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import AuthStatusDisplay from './AuthStatusDisplay';
 import SubscriptionBanner from './SubscriptionBanner';
+import GlobalStyles from './GlobalStyles';
 import { useAuth } from '../context/AuthContext';
 
 export default function Layout({ children, title = "NotebookLM Directory" }) {
   const router = useRouter();
   const { user, loading } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [pageLoaded, setPageLoaded] = useState(false);
+
+  useEffect(() => {
+    // Add smooth page transition styles
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      
+      @keyframes slideInFromRight {
+        from {
+          opacity: 0;
+          transform: translateX(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      
+      .nav-link:hover {
+        color: #00ff88 !important;
+        text-shadow: 0 0 8px rgba(0, 255, 136, 0.6);
+        transform: translateY(-2px);
+        transition: all 0.3s ease;
+      }
+      
+      .footer-link:hover {
+        color: #00ff88 !important;
+        transform: translateX(4px);
+        transition: all 0.3s ease;
+      }
+      
+      .page-transition {
+        animation: fadeInUp 0.6s ease-out;
+      }
+      
+      .stagger-delay-1 {
+        animation-delay: 0.1s;
+        animation-fill-mode: both;
+      }
+      
+      .stagger-delay-2 {
+        animation-delay: 0.2s;
+        animation-fill-mode: both;
+      }
+      
+      .stagger-delay-3 {
+        animation-delay: 0.3s;
+        animation-fill-mode: both;
+      }
+    `;
+    document.head.appendChild(style);
+    
+    // Trigger page load animation
+    setPageLoaded(true);
+    
+    return () => document.head.removeChild(style);
+  }, []);
+
+  useEffect(() => {
+    // Add route change animations
+    const handleRouteChangeStart = () => {
+      setPageLoaded(false);
+    };
+    
+    const handleRouteChangeComplete = () => {
+      setTimeout(() => setPageLoaded(true), 50);
+    };
+
+    router.events.on('routeChangeStart', handleRouteChangeStart);
+    router.events.on('routeChangeComplete', handleRouteChangeComplete);
+
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChangeStart);
+      router.events.off('routeChangeComplete', handleRouteChangeComplete);
+    };
+  }, [router]);
 
   return (
     <>
@@ -18,6 +105,8 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
         <meta name="description" content="Discover and share innovative NotebookLM projects across domains" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
+      
+      <GlobalStyles />
       
       <div style={{ 
         minHeight: '100vh', 
@@ -147,7 +236,7 @@ export default function Layout({ children, title = "NotebookLM Directory" }) {
           </nav>
         </header>
         
-        <main>
+        <main className={pageLoaded ? 'page-transition' : ''}>
           {children}
         </main>
          
