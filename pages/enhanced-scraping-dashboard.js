@@ -787,7 +787,7 @@ export default function EnhancedScrapingDashboard() {
                     position: 'relative'
                   }}
                   className="source-card"
-                  }}>
+                  >
                     {/* Progress bar for active sources */}
                     {isActive && progress > 0 && (
                       <div style={{
