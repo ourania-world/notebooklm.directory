@@ -538,6 +538,40 @@ export default function EnhancedScrapingDashboard() {
       const result = await response.json();
       console.log(`✅ ${source.name} scraping started:`, result);
       
+      // Immediately add scraped results to search results if available
+      if (result.success && result.results && result.results.length > 0) {
+        const newResults = result.results.map(item => ({
+          id: Math.random().toString(36).substr(2, 9),
+          title: item.title,
+          description: item.description,
+          category: source.id === 'reddit' ? 'ai' : source.id === 'github' ? 'tools' : 'research',
+          source: result.source || source.name,
+          sourceUrl: item.url,
+          readTime: "5 min",
+          popularity: Math.floor((item.quality_score || 0.7) * 100),
+          qualityScore: item.quality_score || 0.7,
+          embeddingScore: item.quality_score || 0.7,
+          tags: item.metadata?.language ? [item.metadata.language] : ['AI', 'Research'],
+          discoveredAt: new Date().toISOString(),
+          contentType: source.id === 'github' ? 'repository' : source.id === 'reddit' ? 'discussion' : 'paper',
+          sentiment: 'neutral',
+          expertise: 'intermediate',
+          author: item.author,
+          metadata: item.metadata || {}
+        }));
+        
+        // Add to existing search results
+        setSearchResults(prev => [...newResults, ...prev]);
+        console.log(`🎯 Added ${newResults.length} new results from ${source.name} to dashboard`);
+        
+        // Update scraping stats
+        setScrapingStats(prev => ({
+          ...prev,
+          totalScraped: prev.totalScraped + newResults.length,
+          todayScraped: prev.todayScraped + newResults.length
+        }));
+      }
+      
     } catch (error) {
       console.error(`❌ Error starting ${source.name} scraping:`, error);
       // Continue with other sources even if one fails
