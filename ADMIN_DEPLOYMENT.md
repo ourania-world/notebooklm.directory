@@ -1,7 +1,18 @@
 # 🚀 Admin Dashboard Deployment Guide
 
-## Environment Variables for Vercel
+## 🎯 QUICK SETUP
 
+### Option 1: Automated Setup (Recommended)
+```bash
+# 1. Install Vercel CLI if not already installed
+npm i -g vercel
+
+# 2. Run the setup script
+chmod +x setup-vercel-env.sh
+./setup-vercel-env.sh
+```
+
+### Option 2: Manual Setup
 Set these environment variables in your Vercel dashboard:
 
 ### Required for Admin Dashboard
@@ -28,7 +39,14 @@ NEXT_PUBLIC_ADMIN_EMAIL=admin@notebooklm.directory
 - **Real-time Monitoring**: Live scraping status and stats
 
 ### 🌐 Admin Dashboard URL:
-`https://your-vercel-domain.vercel.app/enhanced-scraping-dashboard`
+**LIVE:** `https://notebooklm-directory.vercel.app/enhanced-scraping-dashboard`
+
+### ✅ DEPLOYMENT STATUS:
+- [x] **Code Deployed**: Latest admin dashboard pushed to main
+- [x] **Dashboard Accessible**: Returns HTTP 200
+- [x] **Admin APIs Working**: `/api/admin/*` endpoints responding
+- [ ] **Environment Variables**: Need to be configured in Vercel
+- [ ] **Real Data Collection**: Ready to start once env vars are set
 
 ### 🚨 Security Notes:
 - Admin dashboard requires authentication

@@ -15,7 +15,8 @@
       "Bash(node:*)",
       "Bash(npm:*)",
       "Bash(powershell:*)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(gh repo view:*)"
     ],
     "deny": []
   }
