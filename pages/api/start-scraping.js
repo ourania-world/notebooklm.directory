@@ -110,14 +110,46 @@ export default async function handler(req, res) {
 
     console.log(`📊 Scraped ${results.length} items from ${sourceName}`)
 
-    // Store scraped data in public notebooks table for browse page
+    // Store scraped data in database for browse page
     if (results.length > 0) {
-      console.log('🔄 Storing scraped data in public notebooks table...')
-      const storeResult = await storeInPublicNotebooks(results, source)
-      if (storeResult.success) {
-        console.log(`✅ ${results.length} items now available in public browse page`)
-      } else {
-        console.warn('⚠️ Failed to store in public table, but scraping was successful')
+      console.log('🔄 Storing scraped data in database...')
+      
+      // Try storing in scraped_items table first (more reliable)
+      try {
+        const scrapedItemsToInsert = results.map(item => ({
+          operation_id: operationId,
+          source,
+          title: item.title,
+          description: item.description,
+          url: item.url,
+          author: item.author,
+          quality_score: item.quality_score,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        }))
+
+        const { data: scrapedData, error: scrapedError } = await supabaseAdmin
+          .from('scraped_items')
+          .insert(scrapedItemsToInsert)
+          .select()
+
+        if (scrapedData && !scrapedError) {
+          console.log(`✅ Stored ${scrapedData.length} items in scraped_items table`)
+        } else {
+          console.warn('⚠️ Failed to store in scraped_items:', scrapedError?.message)
+        }
+      } catch (scrapedError) {
+        console.warn('⚠️ Error storing in scraped_items:', scrapedError.message)
+      }
+      
+      // Also try storing in notebooks table
+      try {
+        const storeResult = await storeInPublicNotebooks(results, source)
+        if (storeResult.success) {
+          console.log(`✅ Also stored in notebooks table`)
+        }
+      } catch (notebooksError) {
+        console.warn('⚠️ Notebooks table storage failed:', notebooksError.message)
       }
     }
 
