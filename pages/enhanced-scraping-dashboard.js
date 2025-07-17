@@ -43,8 +43,17 @@ export default function EnhancedScrapingDashboard() {
     const initialize = async () => {
       try {
         await checkAuth();
-        await loadInitialData();
-        await loadActiveScrapeJobs();
+        
+        // Set loading to false first, then load data in background
+        setLoading(false);
+        
+        // Load data in background (don't block UI)
+        Promise.all([
+          loadInitialData(),
+          loadActiveScrapeJobs()
+        ]).catch(error => {
+          console.error('❌ Background data loading error:', error);
+        });
         
         // Initialize WebSocket for real-time updates
         if (realTimeUpdates) {
@@ -106,21 +115,15 @@ export default function EnhancedScrapingDashboard() {
       console.log('👤 USER CHECK RESULT:', user ? 'User found' : 'No user');
       if (!user) {
         console.log('⚠️ NO USER FOUND - CONTINUING FOR TESTING (AUTH DISABLED)');
-        // router.push('/login?redirect=/enhanced-scraping-dashboard'); // DISABLED FOR TESTING
         setUser(null);
-        setLoading(false); // ADDED: Set loading to false immediately
         return;
       }
       console.log('✅ USER AUTHENTICATED:', user.email);
       setUser(user);
     } catch (error) {
       console.error('❌ AUTH ERROR:', error);
-      // router.push('/login'); // DISABLED FOR TESTING
       console.log('⚠️ AUTH ERROR - CONTINUING FOR TESTING');
       setUser(null);
-    } finally {
-      console.log('🏁 AUTH CHECK COMPLETE - SETTING LOADING TO FALSE');
-      setLoading(false);
     }
   };
 
@@ -1366,14 +1369,38 @@ export default function EnhancedScrapingDashboard() {
               gap: '1.5rem'
             }}>
               {searchResults.map((item, index) => (
-                <div key={index} style={{
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  borderRadius: '16px',
-                  padding: '1.5rem',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease'
-                }}>
+                <div 
+                  key={index} 
+                  onClick={() => {
+                    if (item.url) {
+                      window.open(item.url, '_blank');
+                    } else if (item.id) {
+                      window.open(`/notebook/${item.id}`, '_blank');
+                    } else {
+                      console.log('📋 Item details:', item);
+                    }
+                  }}
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.05)',
+                    borderRadius: '16px',
+                    padding: '1.5rem',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease',
+                    ':hover': {
+                      background: 'rgba(255, 255, 255, 0.1)',
+                      transform: 'translateY(-2px)'
+                    }
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.background = 'rgba(255, 255, 255, 0.1)';
+                    e.target.style.transform = 'translateY(-2px)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.background = 'rgba(255, 255, 255, 0.05)';
+                    e.target.style.transform = 'translateY(0)';
+                  }}
+                >
                   <div style={{
                     display: 'flex',
                     justifyContent: 'space-between',

@@ -99,17 +99,18 @@ export default function EnhancedMinimal() {
         fontFamily: 'system-ui'
       }}>
         <div style={{ textAlign: 'center' }}>
-          <div style={{
-            width: '50px',
-            height: '50px',
-            border: '3px solid rgba(0, 255, 136, 0.3)',
-            borderTop: '3px solid #00ff88',
-            borderRadius: '50%',
-            animation: 'spin 1s linear infinite',
-            margin: '0 auto 1rem'
-          }} />
+          <div className="loading-spinner" />
           <p>Loading Enhanced Dashboard...</p>
           <style jsx>{`
+            .loading-spinner {
+              width: 50px;
+              height: 50px;
+              border: 3px solid rgba(0, 255, 136, 0.3);
+              border-top: 3px solid #00ff88;
+              border-radius: 50%;
+              animation: spin 1s linear infinite;
+              margin: 0 auto 1rem;
+            }
             @keyframes spin {
               0% { transform: rotate(0deg); }
               100% { transform: rotate(360deg); }
