@@ -27,6 +27,7 @@ export default function EnhancedScrapingDashboard() {
   const [currentActivity, setCurrentActivity] = useState('');
   const [activityLog, setActivityLog] = useState([]);
   const [selectedSources, setSelectedSources] = useState(['notebooklm', 'reddit', 'github']);
+  const [notebookLMUrl, setNotebookLMUrl] = useState('');
   const [scrapeConfig, setScrapeConfig] = useState({
     maxConcurrency: 5,
     respectRateLimit: true,
@@ -540,12 +541,19 @@ export default function EnhancedScrapingDashboard() {
     
     try {
       logActivity(`📡 Sending scraping request to ${source.name}...`, 'info');
+      
+      // Prepare config with NotebookLM URL if applicable
+      const configWithUrl = {
+        ...scrapeConfig,
+        ...(source.id === 'notebooklm' && notebookLMUrl ? { notebookUrl: notebookLMUrl } : {})
+      };
+      
       const response = await fetch('/api/start-scraping', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           source: source.id,
-          config: scrapeConfig
+          config: configWithUrl
         })
       });
       
@@ -904,6 +912,45 @@ export default function EnhancedScrapingDashboard() {
                   <option value="high">High</option>
                 </select>
               </div>
+              
+              {/* NotebookLM URL Input */}
+              {selectedSources.includes('notebooklm') && (
+                <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexGrow: 1 }}>
+                  <label style={{ color: '#e2e8f0', fontSize: '0.9rem', whiteSpace: 'nowrap' }}>NotebookLM URL:</label>
+                  <input
+                    type="text"
+                    value={notebookLMUrl}
+                    onChange={(e) => setNotebookLMUrl(e.target.value)}
+                    placeholder="https://notebooklm.google.com/notebook/89d46077-35f8-4f9b-8711-4a6415c183e1"
+                    style={{
+                      padding: '0.5rem',
+                      background: 'rgba(255, 255, 255, 0.05)',
+                      color: '#ffffff',
+                      border: '1px solid rgba(0, 255, 136, 0.3)',
+                      borderRadius: '8px',
+                      fontSize: '0.9rem',
+                      flexGrow: 1,
+                      minWidth: '300px'
+                    }}
+                  />
+                  {notebookLMUrl && (
+                    <button
+                      onClick={() => setNotebookLMUrl('')}
+                      style={{
+                        padding: '0.5rem',
+                        background: 'rgba(255, 107, 107, 0.2)',
+                        color: '#ff6b6b',
+                        border: 'none',
+                        borderRadius: '6px',
+                        cursor: 'pointer',
+                        fontSize: '0.8rem'
+                      }}
+                    >
+                      Clear
+                    </button>
+                  )}
+                </div>
+              )}
               
               <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                 <label style={{ color: '#e2e8f0', fontSize: '0.9rem' }}>Concurrency:</label>

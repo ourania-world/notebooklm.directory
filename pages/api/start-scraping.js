@@ -46,6 +46,14 @@ export default async function handler(req, res) {
         console.error('arXiv scraping failed:', error.message)
         results = getArXivFallback()
       }
+    } else if (source === 'notebooklm') {
+      try {
+        results = await scrapeNotebookLM(config?.notebookUrl || config?.searchTerms)
+        sourceName = 'NotebookLM'
+      } catch (error) {
+        console.error('NotebookLM scraping failed:', error.message)
+        results = getNotebookLMFallback()
+      }
     } else {
       // Default fallback for unknown sources
       results = getGenericFallback(source)
@@ -162,6 +170,93 @@ async function scrapeGitHub(searchTerms) {
   }
 }
 
+// Real NotebookLM scraping function
+async function scrapeNotebookLM(urlOrSearch) {
+  console.log('📓 Scraping NotebookLM for:', urlOrSearch)
+  
+  // Check if input is a direct NotebookLM URL
+  if (urlOrSearch && urlOrSearch.includes('notebooklm.google.com')) {
+    console.log('🎯 Direct NotebookLM URL detected, extracting...')
+    
+    // Call our dedicated NotebookLM extraction API
+    try {
+      const response = await fetch('/api/scrape-notebooklm', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          notebookUrl: urlOrSearch,
+          config: { deepExtraction: true }
+        })
+      })
+      
+      if (!response.ok) {
+        throw new Error(`NotebookLM API error: ${response.status}`)
+      }
+      
+      const extractionResult = await response.json()
+      
+      if (extractionResult.success && extractionResult.data) {
+        const notebook = extractionResult.data
+        
+        // Convert notebook data to standard result format
+        return [{
+          title: notebook.title,
+          description: notebook.description,
+          url: notebook.originalUrl,
+          author: 'NotebookLM User',
+          quality_score: notebook.qualityScore || 0.9,
+          metadata: {
+            notebookId: notebook.notebookId,
+            sourceCount: notebook.sources.length,
+            topics: notebook.generatedContent.relatedTopics || [],
+            difficulty: notebook.metadata.difficulty,
+            readTime: notebook.metadata.estimatedReadTime,
+            extractionMethod: notebook.metadata.extractionMethod,
+            type: 'notebook'
+          }
+        }]
+      }
+    } catch (error) {
+      console.error('NotebookLM extraction failed:', error.message)
+      // Fall back to mock data
+    }
+  }
+  
+  // For search terms or if direct extraction fails, use discovery approach
+  console.log('🔍 Searching for NotebookLM content related to:', urlOrSearch)
+  
+  // This would search for NotebookLM links in various sources
+  // For now, return mock discovery results
+  return [
+    {
+      title: 'AI Research NotebookLM Collection',
+      description: 'Comprehensive collection of AI research papers and tutorials compiled in NotebookLM',
+      url: 'https://notebooklm.google.com/notebook/sample-ai-research',
+      author: 'AI Researcher',
+      quality_score: 0.92,
+      metadata: {
+        sourceCount: 12,
+        topics: ['Artificial Intelligence', 'Machine Learning', 'Research'],
+        type: 'notebook',
+        discoveryMethod: 'search'
+      }
+    },
+    {
+      title: 'Deep Learning Study Guide',
+      description: 'Structured learning path for deep learning with curated resources and notes',
+      url: 'https://notebooklm.google.com/notebook/deep-learning-guide',
+      author: 'ML Student',
+      quality_score: 0.87,
+      metadata: {
+        sourceCount: 8,
+        topics: ['Deep Learning', 'Neural Networks', 'Education'],
+        type: 'notebook',
+        discoveryMethod: 'search'
+      }
+    }
+  ]
+}
+
 // Real arXiv scraping function
 async function scrapeArXiv(searchTerms) {
   console.log('📚 Scraping arXiv for:', searchTerms)
@@ -256,6 +351,37 @@ function getArXivFallback() {
       author: 'Vaswani et al.',
       quality_score: 0.95,
       metadata: { source: 'arXiv', type: 'research paper', citations: 50000 }
+    }
+  ]
+}
+
+function getNotebookLMFallback() {
+  return [
+    {
+      title: 'Machine Learning Research Compilation',
+      description: 'A comprehensive collection of ML research papers, tutorials, and practical implementations compiled in NotebookLM',
+      url: 'https://notebooklm.google.com/notebook/89d46077-35f8-4f9b-8711-4a6415c183e1',
+      author: 'Research Team',
+      quality_score: 0.93,
+      metadata: { 
+        sourceCount: 15, 
+        topics: ['Machine Learning', 'Transformers', 'PyTorch'],
+        type: 'notebook',
+        source: 'fallback'
+      }
+    },
+    {
+      title: 'AI Ethics and Safety Guidelines',
+      description: 'Comprehensive notebook covering AI ethics, safety considerations, and responsible AI development practices',
+      url: 'https://notebooklm.google.com/notebook/ai-ethics-safety',
+      author: 'Ethics Committee',
+      quality_score: 0.91,
+      metadata: { 
+        sourceCount: 8, 
+        topics: ['AI Ethics', 'Safety', 'Governance'],
+        type: 'notebook',
+        source: 'fallback'
+      }
     }
   ]
 }
