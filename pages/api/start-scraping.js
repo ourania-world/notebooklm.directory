@@ -9,17 +9,14 @@ async function storeInPublicNotebooks(results, source) {
     title: item.title,
     description: item.description,
     url: item.url,
+    notebook_url: item.url, // Use the same URL for both fields
     author: item.author || 'Unknown',
-    category: source === 'reddit' ? 'AI' : 
-              source === 'github' ? 'Tools' : 
+    category: source === 'reddit' ? 'Academic' : 
+              source === 'github' ? 'Research' : 
               source === 'arxiv' ? 'Research' :
-              source === 'notebooklm' ? 'AI' : 'General',
-    tags: item.metadata?.topics || item.metadata?.language ? [item.metadata.language] : ['AI'],
-    featured: item.quality_score > 0.9,
-    status: 'published',
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-    popularity_score: Math.floor((item.quality_score || 0.7) * 100),
+              source === 'notebooklm' ? 'Academic' : 'Academic',
+    tags: item.metadata?.topics || item.metadata?.language ? [item.metadata.language] : ['AI', 'Machine Learning'],
+    featured: (item.quality_score || 0) > 0.9,
     source_platform: source,
     extraction_data: {
       originalMetadata: item.metadata,
