@@ -145,7 +145,7 @@ export function AuthProvider({ children }) {
 
   // During SSR, just return children without user data
   // This prevents hydration mismatches
-  return <AuthContext.Provider value={value}>{mounted ? children : null}</AuthContext.Provider>;
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export const useAuth = () => {

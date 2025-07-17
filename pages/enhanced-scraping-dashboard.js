@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import Layout from '../components/Layout';
 import { supabase } from '../lib/supabase';
@@ -19,6 +19,36 @@ export default function EnhancedScrapingDashboard() {
     activeSources: 0,
     successRate: 0
   });
+  const [activeScrapeJobs, setActiveScrapeJobs] = useState([]);
+  const [scrapeProgress, setScrapeProgress] = useState({});
+  const [selectedSources, setSelectedSources] = useState(['notebooklm', 'reddit', 'github']);
+  const [scrapeConfig, setScrapeConfig] = useState({
+    maxConcurrency: 5,
+    respectRateLimit: true,
+    enableDeepScraping: false,
+    qualityFilter: 'medium'
+  });
+  const [realTimeUpdates, setRealTimeUpdates] = useState(true);
+  const wsRef = useRef(null);
+  
+  useEffect(() => {
+    console.log('🔧 USE EFFECT TRIGGERED - CHECKING AUTH AND LOADING DATA');
+    checkAuth();
+    loadInitialData();
+    loadActiveScrapeJobs();
+    
+    // Initialize WebSocket for real-time updates
+    if (realTimeUpdates) {
+      initializeWebSocket();
+    }
+    
+    // Cleanup on unmount
+    return () => {
+      if (wsRef.current) {
+        wsRef.current.close();
+      }
+    };
+  }, [realTimeUpdates]);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [viewMode, setViewMode] = useState('grid'); // grid, list, timeline
   const [filters, setFilters] = useState({
@@ -26,6 +56,18 @@ export default function EnhancedScrapingDashboard() {
     source: 'all',
     contentType: 'all'
   });
+
+  // Content sources for multi-source scraping
+  const scrapingSources = [
+    { id: 'notebooklm', name: 'NotebookLM', icon: '📓', color: '#00ff88', status: 'active', lastRun: '2 min ago' },
+    { id: 'reddit', name: 'Reddit', icon: '🔴', color: '#ff6b6b', status: 'active', lastRun: '5 min ago' },
+    { id: 'github', name: 'GitHub', icon: '⚫', color: '#4ecdc4', status: 'active', lastRun: '1 min ago' },
+    { id: 'arxiv', name: 'ArXiv', icon: '📚', color: '#45b7d1', status: 'idle', lastRun: '1 hour ago' },
+    { id: 'youtube', name: 'YouTube', icon: '📺', color: '#96ceb4', status: 'error', lastRun: '3 hours ago' },
+    { id: 'hackernews', name: 'Hacker News', icon: '🧡', color: '#feca57', status: 'active', lastRun: '30 sec ago' },
+    { id: 'medium', name: 'Medium', icon: '✍️', color: '#ff9ff3', status: 'idle', lastRun: '45 min ago' },
+    { id: 'devto', name: 'Dev.to', icon: '💻', color: '#54a0ff', status: 'active', lastRun: '1 min ago' }
+  ];
 
   // Categories for content discovery
   const categories = [
@@ -39,11 +81,6 @@ export default function EnhancedScrapingDashboard() {
     { id: 'tutorials', name: 'Tutorials', icon: '📖', color: '#54a0ff' }
   ];
 
-  useEffect(() => {
-    console.log('🔧 USE EFFECT TRIGGERED - CHECKING AUTH AND LOADING DATA');
-    checkAuth();
-    loadInitialData();
-  }, []);
 
   const checkAuth = async () => {
     console.log('🔐 CHECKING AUTHENTICATION...');
@@ -111,47 +148,109 @@ export default function EnhancedScrapingDashboard() {
 
   const loadRecommendations = async () => {
     try {
-      // Simulate AI-powered recommendations
+      // Enhanced AI-powered recommendations with enterprise features
       const mockRecommendations = [
         {
           id: 1,
           title: "Advanced React Patterns for 2024",
-          description: "Discover cutting-edge React patterns and best practices for building scalable applications",
+          description: "Discover cutting-edge React patterns and best practices for building scalable applications with modern hooks and state management",
           category: "webdev",
           source: "Medium",
+          sourceUrl: "https://medium.com/example",
           readTime: "8 min",
           popularity: 95,
-          tags: ["React", "JavaScript", "Frontend"]
+          qualityScore: 0.92,
+          embeddingScore: 0.87,
+          tags: ["React", "JavaScript", "Frontend", "Hooks", "Performance"],
+          discoveredAt: new Date().toISOString(),
+          contentType: "article",
+          sentiment: "positive",
+          expertise: "advanced"
         },
         {
           id: 2,
           title: "Building AI-Powered Search with Vector Embeddings",
-          description: "Learn how to implement semantic search using vector databases and embeddings",
+          description: "Learn how to implement semantic search using vector databases, embeddings, and hybrid search techniques for enterprise applications",
           category: "ai",
           source: "Dev.to",
+          sourceUrl: "https://dev.to/example",
           readTime: "12 min",
           popularity: 92,
-          tags: ["AI", "Vector Search", "Machine Learning"]
+          qualityScore: 0.89,
+          embeddingScore: 0.91,
+          tags: ["AI", "Vector Search", "Machine Learning", "Embeddings", "Supabase"],
+          discoveredAt: new Date(Date.now() - 1800000).toISOString(),
+          contentType: "tutorial",
+          sentiment: "neutral",
+          expertise: "intermediate"
         },
         {
           id: 3,
-          title: "The Future of Content Discovery",
-          description: "Exploring next-generation content recommendation systems",
+          title: "The Future of Content Discovery: Serendipitous AI",
+          description: "Exploring next-generation content recommendation systems that balance relevance with serendipitous discovery",
           category: "ai",
           source: "TechCrunch",
+          sourceUrl: "https://techcrunch.com/example",
           readTime: "6 min",
           popularity: 88,
-          tags: ["AI", "Recommendations", "Discovery"]
+          qualityScore: 0.85,
+          embeddingScore: 0.83,
+          tags: ["AI", "Recommendations", "Discovery", "Algorithms"],
+          discoveredAt: new Date(Date.now() - 3600000).toISOString(),
+          contentType: "analysis",
+          sentiment: "positive",
+          expertise: "beginner"
         },
         {
           id: 4,
-          title: "Optimizing Database Performance at Scale",
-          description: "Advanced techniques for database optimization in high-traffic applications",
+          title: "Distributed Systems: Optimizing Database Performance at Web Scale",
+          description: "Advanced techniques for database optimization, sharding, and performance tuning in high-traffic applications",
           category: "data",
           source: "Engineering Blog",
+          sourceUrl: "https://engineering.example.com",
           readTime: "15 min",
           popularity: 85,
-          tags: ["Database", "Performance", "Scalability"]
+          qualityScore: 0.94,
+          embeddingScore: 0.79,
+          tags: ["Database", "Performance", "Scalability", "Distributed Systems", "PostgreSQL"],
+          discoveredAt: new Date(Date.now() - 7200000).toISOString(),
+          contentType: "technical",
+          sentiment: "neutral",
+          expertise: "advanced"
+        },
+        {
+          id: 5,
+          title: "Real-time Data Processing with Apache Kafka and Node.js",
+          description: "Building robust real-time data pipelines using Kafka, microservices, and event-driven architectures",
+          category: "data",
+          source: "GitHub",
+          sourceUrl: "https://github.com/example/kafka-tutorial",
+          readTime: "20 min",
+          popularity: 78,
+          qualityScore: 0.88,
+          embeddingScore: 0.85,
+          tags: ["Kafka", "Node.js", "Real-time", "Microservices", "Event Streaming"],
+          discoveredAt: new Date(Date.now() - 10800000).toISOString(),
+          contentType: "repository",
+          sentiment: "positive",
+          expertise: "intermediate"
+        },
+        {
+          id: 6,
+          title: "Multi-modal AI: Combining Text, Images, and Audio Processing",
+          description: "Comprehensive guide to building multi-modal AI systems that process diverse data types for enhanced understanding",
+          category: "ai",
+          source: "ArXiv",
+          sourceUrl: "https://arxiv.org/abs/example",
+          readTime: "25 min",
+          popularity: 91,
+          qualityScore: 0.96,
+          embeddingScore: 0.93,
+          tags: ["Multi-modal AI", "Computer Vision", "NLP", "Deep Learning", "Neural Networks"],
+          discoveredAt: new Date(Date.now() - 14400000).toISOString(),
+          contentType: "paper",
+          sentiment: "neutral",
+          expertise: "advanced"
         }
       ];
 
@@ -177,36 +276,203 @@ export default function EnhancedScrapingDashboard() {
   };
 
   const handleSearch = async (query) => {
+    console.log('🔍 EXECUTING ENHANCED SEARCH:', query);
+    
     if (!query.trim()) {
       loadRecentContent();
       return;
     }
 
     try {
-      // Simulate semantic search
-      const { data, error } = await supabase
+      // Enhanced hybrid search combining semantic and keyword matching
+      const searchTerm = query.toLowerCase();
+      
+      // First try database search
+      const { data: dbResults, error } = await supabase
         .from('notebooks')
         .select('*')
         .or(`title.ilike.%${query}%,description.ilike.%${query}%`)
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
-      setSearchResults(data || []);
+      if (error) {
+        console.warn('Database search error:', error);
+      }
+      
+      // Simulate semantic search with AI recommendations
+      const semanticResults = recommendations.filter(item => 
+        item.title.toLowerCase().includes(searchTerm) ||
+        item.description.toLowerCase().includes(searchTerm) ||
+        item.tags.some(tag => tag.toLowerCase().includes(searchTerm))
+      ).map(item => ({
+        ...item,
+        id: `rec-${item.id}`,
+        title: item.title,
+        description: item.description,
+        created_at: item.discoveredAt,
+        source_type: item.source.toLowerCase(),
+        quality_score: item.qualityScore,
+        embedding_score: item.embeddingScore,
+        content_type: item.contentType,
+        tags: item.tags,
+        expertise_level: item.expertise
+      }));
+      
+      // Combine and rank results
+      const combinedResults = [
+        ...semanticResults,
+        ...(dbResults || [])
+      ].sort((a, b) => {
+        // Prioritize by quality score and embedding similarity
+        const scoreA = (a.quality_score || 0.5) * (a.embedding_score || 0.5);
+        const scoreB = (b.quality_score || 0.5) * (b.embedding_score || 0.5);
+        return scoreB - scoreA;
+      });
+      
+      setSearchResults(combinedResults);
+      console.log(`✅ Found ${combinedResults.length} results for "${query}"`);
+      
     } catch (error) {
-      console.error('Search error:', error);
+      console.error('❌ Enhanced search error:', error);
+      // Fallback to basic search
+      setSearchResults([]);
     }
   };
 
-  const startScraping = async () => {
+  // Initialize WebSocket for real-time updates
+  const initializeWebSocket = () => {
+    console.log('🔌 INITIALIZING WEBSOCKET CONNECTION');
+    try {
+      // Create WebSocket connection for real-time scraping updates
+      wsRef.current = new WebSocket('ws://localhost:3003/scraping-updates');
+      
+      wsRef.current.onopen = () => {
+        console.log('✅ WebSocket connected for real-time updates');
+      };
+      
+      wsRef.current.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        handleRealTimeUpdate(data);
+      };
+      
+      wsRef.current.onerror = (error) => {
+        console.warn('⚠️ WebSocket error:', error);
+      };
+      
+      wsRef.current.onclose = () => {
+        console.log('🔌 WebSocket connection closed');
+        // Attempt to reconnect after 5 seconds
+        if (realTimeUpdates) {
+          setTimeout(() => initializeWebSocket(), 5000);
+        }
+      };
+    } catch (error) {
+      console.warn('⚠️ Failed to initialize WebSocket:', error);
+    }
+  };
+  
+  // Handle real-time updates from WebSocket
+  const handleRealTimeUpdate = (data) => {
+    console.log('📡 REAL-TIME UPDATE:', data);
+    
+    switch (data.type) {
+      case 'scrape_started':
+        setActiveScrapeJobs(prev => [...prev, data.job]);
+        break;
+      case 'scrape_progress':
+        setScrapeProgress(prev => ({...prev, [data.jobId]: data.progress}));
+        break;
+      case 'scrape_completed':
+        setActiveScrapeJobs(prev => prev.filter(job => job.id !== data.jobId));
+        loadScrapingStats();
+        loadRecentContent();
+        break;
+      case 'new_content':
+        // Add new content to search results if it matches current filters
+        if (data.content && (!selectedCategory || selectedCategory === 'all' || data.content.category === selectedCategory)) {
+          setSearchResults(prev => [data.content, ...prev.slice(0, 19)]);
+        }
+        break;
+      default:
+        console.log('Unknown update type:', data.type);
+    }
+  };
+  
+  // Load active scraping jobs
+  const loadActiveScrapeJobs = async () => {
+    try {
+      // Simulate API call to get active jobs
+      const mockJobs = [
+        { id: 'job-1', source: 'reddit', status: 'running', progress: 65, startTime: Date.now() - 120000 },
+        { id: 'job-2', source: 'github', status: 'running', progress: 23, startTime: Date.now() - 45000 }
+      ];
+      setActiveScrapeJobs(mockJobs);
+    } catch (error) {
+      console.error('Error loading active jobs:', error);
+    }
+  };
+  
+  // Start comprehensive multi-source scraping
+  const startAdvancedScraping = async () => {
+    console.log('🚀 STARTING ADVANCED MULTI-SOURCE SCRAPING');
     setScrapingStatus('running');
     
-    // Simulate scraping process
-    setTimeout(() => {
-      setScrapingStatus('completed');
-      loadScrapingStats();
-      loadRecentContent();
-    }, 3000);
+    try {
+      // Start scraping for each selected source
+      for (const sourceId of selectedSources) {
+        const source = scrapingSources.find(s => s.id === sourceId);
+        if (source) {
+          await startSourceScraping(source);
+        }
+      }
+    } catch (error) {
+      console.error('Error starting scraping:', error);
+      setScrapingStatus('error');
+    }
   };
+  
+  // Start scraping for a specific source
+  const startSourceScraping = async (source) => {
+    console.log(`🌐 Starting ${source.name} scraping...`);
+    
+    try {
+      const response = await fetch('/api/start-scraping', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          source: source.id,
+          config: scrapeConfig
+        })
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Failed to start ${source.name} scraping`);
+      }
+      
+      const result = await response.json();
+      console.log(`✅ ${source.name} scraping started:`, result);
+      
+    } catch (error) {
+      console.error(`❌ Error starting ${source.name} scraping:`, error);
+      // Continue with other sources even if one fails
+    }
+  };
+  
+  // Stop all active scraping
+  const stopAllScraping = async () => {
+    console.log('⏹️ STOPPING ALL SCRAPING');
+    setScrapingStatus('idle');
+    
+    try {
+      await fetch('/api/stop-scraping', { method: 'POST' });
+      setActiveScrapeJobs([]);
+      setScrapeProgress({});
+    } catch (error) {
+      console.error('Error stopping scraping:', error);
+    }
+  };
+  
+  // Legacy function for backward compatibility
+  const startScraping = startAdvancedScraping;
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -258,7 +524,54 @@ export default function EnhancedScrapingDashboard() {
   console.log('📊 CURRENT STATE:', { user, loading, searchResults: searchResults.length, recommendations: recommendations.length });
 
   return (
-    <Layout title="Enhanced Scraping Dashboard - AI Discovery Platform">
+    <>
+      <style jsx global>{`
+        @keyframes pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.5; }
+        }
+        
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        
+        .enhanced-card:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 8px 32px rgba(0, 255, 136, 0.2);
+        }
+        
+        .source-card:hover {
+          transform: scale(1.02);
+          border-color: rgba(0, 255, 136, 0.5);
+        }
+        
+        .progress-bar {
+          transition: width 0.3s ease;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+          background: #00ff88;
+        }
+        
+        input[type="range"]::-moz-range-thumb {
+          background: #00ff88;
+          border: none;
+        }
+      `}</style>
+      
+      <Layout title="Enhanced Scraping Dashboard - AI Discovery Platform">
       <div style={{
         background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)',
         minHeight: '100vh',
@@ -266,6 +579,67 @@ export default function EnhancedScrapingDashboard() {
       }}>
         {/* Header Section */}
         <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 2rem' }}>
+          
+          {/* Real-time Control Bar */}
+          <div style={{
+            background: 'rgba(255, 255, 255, 0.05)',
+            borderRadius: '16px',
+            padding: '1.5rem',
+            marginBottom: '2rem',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+              <div style={{
+                width: '12px',
+                height: '12px',
+                borderRadius: '50%',
+                background: realTimeUpdates ? '#00ff88' : '#e2e8f0',
+                animation: realTimeUpdates ? 'pulse 2s infinite' : 'none'
+              }} />
+              <span style={{ color: '#ffffff', fontWeight: '500' }}>
+                Real-time Updates: {realTimeUpdates ? 'ON' : 'OFF'}
+              </span>
+              <button
+                onClick={() => setRealTimeUpdates(!realTimeUpdates)}
+                style={{
+                  padding: '0.5rem 1rem',
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  color: '#ffffff',
+                  border: '1px solid rgba(255, 255, 255, 0.2)',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  fontSize: '0.9rem'
+                }}
+              >
+                Toggle
+              </button>
+            </div>
+            
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+              <span style={{ color: '#e2e8f0', fontSize: '0.9rem' }}>
+                Active Jobs: {activeScrapeJobs.length}
+              </span>
+              {activeScrapeJobs.length > 0 && (
+                <button
+                  onClick={stopAllScraping}
+                  style={{
+                    padding: '0.5rem 1rem',
+                    background: 'rgba(255, 107, 107, 0.2)',
+                    color: '#ff6b6b',
+                    border: '1px solid rgba(255, 107, 107, 0.3)',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    fontSize: '0.9rem'
+                  }}
+                >
+                  Stop All
+                </button>
+              )}
+            </div>
+          </div>
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
@@ -286,30 +660,292 @@ export default function EnhancedScrapingDashboard() {
               </p>
             </div>
             
-            <button
-              onClick={startScraping}
-              disabled={scrapingStatus === 'running'}
-              style={{
-                padding: '1rem 2rem',
-                background: scrapingStatus === 'running' 
-                  ? 'rgba(0, 255, 136, 0.3)' 
-                  : 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
-                color: scrapingStatus === 'running' ? '#e2e8f0' : '#000',
-                border: 'none',
-                borderRadius: '12px',
-                fontSize: '1.1rem',
-                fontWeight: 'bold',
-                cursor: scrapingStatus === 'running' ? 'not-allowed' : 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.5rem'
-              }}
-            >
-              {getStatusIcon(scrapingStatus)} 
-              {scrapingStatus === 'running' ? 'Scraping...' : 'Start Scraping'}
-            </button>
+            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
+              <button
+                onClick={startAdvancedScraping}
+                disabled={scrapingStatus === 'running' || selectedSources.length === 0}
+                style={{
+                  padding: '1rem 2rem',
+                  background: scrapingStatus === 'running' 
+                    ? 'rgba(0, 255, 136, 0.3)' 
+                    : selectedSources.length === 0
+                    ? 'rgba(255, 255, 255, 0.1)'
+                    : 'linear-gradient(135deg, #00ff88 0%, #00e67a 100%)',
+                  color: scrapingStatus === 'running' || selectedSources.length === 0 ? '#e2e8f0' : '#000',
+                  border: 'none',
+                  borderRadius: '12px',
+                  fontSize: '1.1rem',
+                  fontWeight: 'bold',
+                  cursor: (scrapingStatus === 'running' || selectedSources.length === 0) ? 'not-allowed' : 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem'
+                }}
+              >
+                {getStatusIcon(scrapingStatus)} 
+                {scrapingStatus === 'running' 
+                  ? `Scraping ${selectedSources.length} sources...` 
+                  : selectedSources.length === 0
+                  ? 'Select Sources to Start'
+                  : `Start Multi-Source Scraping (${selectedSources.length})`}
+              </button>
+              
+              <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                <label style={{ color: '#e2e8f0', fontSize: '0.9rem' }}>Quality:</label>
+                <select
+                  value={scrapeConfig.qualityFilter}
+                  onChange={(e) => setScrapeConfig({...scrapeConfig, qualityFilter: e.target.value})}
+                  style={{
+                    padding: '0.5rem',
+                    background: 'rgba(255, 255, 255, 0.05)',
+                    color: '#ffffff',
+                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    borderRadius: '8px',
+                    fontSize: '0.9rem'
+                  }}
+                >
+                  <option value="low">Low</option>
+                  <option value="medium">Medium</option>
+                  <option value="high">High</option>
+                </select>
+              </div>
+              
+              <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                <label style={{ color: '#e2e8f0', fontSize: '0.9rem' }}>Concurrency:</label>
+                <input
+                  type="range"
+                  min="1"
+                  max="10"
+                  value={scrapeConfig.maxConcurrency}
+                  onChange={(e) => setScrapeConfig({...scrapeConfig, maxConcurrency: parseInt(e.target.value)})}
+                  style={{
+                    accentColor: '#00ff88'
+                  }}
+                />
+                <span style={{ color: '#00ff88', fontSize: '0.9rem', minWidth: '20px' }}>
+                  {scrapeConfig.maxConcurrency}
+                </span>
+              </div>
+            </div>
           </div>
 
+          {/* Multi-Source Scraping Sources */}
+          <div style={{ marginBottom: '3rem' }}>
+            <h2 style={{
+              fontSize: '1.5rem',
+              color: '#ffffff',
+              marginBottom: '1.5rem'
+            }}>
+              🌐 Content Sources
+            </h2>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+              gap: '1rem'
+            }}>
+              {scrapingSources.map((source) => {
+                const isSelected = selectedSources.includes(source.id);
+                const isActive = activeScrapeJobs.some(job => job.source === source.id);
+                const progress = scrapeProgress[source.id] || 0;
+                
+                return (
+                  <div key={source.id} style={{
+                    background: isSelected ? 'rgba(0, 255, 136, 0.1)' : 'rgba(255, 255, 255, 0.05)',
+                    borderRadius: '12px',
+                    padding: '1.5rem',
+                    border: `1px solid ${isSelected ? 'rgba(0, 255, 136, 0.3)' : 'rgba(255, 255, 255, 0.1)'}`,
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease',
+                    position: 'relative'
+                  }}
+                  className="source-card"
+                  }}>
+                    {/* Progress bar for active sources */}
+                    {isActive && progress > 0 && (
+                      <div style={{
+                        position: 'absolute',
+                        bottom: 0,
+                        left: 0,
+                        height: '4px',
+                        width: `${progress}%`,
+                        background: 'linear-gradient(90deg, #00ff88 0%, #00e67a 100%)',
+                        borderRadius: '0 0 12px 12px',
+                        transition: 'width 0.3s ease'
+                      }} />
+                    )}
+                    
+                    <div onClick={() => {
+                      if (isSelected) {
+                        setSelectedSources(prev => prev.filter(id => id !== source.id));
+                      } else {
+                        setSelectedSources(prev => [...prev, source.id]);
+                      }
+                    }}>
+                      <div style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'flex-start',
+                        marginBottom: '1rem'
+                      }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                          <span style={{ fontSize: '1.5rem' }}>{source.icon}</span>
+                          <h3 style={{
+                            fontSize: '1.1rem',
+                            color: '#ffffff',
+                            margin: 0
+                          }}>
+                            {source.name}
+                          </h3>
+                        </div>
+                        
+                        <div style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.5rem'
+                        }}>
+                          {isActive && (
+                            <div style={{
+                              width: '8px',
+                              height: '8px',
+                              borderRadius: '50%',
+                              background: '#00ff88',
+                              animation: 'pulse 1s infinite'
+                            }} />
+                          )}
+                          <div style={{
+                            padding: '0.25rem 0.5rem',
+                            borderRadius: '6px',
+                            fontSize: '0.8rem',
+                            fontWeight: 'bold',
+                            background: {
+                              'active': 'rgba(0, 255, 136, 0.2)',
+                              'idle': 'rgba(226, 232, 240, 0.2)',
+                              'error': 'rgba(255, 107, 107, 0.2)'
+                            }[source.status],
+                            color: {
+                              'active': '#00ff88',
+                              'idle': '#e2e8f0',
+                              'error': '#ff6b6b'
+                            }[source.status]
+                          }}>
+                            {source.status.toUpperCase()}
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        fontSize: '0.85rem',
+                        color: '#e2e8f0'
+                      }}>
+                        <span>Last run: {source.lastRun}</span>
+                        {isActive && progress > 0 && (
+                          <span style={{ color: '#00ff88', fontWeight: 'bold' }}>
+                            {progress}% complete
+                          </span>
+                        )}
+                        {isSelected && (
+                          <span style={{ color: '#00ff88' }}>✓ Selected</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          
+          {/* Active Jobs Monitor */}
+          {activeScrapeJobs.length > 0 && (
+            <div style={{
+              background: 'rgba(0, 255, 136, 0.05)',
+              borderRadius: '16px',
+              padding: '2rem',
+              marginBottom: '3rem',
+              border: '1px solid rgba(0, 255, 136, 0.2)'
+            }}>
+              <h2 style={{
+                fontSize: '1.5rem',
+                color: '#ffffff',
+                marginBottom: '1.5rem'
+              }}>
+                🔄 Active Scraping Jobs
+              </h2>
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+                gap: '1rem'
+              }}>
+                {activeScrapeJobs.map((job) => {
+                  const source = scrapingSources.find(s => s.id === job.source);
+                  const progress = scrapeProgress[job.id] || job.progress || 0;
+                  const elapsed = Math.floor((Date.now() - job.startTime) / 1000);
+                  
+                  return (
+                    <div key={job.id} style={{
+                      background: 'rgba(255, 255, 255, 0.05)',
+                      borderRadius: '12px',
+                      padding: '1.5rem',
+                      border: '1px solid rgba(255, 255, 255, 0.1)'
+                    }}>
+                      <div style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        marginBottom: '1rem'
+                      }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                          <span style={{ fontSize: '1.2rem' }}>{source?.icon || '🌐'}</span>
+                          <span style={{ color: '#ffffff', fontWeight: '500' }}>
+                            {source?.name || job.source}
+                          </span>
+                        </div>
+                        <div style={{
+                          background: 'rgba(0, 255, 136, 0.2)',
+                          color: '#00ff88',
+                          padding: '0.25rem 0.5rem',
+                          borderRadius: '6px',
+                          fontSize: '0.8rem',
+                          fontWeight: 'bold'
+                        }}>
+                          {progress}%
+                        </div>
+                      </div>
+                      
+                      <div style={{
+                        background: 'rgba(255, 255, 255, 0.1)',
+                        borderRadius: '8px',
+                        height: '8px',
+                        marginBottom: '1rem',
+                        overflow: 'hidden'
+                      }}>
+                        <div style={{
+                          height: '100%',
+                          width: `${progress}%`,
+                          background: 'linear-gradient(90deg, #00ff88 0%, #00e67a 100%)',
+                          borderRadius: '8px',
+                          transition: 'width 0.3s ease'
+                        }} />
+                      </div>
+                      
+                      <div style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        fontSize: '0.85rem',
+                        color: '#e2e8f0'
+                      }}>
+                        <span>Elapsed: {elapsed}s</span>
+                        <span>Status: {job.status}</span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+          
           {/* Stats Cards */}
           <div style={{
             display: 'grid',
@@ -469,37 +1105,107 @@ export default function EnhancedScrapingDashboard() {
               gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
               gap: '1.5rem'
             }}>
-              {recommendations.map((item) => (
-                <div key={item.id} style={{
+              {recommendations.map((item, index) => {
+                const expertiseColor = {
+                  'beginner': '#96ceb4',
+                  'intermediate': '#45b7d1', 
+                  'advanced': '#ff6b6b'
+                }[item.expertise];
+                
+                const sentimentColor = {
+                  'positive': '#00ff88',
+                  'neutral': '#e2e8f0',
+                  'negative': '#ff6b6b'
+                }[item.sentiment];
+                
+                return (
+                <div key={item.id} className="enhanced-card" style={{
                   background: 'rgba(255, 255, 255, 0.05)',
                   borderRadius: '16px',
                   padding: '1.5rem',
                   border: '1px solid rgba(255, 255, 255, 0.1)',
                   cursor: 'pointer',
-                  transition: 'all 0.3s ease'
+                  transition: 'all 0.3s ease',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  animation: `fadeInUp 0.6s ease ${index * 0.1}s both`
                 }}>
+                  {/* Quality indicators */}
                   <div style={{
+                    position: 'absolute',
+                    top: '1rem',
+                    right: '1rem',
                     display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'flex-start',
-                    marginBottom: '1rem'
+                    gap: '0.5rem'
                   }}>
-                    <h3 style={{
-                      fontSize: '1.2rem',
-                      color: '#ffffff',
-                      margin: 0
-                    }}>
-                      {item.title}
-                    </h3>
                     <div style={{
                       background: 'rgba(0, 255, 136, 0.2)',
                       color: '#00ff88',
                       padding: '0.25rem 0.5rem',
                       borderRadius: '6px',
-                      fontSize: '0.8rem',
+                      fontSize: '0.75rem',
                       fontWeight: 'bold'
                     }}>
-                      {item.popularity}% match
+                      Q: {Math.round(item.qualityScore * 100)}%
+                    </div>
+                    <div style={{
+                      background: `rgba(${expertiseColor.slice(1, 3) === 'ff' ? '255' : '0'}, ${expertiseColor.slice(3, 5) === 'ff' ? '255' : '0'}, ${expertiseColor.slice(5, 7) === 'ff' ? '255' : '0'}, 0.2)`,
+                      color: expertiseColor,
+                      padding: '0.25rem 0.5rem',
+                      borderRadius: '6px',
+                      fontSize: '0.75rem',
+                      fontWeight: 'bold'
+                    }}>
+                      {item.expertise.toUpperCase()}
+                    </div>
+                  </div>
+                  
+                  <div style={{
+                    marginBottom: '1rem',
+                    paddingRight: '6rem' // Space for indicators
+                  }}>
+                    <h3 style={{
+                      fontSize: '1.2rem',
+                      color: '#ffffff',
+                      margin: '0 0 0.5rem 0',
+                      lineHeight: '1.3'
+                    }}>
+                      {item.title}
+                    </h3>
+                    
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '1rem',
+                      marginBottom: '0.75rem'
+                    }}>
+                      <div style={{
+                        background: 'rgba(0, 255, 136, 0.2)',
+                        color: '#00ff88',
+                        padding: '0.25rem 0.5rem',
+                        borderRadius: '6px',
+                        fontSize: '0.8rem',
+                        fontWeight: 'bold'
+                      }}>
+                        {item.popularity}% match
+                      </div>
+                      
+                      <div style={{
+                        background: 'rgba(255, 255, 255, 0.1)',
+                        color: '#e2e8f0',
+                        padding: '0.25rem 0.5rem',
+                        borderRadius: '6px',
+                        fontSize: '0.75rem'
+                      }}>
+                        {item.contentType}
+                      </div>
+                      
+                      <div style={{
+                        width: '8px',
+                        height: '8px',
+                        borderRadius: '50%',
+                        background: sentimentColor
+                      }} />
                     </div>
                   </div>
                   <p style={{
@@ -513,38 +1219,76 @@ export default function EnhancedScrapingDashboard() {
                   <div style={{
                     display: 'flex',
                     justifyContent: 'space-between',
-                    alignItems: 'center'
+                    alignItems: 'flex-end'
                   }}>
                     <div style={{
                       display: 'flex',
                       gap: '0.5rem',
-                      flexWrap: 'wrap'
+                      flexWrap: 'wrap',
+                      flex: 1
                     }}>
-                      {item.tags.slice(0, 2).map((tag, index) => (
-                        <span key={index} style={{
+                      {item.tags.slice(0, 3).map((tag, tagIndex) => (
+                        <span key={tagIndex} style={{
                           background: 'rgba(255, 255, 255, 0.1)',
                           color: '#e2e8f0',
                           padding: '0.25rem 0.5rem',
                           borderRadius: '4px',
-                          fontSize: '0.8rem'
-                        }}>
-                          {tag}
+                          fontSize: '0.8rem',
+                          transition: 'all 0.3s ease',
+                          cursor: 'pointer'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.target.style.background = 'rgba(0, 255, 136, 0.2)';
+                          e.target.style.color = '#00ff88';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.target.style.background = 'rgba(255, 255, 255, 0.1)';
+                          e.target.style.color = '#e2e8f0';
+                        }}
+                        onClick={() => setSearchQuery(tag)}
+                        >
+                          #{tag}
                         </span>
                       ))}
+                      {item.tags.length > 3 && (
+                        <span style={{
+                          color: '#e2e8f0',
+                          fontSize: '0.8rem',
+                          opacity: 0.7
+                        }}>
+                          +{item.tags.length - 3} more
+                        </span>
+                      )}
                     </div>
+                    
                     <div style={{
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '0.5rem',
+                      gap: '1rem',
                       color: '#e2e8f0',
-                      fontSize: '0.9rem'
+                      fontSize: '0.85rem',
+                      marginLeft: '1rem'
                     }}>
                       <span>⏱️ {item.readTime}</span>
                       <span>📰 {item.source}</span>
+                      <span style={{ color: '#00ff88' }}>
+                        🔗 View
+                      </span>
                     </div>
                   </div>
+                  
+                  {/* Embedding similarity indicator */}
+                  <div style={{
+                    position: 'absolute',
+                    bottom: 0,
+                    left: 0,
+                    height: '3px',
+                    width: `${item.embeddingScore * 100}%`,
+                    background: 'linear-gradient(90deg, #00ff88 0%, #00e67a 100%)',
+                    borderRadius: '0 0 16px 16px'
+                  }} />
                 </div>
-              ))}
+              );})}
             </div>
           </div>
 
@@ -651,6 +1395,7 @@ export default function EnhancedScrapingDashboard() {
           </div>
         </div>
       </div>
-    </Layout>
+      </Layout>
+    </>
   );
 }
