@@ -16,7 +16,9 @@
       "Bash(npm:*)",
       "Bash(powershell:*)",
       "Bash(rm:*)",
-      "Bash(gh repo view:*)"
+      "Bash(gh repo view:*)",
+      "WebFetch(domain:notebooklm-directory.vercel.app)",
+      "WebFetch(domain:notebook-discovery-admin.vercel.app)"
     ],
     "deny": []
   }
