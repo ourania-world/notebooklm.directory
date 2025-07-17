@@ -24,6 +24,8 @@ export default function EnhancedScrapingDashboard() {
   });
   const [activeScrapeJobs, setActiveScrapeJobs] = useState([]);
   const [scrapeProgress, setScrapeProgress] = useState({});
+  const [currentActivity, setCurrentActivity] = useState('');
+  const [activityLog, setActivityLog] = useState([]);
   const [selectedSources, setSelectedSources] = useState(['notebooklm', 'reddit', 'github']);
   const [scrapeConfig, setScrapeConfig] = useState({
     maxConcurrency: 5,
@@ -34,6 +36,15 @@ export default function EnhancedScrapingDashboard() {
   const [realTimeUpdates, setRealTimeUpdates] = useState(true);
   const wsRef = useRef(null);
   const [adminOperations, setAdminOperations] = useState(false);
+  
+  // Activity logging helper
+  const logActivity = (message, type = 'info') => {
+    const timestamp = new Date().toLocaleTimeString();
+    const newActivity = { timestamp, message, type };
+    setActivityLog(prev => [newActivity, ...prev.slice(0, 19)]); // Keep last 20 activities
+    setCurrentActivity(message);
+    console.log(`🔄 ${timestamp}: ${message}`);
+  };
   
   useEffect(() => {
     console.log('🔧 USE EFFECT TRIGGERED - CHECKING AUTH AND LOADING DATA');
@@ -502,26 +513,33 @@ export default function EnhancedScrapingDashboard() {
   const startAdvancedScraping = async () => {
     console.log('🚀 STARTING ADVANCED MULTI-SOURCE SCRAPING');
     setScrapingStatus('running');
+    logActivity(`🚀 Starting multi-source scraping (${selectedSources.length} sources)`, 'success');
     
     try {
       // Start scraping for each selected source
       for (const sourceId of selectedSources) {
         const source = scrapingSources.find(s => s.id === sourceId);
         if (source) {
+          logActivity(`🌐 Initializing ${source.name} scraper...`, 'info');
           await startSourceScraping(source);
         }
       }
+      setScrapingStatus('completed');
+      logActivity(`✅ Multi-source scraping completed successfully`, 'success');
     } catch (error) {
       console.error('Error starting scraping:', error);
       setScrapingStatus('error');
+      logActivity(`❌ Scraping failed: ${error.message}`, 'error');
     }
   };
   
   // Start scraping for a specific source
   const startSourceScraping = async (source) => {
     console.log(`🌐 Starting ${source.name} scraping...`);
+    logActivity(`🔍 Connecting to ${source.name} API...`, 'info');
     
     try {
+      logActivity(`📡 Sending scraping request to ${source.name}...`, 'info');
       const response = await fetch('/api/start-scraping', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -535,6 +553,7 @@ export default function EnhancedScrapingDashboard() {
         throw new Error(`Failed to start ${source.name} scraping`);
       }
       
+      logActivity(`⏳ Processing ${source.name} response...`, 'info');
       const result = await response.json();
       console.log(`✅ ${source.name} scraping started:`, result);
       
@@ -563,6 +582,7 @@ export default function EnhancedScrapingDashboard() {
         // Add to existing search results
         setSearchResults(prev => [...newResults, ...prev]);
         console.log(`🎯 Added ${newResults.length} new results from ${source.name} to dashboard`);
+        logActivity(`✅ Found ${newResults.length} items from ${source.name}`, 'success');
         
         // Update scraping stats
         setScrapingStats(prev => ({
@@ -570,10 +590,13 @@ export default function EnhancedScrapingDashboard() {
           totalScraped: prev.totalScraped + newResults.length,
           todayScraped: prev.todayScraped + newResults.length
         }));
+      } else {
+        logActivity(`⚠️ ${source.name} returned no new content`, 'warning');
       }
       
     } catch (error) {
       console.error(`❌ Error starting ${source.name} scraping:`, error);
+      logActivity(`❌ ${source.name} scraping failed: ${error.message}`, 'error');
       // Continue with other sources even if one fails
     }
   };
@@ -900,6 +923,90 @@ export default function EnhancedScrapingDashboard() {
               </div>
             </div>
           </div>
+
+          {/* Activity Status Bar */}
+          {(scrapingStatus === 'running' || activityLog.length > 0) && (
+            <div style={{
+              background: 'rgba(0, 20, 40, 0.7)',
+              backdropFilter: 'blur(10px)',
+              border: '1px solid rgba(0, 255, 136, 0.2)',
+              borderRadius: '12px',
+              padding: '1rem',
+              marginBottom: '1.5rem'
+            }}>
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'space-between',
+                marginBottom: '0.5rem'
+              }}>
+                <h3 style={{ 
+                  color: '#00ff88', 
+                  margin: 0, 
+                  fontSize: '1.1rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem'
+                }}>
+                  🔄 Activity Monitor
+                  {scrapingStatus === 'running' && (
+                    <span style={{ 
+                      display: 'inline-block',
+                      width: '8px',
+                      height: '8px',
+                      background: '#00ff88',
+                      borderRadius: '50%',
+                      animation: 'pulse 1.5s infinite'
+                    }}></span>
+                  )}
+                </h3>
+              </div>
+              
+              {/* Current Activity */}
+              {currentActivity && (
+                <div style={{
+                  background: 'rgba(0, 255, 136, 0.1)',
+                  padding: '0.75rem',
+                  borderRadius: '8px',
+                  marginBottom: '1rem',
+                  border: '1px solid rgba(0, 255, 136, 0.2)'
+                }}>
+                  <div style={{ color: '#e2e8f0', fontSize: '0.9rem' }}>
+                    Current: <span style={{ color: '#00ff88' }}>{currentActivity}</span>
+                  </div>
+                </div>
+              )}
+              
+              {/* Activity Log */}
+              {activityLog.length > 0 && (
+                <div style={{
+                  maxHeight: '120px',
+                  overflowY: 'auto',
+                  background: 'rgba(0, 0, 0, 0.3)',
+                  borderRadius: '8px',
+                  padding: '0.5rem'
+                }}>
+                  {activityLog.slice(0, 5).map((activity, index) => (
+                    <div key={index} style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      fontSize: '0.85rem',
+                      color: activity.type === 'error' ? '#ff6b6b' : 
+                             activity.type === 'success' ? '#00ff88' :
+                             activity.type === 'warning' ? '#ffd93d' : '#94a3b8',
+                      marginBottom: '0.25rem'
+                    }}>
+                      <span style={{ color: '#64748b', minWidth: '60px' }}>
+                        {activity.timestamp}
+                      </span>
+                      <span>{activity.message}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Multi-Source Scraping Sources */}
           <div style={{ marginBottom: '3rem' }}>
